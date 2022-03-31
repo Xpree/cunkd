@@ -5,9 +5,12 @@ using Fusion;
 using Fusion.Sockets;
 using System;
 using UnityEngine.SceneManagement;
+using StarterAssets;
 
+//[RequireComponent(typeof(StarterAssetsInputs))]
 public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 {
+    #region Unused INetworkRunnerCallbacks
     public void OnConnectedToServer(NetworkRunner runner)
     {
 
@@ -75,24 +78,19 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
 
     }
-
-    async void StartGame(GameMode mode)
-    {
-        // Create the Fusion runner and let it know that we will be providing user input
-        _runner = gameObject.AddComponent<NetworkRunner>();
-        _runner.ProvideInput = true;
-
-        // Start or join (depends on gamemode) a session with a specific name
-        await _runner.StartGame(new StartGameArgs()
-        {
-            GameMode = mode,
-            SessionName = "TestRoom",
-            Scene = SceneManager.GetActiveScene().buildIndex,
-            SceneObjectProvider = gameObject.AddComponent<NetworkSceneManagerDefault>()
-        });
-    }
+    #endregion
 
     private NetworkRunner _runner;
+    private StarterAssetsInputs _input;
+
+    [SerializeField] private NetworkPrefabRef _playerPrefab;
+    private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
+
+
+    void Awake()
+    {
+        _input = GetComponent<StarterAssetsInputs>();
+    }
 
     private void OnGUI()
     {
@@ -100,7 +98,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         {
             if (GUI.Button(new Rect(0, 0, 200, 40), "Host"))
             {
-                StartGame(GameMode.Host);
+                StartGame(GameMode.Host);                
             }
             if (GUI.Button(new Rect(0, 40, 200, 40), "Join"))
             {
@@ -112,9 +110,24 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             }
         }
     }
-    
-    [SerializeField] private NetworkPrefabRef _playerPrefab;
-    private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
+
+
+    async void StartGame(GameMode mode)
+    {
+        // Create the Fusion runner and let it know that we will be providing user input
+        _runner = gameObject.AddComponent<NetworkRunner>();
+        _runner.ProvideInput = mode != GameMode.Server;
+
+        // Start or join (depends on gamemode) a session with a specific name
+        await _runner.StartGame(new StartGameArgs()
+        {
+            GameMode = mode,
+            SessionName = "TestRoom",
+            Scene = SceneManager.GetActiveScene().buildIndex,
+            SceneObjectProvider = gameObject.AddComponent<NetworkSceneManagerDefault>()
+        });
+    }
+
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
@@ -139,6 +152,8 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
-        
+        NetworkInputData inputData = new NetworkInputData();
+        inputData.move = _input.move;
+        input.Set(inputData);
     }
 }

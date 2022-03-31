@@ -2,13 +2,11 @@ using Cinemachine;
 using StarterAssets;
 using UnityEngine;
 
-
+[RequireComponent(typeof(CinemachineVirtualCamera))]
 public class CameraController : MonoBehaviour
 {
 
 	[Header("Cinemachine")]
-	[Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
-	public CinemachineVirtualCamera CinemachineCamera;
 	[Tooltip("How far in degrees can you move the camera up")]
 	public float TopClamp = 70.0f;
 	[Tooltip("How far in degrees can you move the camera down")]
@@ -18,23 +16,31 @@ public class CameraController : MonoBehaviour
 	[Tooltip("For locking the camera position on all axis")]
 	public bool LockCameraPosition = false;
 
+	[SerializeField] StarterAssetsInputs _input;
+
+	CinemachineVirtualCamera _cinemachineCamera;
+
 	private float _cinemachineTargetYaw;
 	private float _cinemachineTargetPitch;
 	private const float _threshold = 0.01f;
-	private void CameraRotation()
+
+    private void Awake()
+    {
+		_cinemachineCamera = GetComponent<CinemachineVirtualCamera>();
+	}
+
+    private void CameraRotation()
 	{
 		var localPlayer = PlayerController.Local;
 		if (localPlayer == null)
 			return;
-		if (CinemachineCamera == null)
-			return;
-		CinemachineCamera.Follow = localPlayer.CinemachineCameraTarget?.transform;
-		var input = localPlayer.GetComponent<StarterAssetsInputs>();
+		if(_cinemachineCamera.Follow == null)
+			_cinemachineCamera.Follow = localPlayer.CinemachineCameraTarget?.transform;
 		// if there is an input and camera position is not fixed
-		if (input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
+		if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
 		{
-			_cinemachineTargetYaw += input.look.x * Time.deltaTime;
-			_cinemachineTargetPitch += input.look.y * Time.deltaTime;
+			_cinemachineTargetYaw += _input.look.x * Time.deltaTime;
+			_cinemachineTargetPitch += _input.look.y * Time.deltaTime;
 		}
 
 		// clamp our rotations so our values are limited 360 degrees
@@ -44,6 +50,7 @@ public class CameraController : MonoBehaviour
 		// Cinemachine will follow this target
 		localPlayer.CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
 	}
+
 	private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
 	{
 		if (lfAngle < -360f) lfAngle += 360f;

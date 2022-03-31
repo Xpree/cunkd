@@ -8,9 +8,8 @@ using UnityEngine;
 /// Handle player input by responding to Fusion input polling, filling an input struct and then working with
 /// that input struct in the Fusion Simulation loop.
 /// </summary>
-public class InputController : NetworkBehaviour, INetworkRunnerCallbacks
+public class InputController : NetworkBehaviour
 {
-    private StarterAssets.StarterAssetsInputs _inputAsset;
     private PlayerController _player;
     [Tooltip("How fast the character turns to face movement direction")]
     [Range(0.0f, 0.3f)]
@@ -22,31 +21,8 @@ public class InputController : NetworkBehaviour, INetworkRunnerCallbacks
     /// </summary>
     public override void Spawned()
     {
-        _inputAsset = GetComponent<StarterAssets.StarterAssetsInputs>();
         _player = GetComponent<PlayerController>();
-        // Technically, it does not really matter which InputController fills the input structure, since the actual data will only be sent to the one that does have authority,
-        // but in the name of clarity, let's make sure we give input control to the gameobject that also has Input authority.
-        if (Object.HasInputAuthority)
-        {
-            Runner.AddCallbacks(this);
-        }
-
         Debug.Log("Spawned [" + this + "] IsClient=" + Runner.IsClient + " IsServer=" + Runner.IsServer + " HasInputAuth=" + Object.HasInputAuthority + " HasStateAuth=" + Object.HasStateAuthority);
-    }
-
-    /// <summary>
-    /// Get Unity input and store them in a struct for Fusion
-    /// </summary>
-    /// <param name="runner">The current NetworkRunner</param>
-    /// <param name="input">The target input handler that we'll pass our data to</param>
-    public void OnInput(NetworkRunner runner, NetworkInput input)
-    {
-        NetworkInputData inputData = new NetworkInputData();
-        if (_player != null && _player.Object != null)
-        {
-            inputData.move = _inputAsset.move;
-        }
-        input.Set(inputData);
     }
 
     //private Vector3 CalculateAim()
@@ -71,14 +47,6 @@ public class InputController : NetworkBehaviour, INetworkRunnerCallbacks
     //	aimDirection.Normalize();
     //	return aimDirection;
     //}
-
-    public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
-    {
-    }
-
-    public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
-    {
-    }
 
     /// <summary>
     /// FixedUpdateNetwork is the main Fusion simulation callback - this is where
@@ -122,20 +90,6 @@ public class InputController : NetworkBehaviour, INetworkRunnerCallbacks
         }
         _player.Move();
     }
-
-    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) { }
-    public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) { }
-    public void OnConnectedToServer(NetworkRunner runner) { }
-    public void OnDisconnectedFromServer(NetworkRunner runner) { }
-    public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
-    public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
-    public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
-    public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) { }
-    public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
-    public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) { }
-    public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data) { }
-    public void OnSceneLoadDone(NetworkRunner runner) { }
-    public void OnSceneLoadStart(NetworkRunner runner) { }
 }
 
 /// <summary>
