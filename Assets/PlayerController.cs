@@ -9,7 +9,7 @@ public class PlayerController : NetworkBehaviour
     public GameObject CinemachineCameraTarget;
 
     private NetworkCharacterControllerPrototype _cc;
-    private Vector3 _moveDirection;
+    [Networked] private Vector3 _moveDirection { get; set; }
 
     private void Awake()
     {
@@ -22,15 +22,34 @@ public class PlayerController : NetworkBehaviour
             Local = this;
     }
 
-    public void SetDirections(Vector3 moveDirection)
+
+    // Updates the networked variables to move the player
+    void UpdateInput()
     {
-        _moveDirection = moveDirection;
+        if (GetInput(out NetworkInputData input))
+        {
+            if(input.move != Vector2.zero)
+            {
+                _moveDirection = Quaternion.Euler(0.0f, input.rotation, 0.0f) * Vector3.forward;
+            }
+            else
+            {
+                _moveDirection = Vector3.zero;
+            }
+        }
     }
 
-    public void Move()
+
+    // Uses the networked variables to move the player
+    void Move()
     {
-        
         _cc.Move(_moveDirection);
-        
     }
+
+    public override void FixedUpdateNetwork()
+    {
+        UpdateInput();
+        Move();
+    }
+
 }

@@ -86,7 +86,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField] private NetworkPrefabRef _playerPrefab;
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
 
-
     void Awake()
     {
         _input = GetComponent<StarterAssetsInputs>();
@@ -154,6 +153,15 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         NetworkInputData inputData = new NetworkInputData();
         inputData.move = _input.move;
+
+
+        float targetRotation = Camera.main.transform.eulerAngles.y;
+        if (_input.move != Vector2.zero)
+        {
+            targetRotation += Mathf.Atan2(_input.move.x, _input.move.y) * Mathf.Rad2Deg;
+        }
+
+        inputData.rotation = targetRotation;
         input.Set(inputData);
     }
 }
