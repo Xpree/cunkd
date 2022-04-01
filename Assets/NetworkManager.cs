@@ -79,7 +79,8 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     }
     #endregion
-
+    public string stringToEdit = "";
+    
     private NetworkRunner _runner;
     private StarterAssetsInputs _input;
 
@@ -93,25 +94,31 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     private void OnGUI()
     {
+        
         if (_runner == null)
         {
+            stringToEdit = GUI.TextArea(new Rect(0, 160, 200, 40), stringToEdit, 200);
+            
             if (GUI.Button(new Rect(0, 0, 200, 40), "Host"))
             {
-                StartGame(GameMode.Host);                
+                StartGame(GameMode.Host, WhereToConnect());                
             }
             if (GUI.Button(new Rect(0, 40, 200, 40), "Join"))
             {
-                StartGame(GameMode.Client);
+                StartGame(GameMode.Client, WhereToConnect());
             }
             if (GUI.Button(new Rect(0, 80, 200, 40), "Single player"))
             {
-                StartGame(GameMode.Single);
+                StartGame(GameMode.Single, WhereToConnect());
             }
         }
     }
+    public string WhereToConnect()
+    {
+        return stringToEdit;
+    }
 
-
-    async void StartGame(GameMode mode)
+    async void StartGame(GameMode mode, string whereToConnect)
     {
         // Create the Fusion runner and let it know that we will be providing user input
         _runner = gameObject.AddComponent<NetworkRunner>();
@@ -121,7 +128,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         await _runner.StartGame(new StartGameArgs()
         {
             GameMode = mode,
-            SessionName = "TestRoom",
+            SessionName = whereToConnect,
             Scene = SceneManager.GetActiveScene().buildIndex,
             SceneObjectProvider = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
