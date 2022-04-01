@@ -560,6 +560,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37d0d69f0d609042af9aa6690cda8d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stringToEdit: 
   _playerPrefab:
     RawGuidValue: 20755f8b437e05c4495a8b8724a0515d
 --- !u!4 &925670955
