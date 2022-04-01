@@ -12,4 +12,5 @@ public struct NetworkInputData : INetworkInput
 {
     public Vector2 move;
     public float rotation;
+    public bool jump;
 }

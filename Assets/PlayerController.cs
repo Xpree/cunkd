@@ -8,12 +8,17 @@ public class PlayerController : NetworkBehaviour
     [Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
     public GameObject CinemachineCameraTarget;
 
-    private NetworkCharacterControllerPrototype _cc;
-    [Networked] private Vector3 _moveDirection { get; set; }
+    private Rigidbody _rigidBody;
+    [Networked] private float _rotation { get; set; }
+    [Networked] private bool _jump { get; set; }
+    [Networked] private bool _move { get; set; }
+
+    [SerializeField] float rotationSpeed = 15.0f;
+    [SerializeField] float movementSpeed = 6.0f;
 
     private void Awake()
     {
-        _cc = GetComponent<NetworkCharacterControllerPrototype>();
+        _rigidBody = GetComponent<Rigidbody>();
     }
 
     public override void Spawned()
@@ -28,14 +33,9 @@ public class PlayerController : NetworkBehaviour
     {
         if (GetInput(out NetworkInputData input))
         {
-            if(input.move != Vector2.zero)
-            {
-                _moveDirection = Quaternion.Euler(0.0f, input.rotation, 0.0f) * Vector3.forward;
-            }
-            else
-            {
-                _moveDirection = Vector3.zero;
-            }
+            _rotation = input.rotation;
+            _jump = input.jump;
+            _move = input.move != Vector2.zero;
         }
     }
 
@@ -43,7 +43,30 @@ public class PlayerController : NetworkBehaviour
     // Uses the networked variables to move the player
     void Move()
     {
-        _cc.Move(_moveDirection);
+        float deltaTime = Runner.DeltaTime;
+        var travelRotation = Quaternion.Euler(0.0f, _rotation, 0.0f);
+        _rigidBody.rotation = Quaternion.Slerp(_rigidBody.rotation, travelRotation, rotationSpeed * deltaTime);        
+
+        Vector3 velocity = _rigidBody.velocity;
+        if(this._move)
+        {
+            Vector3 direction = travelRotation * Vector3.forward;
+            Vector2 movement = new Vector2(direction.x, direction.z);
+            Vector2 horizontalVelocity = new Vector2(velocity.x, velocity.z);
+            horizontalVelocity += movement;
+
+            horizontalVelocity = Vector2.ClampMagnitude(horizontalVelocity, movementSpeed);
+
+            velocity.x = horizontalVelocity.x;
+            velocity.z = horizontalVelocity.y;
+        }
+
+        if(this._jump)
+        {
+            velocity.y += 6.0f;
+        }
+
+        _rigidBody.velocity = velocity;
     }
 
     public override void FixedUpdateNetwork()

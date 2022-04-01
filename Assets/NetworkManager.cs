@@ -162,6 +162,8 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         }
 
         inputData.rotation = targetRotation;
+        inputData.jump = _input.jump;
+        _input.jump = false;
         input.Set(inputData);
     }
 }
