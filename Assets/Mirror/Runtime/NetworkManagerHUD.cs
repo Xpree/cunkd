@@ -1,6 +1,8 @@
 // vis2k: GUILayout instead of spacey += ...; removed Update hotkeys to avoid
 // confusion if someone accidentally presses one.
 using UnityEngine;
+using System;
+using UnityEngine.SceneManagement;
 
 namespace Mirror
 {
@@ -54,7 +56,15 @@ namespace Mirror
         void StartButtons()
         {
             if (!NetworkClient.active)
-            {
+            {     
+                
+                if (GUILayout.Button("Instant Play"))
+                {
+                    manager.StartHost();
+                    //NetworkManager.StartHostClient();  
+                    manager.ServerChangeScene("OnlineScene");
+                }
+                
                 // Server + Client
                 if (Application.platform != RuntimePlatform.WebGLPlayer)
                 {
