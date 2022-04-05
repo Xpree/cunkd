@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class KnockbackScript : MonoBehaviour
+public class KnockbackScript : NetworkBehaviour
 {
     [SerializeField] private float KnockbackStrength;
 
