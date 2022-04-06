@@ -336,6 +336,7 @@ MonoBehaviour:
   spawnPrefabs:
   - {fileID: 1139254171913846, guid: 52f1c9ea06cfd154cb68ff9d1b66fc13, type: 3}
   - {fileID: 4241873777036534559, guid: 63a1f9f454bd3084498c59e071cdaadc, type: 3}
+  - {fileID: 5769685091094781207, guid: 514a8fec496f9414cbfbe9b748c49f52, type: 3}
   showRoomGUI: 1
   minPlayers: 1
   roomPlayerPrefab: {fileID: 114033720796874720, guid: deae2134a1d77704b9c595efe69767dd, type: 3}
@@ -344,7 +345,7 @@ MonoBehaviour:
   _allPlayersReady: 0
   roomSlots: []
   clientIndex: 0
-  rewardPrefab: {fileID: 4241873777036534559, guid: 63a1f9f454bd3084498c59e071cdaadc, type: 3}
+  rewardPrefab: {fileID: 5769685091094781207, guid: 514a8fec496f9414cbfbe9b748c49f52, type: 3}
 --- !u!4 &2008127832
 Transform:
   m_ObjectHideFlags: 0

@@ -94,5 +94,14 @@ namespace Mirror.Examples.NetworkRoom
             isGrounded = characterController.isGrounded;
             velocity = characterController.velocity;
         }
+
+
+        private void OnGUI()
+        {
+            if (!isLocalPlayer)
+                return;
+
+            GUI.Box(new Rect(Screen.width * 0.5f - 1, Screen.height * 0.5f - 1, 2, 2), GUIContent.none);
+        }
     }
 }

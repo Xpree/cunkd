@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 6261579163786439309}
   - component: {fileID: 413665935531044684}
   - component: {fileID: -5973659058592516506}
+  - component: {fileID: -9161402237070379157}
   m_Layer: 0
   m_Name: GamePlayer
   m_TagString: Player
@@ -338,10 +339,24 @@ MonoBehaviour:
   GrabTorque: 10
   PlayerCollider: {fileID: 6799120071495980942}
   MinPushForce: 10
-  MaxPushForce: 100
+  MaxPushForce: 50
   ChargeRate: 1
   MaxRange: 30
   PushForceMode: 1
+--- !u!114 &-9161402237070379157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1480027675339556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42611d80562caa249a27eeb7a24a4005, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
 --- !u!1 &1211685108220427515
 GameObject:
   m_ObjectHideFlags: 0

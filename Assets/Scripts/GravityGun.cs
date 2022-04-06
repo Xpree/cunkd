@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Mirror;
 
-public class GravityGun : NetworkBehaviour
+public class GravityGun : NetworkBehaviour, IWeapon
 {
     
 
@@ -29,12 +29,15 @@ public class GravityGun : NetworkBehaviour
 
     Vector3 AnchorPos => AnchorPoint.position + AnchorPoint.forward * GrabTargetRadius;
 
+    float? IWeapon.ChargeProgress => throw new System.NotImplementedException();
+
     bool Charging = false;
     bool Push = false;
-    float ChargeProgress = 0f;
+    [SyncVar] float ChargeProgress = 0f;
+
 
     [Command]
-    void PrimaryAttack(bool isPressed)
+    void CmdPrimaryAttack(bool isPressed)
     {
         if (!isPressed)
         {
@@ -46,8 +49,9 @@ public class GravityGun : NetworkBehaviour
         ChargeProgress = 0f;
         Push = false;
     }
+    
     [Command]
-    void SecondaryAttack(bool isPressed)
+    void CmdSecondaryAttack(bool isPressed)
     {
         if (!isPressed)
         {
@@ -76,6 +80,7 @@ public class GravityGun : NetworkBehaviour
         }
     }
 
+    [Server]
     void GravGunPullnShot()
     {
         if (Charging && Push)
@@ -92,11 +97,13 @@ public class GravityGun : NetworkBehaviour
                 float pushForce = Mathf.Lerp(MinPushForce, MaxPushForce, ChargeProgress);
                 targetRB.AddForce(Camera.main.transform.forward * pushForce, PushForceMode);
             }
+
+            ChargeProgress = 0;
         }
 
         else if (GrabTarget != null && GrabPullTime < GrabTime)
         {
-            GrabPullTime += Time.deltaTime;
+            GrabPullTime += Time.fixedDeltaTime;
 
             if (GrabPullTime >= GrabTime)
             {
@@ -113,14 +120,16 @@ public class GravityGun : NetworkBehaviour
         }
     }
 
+    [Server]
     void GravGunCharge()
     {
         if (Charging == true && ChargeProgress < 1f)
         {
-            ChargeProgress = Mathf.Clamp01(ChargeProgress + ChargeRate * Time.deltaTime);
+            ChargeProgress = Mathf.Clamp01(ChargeProgress + ChargeRate * Time.fixedDeltaTime);
         }
     }
 
+    [Server]
     void ClearGrabTarget()
     {
         //de-parent
@@ -138,6 +147,7 @@ public class GravityGun : NetworkBehaviour
         GrabTargetCollider = null;
     }
 
+    [Server]
     Rigidbody FindTarget(bool isPush)
     {
         float searchRange = isPush ? MaxPushForce : MaxGrabRange;
@@ -150,36 +160,33 @@ public class GravityGun : NetworkBehaviour
         }
         return null;
     }
-
     
-    void Update()
+    [ServerCallback]
+    void FixedUpdate()
     {
-        if (this.isServer)
-            GravGunCharge();
+        GravGunCharge();
+        GravGunPullnShot();
+    }
 
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            PrimaryAttack(true);
-        }
-        if (Mouse.current.leftButton.wasReleasedThisFrame)
-        {
-            PrimaryAttack(false);
-        }
 
-        if (Mouse.current.rightButton.wasPressedThisFrame)
-        {
-            SecondaryAttack(true);
-        }
-        if (Mouse.current.rightButton.wasReleasedThisFrame)
-        {
-            SecondaryAttack(false);
+    private void OnGUI()
+    {
+        if (!isLocalPlayer)
+            return;
+
+        if(ChargeProgress> 0) {
+            GUI.Box(new Rect(Screen.width * 0.5f - 50, Screen.height * 0.8f - 10, 100.0f * ChargeProgress, 20.0f), GUIContent.none);
         }
     }
 
-    void FixedUpdate()
+    void IWeapon.PrimaryAttack(bool isPressed)
     {
-        if (this.isServer)
-            GravGunPullnShot();
+        CmdPrimaryAttack(isPressed);
+    }
+
+    void IWeapon.SecondaryAttack(bool isPressed)
+    {
+        CmdSecondaryAttack(isPressed);
     }
 }
 

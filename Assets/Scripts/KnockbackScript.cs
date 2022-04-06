@@ -7,6 +7,7 @@ public class KnockbackScript : NetworkBehaviour
 {
     [SerializeField] private float KnockbackStrength;
 
+    [ServerCallback]
     private void OnCollisionEnter(Collision collision)
     {
         Rigidbody rb = collision.collider.GetComponent<Rigidbody>();
