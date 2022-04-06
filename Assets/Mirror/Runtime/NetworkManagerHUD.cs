@@ -17,7 +17,8 @@ namespace Mirror
 
         public int offsetX;
         public int offsetY;
-
+        
+        public string PlayerName = "";
         void Awake()
         {
             manager = GetComponent<NetworkManager>();
@@ -56,8 +57,8 @@ namespace Mirror
         void StartButtons()
         {
             if (!NetworkClient.active)
-            {     
-                
+            {
+                PlayerName = GUILayout.TextField(PlayerName);
                 if (GUILayout.Button("Instant Play"))
                 {
                     manager.StartHost();
