@@ -13,14 +13,18 @@ public class Inventory : NetworkBehaviour
         currentWeapon = GetComponent<GravityGun>();
     }
 
+    // Temporary location of attack input
     [ClientCallback]
     void Update()
     {
-
+        if (!isLocalPlayer)
+            return;
+        
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             currentWeapon.PrimaryAttack(true);
         }
+        
         if (Mouse.current.leftButton.wasReleasedThisFrame)
         {
             currentWeapon.PrimaryAttack(false);
@@ -30,9 +34,27 @@ public class Inventory : NetworkBehaviour
         {
             currentWeapon.SecondaryAttack(true);
         }
+        
         if (Mouse.current.rightButton.wasReleasedThisFrame)
         {
             currentWeapon.SecondaryAttack(false);
+        }
+    }
+
+
+    static void GUIDrawProgress(float progress)
+    {
+        GUI.Box(new Rect(Screen.width * 0.5f - 50, Screen.height * 0.8f - 10, 100.0f * progress, 20.0f), GUIContent.none);
+    }
+
+    private void OnGUI()
+    {
+        if (!isLocalPlayer)
+            return;
+
+        if (currentWeapon.ChargeProgress is float progress)
+        {
+            GUIDrawProgress(progress);
         }
     }
 }

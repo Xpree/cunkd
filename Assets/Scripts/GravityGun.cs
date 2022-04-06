@@ -29,8 +29,6 @@ public class GravityGun : NetworkBehaviour, IWeapon
 
     Vector3 AnchorPos => AnchorPoint.position + AnchorPoint.forward * GrabTargetRadius;
 
-    float? IWeapon.ChargeProgress => throw new System.NotImplementedException();
-
     bool Charging = false;
     bool Push = false;
     [SyncVar] float ChargeProgress = 0f;
@@ -168,17 +166,6 @@ public class GravityGun : NetworkBehaviour, IWeapon
         GravGunPullnShot();
     }
 
-
-    private void OnGUI()
-    {
-        if (!isLocalPlayer)
-            return;
-
-        if(ChargeProgress> 0) {
-            GUI.Box(new Rect(Screen.width * 0.5f - 50, Screen.height * 0.8f - 10, 100.0f * ChargeProgress, 20.0f), GUIContent.none);
-        }
-    }
-
     void IWeapon.PrimaryAttack(bool isPressed)
     {
         CmdPrimaryAttack(isPressed);
@@ -188,5 +175,7 @@ public class GravityGun : NetworkBehaviour, IWeapon
     {
         CmdSecondaryAttack(isPressed);
     }
+
+    float? IWeapon.ChargeProgress => this.ChargeProgress;
 }
 
