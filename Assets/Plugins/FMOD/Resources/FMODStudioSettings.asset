@@ -128,10 +128,10 @@ MonoBehaviour:
     HasValue: 0
   displaySortOrder: 0
   childIdentifiers:
-  - 52eb9df5db46521439908db3a29a1bbb
-  - fd7c55dab0fce234b8c25f6ffca523c1
   - c88d16e5272a4e241b0ef0ac2e53b73d
+  - fd7c55dab0fce234b8c25f6ffca523c1
   - 2c5177b11d81d824dbb064f9ac8527da
+  - 52eb9df5db46521439908db3a29a1bbb
 --- !u!114 &-2730535530347597650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,12 +314,12 @@ MonoBehaviour:
   HideSetupWizard: 0
   LastEventReferenceScanVersion: 0
   Platforms:
-  - {fileID: -6691082184580409555}
-  - {fileID: -5909249849425503665}
-  - {fileID: -2730535530347597650}
-  - {fileID: -499135498876633384}
-  - {fileID: 1054613979543341935}
   - {fileID: 7866223204625506673}
+  - {fileID: -5909249849425503665}
+  - {fileID: 1054613979543341935}
+  - {fileID: -499135498876633384}
+  - {fileID: -6691082184580409555}
+  - {fileID: -2730535530347597650}
   MigratedPlatforms: 090000000800000005000000060000000200000001000000
 --- !u!114 &1054613979543341935
 MonoBehaviour:
