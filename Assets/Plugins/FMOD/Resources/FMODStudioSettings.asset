@@ -275,8 +275,8 @@ MonoBehaviour:
   SwitchSettingsMigration: 1
   HasSourceProject: 1
   HasPlatforms: 1
-  sourceProjectPath: 
-  sourceBankPath: 
+  sourceProjectPath: Assets/Audio/PlaceholderAudio/FmodProjects/cunkdPlaceholderAudio/cunkdPlaceholderAudio.fspro
+  sourceBankPath: Assets/Audio/PlaceholderAudio/FmodProjects/cunkdPlaceholderAudio/Build
   SourceBankPathUnformatted: 
   BankRefreshCooldown: 5
   ShowBankRefreshWindow: 1
@@ -298,8 +298,16 @@ MonoBehaviour:
   VirtualChannelSettings: []
   RealChannelSettings: []
   Plugins: []
-  MasterBanks: []
-  Banks: []
+  MasterBanks:
+  - Master
+  Banks:
+  - Dialogue_CN
+  - Dialogue_EN
+  - Dialogue_JP
+  - Music
+  - SFX
+  - Vehicles
+  - VO
   BanksToLoad: []
   LiveUpdatePort: 9264
   EnableMemoryTracking: 0
