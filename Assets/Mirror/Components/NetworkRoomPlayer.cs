@@ -35,7 +35,8 @@ namespace Mirror
         [Tooltip("Diagnostic index of the player, e.g. Player1, Player2, etc.")]
         [SyncVar(hook = nameof(IndexChanged))]
         public int index;
-
+        [SyncVar]
+        public string PlayerName;
         #region Unity Callbacks
 
         /// <summary>
@@ -150,8 +151,8 @@ namespace Mirror
         void DrawPlayerReadyState()
         {
             GUILayout.BeginArea(new Rect(20f + (index * 100), 200f, 90f, 130f));
-
-            GUILayout.Label($"Player [{index + 1}]");
+            
+            GUILayout.Label($"Player: [{PlayerName}]");
 
             if (readyToBegin)
                 GUILayout.Label("Ready");

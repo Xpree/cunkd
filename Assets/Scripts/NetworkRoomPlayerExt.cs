@@ -6,6 +6,18 @@ namespace Mirror.Examples.NetworkRoom
     [AddComponentMenu("")]
     public class NetworkRoomPlayerExt : NetworkRoomPlayer
     {
+        [Command]
+        void CmdChangeName(string name)
+        {
+            PlayerName = name;
+        }
+        public override void OnStartLocalPlayer()
+        {
+            base.OnStartLocalPlayer();
+
+            CmdChangeName(NetworkManagerHUD.PlayerName);
+            this.PlayerName = NetworkManagerHUD.PlayerName;
+        }
         public override void OnStartClient()
         {
             //Debug.Log($"OnStartClient {gameObject}");

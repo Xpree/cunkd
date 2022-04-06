@@ -18,7 +18,7 @@ namespace Mirror
         public int offsetX;
         public int offsetY;
         
-        public string PlayerName = "";
+        public static string PlayerName = "";
         void Awake()
         {
             manager = GetComponent<NetworkManager>();
