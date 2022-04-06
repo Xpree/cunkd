@@ -134,7 +134,6 @@ GameObject:
   - component: {fileID: 639890313}
   - component: {fileID: 639890312}
   - component: {fileID: 639890314}
-  - component: {fileID: 639890315}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -233,20 +232,6 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
---- !u!114 &639890315
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 639890310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attenuationObject: {fileID: 0}
-  ListenerNumber: -1
 --- !u!850595691 &1978017442
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -386,6 +371,8 @@ MonoBehaviour:
   - {fileID: 1139254171913846, guid: 52f1c9ea06cfd154cb68ff9d1b66fc13, type: 3}
   - {fileID: 4241873777036534559, guid: 63a1f9f454bd3084498c59e071cdaadc, type: 3}
   - {fileID: 5769685091094781207, guid: 514a8fec496f9414cbfbe9b748c49f52, type: 3}
+  - {fileID: 34706451374023933, guid: 264b7a91e0926224a99ee2e7b265d91b, type: 3}
+  - {fileID: 4102480405156711657, guid: 0bfd74d1cc354af41b278b18fa065f81, type: 3}
   showRoomGUI: 1
   minPlayers: 1
   roomPlayerPrefab: {fileID: 114033720796874720, guid: deae2134a1d77704b9c595efe69767dd, type: 3}

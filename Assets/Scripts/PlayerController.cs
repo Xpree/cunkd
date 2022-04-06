@@ -45,10 +45,10 @@ namespace Mirror.Examples.NetworkRoom
             if (!isLocalPlayer || characterController == null || !characterController.enabled)
                 return;
 
-            
+
             vertical = Keyboard.current[Key.W].isPressed ? 1.0f : 0;
             vertical -= Keyboard.current[Key.S].isPressed ? 1.0f : 0;
-            horizontal =  Keyboard.current[Key.D].isPressed ? 1.0f : 0; 
+            horizontal = Keyboard.current[Key.D].isPressed ? 1.0f : 0;
             horizontal -= Keyboard.current[Key.A].isPressed ? 1.0f : 0;
             // Q and E cancel each other out, reducing the turn to zero
             if (Keyboard.current[Key.Q].isPressed)
@@ -71,6 +71,11 @@ namespace Mirror.Examples.NetworkRoom
             {
                 isFalling = true;
                 jumpSpeed = 0;
+            }
+
+            if (Keyboard.current[Key.T].wasPressedThisFrame)
+            {
+                shootRay();
             }
         }
 
@@ -102,6 +107,31 @@ namespace Mirror.Examples.NetworkRoom
                 return;
 
             GUI.Box(new Rect(Screen.width * 0.5f - 1, Screen.height * 0.5f - 1, 2, 2), GUIContent.none);
+        }
+
+        void shootRay()
+        {
+            RaycastHit hit;
+            print("shooting ray");
+            Ray ray = gameObject.GetComponentInChildren<Camera>().ScreenPointToRay(Mouse.current.position.ReadValue());
+            if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity))
+            {
+                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
+                Debug.Log("Did Hit");
+                Debug.Log("what did I hit? " + hit.transform.gameObject);
+
+                ObjectSpawner objectSpawner = hit.transform.gameObject.GetComponent<ObjectSpawner>();
+                if (objectSpawner)
+                {
+                    CmdPickupObject(objectSpawner);
+                }
+            }
+        }
+
+        [Command]
+        void CmdPickupObject(ObjectSpawner objectSpawner)
+        {
+            objectSpawner.pickupObject();
         }
     }
 }
