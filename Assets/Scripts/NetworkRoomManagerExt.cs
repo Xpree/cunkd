@@ -77,12 +77,19 @@ namespace Mirror.Examples.NetworkRoom
         {
             base.OnGUI();
 
-            if (allPlayersReady && showStartButton && GUI.Button(new Rect(150, 300, 120, 20), "START GAME"))
+            if (allPlayersReady && showStartButton && GUI.Button(new Rect(150, 300, 120, 20), "LEVEL 1"))
             {
                 // set to false to hide it in the game scene
                 showStartButton = false;
 
                 ServerChangeScene(GameplayScene);
+            }
+            if (allPlayersReady && showStartButton && GUI.Button(new Rect(350, 300, 120, 20), "LEVEL 2"))
+            {
+                // set to false to hide it in the game scene
+                showStartButton = false;
+
+                ServerChangeScene("TestLevel");
             }
         }
     }
