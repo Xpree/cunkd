@@ -41,7 +41,7 @@ namespace Mirror.Examples.NetworkRoom
                 //Debug.Log($"Scored {points} points R:{color.r} G:{color.g} B:{color.b}");
 
                 // award the points via SyncVar on the PlayerController
-                player.GetComponent<PlayerScore>().score += points;
+                //player.GetComponent<PlayerScore>().score += points;
 
                 // spawn a replacement
                 Spawner.SpawnReward();

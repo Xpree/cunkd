@@ -120,7 +120,7 @@ public class FPSPlayerController : NetworkBehaviour
             !wPressed && !dPressed && !sPressed && !aPressed)
         {
             Vector3 decelerateVector = new Vector3(playerBody.velocity.x, 0, playerBody.velocity.z);
-            Debug.Log("Decelerating");
+            //Debug.Log("Decelerating");
             velocity -= (decelerateVector * decelerationSpeed);
         }
 
@@ -236,7 +236,7 @@ public class FPSPlayerController : NetworkBehaviour
         {
             if (isGrounded)
             {
-                Debug.Log("AIR JUMP");
+                //Debug.Log("AIR JUMP");
                 float jumpForce = Mathf.Sqrt(Mathf.Abs((2.0f * playerBody.mass * Physics.gravity.y) * jumpHeight));
                 playerBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             }
@@ -250,7 +250,7 @@ public class FPSPlayerController : NetworkBehaviour
             }
             else if (airJumped == false)
             {
-                Debug.Log("AIR JUMP");
+                //Debug.Log("AIR JUMP");
                 playerBody.velocity = new Vector3(playerBody.velocity.x, 0.0f, playerBody.velocity.z);
                 float jumpForce = Mathf.Sqrt(Mathf.Abs((2.0f * playerBody.mass * Physics.gravity.y) * jumpHeight));
                 playerBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -321,9 +321,9 @@ public class FPSPlayerController : NetworkBehaviour
             onFloor = true;
             wallRiding = false;
             airJumped = false;
-            Debug.Log("Grounded!");
+            //Debug.Log("Grounded!");
         }
-        else if (collision.gameObject.transform.parent.gameObject.name == "map")
+        else if (collision.gameObject.transform.parent && collision.gameObject.transform.parent.gameObject.name == "map")
         {
             List<ContactPoint> contactList = new List<ContactPoint>();
             collision.GetContacts(contactList);
@@ -338,16 +338,23 @@ public class FPSPlayerController : NetworkBehaviour
             {
                 isGrounded = true;
                 airJumped = false;
-                Debug.Log("Grounded!");
+                //Debug.Log("Grounded!");
             }
             else
             {
-                Debug.Log("Hit a Wall!");
+                //Debug.Log("Hit a Wall!");
                 wallRiding = true;
                 wallNormal = collisionNormal;
             }
 
         }
+    }
+
+
+    [TargetRpc]
+    public void TRpcSetPosition(Vector3 position)
+    {
+        transform.position = position;
     }
 
 
@@ -357,14 +364,14 @@ public class FPSPlayerController : NetworkBehaviour
         {
             isGrounded = false;
             onFloor = false;
-            Debug.Log("Airborne");
+            //Debug.Log("Airborne");
         }
-        else if (collision.gameObject.transform.parent.gameObject.name == "map")
+        else if (collision.gameObject.transform.parent && collision.gameObject.transform.parent.gameObject.name == "map")
         {
             if (!onFloor)
             {
                 isGrounded = false;
-                Debug.Log("Airborne");
+                //Debug.Log("Airborne");
             }
             wallRiding = false;
             wallNormal = new Vector3 (0, 0, 0);
@@ -387,8 +394,8 @@ public class FPSPlayerController : NetworkBehaviour
         if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity))
         {
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
-            Debug.Log("Did Hit");
-            Debug.Log("what did I hit? " + hit.transform.gameObject);
+            //Debug.Log("Did Hit");
+            //Debug.Log("what did I hit? " + hit.transform.gameObject);
 
             ObjectSpawner objectSpawner = hit.transform.gameObject.GetComponent<ObjectSpawner>();
             if (objectSpawner)
