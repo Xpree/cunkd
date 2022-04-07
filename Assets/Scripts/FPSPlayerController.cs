@@ -25,7 +25,7 @@ public class FPSPlayerController : NetworkBehaviour
 
     // playerspeed / max speed needs rethinking
     private float playerSpeed = 30.0f;
-    private float maxSpeed = 30.0f;
+    private float maxSpeed = 15.0f;
     private float decelerationSpeed = 0.1f;
     private float slowMovementPenalty = 0.2f;
     private float jumpHeight = 2.5f;

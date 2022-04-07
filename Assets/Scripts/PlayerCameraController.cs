@@ -8,7 +8,7 @@ using Mirror;
 public class PlayerCameraController : NetworkBehaviour
 {
 
-    float mouseSensitivity = 50.0f;
+    float mouseSensitivity = 25.0f;
     private Transform cameraTransform;
     private Camera playerCamera;
 
