@@ -166,16 +166,8 @@ MonoBehaviour:
   VirtualChannelSettings: []
   RealChannelSettings: []
   Plugins: []
-  MasterBanks:
-  - Master
-  Banks:
-  - Dialogue_CN
-  - Dialogue_EN
-  - Dialogue_JP
-  - Music
-  - SFX
-  - Vehicles
-  - VO
+  MasterBanks: []
+  Banks: []
   BanksToLoad: []
   LiveUpdatePort: 9264
   EnableMemoryTracking: 0
@@ -187,15 +179,15 @@ MonoBehaviour:
   SharedLibraryUpdateStage: 0
   SharedLibraryTimeSinceStart: 0
   CurrentVersion: 131588
-  HideSetupWizard: 0
+  HideSetupWizard: 1
   LastEventReferenceScanVersion: 0
   Platforms:
+  - {fileID: -4051176322401525620}
+  - {fileID: -2173309733465546996}
+  - {fileID: 476850414342732352}
+  - {fileID: 1387367860997799099}
   - {fileID: 1791236796606248067}
   - {fileID: 3530428929662086643}
-  - {fileID: -4051176322401525620}
-  - {fileID: 476850414342732352}
-  - {fileID: -2173309733465546996}
-  - {fileID: 1387367860997799099}
   MigratedPlatforms: 090000000800000005000000060000000200000001000000
 --- !u!114 &476850414342732352
 MonoBehaviour:
@@ -454,6 +446,6 @@ MonoBehaviour:
   displaySortOrder: 0
   childIdentifiers:
   - c88d16e5272a4e241b0ef0ac2e53b73d
-  - fd7c55dab0fce234b8c25f6ffca523c1
   - 2c5177b11d81d824dbb064f9ac8527da
+  - fd7c55dab0fce234b8c25f6ffca523c1
   - 52eb9df5db46521439908db3a29a1bbb
