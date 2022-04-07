@@ -236,6 +236,7 @@ public class FPSPlayerController : NetworkBehaviour
         {
             if (isGrounded)
             {
+                Debug.Log("AIR JUMP");
                 float jumpForce = Mathf.Sqrt(Mathf.Abs((2.0f * playerBody.mass * Physics.gravity.y) * jumpHeight));
                 playerBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             }
@@ -244,11 +245,12 @@ public class FPSPlayerController : NetworkBehaviour
                 airJumped = false;
                 playerBody.velocity = new Vector3(playerBody.velocity.x, 0.0f, playerBody.velocity.z);
                 float jumpForce = Mathf.Sqrt(Mathf.Abs((2.0f * playerBody.mass * Physics.gravity.y) * jumpHeight));
-                playerBody.AddForce((Vector3.up + wallNormal * 2) * jumpForce, ForceMode.Impulse);
+                playerBody.AddForce((Vector3.up + wallNormal) * jumpForce, ForceMode.Impulse);
                 wallNormal = new Vector3(0, 0, 0);
             }
             else if (airJumped == false)
             {
+                Debug.Log("AIR JUMP");
                 playerBody.velocity = new Vector3(playerBody.velocity.x, 0.0f, playerBody.velocity.z);
                 float jumpForce = Mathf.Sqrt(Mathf.Abs((2.0f * playerBody.mass * Physics.gravity.y) * jumpHeight));
                 playerBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -321,7 +323,7 @@ public class FPSPlayerController : NetworkBehaviour
             airJumped = false;
             Debug.Log("Grounded!");
         }
-        else if (collision.gameObject.transform.parent.gameObject.name == "Walls")
+        else if (collision.gameObject.transform.parent.gameObject.name == "map")
         {
             List<ContactPoint> contactList = new List<ContactPoint>();
             collision.GetContacts(contactList);
@@ -351,13 +353,13 @@ public class FPSPlayerController : NetworkBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        if(collision.gameObject.name == "Floor")
+        if(collision.gameObject.name == "PlayArea")
         {
             isGrounded = false;
             onFloor = false;
             Debug.Log("Airborne");
         }
-        else if (collision.gameObject.transform.parent.gameObject.name == "Level")
+        else if (collision.gameObject.transform.parent.gameObject.name == "map")
         {
             if (!onFloor)
             {
