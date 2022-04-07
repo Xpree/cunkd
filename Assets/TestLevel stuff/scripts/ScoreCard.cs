@@ -6,10 +6,13 @@ using TMPro;
 
 public class ScoreCard : NetworkBehaviour
 {
-    [SyncVar]int livesLeft;
     [SyncVar] public int index;
-    
+    [SyncVar]int livesLeft;
+
+    [SyncVar] int itemsPickedUp;
+
     ScoreKeeper sk;
+    [SyncVar] string stringText; 
     TextMeshProUGUI text;
 
     // Start is called before the first frame update
@@ -29,14 +32,17 @@ public class ScoreCard : NetworkBehaviour
         if (0<livesLeft)
         {
             text.color = Color.green;
+            stringText = "Lives: " + lives;
             text.text = "Lives: " + lives;
         }
         else
         {
             text.color = Color.red;
+            stringText = "Lives: " + lives;
             text.text = "DEAD";
         }
     }
+
     [ServerCallback]
     public int getLives()
     {

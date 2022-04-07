@@ -360,6 +360,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  playerCamera: {fileID: 0}
 --- !u!114 &7824263787426200294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -435,7 +436,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  livesLeft: 0
   index: 0
 --- !u!114 &413665935531044684
 MonoBehaviour:

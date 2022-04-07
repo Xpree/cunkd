@@ -386,16 +386,23 @@ public class FPSPlayerController : NetworkBehaviour
         GUI.Box(new Rect(Screen.width * 0.5f - 1, Screen.height * 0.5f - 1, 2, 2), GUIContent.none);
     }
 
+    private void Update()
+    {
+        if (Keyboard.current[Key.E].wasPressedThisFrame)
+        {
+            shootRay();
+        }
+    }
+
     void shootRay()
     {
         RaycastHit hit;
-        print("shooting ray");
-        Ray ray = gameObject.GetComponentInChildren<Camera>().ScreenPointToRay(Mouse.current.position.ReadValue());
-        if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity))
+        //print("shooting ray");
+        Camera cam = gameObject.GetComponentInChildren<PlayerCameraController>().playerCamera;
+        Ray ray = cam.ScreenPointToRay(new Vector2(Screen.width,Screen.height)/2);
+        if (Physics.Raycast(ray.origin, ray.direction, out hit, 15))
         {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
-            //Debug.Log("Did Hit");
-            //Debug.Log("what did I hit? " + hit.transform.gameObject);
+            print("object hit: " + hit.transform.gameObject);
 
             ObjectSpawner objectSpawner = hit.transform.gameObject.GetComponent<ObjectSpawner>();
             if (objectSpawner)
@@ -408,7 +415,14 @@ public class FPSPlayerController : NetworkBehaviour
     [Command]
     void CmdPickupObject(ObjectSpawner objectSpawner)
     {
-        objectSpawner.pickupObject();
+        GameObject pickedUpObject = objectSpawner.pickupObject();
+
+        ScoreCard scorecard = gameObject.GetComponent<ScoreCard>();
+
+        if (pickedUpObject.name == "Extra Life")
+        {
+            scorecard.UpdateLives(scorecard.getLives() + 1);
+        }
     }
 
 

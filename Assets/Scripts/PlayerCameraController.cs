@@ -10,7 +10,7 @@ public class PlayerCameraController : NetworkBehaviour
 
     float mouseSensitivity = 25.0f;
     private Transform cameraTransform;
-    private Camera playerCamera;
+    public Camera playerCamera;
 
     float pitch = 0.0f;
 

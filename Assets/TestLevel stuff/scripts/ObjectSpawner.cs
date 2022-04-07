@@ -13,7 +13,7 @@ public class ObjectSpawner : NetworkBehaviour
     bool spawned;
     double nextSpawnTime = 0;
 
-
+    [ServerCallback]
     private void Awake()
     {
         if (objectType == ObjectType.Object)
@@ -39,16 +39,16 @@ public class ObjectSpawner : NetworkBehaviour
                 spawnedObject.transform.Rotate(0.5f, 1, 0.5f);
             }
         }
+
         else if (nextSpawnTime < NetworkTime.time)
         {
             spawnObject();
         }
     }
-
     [ServerCallback]
-    public void pickupObject()
+    public GameObject pickupObject()
     {
-       // print("picking up object");
+        //print("picking up object");
         if (spawned)
         {
             nextSpawnTime = NetworkTime.time + spawnTime;
@@ -56,8 +56,10 @@ public class ObjectSpawner : NetworkBehaviour
             if (objectType == ObjectType.Gadget || objectType == ObjectType.Weapon)
             {
                 deSpawnObject();
+                return obejctToSpawn;
             }
         }
+        return null;
     }
 
     [ServerCallback]
