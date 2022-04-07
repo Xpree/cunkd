@@ -88,15 +88,4 @@ crashlytics-build.properties
 # If the source bank files are kept outside of the StreamingAssets folder then these can be ignored.
 # Log files can be ignored.
 fmod_editor.log
-Assets/Plugins/FMOD/platforms/win/lib/x86/fmodstudio.dll.meta
-Assets/Plugins/FMOD/platforms/win/lib/x86/fmodstudioL.dll.meta
-Assets/Plugins/FMOD/platforms/win/lib/x86/resonanceaudio.dll.meta
-Assets/Plugins/FMOD/platforms/win/lib/x86_64/fmodstudio.dll.meta
-Assets/Plugins/FMOD/platforms/win/lib/x86_64/fmodstudioL.dll.meta
-Assets/Plugins/FMOD/platforms/win/lib/x86_64/resonanceaudio.dll.meta
-Assets/Plugins/FMOD/platforms/win/lib/x86/fmodstudio.dll.meta
-Assets/Plugins/FMOD/platforms/win/lib/x86/fmodstudioL.dll.meta
-Assets/Plugins/FMOD/platforms/win/lib/x86/resonanceaudio.dll.meta
-Assets/Plugins/FMOD/platforms/win/lib/x86_64/fmodstudio.dll.meta
-Assets/Plugins/FMOD/platforms/win/lib/x86_64/fmodstudioL.dll.meta
-Assets/Plugins/FMOD/platforms/win/lib/x86_64/resonanceaudio.dll.meta
+
