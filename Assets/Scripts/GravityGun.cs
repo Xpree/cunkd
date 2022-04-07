@@ -93,13 +93,13 @@ public class GravityGun : NetworkBehaviour, IWeapon
                     ClearGrabTarget();
                 }
                 float pushForce = Mathf.Lerp(MinPushForce, MaxPushForce, ChargeProgress);
-                targetRB.AddForce(Camera.main.transform.forward * pushForce, PushForceMode);
+                targetRB.AddForce(AnchorPoint.transform.forward * pushForce, PushForceMode);
             }
 
             ChargeProgress = 0;
         }
 
-        else if (GrabTarget != null && GrabPullTime < GrabTime)
+        else if (GrabTarget != null)// && GrabPullTime < GrabTime)
         {
             GrabPullTime += Time.fixedDeltaTime;
 
@@ -108,7 +108,7 @@ public class GravityGun : NetworkBehaviour, IWeapon
                 GrabTarget.velocity = Vector3.zero;
                 GrabTarget.transform.position = AnchorPos;
                 GrabTarget.isKinematic = true;
-                GrabTarget.transform.SetParent(AnchorPoint);
+                //GrabTarget.transform.SetParent(AnchorPoint);
             }
             else
             {
@@ -152,13 +152,13 @@ public class GravityGun : NetworkBehaviour, IWeapon
 
         //Raycast target
         RaycastHit hitResult;
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hitResult, searchRange, TargetMask))
+        if (Physics.Raycast(AnchorPos, AnchorPoint.transform.forward, out hitResult, searchRange, TargetMask))
         {
             return hitResult.collider.GetComponent<Rigidbody>();
         }
         return null;
     }
-    
+
     [ServerCallback]
     void FixedUpdate()
     {
