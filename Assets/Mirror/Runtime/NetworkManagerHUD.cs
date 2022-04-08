@@ -59,12 +59,12 @@ namespace Mirror
             if (!NetworkClient.active)
             {
                 PlayerName = GUILayout.TextField(PlayerName);
-                if (GUILayout.Button("Instant Play"))
-                {
-                    manager.StartHost();
-                    //NetworkManager.StartHostClient();  
-                    manager.ServerChangeScene("OnlineScene");
-                }
+                // if (GUILayout.Button("Instant Play"))
+                // {
+                //     manager.StartHost();
+                //     //NetworkManager.StartHostClient();  
+                //     manager.ServerChangeScene("OnlineScene");
+                // }
                 
                 // Server + Client
                 if (Application.platform != RuntimePlatform.WebGLPlayer)
