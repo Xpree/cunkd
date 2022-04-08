@@ -41,13 +41,14 @@ public class ScoreCard : NetworkBehaviour
     {
         return livesLeft;
     }
-    [ServerCallback]
-    private void OnTriggerEnter(Collider other)
-    {
-        //print("ontrigger");
-        if (other.CompareTag("Respawn"))
-        {
-            sk.RespawnPlayer(this.gameObject.GetComponent<FPSPlayerController>());
-        }
-    }
+
+    //[ServerCallback]
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    //print("ontrigger");
+    //    if (other.CompareTag("Respawn"))
+    //    {
+    //        sk.RespawnPlayer(this.gameObject.GetComponent<FPSPlayerController>());
+    //    }
+    //}
 }

@@ -44,5 +44,19 @@ namespace Mirror
                 print("no more lives left");
             }
         }
+
+        [ServerCallback]
+        private void OnTriggerEnter(Collider other)
+        {
+            FPSPlayerController player = other.gameObject.GetComponent<FPSPlayerController>();
+            if (player)
+            {
+                RespawnPlayer(player);
+            }
+            else
+            {
+                NetworkServer.Destroy(other.gameObject);
+            }
+        }
     }
 }
