@@ -9,6 +9,8 @@ public class ObjectSpawner : NetworkBehaviour
     enum ObjectType { Weapon, Gadget, Object };
     [SerializeField]ObjectType objectType;
 
+    NetworkTransform trans;
+
     GameObject spawnedObject;
     bool spawned;
     double nextSpawnTime = 0;
@@ -19,7 +21,6 @@ public class ObjectSpawner : NetworkBehaviour
         if (objectType == ObjectType.Object)
         {
             gameObject.GetComponent<MeshRenderer>().enabled = false;
-            gameObject.GetComponent<Collider>().enabled = false;
         }
     }
 
@@ -62,6 +63,14 @@ public class ObjectSpawner : NetworkBehaviour
         return null;
     }
 
+    void objectWasRemoved()
+    {
+        nextSpawnTime = NetworkTime.time + spawnTime;
+        spawned = false;
+        spawnedObject = null;
+    }
+
+
     [ServerCallback]
     public void spawnObject()
     {
@@ -76,6 +85,7 @@ public class ObjectSpawner : NetworkBehaviour
             }
         }
 
+        trans = spawnedObject.GetComponent<NetworkTransform>();
         NetworkServer.Spawn(spawnedObject);
         spawned = true;
     }
@@ -86,5 +96,13 @@ public class ObjectSpawner : NetworkBehaviour
         NetworkServer.Destroy(spawnedObject);
         spawned = false;
         spawnedObject = null;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject == spawnedObject)
+        {
+            objectWasRemoved();
+        }
     }
 }
