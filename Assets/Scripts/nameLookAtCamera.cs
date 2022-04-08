@@ -2,15 +2,11 @@ using UnityEngine;
 
 public class nameLookAtCamera : MonoBehaviour
 {
-    private Transform mainCameraTransform;
 
-    private void Start()
-    {
-        mainCameraTransform = Camera.main.transform;
-    }
     private void LateUpdate()
     {
-        transform.LookAt(transform.position + mainCameraTransform.rotation * Vector3.forward, mainCameraTransform.rotation * Vector3.up);
+        var cameraTransform = Camera.main.transform;
+        transform.LookAt(transform.position + cameraTransform.rotation * Vector3.forward, cameraTransform.rotation * Vector3.up);
     }
 
 }

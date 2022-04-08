@@ -4,7 +4,8 @@ using Mirror;
 
 public class GravityGun : NetworkBehaviour, IWeapon
 {
-    
+    Vector3 aimDirection;
+    Vector3 aimPos;
 
     [SerializeField] Transform AnchorPoint;
     [SerializeField] LayerMask TargetMask = ~0;
@@ -27,7 +28,7 @@ public class GravityGun : NetworkBehaviour, IWeapon
     float GrabPullTime;
     float GrabTargetRadius;
 
-    Vector3 AnchorPos => AnchorPoint.position + AnchorPoint.forward * GrabTargetRadius;
+    Vector3 AnchorPos => AnchorPoint.position; // + AnchorPoint.forward * GrabTargetRadius; //may cause issues with holding larger objects
 
     bool Charging = false;
     bool Push = false;
@@ -35,8 +36,10 @@ public class GravityGun : NetworkBehaviour, IWeapon
 
 
     [Command]
-    void CmdPrimaryAttack(bool isPressed)
+    void CmdPrimaryAttack(bool isPressed, Vector3 direction, Vector3 position)
     {
+        aimDirection = direction;
+        aimPos = position;
         if (!isPressed)
         {
             Push = true;
@@ -49,8 +52,10 @@ public class GravityGun : NetworkBehaviour, IWeapon
     }
     
     [Command]
-    void CmdSecondaryAttack(bool isPressed)
+    void CmdSecondaryAttack(bool isPressed, Vector3 direction, Vector3 position)
     {
+        aimDirection = direction;
+        aimPos = position;
         if (!isPressed)
         {
             if (GrabTarget != null)
@@ -93,7 +98,7 @@ public class GravityGun : NetworkBehaviour, IWeapon
                     ClearGrabTarget();
                 }
                 float pushForce = Mathf.Lerp(MinPushForce, MaxPushForce, ChargeProgress);
-                targetRB.AddForce(AnchorPoint.transform.forward * pushForce, PushForceMode);
+                targetRB.AddForce(aimDirection * pushForce, PushForceMode);
             }
 
             ChargeProgress = 0;
@@ -107,7 +112,7 @@ public class GravityGun : NetworkBehaviour, IWeapon
             {
                 GrabTarget.velocity = Vector3.zero;
                 GrabTarget.transform.position = AnchorPos;
-                GrabTarget.isKinematic = true;
+                //GrabTarget.isKinematic = true;
                 //GrabTarget.transform.SetParent(AnchorPoint);
             }
             else
@@ -131,12 +136,12 @@ public class GravityGun : NetworkBehaviour, IWeapon
     void ClearGrabTarget()
     {
         //de-parent
-        if (GrabTarget.transform.parent == AnchorPoint)
-        {
-            GrabTarget.transform.SetParent(null);
-        }
+        //if (GrabTarget.transform.parent == AnchorPoint)
+        //{
+        //    //GrabTarget.transform.SetParent(null);
+        //}
 
-        GrabTarget.isKinematic = false;
+        //GrabTarget.isKinematic = false;
         //turns off collisions with play, turn off with map too?
         Physics.IgnoreCollision(GrabTargetCollider, PlayerCollider, false);
 
@@ -152,7 +157,7 @@ public class GravityGun : NetworkBehaviour, IWeapon
 
         //Raycast target
         RaycastHit hitResult;
-        if (Physics.Raycast(AnchorPos, AnchorPoint.transform.forward, out hitResult, searchRange, TargetMask))
+        if (Physics.Raycast(aimPos, aimDirection, out hitResult, searchRange, TargetMask))
         {
             return hitResult.collider.GetComponent<Rigidbody>();
         }
@@ -168,12 +173,12 @@ public class GravityGun : NetworkBehaviour, IWeapon
 
     void IWeapon.PrimaryAttack(bool isPressed)
     {
-        CmdPrimaryAttack(isPressed);
+        CmdPrimaryAttack(isPressed, Camera.main.transform.forward, Camera.main.transform.position);
     }
 
     void IWeapon.SecondaryAttack(bool isPressed)
     {
-        CmdSecondaryAttack(isPressed);
+        CmdSecondaryAttack(isPressed, Camera.main.transform.forward, Camera.main.transform.position);
     }
 
     float? IWeapon.ChargeProgress => this.ChargeProgress;

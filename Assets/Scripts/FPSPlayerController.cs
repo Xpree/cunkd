@@ -9,7 +9,7 @@ using Mirror;
 [RequireComponent(typeof(Rigidbody))]
 public class FPSPlayerController : NetworkBehaviour
 {
-
+    [SyncVar] public Vector3 aimDirection;
 
     private Rigidbody playerBody;
     private bool isGrounded = false;
@@ -38,11 +38,19 @@ public class FPSPlayerController : NetworkBehaviour
 
     private void FixedUpdate()
     {
+
         Vector3 totalInputVector = new (0, 0, 0);
-        Vector3 playerMovementVector = new Vector3(0, 0, 0);
-        Vector3 currentMoveVector = playerBody.velocity;
+        // Vector3 playerMovementVector = new Vector3(0, 0, 0);
+        // Vector3 currentMoveVector = playerBody.velocity;
 
         if (!isLocalPlayer) { return; }
+
+        var cameraTransform = (Camera.current?.transform ?? Camera.main?.transform);
+        if (cameraTransform != null)
+        {
+            this.aimDirection = cameraTransform.forward;
+        }
+        
 
         if (wPressed)
         {
