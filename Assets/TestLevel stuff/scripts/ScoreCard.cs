@@ -7,38 +7,31 @@ using TMPro;
 public class ScoreCard : NetworkBehaviour
 {
     [SyncVar] public int index;
-    [SyncVar]int livesLeft;
-
-    [SyncVar] int itemsPickedUp;
+    [SyncVar(hook = nameof(UpdateLives))]public int livesLeft;
 
     ScoreKeeper sk;
-    [SyncVar] string stringText; 
     TextMeshProUGUI text;
 
-    // Start is called before the first frame update
-    [ServerCallback]
+    [Client]
     void Start()
     {
+        text = gameObject.GetComponentsInChildren<TextMeshProUGUI>()[0];
         sk = FindObjectOfType<ScoreKeeper>();
-        text = gameObject.GetComponentsInChildren<TextMeshProUGUI>()[1];
         sk.InitializeScoreCard(this);
     }
 
-    [ServerCallback]
-    public void UpdateLives(int lives)
+    [Client]
+    public void UpdateLives(int oldLives, int newLives)
     {
-        //print("updating lives");
-        livesLeft = lives;
+        livesLeft = newLives;
         if (0<livesLeft)
         {
             text.color = Color.green;
-            stringText = "Lives: " + lives;
-            text.text = "Lives: " + lives;
+            text.text = "Lives: " + newLives;
         }
         else
         {
             text.color = Color.red;
-            stringText = "Lives: " + lives;
             text.text = "DEAD";
         }
     }

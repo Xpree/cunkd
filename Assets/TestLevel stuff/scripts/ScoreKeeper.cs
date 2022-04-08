@@ -23,7 +23,7 @@ namespace Mirror
         [ServerCallback]
         public void InitializeScoreCard(ScoreCard sc)
         {
-            sc.UpdateLives(startLives);
+            sc.livesLeft = startLives;
             sc.index = index++;
         }
 
@@ -31,13 +31,12 @@ namespace Mirror
         public void RespawnPlayer(FPSPlayerController player)
         {
             ScoreCard sc = player.GetComponent<ScoreCard>();
-            sc.UpdateLives(sc.getLives()-1);
+            sc.livesLeft--;
 
             if (0 < sc.getLives())
             {
                 int index = Random.Range(0, spawnPositions.Length);
                 player.TRpcSetPosition(spawnPositions[index].position);
-                //sc.gameObject.transform.position = spawnPositions[index].position;
             }
             else
             {

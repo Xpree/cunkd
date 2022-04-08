@@ -421,7 +421,8 @@ public class FPSPlayerController : NetworkBehaviour
 
         if (pickedUpObject.name == "Extra Life")
         {
-            scorecard.UpdateLives(scorecard.getLives() + 1);
+            scorecard.livesLeft++;
+            //scorecard.UpdateLives(scorecard.getLives() + 1);
         }
     }
 
