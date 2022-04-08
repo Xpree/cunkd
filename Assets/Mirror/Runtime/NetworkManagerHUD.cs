@@ -58,7 +58,7 @@ namespace Mirror
         {
             if (!NetworkClient.active)
             {
-                // PlayerName = GUILayout.TextField(PlayerName);
+                PlayerName = GUILayout.TextField(PlayerName);
                 // if (GUILayout.Button("Instant Play"))
                 // {
                 //     manager.StartHost();
