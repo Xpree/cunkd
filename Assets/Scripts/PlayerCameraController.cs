@@ -13,10 +13,15 @@ public class PlayerCameraController : NetworkBehaviour
     public Camera playerCamera;
 
     float pitch = 0.0f;
-
+    public GameObject visor;
     // Start is called before the first frame update
     void Awake()
     {
+        if(!isLocalPlayer)
+        {
+            playerCamera.gameObject.SetActive(false);
+        }   
+        
         playerCamera = Camera.main;
         cameraTransform = playerCamera.transform;
         Cursor.lockState = CursorLockMode.Locked;
@@ -43,7 +48,7 @@ public class PlayerCameraController : NetworkBehaviour
             // configure and make camera a child of player with 3rd person offset
             playerCamera.orthographic = false;
             playerCamera.transform.SetParent(transform);
-            playerCamera.transform.localPosition = new Vector3(0f, 3f, -8f);
+            playerCamera.transform.localPosition = new Vector3(0f, 0.635f, 0.387f);
             playerCamera.transform.localEulerAngles = new Vector3(10f, 0f, 0f);
         }
     }

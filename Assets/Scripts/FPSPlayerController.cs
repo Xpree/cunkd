@@ -232,6 +232,7 @@ public class FPSPlayerController : NetworkBehaviour
 
     public void Jump(InputAction.CallbackContext contextState)
     {
+        if (!isLocalPlayer) { return; }
         if (contextState.performed)
         {
             if (isGrounded)
