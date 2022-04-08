@@ -425,15 +425,19 @@ public class FPSPlayerController : NetworkBehaviour
     void CmdPickupObject(ObjectSpawner objectSpawner)
     {
         GameObject pickedUpObject = objectSpawner.pickupObject();
+        Inventory inventory = gameObject.GetComponent<Inventory>();
 
         ScoreCard scorecard = gameObject.GetComponent<ScoreCard>();
+        IGadget gadget = pickedUpObject.GetComponent<IGadget>();
 
         if (pickedUpObject.name == "Extra Life")
         {
             scorecard.livesLeft++;
-            //scorecard.UpdateLives(scorecard.getLives() + 1);
+        }
+        if (gadget != null)
+        {
+            inventory.addGadget(pickedUpObject);
         }
     }
-
 
 }

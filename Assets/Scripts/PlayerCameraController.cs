@@ -18,7 +18,7 @@ public class PlayerCameraController : NetworkBehaviour
     {
         playerCamera.enabled = false;
         cameraTransform = playerCamera.transform;
-        
+        playerCamera.GetComponent<AudioListener>().enabled = false;
     }
 
     public void onMovement(InputAction.CallbackContext context)
@@ -39,6 +39,7 @@ public class PlayerCameraController : NetworkBehaviour
     {
         Camera.main.enabled = false;
         playerCamera.enabled = true;
+        playerCamera.GetComponent<AudioListener>().enabled = true;
 
         Cursor.lockState = CursorLockMode.Locked;
 
