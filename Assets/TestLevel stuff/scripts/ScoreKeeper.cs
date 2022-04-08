@@ -7,7 +7,6 @@ namespace Mirror
 {
     public class ScoreKeeper : NetworkBehaviour
     {
-
         [SerializeField] int startLives;
         [SerializeField] GameObject startPositions;
         Transform[] spawnPositions;
@@ -36,7 +35,9 @@ namespace Mirror
             if (0 < sc.getLives())
             {
                 int index = Random.Range(0, spawnPositions.Length);
+                player.GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
                 player.TRpcSetPosition(spawnPositions[index].position);
+
             }
             else
             {
