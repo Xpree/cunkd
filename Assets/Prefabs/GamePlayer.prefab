@@ -107,6 +107,7 @@ GameObject:
   - component: {fileID: -9161402237070379157}
   - component: {fileID: 5539024650861555000}
   - component: {fileID: 11517870072315444}
+  - component: {fileID: -4607323431963591453}
   m_Layer: 0
   m_Name: GamePlayer
   m_TagString: Player
@@ -535,6 +536,27 @@ MonoBehaviour:
   syncAngularVelocity: 1
   clearAngularVelocity: 0
   angularVelocitySensitivity: 0.1
+--- !u!114 &-4607323431963591453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1480027675339556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff10822e0983d3144b087904caf437aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  blackHole: {fileID: 6033889869813183962, guid: 2faff900bda0fb94fad64bf820c99a4c, type: 3}
+  cooldown: 30
+  timer: 0
+  range: 20
+  TargetMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &1211685108220427515
 GameObject:
   m_ObjectHideFlags: 0

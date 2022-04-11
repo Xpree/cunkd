@@ -134,7 +134,7 @@ MonoBehaviour:
   range: 20
   duration: 5
   collisions: []
-  intensity: 0
+  intensity: 2
   distance: 0
   objects: []
 --- !u!114 &4568777201997059838

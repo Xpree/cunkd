@@ -28,7 +28,7 @@ public class GravityGun : NetworkBehaviour, IWeapon
     float GrabPullTime;
     float GrabTargetRadius;
 
-    Vector3 AnchorPos => AnchorPoint.position; // + AnchorPoint.forward * GrabTargetRadius; //may cause issues with holding larger objects
+    Vector3 AnchorPos => AnchorPoint.position; // + AnchorPoint.forward * GrabTargetRadius; //may cause issues with holding larger objects if not implemented
 
     bool Charging = false;
     bool Push = false;
@@ -77,8 +77,9 @@ public class GravityGun : NetworkBehaviour, IWeapon
             {
                 GrabTarget.AddTorque(Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque));
             }
-            //turns on collisions with play, turn on with map too?
+            //turns off collisions with play, turn on with map too?
             Physics.IgnoreCollision(GrabTargetCollider, PlayerCollider, true);
+            GrabTargetCollider.enabled = false;
 
         }
     }
@@ -142,7 +143,8 @@ public class GravityGun : NetworkBehaviour, IWeapon
         //}
 
         //GrabTarget.isKinematic = false;
-        //turns off collisions with play, turn off with map too?
+        //turns on collisions with play, turn off with map too?
+        GrabTargetCollider.enabled = true;
         Physics.IgnoreCollision(GrabTargetCollider, PlayerCollider, false);
 
         //clear target

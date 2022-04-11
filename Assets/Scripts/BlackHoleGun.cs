@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class BlackHoleGun : NetworkBehaviour
+public class BlackHoleGun : NetworkBehaviour, IWeapon
 {
     public GameObject blackHole;
     [SerializeField] float cooldown = 30f;
@@ -63,4 +63,16 @@ public class BlackHoleGun : NetworkBehaviour
             }
         }
     }
+
+    void IWeapon.PrimaryAttack(bool isPressed)
+    {
+        CmdPrimaryAttack();
+    }
+
+    void IWeapon.SecondaryAttack(bool isPressed)
+    {
+        
+    }
+
+    float? IWeapon.ChargeProgress => null;
 }
