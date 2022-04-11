@@ -8,12 +8,13 @@ public class ScoreCard : NetworkBehaviour
 {
     [SyncVar] public int index;
     [SyncVar(hook = nameof(UpdateLives))]public int livesLeft;
+    [SyncVar] public bool dead;
 
     ScoreKeeper sk;
     TextMeshProUGUI text;
 
     [Client]
-    void Start()
+    void Awake()
     {
         text = gameObject.GetComponentsInChildren<TextMeshProUGUI>()[0];
         sk = FindObjectOfType<ScoreKeeper>();
@@ -31,6 +32,7 @@ public class ScoreCard : NetworkBehaviour
         }
         else
         {
+            dead = true;
             text.color = Color.red;
             text.text = "DEAD";
         }
@@ -41,14 +43,4 @@ public class ScoreCard : NetworkBehaviour
     {
         return livesLeft;
     }
-
-    //[ServerCallback]
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    //print("ontrigger");
-    //    if (other.CompareTag("Respawn"))
-    //    {
-    //        sk.RespawnPlayer(this.gameObject.GetComponent<FPSPlayerController>());
-    //    }
-    //}
 }
