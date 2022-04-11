@@ -4,7 +4,7 @@ using Mirror;
 public class GameServer : MonoBehaviour
 {
     [Scene]
-    public string NetworkScene;
+    public string[] NetworkScene;
 
     public NetworkIdentity PlayerPrefab;
 
@@ -17,7 +17,7 @@ public class GameServer : MonoBehaviour
 
     private void Start()
     {
-        if (string.IsNullOrWhiteSpace(NetworkScene))
+        if (string.IsNullOrWhiteSpace(NetworkScene[0]))
         {
             Debug.LogError("GameServer NetworkScene is empty. Set the NetworkScene in the inspector for the GameServer");
         }
@@ -25,7 +25,7 @@ public class GameServer : MonoBehaviour
 
     public void BeginGame()
     {
-        _netManager.ServerChangeScene(this.NetworkScene);
+        _netManager.ServerChangeScene(this.NetworkScene[0]);
     }
 
     public void AddNewPlayer(NetworkConnectionToClient conn)
@@ -67,7 +67,7 @@ public class GameServer : MonoBehaviour
 
     public void OnServerSceneLoaded(string sceneName)
     {
-        if (sceneName == this.NetworkScene) {
+        if (sceneName == this.NetworkScene[0]) {
 
             foreach (var client in _netManager.Lobby.Players)
             {

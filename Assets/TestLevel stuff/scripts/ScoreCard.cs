@@ -26,6 +26,12 @@ public class ScoreCard : NetworkBehaviour
         sk.InitializeScoreCard(this);
     }
 
+    [ServerCallback]
+    private void OnDestroy()
+    {
+        sk.removePlayer(this);
+    }
+
     [Client]
     public void UpdateLives(int oldLives, int newLives)
     {

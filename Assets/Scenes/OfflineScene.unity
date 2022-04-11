@@ -291,7 +291,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e31ca9cb16c2b948a6fb3941ad8e468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NetworkScene: Assets/Scenes/TestLevel.unity
+  NetworkScene:
+  - Assets/Scenes/TestLevel.unity
   PlayerPrefab: {fileID: 114402732107420660, guid: 21daf89214c6ee443ad6875b73083c60, type: 3}
 --- !u!1 &1784077347
 GameObject:
@@ -388,6 +389,7 @@ MonoBehaviour:
   - {fileID: 2039958916600553822, guid: 6826e418ebdeade4eb37687bcf5e1dc1, type: 3}
   - {fileID: 5769685091094781207, guid: 514a8fec496f9414cbfbe9b748c49f52, type: 3}
   - {fileID: 1139254171913846, guid: 52f1c9ea06cfd154cb68ff9d1b66fc13, type: 3}
+  - {fileID: 4102480405156711657, guid: 0bfd74d1cc354af41b278b18fa065f81, type: 3}
   AutoHostAndPlay: 
 --- !u!4 &1784077351
 Transform:

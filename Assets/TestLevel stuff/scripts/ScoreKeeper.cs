@@ -14,9 +14,9 @@ namespace Mirror
 
         Transform[] spawnPositions;
 
-        [HideInInspector] public List<ScoreCard> players = new();
-        [HideInInspector] public List<ScoreCard> alivePlayers = new();
-        [HideInInspector] public List<ScoreCard> deadPlayers = new();
+         public List<ScoreCard> players = new();
+         public List<ScoreCard> alivePlayers = new();
+        public List<ScoreCard> deadPlayers = new();
 
         [HideInInspector] public bool gameOver = false;
         [HideInInspector] public ScoreCard winner;
@@ -32,14 +32,29 @@ namespace Mirror
         }
 
         [ServerCallback]
+        public void addPlayer(ScoreCard sc)
+        {
+            players.Add(sc);
+            alivePlayers.Add(sc);
+        }
+
+        [ServerCallback]
+        public void removePlayer(ScoreCard sc)
+        {
+            players.Remove(sc);
+            alivePlayers.Remove(sc);
+            deadPlayers.Remove(sc);
+            updatescoreScreenText();
+        }
+
+        [ServerCallback]
         public void InitializeScoreCard(ScoreCard sc)
         {
-            print("init scorecard");
+            addPlayer(sc);
+
             sc.livesLeft = startLives;
-            players.Add(sc);
             sc.index = players.Count;
             sc.playerName = sc.gameObject.GetComponent<PlayerNameTag>().PlayerName;
-            alivePlayers.Add(sc);
             updatescoreScreenText();
         }
 
@@ -98,6 +113,7 @@ namespace Mirror
             }
         }
 
+        
         [ServerCallback]
         public void updatescoreScreenText()
         {

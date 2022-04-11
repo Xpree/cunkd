@@ -49,7 +49,7 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon
             return (endTarget + transform.parent.parent.position);
         }
     }
-    [Server]
+    [ServerCallback]
     // Update is called once per frame
     void Update()
     {
