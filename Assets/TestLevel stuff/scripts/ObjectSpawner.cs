@@ -57,6 +57,11 @@ public class ObjectSpawner : NetworkBehaviour
             if (objectType == ObjectType.Gadget || objectType == ObjectType.Weapon)
             {
                 deSpawnObject();
+
+                //GameObject objectToReturn = Instantiate(obejctToSpawn, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+                //objectToReturn.GetComponent<MeshRenderer>().enabled = false;
+                //NetworkServer.Spawn(objectToReturn);
+            
                 return obejctToSpawn;
             }
         }

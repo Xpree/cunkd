@@ -7,10 +7,30 @@ using UnityEngine.InputSystem;
 public class Inventory : NetworkBehaviour
 {
     IWeapon currentWeapon;
+    [SyncVar(hook = nameof(onGadgetAdded))]GameObject gadget;
     
     private void Awake()
     {
         currentWeapon = GetComponent<GravityGun>();
+    }
+
+    [Server]
+    public void addGadget(GameObject gad)
+    {
+        GameObject go = Instantiate(gad, transform.position, Quaternion.identity);
+        NetworkServer.Spawn(go);
+        gadget = go;
+    }
+
+    [Client]
+    private void onGadgetAdded(GameObject oldGameObject, GameObject newGameObject)
+    {
+        newGameObject.transform.SetParent(gameObject.transform);
+        newGameObject.GetComponent<MeshRenderer>().enabled = false;
+        if (isLocalPlayer)
+        {
+            print(newGameObject.name + " added to inventory");
+        }
     }
 
     // Temporary location of attack input
@@ -39,8 +59,31 @@ public class Inventory : NetworkBehaviour
         {
             currentWeapon.SecondaryAttack(false);
         }
-    }
 
+        if (Keyboard.current[Key.F1].wasPressedThisFrame)
+        {
+            if (gadget)
+            {
+                gadget.GetComponent<IGadget>().PrimaryUse(true);
+            }
+            else
+            {
+                print("no gadget avaiable");
+            }
+        }
+
+        if (Keyboard.current[Key.F2].wasPressedThisFrame)
+        {
+            if (gadget)
+            {
+                gadget.GetComponent<IGadget>().SecondaryUse(true);
+            }
+            else
+            {
+                print("no gadget avaiable");
+            }
+        }
+    }
 
     static void GUIDrawProgress(float progress)
     {
