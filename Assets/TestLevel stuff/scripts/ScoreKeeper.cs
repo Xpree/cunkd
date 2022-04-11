@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 using Mirror;
 
 namespace Mirror
@@ -20,6 +21,8 @@ namespace Mirror
         [HideInInspector] public bool gameOver = false;
         [HideInInspector] public ScoreCard winner;
 
+        [HideInInspector] string scoreScreenText;
+
         int index =0;
 
         [ServerCallback]
@@ -35,7 +38,9 @@ namespace Mirror
             sc.livesLeft = startLives;
             players.Add(sc);
             sc.index = players.Count;
+            sc.playerName = sc.gameObject.GetComponent<PlayerNameTag>().PlayerName;
             alivePlayers.Add(sc);
+            updatescoreScreenText();
         }
 
         [ServerCallback]
@@ -58,6 +63,7 @@ namespace Mirror
                 deadPlayers.Add(sc);
                 checkForWinner();
             }
+            updatescoreScreenText();
         }
 
         [ServerCallback]
@@ -74,8 +80,8 @@ namespace Mirror
         [ServerCallback]
         void reloadScene()
         {
-            print("reloading scene");
-            NetworkManager.singleton.ServerChangeScene(SceneManager.GetActiveScene().name);
+            //print("reloading scene");
+            //NetworkManager.singleton.ServerChangeScene(SceneManager.GetActiveScene().name);
         }
 
         [ServerCallback]
@@ -89,6 +95,24 @@ namespace Mirror
             else
             {
                 NetworkServer.Destroy(other.gameObject);
+            }
+        }
+
+        [ServerCallback]
+        public void updatescoreScreenText()
+        {
+            scoreScreenText = "Player:\t\tLives:\n";
+            foreach (ScoreCard player in alivePlayers)
+            {
+                scoreScreenText += (player.playerName + "\t\t" + player.livesLeft + "\n");
+            }
+            foreach (ScoreCard player in deadPlayers)
+            {
+                scoreScreenText += (player.playerName + "\t\tDEAD\n");
+            }
+            foreach (ScoreCard player in players)
+            {
+                player.scoreScreenText = scoreScreenText;
             }
         }
     }
