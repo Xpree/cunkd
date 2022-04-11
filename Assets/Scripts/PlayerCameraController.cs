@@ -23,6 +23,7 @@ public class PlayerCameraController : NetworkBehaviour
 
     public void onMovement(InputAction.CallbackContext context)
     {
+        if(!isLocalPlayer) { return; }
         Vector2 position = context.ReadValue<Vector2>();
 
         float xMovement = position.x * mouseSensitivity * Time.deltaTime;
