@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using UnityEngine.InputSystem;
 
 public class GameClient : NetworkBehaviour
 {
@@ -14,7 +15,7 @@ public class GameClient : NetworkBehaviour
     {
         return LobbyClient.FromConnection(this.connectionToClient);
     }
-    
+
     [Command]
     void CmdLoaded()
     {
@@ -36,7 +37,18 @@ public class GameClient : NetworkBehaviour
             //double remaining = networkTime - NetworkTime.time;
             yield return null;
         }
-        Debug.Log("Game Started!");
+
+        var input = GetComponent<PlayerInput>();
+
+        if (input != null)
+        {
+            input.enabled = true;
+        }
+        else
+        {
+            Debug.Log("Missing input component!");
+        }
+
     }
 
 
@@ -50,6 +62,6 @@ public class GameClient : NetworkBehaviour
     private void OnGUI()
     {
         if (!isLocalPlayer)
-            return;        
-    }    
+            return;
+    }
 }

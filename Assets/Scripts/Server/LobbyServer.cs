@@ -173,9 +173,9 @@ public class LobbyServer : MonoBehaviour
         {
             if (NetworkServer.active)
             {
-                GUILayout.BeginArea(new Rect(Screen.width - 150f, 10f, 140f, 30f));
-                if (GUILayout.Button("Return to Room"))
-                    this.ReturnToLobby();
+                GUILayout.BeginArea(new Rect(Screen.width * 0.5f, 10f, 140f, 30f));
+                if (GUILayout.Button("End Game"))
+                    GameServer.EndGame();
                 GUILayout.EndArea();
             }
             return;
