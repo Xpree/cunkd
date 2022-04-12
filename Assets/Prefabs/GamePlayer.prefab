@@ -445,6 +445,11 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   aimDirection: {x: 0, y: 0, z: 0}
+  playerSpeed: 10
+  maxSpeed: 10
+  decelerationSpeed: 0.1
+  slowMovementPenalty: 0.2
+  jumpHeight: 1.4
 --- !u!114 &6261579163786439309
 MonoBehaviour:
   m_ObjectHideFlags: 0
