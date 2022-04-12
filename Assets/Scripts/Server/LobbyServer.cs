@@ -69,7 +69,7 @@ public class LobbyServer : MonoBehaviour
 
 
     void OnValidate()
-    {
+    {         
         // always <= maxConnections
         AutoStartMinPlayers = Mathf.Min(AutoStartMinPlayers, GetComponentInParent<CunkdNetManager>()?.maxConnections ?? int.MaxValue);
 

@@ -22,6 +22,9 @@ public class GameServer : MonoBehaviour
     [Tooltip("The player avatar prefab")]
     [SerializeField] GameClient PlayerPrefab;
 
+    [Tooltip("The spectator prefab")]
+    [SerializeField] Spectator SpectatorPrefab;
+
     [Tooltip("The delay of the start of the map in seconds")]
     [SerializeField] double DelayStart = 4;
 
@@ -66,7 +69,18 @@ public class GameServer : MonoBehaviour
     
     public void AddNewPlayer(NetworkConnectionToClient conn)
     {
+        if (RoundStart > 0)
+        {
+            SpawnSpectator(conn);
+            return;
+        }
         SpawnGamePlayer(conn);
+    }
+
+    void SpawnSpectator(NetworkConnectionToClient conn)
+    {
+        var spectator = Instantiate(this.SpectatorPrefab);
+        NetworkServer.ReplacePlayerForConnection(conn, spectator.gameObject, true);
     }
 
     GameClient SpawnGamePlayer(NetworkConnectionToClient conn)
