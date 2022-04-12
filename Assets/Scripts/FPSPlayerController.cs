@@ -24,11 +24,11 @@ public class FPSPlayerController : NetworkBehaviour
     private bool dPressed = false;
 
     // playerspeed / max speed needs rethinking
-    private float playerSpeed = 30.0f;
-    private float maxSpeed = 15.0f;
-    private float decelerationSpeed = 0.1f;
-    private float slowMovementPenalty = 0.2f;
-    private float jumpHeight = 2.5f;
+    public float playerSpeed = 30.0f;
+    public float maxSpeed = 15.0f;
+    public float decelerationSpeed = 0.1f;
+    public float slowMovementPenalty = 0.2f;
+    public float jumpHeight = 2.5f;
 
     private void Awake()
     {
