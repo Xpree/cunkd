@@ -26,7 +26,10 @@ public class LobbyClient : NetworkBehaviour
     public int Index;
 
     [SyncVar]
-    public string PlayerName;
+    string _playerName;
+
+    public string PlayerName => string.IsNullOrEmpty(_playerName) ? $"Player {Index+1}" : _playerName;
+
 
     public static LobbyClient Local = null;
 
@@ -67,7 +70,7 @@ public class LobbyClient : NetworkBehaviour
     [Command]
     public void CmdChangePlayerName(string name)
     {
-        PlayerName = name;
+        _playerName = name;
     }
 
     public override void OnStartLocalPlayer()
@@ -75,7 +78,7 @@ public class LobbyClient : NetworkBehaviour
         base.OnStartLocalPlayer();
 
         CmdChangePlayerName(NetworkManagerHUD.PlayerName);
-        this.PlayerName = NetworkManagerHUD.PlayerName;
+        this._playerName = NetworkManagerHUD.PlayerName;
         Local = this;
     }
 
@@ -96,7 +99,7 @@ public class LobbyClient : NetworkBehaviour
     {
         GUILayout.BeginArea(new Rect(20f + (Index * 100), 200f, 90f, 130f));
 
-        GUILayout.Label($"Player: [{PlayerName}]");
+        GUILayout.Label($"[{PlayerName}]");
 
         if (ReadyToBegin)
             GUILayout.Label("Ready");
