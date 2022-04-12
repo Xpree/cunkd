@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Mirror;
-
+using Mirror.Experimental;
+using NetworkTransform = Mirror.NetworkTransform;
 
 [RequireComponent(typeof(NetworkTransform))]
 [RequireComponent(typeof(Rigidbody))]
@@ -22,6 +23,8 @@ public class FPSPlayerController : NetworkBehaviour
     private bool aPressed = false;
     private bool sPressed = false;
     private bool dPressed = false;
+
+    private bool ClientAuthority = true;
 
     // playerspeed / max speed needs rethinking
     public float playerSpeed = 30.0f;
@@ -43,7 +46,7 @@ public class FPSPlayerController : NetworkBehaviour
         // Vector3 playerMovementVector = new Vector3(0, 0, 0);
         // Vector3 currentMoveVector = playerBody.velocity;
 
-        if (!isLocalPlayer) { return; }
+        if (!isLocalPlayer || ClientAuthority == false) { return; }
 
         var cameraTransform = (Camera.current?.transform ?? Camera.main?.transform);
         if (cameraTransform != null)
@@ -465,6 +468,22 @@ public class FPSPlayerController : NetworkBehaviour
         {
             inventory.addGadget(pickedUpObject);
         }
+    }
+
+    //only sends to the owner
+    [TargetRpc]
+    private void TargetPhysicsAuthority(bool enable)
+    {
+        ClientAuthority = enable;
+        GetComponent<NetworkRigidbody>().clientAuthority = enable;
+        GetComponent<NetworkTransform>().clientAuthority = enable;
+    }
+
+    public void PhysicsAuthority(bool enable)
+    {
+        TargetPhysicsAuthority(enable);
+        GetComponent<NetworkRigidbody>().clientAuthority = enable;
+        GetComponent<NetworkTransform>().clientAuthority = enable;
     }
 
 }

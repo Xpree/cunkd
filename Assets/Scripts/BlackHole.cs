@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Mirror;
+using Mirror.Experimental;
+
 
 public class BlackHole : NetworkBehaviour
 {
@@ -18,9 +20,19 @@ public class BlackHole : NetworkBehaviour
     [ServerCallback]
     void FixedUpdate()
     {
+        foreach (var item in objects)
+        {
+            var controller = item.GetComponent<FPSPlayerController>();
+            if (controller != null)
+            {
+                controller.PhysicsAuthority(true);
+            }
+        }
+
         if (duration <= 0)
         {
             Destroy(this.gameObject);
+            return;
         }
         collisions = Physics.OverlapSphere(this.transform.position, range);
         objects.Clear();
@@ -35,6 +47,11 @@ public class BlackHole : NetworkBehaviour
         
         foreach (var item in objects)
         {
+            var controller = item.GetComponent<FPSPlayerController>();
+            if (controller != null)
+            {
+                controller.PhysicsAuthority(false);
+            }
             distance = Vector3.Distance(item.transform.position, transform.position);
             force = (transform.position - item.transform.position).normalized / distance * intensity;
             item.GetComponent<Rigidbody>().AddForce(force, ForceMode.Force);

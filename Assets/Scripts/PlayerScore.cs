@@ -1,7 +1,6 @@
 using UnityEngine;
 using Mirror;
-
-
+using Mirror.Experimental;
 
 public class PlayerScore : NetworkBehaviour
 {
