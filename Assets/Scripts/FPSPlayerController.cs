@@ -53,7 +53,19 @@ public class FPSPlayerController : NetworkBehaviour
         {
             this.aimDirection = cameraTransform.forward;
         }
-        
+
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            if(Cursor.lockState == CursorLockMode.Locked)
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            
+        }
 
         if (wPressed)
         {

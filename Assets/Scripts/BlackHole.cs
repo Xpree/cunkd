@@ -22,6 +22,10 @@ public class BlackHole : NetworkBehaviour
     {
         foreach (var item in objects)
         {
+            if(item == null)
+            {
+                continue;
+            }
             var controller = item.GetComponent<FPSPlayerController>();
             if (controller != null)
             {
