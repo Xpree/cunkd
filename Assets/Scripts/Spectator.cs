@@ -13,13 +13,13 @@ public class Spectator : NetworkBehaviour
     {
         mainCamera = Camera.main;
         base.OnStartLocalPlayer();
-        FindObjectOfType<SpectatorUI>().EnableSpectatorUI();
+        FindObjectOfType<SpectatorUI>()?.EnableSpectatorUI();
     }
 
     public override void OnStopLocalPlayer()
     {
         base.OnStopLocalPlayer();
-        FindObjectOfType<SpectatorUI>().DisableSpectatorUI();
+        FindObjectOfType<SpectatorUI>()?.DisableSpectatorUI();
     }
 
     void NextCamera()

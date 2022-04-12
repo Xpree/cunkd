@@ -109,6 +109,15 @@ public class GameServer : MonoBehaviour
 
     }
 
+    public static void TransitionToSpectator(GameObject player)
+    {
+        var conn = player?.GetComponent<NetworkIdentity>()?.connectionToClient;
+        if (conn != null) {
+            Instance.SpawnSpectator(conn);
+        }
+        NetworkServer.Destroy(player);
+    }
+
     public void OnDisconnect(NetworkConnectionToClient conn)
     {
 #if UNITY_SERVER

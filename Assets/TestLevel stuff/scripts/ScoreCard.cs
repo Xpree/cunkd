@@ -8,12 +8,12 @@ using UnityEngine.InputSystem;
 public class ScoreCard : NetworkBehaviour
 {
     [SyncVar] public int index;
-    [SyncVar(hook = nameof(UpdateLives))]public int livesLeft;
+    [SyncVar(hook = nameof(UpdateLives))] public int livesLeft;
     [HideInInspector][SyncVar] public bool dead;
-    [HideInInspector] [SyncVar] public string playerName = "playerName";
-    [HideInInspector] [SyncVar(hook = nameof(updateScoreScreenText))] public string scoreScreenText;
+    [HideInInspector][SyncVar] public string playerName = "playerName";
+    [HideInInspector][SyncVar(hook = nameof(updateScoreScreenText))] public string scoreScreenText;
 
-    [SerializeField]public GameObject scoreScreen;
+    [SerializeField] public GameObject scoreScreen;
 
     ScoreKeeper sk;
     TextMeshProUGUI text;
@@ -39,7 +39,7 @@ public class ScoreCard : NetworkBehaviour
         if (isLocalPlayer)
         {
             livesLeft = newLives;
-            if (0<livesLeft)
+            if (0 < livesLeft)
             {
                 text.color = Color.green;
                 text.text = "Lives: " + newLives;

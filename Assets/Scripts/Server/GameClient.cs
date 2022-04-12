@@ -50,7 +50,6 @@ public class GameClient : NetworkBehaviour
     private void OnGUI()
     {
         if (!isLocalPlayer)
-            return;
-        
-    }
+            return;        
+    }    
 }
