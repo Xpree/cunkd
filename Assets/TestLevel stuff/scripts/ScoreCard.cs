@@ -35,9 +35,9 @@ public class ScoreCard : NetworkBehaviour
     [Client]
     public void UpdateLives(int oldLives, int newLives)
     {
-        updateScoreCard();
         if (isLocalPlayer)
         {
+            updateScoreCard();
             livesLeft = newLives;
             if (0 < livesLeft)
             {
