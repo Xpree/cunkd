@@ -22,9 +22,9 @@ public class GameClient : NetworkBehaviour
         GameServer.OnGameClientLoaded();
     }
 
-    public override void OnStartClient()
+    public override void OnStartLocalPlayer()
     {
-        base.OnStartClient();
+        base.OnStartLocalPlayer();
         CmdLoaded();
         this._loaded = true;
     }
