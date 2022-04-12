@@ -340,6 +340,17 @@ public class FPSPlayerController : NetworkBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        
+        Rigidbody rb = collision.collider.GetComponent<Rigidbody>();
+        //Forces playerobject into non-grounded state, changes back when it lands when it lands
+        if (rb != null)
+        {
+            Vector3 SpeedOfBall = collision.transform.position - transform.position;
+            Vector3 GoUp = new(0f, 3f, 0f);
+            isGrounded = false;
+            playerBody.AddForce(SpeedOfBall + GoUp, ForceMode.Impulse);
+        }
+
         if (collision.gameObject.name == "PlayArea")
         {
             isGrounded = true;
