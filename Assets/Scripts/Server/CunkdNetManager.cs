@@ -102,4 +102,17 @@ public class CunkdNetManager : NetworkManager
         _gameServer.OnServerSceneLoaded(sceneName);
         base.OnServerSceneChanged(sceneName);
     }
+
+    public override void OnServerReady(NetworkConnectionToClient conn)
+    {
+        base.OnServerReady(conn);
+        if (_lobbyServer.IsLobbyActive)
+        {
+            //_lobbyServer.OnClientReady(conn);
+        }
+        else
+        {
+            _gameServer.OnClientReady(conn);
+        }
+    }
 }

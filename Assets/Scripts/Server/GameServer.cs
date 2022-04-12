@@ -40,6 +40,9 @@ public class GameServer : MonoBehaviour
     [HideInInspector]
     public List<GameClient> Players = new();
 
+    [HideInInspector]
+    public List<Spectator> Spectators = new();
+
     public bool HasRoundStarted => RoundStart >= DelayStart && RoundStart <= NetworkTime.time;
 
     private void Start()
@@ -62,57 +65,68 @@ public class GameServer : MonoBehaviour
         var self = netManager.Game;
 
         self.Players.Clear();
+        self.Spectators.Clear();
         self.RoundStart = 0;
 
         netManager.Lobby.ReturnToLobby();
     }
-    
+
     public void AddNewPlayer(NetworkConnectionToClient conn)
     {
-        if (RoundStart > 0)
-        {
-            SpawnSpectator(conn);
-            return;
-        }
-        SpawnGamePlayer(conn);
+        TryAddPlayer(conn);
     }
 
     void SpawnSpectator(NetworkConnectionToClient conn)
     {
         var spectator = Instantiate(this.SpectatorPrefab);
         NetworkServer.ReplacePlayerForConnection(conn, spectator.gameObject, true);
+        Spectators.Add(spectator);
     }
 
-    GameClient SpawnGamePlayer(NetworkConnectionToClient conn)
+    void SpawnGamePlayer(NetworkConnectionToClient conn)
     {
         Transform startPos = CunkdNetManager.Instance.GetStartPosition();
         Vector3 position = startPos?.position ?? Vector3.zero;
         Quaternion rotation = startPos?.rotation ?? Quaternion.identity;
 
-        var gamePlayer = Instantiate(this.PlayerPrefab, position, rotation);        
+        var gamePlayer = Instantiate(this.PlayerPrefab, position, rotation);
         NetworkServer.ReplacePlayerForConnection(conn, gamePlayer.gameObject, true);
-        return gamePlayer;
+        Players.Add(gamePlayer);
+    }
+
+    void TryAddPlayer(NetworkConnectionToClient conn)
+    {
+        if (conn == null || !conn.isReady)
+            return;
+
+        if (!HasRoundStarted)
+        {
+            if (conn?.identity?.GetComponent<GameClient>() == null)
+            {
+                SpawnGamePlayer(conn);
+            }
+        }
+        else
+        {
+            if (conn?.identity?.GetComponent<Spectator>() == null)
+                SpawnSpectator(conn);
+        }
     }
 
     void SpawnAllLobbyPlayers()
     {
-        Players.Clear();
         var lobbyPlayers = CunkdNetManager.Instance.Lobby.Players;
         foreach (var client in lobbyPlayers)
         {
-            var conn = client?.connectionToClient;
-            if (conn != null)
-            {
-                Players.Add(SpawnGamePlayer(conn));
-            }
+            TryAddPlayer(client?.connectionToClient);
         }
-
     }
 
     public static void TransitionToSpectator(GameObject player)
     {
         var conn = player?.GetComponent<NetworkIdentity>()?.connectionToClient;
-        if (conn != null) {
+        if (conn != null)
+        {
             Instance.SpawnSpectator(conn);
         }
         NetworkServer.Destroy(player);
@@ -133,21 +147,37 @@ public class GameServer : MonoBehaviour
     }
 
     public void OnServerStopped()
-    {        
+    {
     }
 
     public void OnServerSceneLoaded(string sceneName)
     {
-        if (sceneName == this.NetworkScene[0]) {
+        if (sceneName != LobbyServer.Instance.NetworkScene)
+        {
             SpawnAllLobbyPlayers();
         }
     }
 
+    public void OnClientReady(NetworkConnectionToClient conn)
+    {
+        TryAddPlayer(conn);
+    }
+
     public bool IsPlayersLoaded()
     {
+        var lobbyPlayers = CunkdNetManager.Instance.Lobby.Players;
+        foreach (var client in lobbyPlayers)
+        {
+            var conn = client?.connectionToClient;
+            if (conn != null && !conn.isReady)
+            {
+                return false;
+            }
+        }
+
         foreach (var client in Players)
         {
-            if((client?.Loaded ?? true) == false)
+            if ((client?.Loaded ?? true) == false)
             {
                 return false;
             }
@@ -156,7 +186,7 @@ public class GameServer : MonoBehaviour
     }
 
     public void StartRound()
-    {       
+    {
         RoundStart = NetworkTime.time + this.DelayStart;
         foreach (var client in Players)
         {
