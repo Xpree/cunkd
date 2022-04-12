@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-
+/// <summary>
+/// Everything in this class is for the server-side only.
+/// </summary>
 public class LobbyServer : MonoBehaviour
 {
     [Header("Room Settings")]
@@ -63,12 +65,8 @@ public class LobbyServer : MonoBehaviour
     public bool IsLobbyActive => NetworkManager.IsSceneActive(this.NetworkScene);
     public List<LobbyClient> Players => _lobbyPlayers.clients;
 
-    CunkdNetManager _netManager;
+    public static LobbyServer Instance => CunkdNetManager.Instance.Lobby;
 
-    private void Awake()
-    {
-        _netManager = GetComponentInParent<CunkdNetManager>();
-    }
 
     void OnValidate()
     {
@@ -115,7 +113,7 @@ public class LobbyServer : MonoBehaviour
 
     public void ReturnToLobby()
     {
-        _netManager.ServerChangeScene(NetworkScene);
+        CunkdNetManager.Instance.ServerChangeScene(NetworkScene);
         _lobbyPlayers.SetLobbyClientAsActivePlayerObject();
         _lobbyPlayers.ResetLobbyReadyState();
         _lobbyPlayers.RecalculateRoomPlayerIndices();
@@ -125,7 +123,7 @@ public class LobbyServer : MonoBehaviour
 
     public void StartGame()
     {
-        _netManager.Game.BeginGame();
+        GameServer.BeginGame();
     }
 
 

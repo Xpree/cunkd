@@ -16,7 +16,13 @@ public class PlayerNameTag : NetworkBehaviour
 
     }
 
-    
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+        PlayerName = LobbyClient.FromConnection(this.connectionToClient).PlayerName;
+    }
+
+
     void Start()
     {
         if (isLocalPlayer)

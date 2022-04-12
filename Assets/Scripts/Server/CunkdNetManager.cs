@@ -36,6 +36,8 @@ public class CunkdNetManager : NetworkManager
     public string AutoHostAndPlay;
 
 
+    public static CunkdNetManager Instance => NetworkManager.singleton as CunkdNetManager;
+
     public override void Awake()
     {
         _lobbyServer = GetComponentInChildren<LobbyServer>(true);
