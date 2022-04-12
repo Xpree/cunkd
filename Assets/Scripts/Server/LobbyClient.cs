@@ -45,7 +45,6 @@ public class LobbyClient : NetworkBehaviour
             }
         }
 
-        Debug.LogError("NetworkConnectionToClient missing LobbyClient");
         return null;
     }
 

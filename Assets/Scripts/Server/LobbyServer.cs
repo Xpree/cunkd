@@ -69,7 +69,7 @@ public class LobbyServer : MonoBehaviour
 
 
     void OnValidate()
-    {         
+    {
         // always <= maxConnections
         AutoStartMinPlayers = Mathf.Min(AutoStartMinPlayers, GetComponentInParent<CunkdNetManager>()?.maxConnections ?? int.MaxValue);
 
@@ -114,7 +114,6 @@ public class LobbyServer : MonoBehaviour
     public void ReturnToLobby()
     {
         CunkdNetManager.Instance.ServerChangeScene(NetworkScene);
-        _lobbyPlayers.SetLobbyClientAsActivePlayerObject();
         _lobbyPlayers.ResetLobbyReadyState();
         _lobbyPlayers.RecalculateRoomPlayerIndices();
         allPlayersReady = false;
@@ -127,17 +126,6 @@ public class LobbyServer : MonoBehaviour
     }
 
 
-    public void AddNewPlayer(NetworkConnectionToClient conn)
-    {
-        if(conn.clientOwnedObjects.Count == 0)
-        {
-            var client = Instantiate(LobbyClientPrefab, Vector3.zero, Quaternion.identity);
-            _lobbyPlayers.Add(client);
-            NetworkServer.AddPlayerForConnection(conn, client.gameObject);
-        }
-        allPlayersReady = false;
-    }
-
     public void OnDisconnect(NetworkConnectionToClient conn)
     {
         _lobbyPlayers.RemoveConnectedPlayer(conn);
@@ -149,10 +137,6 @@ public class LobbyServer : MonoBehaviour
         }
     }
 
-    public void OnClientSceneLoaded(NetworkConnectionToClient conn)
-    {
-    }
-
     public void OnServerStarted()
     {
     }
@@ -160,6 +144,31 @@ public class LobbyServer : MonoBehaviour
     public void OnServerStopped()
     {
         _lobbyPlayers.Clear();
+    }
+
+    void SpawnOrReplaceClient(NetworkConnectionToClient conn)
+    {
+        var client = LobbyClient.FromConnection(conn);
+        if (client != null)
+        {
+            if (IsLobbyActive)
+            {
+                client.ReadyToBegin = false;
+                NetworkServer.ReplacePlayerForConnection(conn, client.gameObject);
+            }
+        }
+        else
+        {
+            client = Instantiate(LobbyClientPrefab, Vector3.zero, Quaternion.identity);
+            client.Index = _lobbyPlayers.Count;
+            _lobbyPlayers.Add(client);
+            NetworkServer.AddPlayerForConnection(conn, client.gameObject);
+        }
+    }
+
+    public void OnClientReady(NetworkConnectionToClient conn)
+    {
+        SpawnOrReplaceClient(conn);
     }
 
     void OnGUI()

@@ -79,11 +79,6 @@ public class CunkdNetManager : NetworkManager
     /// <param name="conn">Connection from client.</param>
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
-        _lobbyServer.AddNewPlayer(conn);
-        if (!_lobbyServer.IsLobbyActive)
-        {
-            _gameServer.AddNewPlayer(conn);
-        }
     }
 
 
@@ -106,11 +101,8 @@ public class CunkdNetManager : NetworkManager
     public override void OnServerReady(NetworkConnectionToClient conn)
     {
         base.OnServerReady(conn);
-        if (_lobbyServer.IsLobbyActive)
-        {
-            //_lobbyServer.OnClientReady(conn);
-        }
-        else
+        _lobbyServer.OnClientReady(conn);
+        if (!_lobbyServer.IsLobbyActive)
         {
             _gameServer.OnClientReady(conn);
         }
