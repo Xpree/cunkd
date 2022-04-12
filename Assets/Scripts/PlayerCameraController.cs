@@ -25,14 +25,16 @@ public class PlayerCameraController : NetworkBehaviour
     public void ActivateCamera()
     {
         mainCamera = Camera.main;
-        mainCamera.enabled = false;
+        if (mainCamera)
+            mainCamera.enabled = false;
         playerCamera.enabled = true;
         playerCamera.GetComponent<AudioListener>().enabled = true;
     }
 
     public void DeactivateCamera()
     {
-        mainCamera.enabled = true;
+        if(mainCamera)
+            mainCamera.enabled = true;
         playerCamera.enabled = false;
         playerCamera.GetComponent<AudioListener>().enabled = false;
     }
