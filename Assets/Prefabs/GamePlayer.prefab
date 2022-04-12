@@ -429,7 +429,6 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   playerCamera: {fileID: 6314228708957030162}
-  visor: {fileID: 1430875437483682}
 --- !u!114 &7824263787426200294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -445,9 +444,9 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   aimDirection: {x: 0, y: 0, z: 0}
-  playerSpeed: 10
-  maxSpeed: 10
-  decelerationSpeed: 0.1
+  playerSpeed: 9
+  maxSpeed: 9
+  decelerationSpeed: 0.9
   slowMovementPenalty: 0.2
   jumpHeight: 1.4
 --- !u!114 &6261579163786439309
