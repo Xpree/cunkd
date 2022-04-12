@@ -192,7 +192,7 @@ public class GameServer : MonoBehaviour
         {
             client?.TargetGameStart(RoundStart);
         }
-        FindObjectOfType<Countdown>().RpcStartCountdown(RoundStart);
+        FindObjectOfType<Countdown>()?.RpcStartCountdown(RoundStart);
     }
 
     public static void OnGameClientLoaded()
