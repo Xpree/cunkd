@@ -45,7 +45,6 @@ public class GravityGun : NetworkBehaviour, IWeapon
             Push = true;
             return;
         }
-        Debug.Log("primary attack");
         Charging = true;
         ChargeProgress = 0f;
         Push = false;
@@ -64,9 +63,7 @@ public class GravityGun : NetworkBehaviour, IWeapon
             }
             return;
         }
-        Debug.Log("secondary attack");
         GrabTarget = FindTarget(false);
-        Debug.Log($"Grabbed target = {GrabTarget}");
         if (GrabTarget != null)
         {
             //if change collision mode do it here
