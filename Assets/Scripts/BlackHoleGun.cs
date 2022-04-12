@@ -5,6 +5,9 @@ using Mirror;
 
 public class BlackHoleGun : NetworkBehaviour, IWeapon
 {
+    Vector3 aimDirection;
+    Vector3 aimPos;
+
     public GameObject blackHole;
     [SerializeField] float cooldown = 30f;
     [SerializeField] float timer;
@@ -17,8 +20,10 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon
     bool hasFired = false;
 
     [Command]
-    public void CmdPrimaryAttack()
+    public void CmdPrimaryAttack(bool isPressed, Vector3 direction, Vector3 position)
     {
+        aimDirection = direction;
+        aimPos = position;
         if (hasFired == false)
         {
             target = FindTarget();
@@ -30,7 +35,8 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon
     [Server]
     void SpawnBlackHole(Vector3 target)
     {
-        Instantiate(blackHole, target, Quaternion.identity);
+        var go = Instantiate(blackHole, target, Quaternion.identity);
+        NetworkServer.Spawn(go);
     }
     [Server]
     Vector3 FindTarget()
@@ -38,20 +44,19 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon
 
         //Raycast target
         RaycastHit hitResult;
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hitResult, range, TargetMask))
+        if (Physics.Raycast(aimPos, aimDirection, out hitResult, range, TargetMask))
         {
             return hitResult.point;
         }
         else
         {
-            endTarget = transform.parent.parent.forward * range;
-            Debug.Log("endtarget = " + endTarget);
-            return (endTarget + transform.parent.parent.position);
+            endTarget = aimDirection * range;
+            return (endTarget + aimPos);
         }
     }
     [ServerCallback]
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (hasFired == true)
         {
@@ -66,7 +71,7 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon
 
     void IWeapon.PrimaryAttack(bool isPressed)
     {
-        CmdPrimaryAttack();
+        CmdPrimaryAttack(isPressed, Camera.main.transform.forward, Camera.main.transform.position);
     }
 
     void IWeapon.SecondaryAttack(bool isPressed)

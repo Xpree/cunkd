@@ -15,14 +15,16 @@ public class BlackHole : NetworkBehaviour
 
     public List<GameObject> objects = new List<GameObject>();
 
-    [Server]
-    private void Update()
+    [ServerCallback]
+    void FixedUpdate()
     {
         if (duration <= 0)
         {
             Destroy(this.gameObject);
         }
         collisions = Physics.OverlapSphere(this.transform.position, range);
+        objects.Clear();
+
         foreach (var collision in collisions)
         {
             if (collision.gameObject.GetComponent<Rigidbody>() == true)
@@ -30,6 +32,7 @@ public class BlackHole : NetworkBehaviour
                 objects.Add(collision.gameObject);
             }
         }
+        
         foreach (var item in objects)
         {
             distance = Vector3.Distance(item.transform.position, transform.position);

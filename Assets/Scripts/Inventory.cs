@@ -11,7 +11,7 @@ public class Inventory : NetworkBehaviour
     
     private void Awake()
     {
-        currentWeapon = GetComponent<GravityGun>();
+        currentWeapon = GetComponent<BlackHoleGun>();
     }
 
     [Server]

@@ -558,7 +558,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   blackHole: {fileID: 6033889869813183962, guid: 2faff900bda0fb94fad64bf820c99a4c, type: 3}
-  cooldown: 30
+  cooldown: 1
   timer: 0
   range: 20
   TargetMask:

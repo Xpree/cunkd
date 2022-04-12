@@ -398,6 +398,7 @@ MonoBehaviour:
   - {fileID: 2547505589391764945, guid: 000bbbd4b9996da4ba774b6e8ac46268, type: 3}
   - {fileID: 1465914663504421285, guid: afe6940a4ae7290428a4104cfdab6ab4, type: 3}
   - {fileID: 5769685091094781207, guid: 60c9ce2809146d445a2e92a4641d2fe8, type: 3}
+  - {fileID: 6033889869813183962, guid: 2faff900bda0fb94fad64bf820c99a4c, type: 3}
   AutoHostAndPlay: 
 --- !u!4 &1784077351
 Transform:
