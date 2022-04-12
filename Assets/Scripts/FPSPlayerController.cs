@@ -61,6 +61,10 @@ public class FPSPlayerController : NetworkBehaviour
             }
             else
             {
+                if(wallRiding) 
+                {
+                    return;
+                }
                 Vector3 moveVector = transform.forward;
                 totalInputVector += (moveVector * slowMovementPenalty);
             }
@@ -75,6 +79,10 @@ public class FPSPlayerController : NetworkBehaviour
             }
             else
             {
+                if(wallRiding) 
+                {
+                    return;
+                }
                 Vector3 moveVector = transform.right;
                 totalInputVector += (moveVector * 0.8f * slowMovementPenalty);
             }
@@ -90,6 +98,10 @@ public class FPSPlayerController : NetworkBehaviour
             }
             else
             {
+                if(wallRiding) 
+                {
+                    return;
+                }
                 Vector3 moveVector = transform.right;
                 totalInputVector -= (moveVector * 0.8f * slowMovementPenalty);
             }
@@ -105,6 +117,10 @@ public class FPSPlayerController : NetworkBehaviour
             }
             else
             {
+                if(wallRiding) 
+                {
+                    return;
+                }
                 Vector3 moveVector = transform.forward;
                 totalInputVector -= (moveVector * 0.5f * slowMovementPenalty);
             }
