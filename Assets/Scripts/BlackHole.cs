@@ -17,22 +17,8 @@ public class BlackHole : NetworkBehaviour
 
     public List<GameObject> objects = new List<GameObject>();
 
-    [ServerCallback]
     void FixedUpdate()
     {
-        foreach (var item in objects)
-        {
-            if(item == null)
-            {
-                continue;
-            }
-            var controller = item.GetComponent<FPSPlayerController>();
-            if (controller != null)
-            {
-                controller.PhysicsAuthority(true);
-            }
-        }
-
         if (duration <= 0)
         {
             Destroy(this.gameObject);
@@ -48,13 +34,18 @@ public class BlackHole : NetworkBehaviour
                 objects.Add(collision.gameObject);
             }
         }
-        
+
         foreach (var item in objects)
         {
-            var controller = item.GetComponent<FPSPlayerController>();
-            if (controller != null)
+            if (NetworkClient.active)
             {
-                controller.PhysicsAuthority(false);
+                var identity = item.GetComponent<NetworkIdentity>();
+                if (!identity.isLocalPlayer)
+                    continue;
+            }
+            else if (item.GetComponent<GameClient>() != null)
+            {
+                continue;
             }
             distance = Vector3.Distance(item.transform.position, transform.position);
             force = (transform.position - item.transform.position).normalized / distance * intensity;
