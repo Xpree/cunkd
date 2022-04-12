@@ -17,6 +17,24 @@ public class BlackHole : NetworkBehaviour
 
     public List<GameObject> objects = new List<GameObject>();
 
+    static bool HasPhysicsAuthority(GameObject go)
+    {
+        if (NetworkClient.active)
+        {
+            var identity = go.GetComponent<NetworkIdentity>();
+            if (identity == null)
+            {
+                return true;
+            }
+            return identity.hasAuthority;
+        } 
+        else
+        {
+            // Server is authoritive over everything except Players (objects with GameClient component)
+            return go.GetComponent<GameClient>() != null;
+        }
+    }
+
     void FixedUpdate()
     {
         if (duration <= 0)
@@ -37,19 +55,12 @@ public class BlackHole : NetworkBehaviour
 
         foreach (var item in objects)
         {
-            if (NetworkClient.active)
+            if(HasPhysicsAuthority(item))
             {
-                var identity = item.GetComponent<NetworkIdentity>();
-                if (!identity.isLocalPlayer)
-                    continue;
+                distance = Vector3.Distance(item.transform.position, transform.position);
+                force = (transform.position - item.transform.position).normalized / distance * intensity;
+                item.GetComponent<Rigidbody>().AddForce(force, ForceMode.Force);
             }
-            else if (item.GetComponent<GameClient>() != null)
-            {
-                continue;
-            }
-            distance = Vector3.Distance(item.transform.position, transform.position);
-            force = (transform.position - item.transform.position).normalized / distance * intensity;
-            item.GetComponent<Rigidbody>().AddForce(force, ForceMode.Force);
         }
         duration = duration - Time.deltaTime;
     }
