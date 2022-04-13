@@ -169,7 +169,9 @@ MonoBehaviour:
   MasterBanks:
   - Master
   Banks:
+  - Dialogue_CN
   - Dialogue_EN
+  - Dialogue_JP
   - Music
   - SFX
   - Vehicles
