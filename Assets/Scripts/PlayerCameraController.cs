@@ -57,6 +57,7 @@ public class PlayerCameraController : NetworkBehaviour
     public override void OnStartLocalPlayer()
     {
         ActivateCamera();
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public override void OnStopLocalPlayer()
