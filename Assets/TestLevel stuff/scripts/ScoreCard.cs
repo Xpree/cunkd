@@ -29,7 +29,8 @@ public class ScoreCard : NetworkBehaviour
     [ServerCallback]
     private void OnDestroy()
     {
-        sk.removePlayer(this);
+        if(sk != null)
+            sk.removePlayer(this);
     }
 
     [Client]
