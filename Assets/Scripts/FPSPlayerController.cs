@@ -48,18 +48,6 @@ public class FPSPlayerController : NetworkBehaviour
         // Vector3 playerMovementVector = new Vector3(0, 0, 0);
         // Vector3 currentMoveVector = playerBody.velocity;
 
-        if (Keyboard.current.escapeKey.wasPressedThisFrame)
-        {
-            if(Cursor.lockState == CursorLockMode.Locked)
-            {
-                Cursor.lockState = CursorLockMode.None;
-            }
-            else
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-            
-        }
 
         if (wPressed)
         {

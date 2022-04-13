@@ -63,4 +63,22 @@ public class PlayerCameraController : NetworkBehaviour
     {
         DeactivateCamera();
     }
+
+
+    private void Update()
+    {
+        if (!isLocalPlayer) { return; }
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            if (Cursor.lockState == CursorLockMode.Locked)
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+
+        }
+    }
 }
