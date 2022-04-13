@@ -11,7 +11,7 @@ using NetworkTransform = Mirror.NetworkTransform;
 public class FPSPlayerController : NetworkBehaviour
 {
     private Rigidbody playerBody;
-    private bool isGrounded = false;
+    public bool isGrounded = false;
     private bool onFloor = false;
     private bool wallRiding = false;
     private bool airJumped = false;
@@ -149,6 +149,7 @@ public class FPSPlayerController : NetworkBehaviour
       
         // Deceleration calculation if no player input
         // If applied to walls, allows players to slow/halt their fall when next to walls   
+        
         if (isGrounded && playerBody.velocity.magnitude > 1 &&
             !wPressed && !dPressed && !sPressed && !aPressed)
         {
@@ -346,19 +347,24 @@ public class FPSPlayerController : NetworkBehaviour
 
     }
 
-
+    [TargetRpc]
+    public void TargetAddforce(Vector3 force, ForceMode mode)
+    {
+        playerBody.AddForce(force, mode);
+        isGrounded = false;
+    }
     private void OnCollisionEnter(Collision collision)
     {
         
-        Rigidbody rb = collision.collider.GetComponent<Rigidbody>();
-        //Forces playerobject into non-grounded state, changes back when it lands when it lands
-        if (rb != null)
-        {
-            Vector3 SpeedOfBall = collision.transform.position - transform.position;
-            Vector3 GoUp = new(0f, 3f, 0f);
-            isGrounded = false;
-            playerBody.AddForce(SpeedOfBall + GoUp, ForceMode.Impulse);
-        }
+        //Rigidbody rb = collision.collider.GetComponent<Rigidbody>();
+        ////Forces playerobject into non-grounded state, changes back when it lands when it lands
+        //if (rb != null)
+        //{
+        //    Vector3 SpeedOfBall = collision.transform.position - transform.position;
+        //    Vector3 GoUp = new(0f, 3f, 0f);
+        //    isGrounded = false;
+        //    playerBody.AddForce(SpeedOfBall + GoUp, ForceMode.Impulse);
+        //}
 
         if (collision.gameObject.name == "PlayArea")
         {
