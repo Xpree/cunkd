@@ -10,8 +10,6 @@ using NetworkTransform = Mirror.NetworkTransform;
 [RequireComponent(typeof(Rigidbody))]
 public class FPSPlayerController : NetworkBehaviour
 {
-    [SyncVar] public Vector3 aimDirection;
-
     private Rigidbody playerBody;
     private bool isGrounded = false;
     private bool onFloor = false;
@@ -23,8 +21,6 @@ public class FPSPlayerController : NetworkBehaviour
     private bool aPressed = false;
     private bool sPressed = false;
     private bool dPressed = false;
-
-    private bool ClientAuthority = true;
 
     // playerspeed / max speed needs rethinking
     public float playerSpeed = 30.0f;
@@ -38,21 +34,19 @@ public class FPSPlayerController : NetworkBehaviour
         playerBody = GetComponent<Rigidbody>();
     }
 
+    public override void OnStartLocalPlayer()
+    {
+        base.OnStartLocalPlayer();
+        playerBody.isKinematic = false;
+    }
 
     private void FixedUpdate()
     {
+        if (!isLocalPlayer) { return; }
 
-        Vector3 totalInputVector = new (0, 0, 0);
+        Vector3 totalInputVector = new(0, 0, 0);
         // Vector3 playerMovementVector = new Vector3(0, 0, 0);
         // Vector3 currentMoveVector = playerBody.velocity;
-
-        if (!isLocalPlayer || ClientAuthority == false) { return; }
-
-        var cameraTransform = (Camera.current?.transform ?? Camera.main?.transform);
-        if (cameraTransform != null)
-        {
-            this.aimDirection = cameraTransform.forward;
-        }
 
         if (Keyboard.current.escapeKey.wasPressedThisFrame)
         {
@@ -481,21 +475,4 @@ public class FPSPlayerController : NetworkBehaviour
             inventory.addGadget(pickedUpObject);
         }
     }
-
-    //only sends to the owner
-    [TargetRpc]
-    private void TargetPhysicsAuthority(bool enable)
-    {
-        ClientAuthority = enable;
-        GetComponent<NetworkRigidbody>().clientAuthority = enable;
-        GetComponent<NetworkTransform>().clientAuthority = enable;
-    }
-
-    public void PhysicsAuthority(bool enable)
-    {
-        TargetPhysicsAuthority(enable);
-        GetComponent<NetworkRigidbody>().clientAuthority = enable;
-        GetComponent<NetworkTransform>().clientAuthority = enable;
-    }
-
 }
