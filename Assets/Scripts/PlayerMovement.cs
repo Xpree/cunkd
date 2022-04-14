@@ -34,12 +34,13 @@ public class PlayerMovement : NetworkBehaviour
     private void Awake()
     {
         _rigidBody = GetComponent<Rigidbody>();
+        _rigidBody.useGravity = false;
     }
 
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
-        _rigidBody.isKinematic = false;
+        _rigidBody.isKinematic = false;        
         _inputs = FindObjectOfType<GameInputs>();
     }
 
