@@ -95,7 +95,7 @@ public class PlayerMovement : NetworkBehaviour
         Vector3 velocity = this.HorizontalVelocity;
         float terminalSpeed = Mathf.Max(velocity.magnitude, maxSpeed);
         velocity += velocityChange;
-        // Makes sure the player can't increase it's speed beyond it's previous speed or maxSpeed which ever is greater.
+        // Makes sure the player can't increase its speed beyond its previous speed or maxSpeed which ever is greater.
         velocity = Vector3.ClampMagnitude(velocity, terminalSpeed);
         this.HorizontalVelocity = velocity;
     }
