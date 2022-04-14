@@ -39,6 +39,11 @@ public class PlayerCameraController : NetworkBehaviour
         DeactivateCamera();
     }
 
+    [Command]
+    void CmdUpdatePitch(float pitch)
+    {
+        syncedPitch = pitch;
+    }
 
     private void Update()
     {
@@ -70,7 +75,7 @@ public class PlayerCameraController : NetworkBehaviour
         pitch -= yMovement;
         pitch = Mathf.Clamp(pitch, -90.0f, 90.0f);
 
-        syncedPitch = pitch;
+        CmdUpdatePitch(pitch);
         cameraTransform.localRotation = Quaternion.Euler(pitch, 0.0f, 0.0f);
         transform.Rotate(Vector3.up * xMovement);
     }
