@@ -15,7 +15,6 @@ public class ObjectSpawner : NetworkBehaviour
     bool spawned;
     double nextSpawnTime = 0;
 
-    [Client]
     private void Awake()
     {
         if (objectType == ObjectType.Object)

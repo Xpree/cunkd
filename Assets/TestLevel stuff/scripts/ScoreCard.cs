@@ -18,12 +18,12 @@ public class ScoreCard : NetworkBehaviour
     ScoreKeeper sk;
     TextMeshProUGUI text;
 
-    [Client]
     void Start()
     {
         text = gameObject.GetComponentsInChildren<TextMeshProUGUI>()[0];
         sk = FindObjectOfType<ScoreKeeper>();
-        sk.InitializeScoreCard(this);
+        if(NetworkServer.active)
+            sk.InitializeScoreCard(this);
     }
 
     [ServerCallback]
@@ -66,15 +66,17 @@ public class ScoreCard : NetworkBehaviour
         scoreScreen.GetComponentInChildren<TextMeshProUGUI>().text = newText;
     }
 
-    [ServerCallback]
+    [Server]
     public int getLives()
     {
         return livesLeft;
     }
 
-    [Client]
+    [ClientCallback]
     private void Update()
     {
+        if (!isLocalPlayer)
+            return;
         if (Keyboard.current[Key.Tab].wasPressedThisFrame)
         {
             scoreScreen.SetActive(true);

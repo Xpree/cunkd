@@ -29,14 +29,14 @@ public class ScoreKeeper : NetworkBehaviour
         spawnPositions = startPositions.GetComponentsInChildren<Transform>();
     }
 
-    [ServerCallback]
+    [Server]
     public void addPlayer(ScoreCard sc)
     {
         players.Add(sc);
         alivePlayers.Add(sc);
     }
 
-    [ServerCallback]
+    [Server]
     public void removePlayer(ScoreCard sc)
     {
         players.Remove(sc);
@@ -45,7 +45,7 @@ public class ScoreKeeper : NetworkBehaviour
         updatescoreScreenText();
     }
 
-    [ServerCallback]
+    [Server]
     public void InitializeScoreCard(ScoreCard sc)
     {
         addPlayer(sc);
@@ -56,7 +56,7 @@ public class ScoreKeeper : NetworkBehaviour
         updatescoreScreenText();
     }
 
-    [ServerCallback]
+    [Server]
     public void RespawnPlayer(PlayerMovement player)
     {
         ScoreCard sc = player.GetComponent<ScoreCard>();
