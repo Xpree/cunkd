@@ -3,15 +3,15 @@ using UnityEngine;
 
 public class ObjectSpawner : NetworkBehaviour
 {
-    [SerializeField] GameObject obejctToSpawn;
+    [SyncVar] [SerializeField] GameObject obejctToSpawn;
     [SerializeField] float spawnTime;
     [SerializeField] bool spawnAtStart;
     enum ObjectType { Weapon, Gadget, Object };
     [SerializeField]ObjectType objectType;
 
-    NetworkTransform trans;
 
     GameObject spawnedObject;
+    GameObject newSpawnedObject;
     bool spawned;
     double nextSpawnTime = 0;
 
@@ -23,6 +23,7 @@ public class ObjectSpawner : NetworkBehaviour
         }
     }
 
+
     [ServerCallback]
     private void FixedUpdate()
     {
@@ -30,6 +31,12 @@ public class ObjectSpawner : NetworkBehaviour
         {
             nextSpawnTime = NetworkTime.time + spawnTime;
             spawnAtStart = true;
+        }
+
+        if (spawnedObject != newSpawnedObject)
+        {
+            spawnedObject = newSpawnedObject;
+            spawnedObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
         }
 
         if (spawned)
@@ -44,25 +51,40 @@ public class ObjectSpawner : NetworkBehaviour
         {
             spawnObject();
         }
+
     }
     [ServerCallback]
-    public GameObject pickupObject()
+    public GameObject pickupObject(Inventory inventory)
     {
-        //print("picking up object");
+        print("pickup object");
         if (spawned)
         {
-            nextSpawnTime = NetworkTime.time + spawnTime;
-
-            if (objectType == ObjectType.Gadget || objectType == ObjectType.Weapon)
+            //Weapon
+            if (obejctToSpawn.GetComponent<IWeapon>() != null)
             {
-                deSpawnObject();
-
-                //GameObject objectToReturn = Instantiate(obejctToSpawn, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
-                //objectToReturn.GetComponent<MeshRenderer>().enabled = false;
-                //NetworkServer.Spawn(objectToReturn);
-            
-                return obejctToSpawn;
+                newSpawnedObject = inventory.currentWeapon;
+                spawnedObject.GetComponent<NetworkIdentity>().AssignClientAuthority(inventory.connectionToClient);
             }
+            //Gadget
+            else if (obejctToSpawn.GetComponent<IGadget>() != null)
+            {
+                spawnedObject.GetComponent<NetworkIdentity>().AssignClientAuthority(inventory.connectionToClient);
+                if (inventory.gadget)
+                {
+                    newSpawnedObject = inventory.gadget;
+                }
+                else
+                {
+                    nextSpawnTime = NetworkTime.time + spawnTime;
+                    spawned = false;
+                }
+            }
+            if (newSpawnedObject)
+            {
+                newSpawnedObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
+                newSpawnedObject.transform.position = transform.position + new Vector3(0, 1, 0);
+            }
+            return spawnedObject;
         }
         return null;
     }
@@ -79,7 +101,9 @@ public class ObjectSpawner : NetworkBehaviour
     public void spawnObject()
     {
         //print("spawning object...");
+ 
         spawnedObject = Instantiate(obejctToSpawn, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+        newSpawnedObject = spawnedObject;
 
         if (objectType == ObjectType.Gadget || objectType == ObjectType.Weapon)
         {
@@ -89,18 +113,10 @@ public class ObjectSpawner : NetworkBehaviour
             }
         }
 
-        trans = spawnedObject.GetComponent<NetworkTransform>();
         NetworkServer.Spawn(spawnedObject);
         spawned = true;
     }
-    [ServerCallback]
-    public void deSpawnObject()
-    {
-        //print("despawning object...");
-        NetworkServer.Destroy(spawnedObject);
-        spawned = false;
-        spawnedObject = null;
-    }
+
 
     private void OnTriggerExit(Collider other)
     {
