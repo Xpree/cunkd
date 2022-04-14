@@ -354,7 +354,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.1
+  syncInterval: 0
   playerCamera: {fileID: 6314228708957030162}
 --- !u!114 &6250309759976022356
 MonoBehaviour:
