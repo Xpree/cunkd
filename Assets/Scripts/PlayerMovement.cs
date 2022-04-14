@@ -9,18 +9,27 @@ public class PlayerMovement : NetworkBehaviour
     public float maxSpeed = 9.0f;
     public float decelerationSpeed = 27f;
     public float jumpHeight = 1.8f;
+    public float airMovementMultiplier = 1.0f;
 
+    public double coyoteTime = 1.0f;
+    public double strongAirControlTime = 0.1f;
 
     GameInputs _inputs;
 
     Rigidbody _rigidBody;
-    bool _airJumped = false;
-    bool _performJump = false;
-    
+
 
     [Header("Diagnostics")]
     public bool IsGrounded = false;
     public Vector3 GroundNormal = Vector3.up;
+    public bool _airJumped = false;
+    public bool _performJump = false;
+    public double _lastGrounded = 0;
+    public double _lastJump = 0;
+
+    public bool HasStrongAirControl => NetworkTime.time - _lastJump <= strongAirControlTime;
+    public bool HasCoyoteTime => (NetworkTime.time - _lastGrounded <= coyoteTime && _lastGrounded - _lastJump >= coyoteTime);
+
 
     private void Awake()
     {
@@ -34,15 +43,29 @@ public class PlayerMovement : NetworkBehaviour
         _inputs = FindObjectOfType<GameInputs>();
     }
 
+    public Vector3 HorizontalVelocity
+    {
+        get
+        {
+            var vel = _rigidBody.velocity;
+            vel.y = 0;
+            return vel;
+        }
+
+        set
+        {
+            _rigidBody.velocity = new Vector3(value.x, _rigidBody.velocity.y, value.z);
+        }
+    }
+
     void ApplyGravity()
     {
-        _rigidBody.velocity += Physics.gravity * Time.fixedDeltaTime;
+        _rigidBody.velocity += (_rigidBody.mass * Time.fixedDeltaTime) * Physics.gravity;
     }
 
     void ApplyFriction()
     {
-        var vel = _rigidBody.velocity;
-        vel.y = 0;
+        var vel = this.HorizontalVelocity;
         var speed = Mathf.Max(vel.magnitude - decelerationSpeed * Time.fixedDeltaTime);
         if (speed <= 0)
         {
@@ -53,27 +76,34 @@ public class PlayerMovement : NetworkBehaviour
             vel = vel.normalized * speed;
         }
 
-        vel.y = Physics.gravity.y * Time.fixedDeltaTime;
-        _rigidBody.velocity = vel;
+        this.HorizontalVelocity = vel;
     }
 
     void ApplyAcceleration()
     {
         Vector2 move = _inputs.Move;
 
-        Vector3 velocity = _rigidBody.velocity;
-        velocity.y = 0;
-        float terminalSpeed = Mathf.Max(velocity.magnitude, maxSpeed);
         Vector3 velocityChange = (move.x * transform.right + move.y * transform.forward).normalized * maxSpeed;
-        if (!IsGrounded)
+        if (!IsGrounded && !HasStrongAirControl)
         {
-            velocityChange *= Time.fixedDeltaTime;
+            // Air acceleration
+            velocityChange *= airMovementMultiplier * Time.fixedDeltaTime;
         }
-        velocity += velocityChange;
 
+        Vector3 velocity = this.HorizontalVelocity;
+        float terminalSpeed = Mathf.Max(velocity.magnitude, maxSpeed);
+        velocity += velocityChange;
+        // Makes sure the player can't increase it's speed beyond it's previous speed or maxSpeed which ever is greater.
         velocity = Vector3.ClampMagnitude(velocity, terminalSpeed);
-        velocity.y = _rigidBody.velocity.y;
-        _rigidBody.velocity = velocity;
+        this.HorizontalVelocity = velocity;
+    }
+
+    void ApplyJumpForce(float height)
+    {
+        float jumpForce = Mathf.Sqrt(Mathf.Abs((2.0f * _rigidBody.mass * Physics.gravity.y) * height));
+        var vel = _rigidBody.velocity;
+        vel.y = jumpForce;
+        _rigidBody.velocity = vel;
     }
 
     void PerformJump()
@@ -82,23 +112,17 @@ public class PlayerMovement : NetworkBehaviour
             return;
         _performJump = false;
 
-        if (!IsGrounded)
+        if(!IsGrounded && !HasCoyoteTime)
         {
             if (_airJumped)
             {
                 return;
             }
             _airJumped = true;
-        } 
-        else
-        {
-            _airJumped = false;
         }
 
-        float jumpForce = Mathf.Sqrt(Mathf.Abs((2.0f * _rigidBody.mass * Physics.gravity.y) * jumpHeight));
-        var vel = _rigidBody.velocity;
-        vel.y = jumpForce;
-        _rigidBody.velocity = vel;
+        _lastJump = NetworkTime.time;
+        ApplyJumpForce(jumpHeight);
     }
 
 
@@ -110,6 +134,8 @@ public class PlayerMovement : NetworkBehaviour
             if (Vector3.Dot(contact.normal, Vector3.up) > 0.8)
             {
                 IsGrounded = true;
+                _airJumped = false;
+                _lastGrounded = NetworkTime.time;
             }
         }
     }
@@ -133,7 +159,7 @@ public class PlayerMovement : NetworkBehaviour
         }
         else
         {
-            if(IsGrounded && _rigidBody.velocity.y < 0)
+            if (IsGrounded && _rigidBody.velocity.y < 0)
             {
                 ApplyFriction();
             }
@@ -144,7 +170,7 @@ public class PlayerMovement : NetworkBehaviour
     private void Update()
     {
         if (!isLocalPlayer) { return; }
-        
+
         if (_inputs.Jump)
         {
             _performJump = true;
