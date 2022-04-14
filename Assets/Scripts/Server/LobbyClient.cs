@@ -1,5 +1,6 @@
 using UnityEngine;
 using Mirror;
+using System;
 
 /// <summary>
 /// This component works in conjunction with the NetworkRoomManager to make up the multiplayer room system.
@@ -33,6 +34,7 @@ public class LobbyClient : NetworkBehaviour
 
     public static LobbyClient Local = null;
 
+    private string lastRoundWinner;
 
     public static LobbyClient FromConnection(NetworkConnectionToClient conn)
     {
@@ -86,11 +88,17 @@ public class LobbyClient : NetworkBehaviour
     /// </summary>
     void OnGUI()
     {
+        
         CunkdNetManager cunkd = NetworkManager.singleton as CunkdNetManager;
         if (cunkd && cunkd.Lobby.ShowRoomGUI && cunkd.Lobby.IsLobbyActive)
         {
             DrawPlayerReadyState();
             DrawPlayerReadyButton();
+            
+            if(string.IsNullOrEmpty(lastRoundWinner) == false)
+            {
+                GUILayout.Label($"Last round winner!: {lastRoundWinner}");
+            }
         }
     }
 
@@ -135,5 +143,10 @@ public class LobbyClient : NetworkBehaviour
 
             GUILayout.EndArea();
         }
+    }
+    [TargetRpc]
+    internal void TargetSetWinner(string playerName)
+    {
+        lastRoundWinner = playerName;
     }
 }

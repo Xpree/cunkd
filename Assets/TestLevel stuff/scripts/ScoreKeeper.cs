@@ -86,6 +86,7 @@ public class ScoreKeeper : NetworkBehaviour
         {
             winner = alivePlayers[0];
             gameOver = true;
+            LobbyServer.Instance.SetWinner(LobbyClient.FromConnection(winner.connectionToClient).PlayerName);
             GameServer.EndGame();
         }
     }

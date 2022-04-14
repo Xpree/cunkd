@@ -170,14 +170,19 @@ public class LobbyServer : MonoBehaviour
     {
         SpawnOrReplaceClient(conn);
     }
-
+    public void SetWinner(string playerName)
+    {
+        foreach (var client in _lobbyPlayers.clients)
+        {
+            client.TargetSetWinner(playerName);
+        }
+    }
     void OnGUI()
     {
         if (!ShowRoomGUI)
         {
             return;
         }
-
         if (!IsLobbyActive)
         {
             if (NetworkServer.active)
