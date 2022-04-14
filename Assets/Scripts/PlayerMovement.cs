@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 using Mirror;
 
 [RequireComponent(typeof(Rigidbody))]
-public class FPSPlayerController2 : NetworkBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     private Rigidbody playerBody;
     public bool isGrounded = false;
