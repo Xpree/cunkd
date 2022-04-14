@@ -15,6 +15,9 @@ public class PlayerCameraController : NetworkBehaviour
     float pitch = 0.0f;
 
     GameInputs _inputs;
+
+    [SyncVar]
+    float syncedPitch;
     
     // Start is called before the first frame update
     void Awake()
@@ -39,7 +42,10 @@ public class PlayerCameraController : NetworkBehaviour
 
     private void Update()
     {
-        if (!isLocalPlayer) { return; }
+        if (!isLocalPlayer) {
+            cameraTransform.localRotation = Quaternion.Euler(syncedPitch, 0.0f, 0.0f);
+            return;
+        }
         
         if (Keyboard.current.escapeKey.wasPressedThisFrame)
         {
@@ -64,6 +70,7 @@ public class PlayerCameraController : NetworkBehaviour
         pitch -= yMovement;
         pitch = Mathf.Clamp(pitch, -90.0f, 90.0f);
 
+        syncedPitch = pitch;
         cameraTransform.localRotation = Quaternion.Euler(pitch, 0.0f, 0.0f);
         transform.Rotate(Vector3.up * xMovement);
     }
