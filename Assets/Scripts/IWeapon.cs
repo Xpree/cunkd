@@ -1,5 +1,8 @@
 public interface IWeapon
 {
+    //use this to set player references needed by the weapon(if any)
+    public void initializeOnPlayer(Inventory player);
+
     // The primary attack of the weapon (Left Mouse)
     void PrimaryAttack(bool isPressed);
 
