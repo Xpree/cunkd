@@ -103,6 +103,8 @@ public class Inventory : NetworkBehaviour
         if (!isLocalPlayer)
             return;
 
+        GUI.Box(new Rect(Screen.width * 0.5f - 1, Screen.height * 0.5f - 1, 2, 2), GUIContent.none);
+        
         if (currentWeapon.ChargeProgress is float progress)
         {
             GUIDrawProgress(progress);
@@ -146,4 +148,5 @@ public class Inventory : NetworkBehaviour
             inventory.addGadget(pickedUpObject);
         }
     }
+
 }

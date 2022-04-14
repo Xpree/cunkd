@@ -38,7 +38,7 @@ public class GameClient : NetworkBehaviour
             yield return null;
         }
 
-        var input = GetComponent<PlayerInput>();
+        var input = FindObjectOfType<GameInputs>()?.GetComponent<PlayerInput>();
 
         if (input != null)
         {

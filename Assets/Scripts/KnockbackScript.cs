@@ -29,7 +29,7 @@ public class KnockbackScript : NetworkBehaviour
             horizontalNormal = horizontalNormal.normalized;
 
             Vector3 impulse = (horizontalNormal + new Vector3(0, 1, 0) ) * knockbackforce.magnitude;
-            var player = rb.GetComponent<FPSPlayerController>();
+            var player = rb.GetComponent<PlayerMovement>();
             if (player != null)
                 player.TargetAddforce(impulse, ForceMode.Impulse);
             else

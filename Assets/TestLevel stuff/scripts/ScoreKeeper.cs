@@ -57,7 +57,7 @@ public class ScoreKeeper : NetworkBehaviour
     }
 
     [ServerCallback]
-    public void RespawnPlayer(FPSPlayerController player)
+    public void RespawnPlayer(PlayerMovement player)
     {
         ScoreCard sc = player.GetComponent<ScoreCard>();
         sc.livesLeft--;
@@ -65,8 +65,7 @@ public class ScoreKeeper : NetworkBehaviour
         if (0 < sc.getLives())
         {
             int index = Random.Range(1, spawnPositions.Length);
-            player.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-            player.TRpcSetPosition(spawnPositions[index].position);
+            player.TargetRespawn(spawnPositions[index].position);
 
         }
         else
@@ -94,7 +93,7 @@ public class ScoreKeeper : NetworkBehaviour
     [ServerCallback]
     private void OnTriggerEnter(Collider other)
     {
-        FPSPlayerController player = other.gameObject.GetComponent<FPSPlayerController>();
+        PlayerMovement player = other.gameObject.GetComponent<PlayerMovement>();
         if (player)
         {
             RespawnPlayer(player);
