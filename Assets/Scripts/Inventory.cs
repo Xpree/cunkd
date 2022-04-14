@@ -83,6 +83,11 @@ public class Inventory : NetworkBehaviour
                 print("no gadget avaiable");
             }
         }
+
+        if (Keyboard.current[Key.E].wasPressedThisFrame)
+        {
+            shootRay();
+        }
     }
 
     static void GUIDrawProgress(float progress)
@@ -101,6 +106,44 @@ public class Inventory : NetworkBehaviour
         if (currentWeapon.ChargeProgress is float progress)
         {
             GUIDrawProgress(progress);
+        }
+    }
+
+
+    void shootRay()
+    {
+        RaycastHit hit;
+        //print("shooting ray");
+        Camera cam = gameObject.GetComponentInChildren<PlayerCameraController>().playerCamera;
+        Ray ray = cam.ScreenPointToRay(new Vector2(Screen.width, Screen.height) / 2);
+        if (Physics.Raycast(ray.origin, ray.direction, out hit, 15))
+        {
+            print("object hit: " + hit.transform.gameObject);
+
+            ObjectSpawner objectSpawner = hit.transform.gameObject.GetComponent<ObjectSpawner>();
+            if (objectSpawner)
+            {
+                CmdPickupObject(objectSpawner);
+            }
+        }
+    }
+
+    [Command]
+    void CmdPickupObject(ObjectSpawner objectSpawner)
+    {
+        GameObject pickedUpObject = objectSpawner.pickupObject();
+        Inventory inventory = gameObject.GetComponent<Inventory>();
+
+        ScoreCard scorecard = gameObject.GetComponent<ScoreCard>();
+        IGadget gadget = pickedUpObject.GetComponent<IGadget>();
+
+        if (pickedUpObject.name == "Extra Life")
+        {
+            scorecard.livesLeft++;
+        }
+        if (gadget != null)
+        {
+            inventory.addGadget(pickedUpObject);
         }
     }
 }
