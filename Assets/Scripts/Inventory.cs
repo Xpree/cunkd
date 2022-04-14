@@ -53,6 +53,7 @@ public class Inventory : NetworkBehaviour
             NetworkServer.Spawn(weapon2, this.connectionToClient);
             addWeaponsAtStart = false;
             secondWeapon = weapon2;
+            weapon2.transform.localScale = new Vector3(0, 0, 0);
         }
     }
 
@@ -211,6 +212,8 @@ public class Inventory : NetworkBehaviour
         if (!isLocalPlayer)
             return;
 
+        GUI.Box(new Rect(Screen.width * 0.5f - 1, Screen.height * 0.5f - 1, 2, 2), GUIContent.none);
+
         if (currentWeapon.GetComponent<IWeapon>().ChargeProgress is float progress)
         {
             GUIDrawProgress(progress);
@@ -242,22 +245,24 @@ public class Inventory : NetworkBehaviour
         Inventory inventory = gameObject.GetComponent<Inventory>();
         GameObject pickedUpObject = objectSpawner.pickupObject(inventory);
 
-        ScoreCard scorecard = gameObject.GetComponent<ScoreCard>();
-        IGadget gadget = pickedUpObject.GetComponent<IGadget>();
-        IWeapon weapon = pickedUpObject.GetComponent<IWeapon>();
+        if (pickedUpObject)
+        {
+            ScoreCard scorecard = gameObject.GetComponent<ScoreCard>();
+            IGadget gadget = pickedUpObject.GetComponent<IGadget>();
+            IWeapon weapon = pickedUpObject.GetComponent<IWeapon>();
 
-        if (pickedUpObject.name == "Extra Life")
-        {
-            scorecard.livesLeft++;
-        }
-        if (gadget != null)
-        {
-            inventory.addGadget(pickedUpObject);
-        }
-        if (weapon != null)
-        {
-            inventory.addWeapon(pickedUpObject);
+            if (pickedUpObject.name == "Extra Life")
+            {
+                scorecard.livesLeft++;
+            }
+            if (gadget != null)
+            {
+                inventory.addGadget(pickedUpObject);
+            }
+            if (weapon != null)
+            {
+                inventory.addWeapon(pickedUpObject);
+            }
         }
     }
-
 }
