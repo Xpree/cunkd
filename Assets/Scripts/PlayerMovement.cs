@@ -30,6 +30,7 @@ public class PlayerMovement : NetworkBehaviour
     public bool HasStrongAirControl => NetworkTime.time - _lastJump <= strongAirControlTime;
     public bool HasCoyoteTime => (NetworkTime.time - _lastGrounded <= coyoteTime && _lastGrounded - _lastJump >= coyoteTime);
 
+    public bool HasGroundContact => IsGrounded || HasCoyoteTime;
 
     private void Awake()
     {
@@ -113,7 +114,7 @@ public class PlayerMovement : NetworkBehaviour
             return;
         _performJump = false;
 
-        if(!IsGrounded && !HasCoyoteTime)
+        if(!HasGroundContact)
         {
             if (_airJumped)
             {
@@ -154,16 +155,14 @@ public class PlayerMovement : NetworkBehaviour
         ApplyGravity();
         PerformJump();
 
+        if (HasGroundContact && _rigidBody.velocity.y < 0)
+        {
+            ApplyFriction();
+        }
+
         if (_inputs.MovePressed)
         {
             ApplyAcceleration();
-        }
-        else
-        {
-            if (IsGrounded && _rigidBody.velocity.y < 0)
-            {
-                ApplyFriction();
-            }
         }
     }
 
