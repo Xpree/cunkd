@@ -21,8 +21,6 @@ public class ScoreKeeper : NetworkBehaviour
 
     [HideInInspector] string scoreScreenText;
 
-    int index = 0;
-
     [ServerCallback]
     void Start()
     {

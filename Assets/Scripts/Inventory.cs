@@ -28,11 +28,19 @@ public class Inventory : NetworkBehaviour
     public void addGadget(GameObject gad)
     {
         gadget = gad;
+        if (equipped != 3)
+        {
+            gad.transform.localScale = new Vector3(0, 0, 0);
+        }
     }
 
     [Server]
     public void addWeapon(GameObject weapon)
     {
+        if (equipped == 3)
+        {
+            weapon.transform.localScale = new Vector3(0, 0, 0);
+        }
         print(weapon.name + "added to inventory");
 
         if (currentWeapon == firstWeapon)
@@ -86,59 +94,82 @@ public class Inventory : NetworkBehaviour
 
         if (Keyboard.current[Key.Q].wasPressedThisFrame)
         {
-            CmdSwapWeapon();
+            NextInventoryItem();
+        }
+
+        if (Keyboard.current[Key.Digit1].wasPressedThisFrame)
+        {
+            CmdswapTo(1);
+        }
+
+        if (Keyboard.current[Key.Digit2].wasPressedThisFrame)
+        {
+            CmdswapTo(2);
+        }
+
+        if (Keyboard.current[Key.Digit3].wasPressedThisFrame)
+        {
+            CmdswapTo(3);
         }
 
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            currentWeapon.GetComponent<IWeapon>().PrimaryAttack(true);
-        }
-        
-        if (Mouse.current.leftButton.wasReleasedThisFrame)
-        {
-            currentWeapon.GetComponent<IWeapon>().PrimaryAttack(false);
-        }
-
-        if (Mouse.current.rightButton.wasPressedThisFrame)
-        {
-            currentWeapon.GetComponent<IWeapon>().SecondaryAttack(true);
-        }
-        
-        if (Mouse.current.rightButton.wasReleasedThisFrame)
-        {
-            currentWeapon.GetComponent<IWeapon>().SecondaryAttack(false);
-        }
-
-        if (Keyboard.current[Key.F1].wasPressedThisFrame)
-        {
-            if (gadget)
+            if (equipped == 3)
             {
                 gadget.GetComponent<IGadget>().PrimaryUse(true);
                 if (gadget.GetComponent<IGadget>().ChargesLeft <= 0)
                 {
+                    NextInventoryItem();
                     CmdRemoveGadget();
                 }
             }
             else
+                currentWeapon.GetComponent<IWeapon>().PrimaryAttack(true);
+        }
+        
+        if (Mouse.current.leftButton.wasReleasedThisFrame)
+        {
+            if (equipped == 3)
             {
-                print("no gadget avaiable");
+                gadget.GetComponent<IGadget>().PrimaryUse(false);
+                if (gadget.GetComponent<IGadget>().ChargesLeft <= 0)
+                {
+                    NextInventoryItem();
+                    CmdRemoveGadget();
+                }
             }
+            else
+                currentWeapon.GetComponent<IWeapon>().PrimaryAttack(false);
         }
 
-        if (Keyboard.current[Key.F2].wasPressedThisFrame)
+        if (Mouse.current.rightButton.wasPressedThisFrame)
         {
-            if (gadget)
+            if (equipped == 3)
             {
                 gadget.GetComponent<IGadget>().SecondaryUse(true);
                 if (gadget.GetComponent<IGadget>().ChargesLeft <= 0)
                 {
+                    NextInventoryItem();
                     CmdRemoveGadget();
                 }
             }
             else
+                currentWeapon.GetComponent<IWeapon>().SecondaryAttack(true);
+        }
+        
+        if (Mouse.current.rightButton.wasReleasedThisFrame)
+        {
+            if (equipped == 3)
             {
-                print("no gadget avaiable");
+                gadget.GetComponent<IGadget>().SecondaryUse(false);
+                if (gadget.GetComponent<IGadget>().ChargesLeft <= 0)
+                {
+                    NextInventoryItem();
+                    CmdRemoveGadget();
+                }
             }
+            else
+                currentWeapon.GetComponent<IWeapon>().SecondaryAttack(false);
         }
 
         if (Keyboard.current[Key.E].wasPressedThisFrame)
@@ -165,6 +196,7 @@ public class Inventory : NetworkBehaviour
     [Command]
     void CmdRemoveGadget()
     {
+        
         NetworkServer.Destroy(gadget);
     }
 
@@ -183,20 +215,50 @@ public class Inventory : NetworkBehaviour
         }
     }
 
-    [Command]
-    void CmdSwapWeapon()
+    int equipped = 1;
+
+    [Client]
+    void NextInventoryItem()
     {
-        print("swapping weapons");
-        currentWeapon.transform.localScale = new Vector3(0, 0, 0);
-        if (currentWeapon == firstWeapon)
-        {
-            currentWeapon = secondWeapon;
-        }
-        else if (secondWeapon)
+        if (2 < equipped)
+            equipped = 0;
+        if (!gadget && equipped == 2)
+            equipped = 0;
+        CmdswapTo(++equipped);
+    }
+
+    [Command]
+    void CmdswapTo(int equip)
+    {
+        //weapon 1
+        if (equip == 1)
         {
             currentWeapon = firstWeapon;
+            if (gadget)
+            {
+                gadget.transform.localScale = new Vector3(0, 0, 0);
+            }
+            firstWeapon.transform.localScale = new Vector3(1, 1, 1);
+            secondWeapon.transform.localScale = new Vector3(0, 0, 0);
         }
-        currentWeapon.transform.localScale = new Vector3(0.07f, 0.07f, 0.07f);
+        //weapon 2
+        if (equip == 2)
+        {
+            currentWeapon = secondWeapon;
+            if (gadget)
+            {
+                gadget.transform.localScale = new Vector3(0, 0, 0);
+            }
+            firstWeapon.transform.localScale = new Vector3(0, 0, 0);
+            secondWeapon.transform.localScale = new Vector3(1, 1, 1);
+        }
+        //gadget
+        if (equip == 3 && gadget)
+        {
+            gadget.transform.localScale = new Vector3(1, 1, 1);
+            firstWeapon.transform.localScale = new Vector3(0, 0, 0);
+            secondWeapon.transform.localScale = new Vector3(0, 0, 0);
+        }
     }
 
     static void GUIDrawProgress(float progress)
@@ -229,7 +291,7 @@ public class Inventory : NetworkBehaviour
         Ray ray = cam.ScreenPointToRay(new Vector2(Screen.width, Screen.height) / 2);
         if (Physics.Raycast(ray.origin, ray.direction, out hit, 15))
         {
-            print("object hit: " + hit.transform.gameObject);
+            //print("object hit: " + hit.transform.gameObject);
 
             ObjectSpawner objectSpawner = hit.transform.gameObject.GetComponent<ObjectSpawner>();
             if (objectSpawner)
@@ -243,7 +305,7 @@ public class Inventory : NetworkBehaviour
     void CmdPickupObject(ObjectSpawner objectSpawner)
     {
         Inventory inventory = gameObject.GetComponent<Inventory>();
-        GameObject pickedUpObject = objectSpawner.pickupObject(inventory);
+        GameObject pickedUpObject = objectSpawner.pickupObject(this);
 
         if (pickedUpObject)
         {

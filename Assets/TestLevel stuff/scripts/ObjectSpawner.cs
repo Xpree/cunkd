@@ -82,6 +82,7 @@ public class ObjectSpawner : NetworkBehaviour
             if (newSpawnedObject)
             {
                 newSpawnedObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
+                newSpawnedObject.transform.localScale = new Vector3(1, 1, 1);
                 newSpawnedObject.transform.position = transform.position + new Vector3(0, 1, 0);
             }
             return spawnedObject;
@@ -102,7 +103,7 @@ public class ObjectSpawner : NetworkBehaviour
     {
         //print("spawning object...");
  
-        spawnedObject = Instantiate(obejctToSpawn, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+        spawnedObject = Instantiate(obejctToSpawn, transform.position + new Vector3(0, 1, 0), obejctToSpawn.transform.rotation);
         newSpawnedObject = spawnedObject;
 
         if (objectType == ObjectType.Gadget || objectType == ObjectType.Weapon)
