@@ -1,32 +1,73 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using UnityEngine.InputSystem;
 
 public class Inventory : NetworkBehaviour
 {
-    IWeapon currentWeapon;
-    [SyncVar(hook = nameof(onGadgetAdded))]GameObject gadget;
-    
-    private void Awake()
+    [SyncVar(hook = nameof(onGadgetAdded))]public GameObject gadget;
+    [SyncVar(hook = nameof(onWeaponAdded))] GameObject firstWeapon;
+    [SyncVar(hook = nameof(onWeaponAdded))] GameObject secondWeapon;
+    [SyncVar] public GameObject currentWeapon;
+
+    [SerializeField] GameObject startWeapon;
+    [SerializeField]public Transform objectAnchor;
+    [SerializeField] public Transform weaponAnchor;
+
+    bool addWeaponsAtStart = true;
+
+    [Server]
+    public override void OnStartServer()
     {
-        currentWeapon = GetComponent<GravityGun>();
+        base.OnStartServer();
+        GameObject weapon = Instantiate(startWeapon, transform.position, Quaternion.identity);
+        NetworkServer.Spawn(weapon, this.connectionToClient);
+        addWeapon(weapon);
     }
 
     [Server]
     public void addGadget(GameObject gad)
     {
-        GameObject go = Instantiate(gad, transform.position, Quaternion.identity);
-        NetworkServer.Spawn(go);
-        gadget = go;
+        gadget = gad;
+    }
+
+    [Server]
+    public void addWeapon(GameObject weapon)
+    {
+        print(weapon.name + "added to inventory");
+
+        if (currentWeapon == firstWeapon)
+        {
+            firstWeapon = weapon;
+            currentWeapon = weapon;
+        }
+        else
+        {
+            secondWeapon = weapon;
+            currentWeapon = weapon;
+        }
+        if (addWeaponsAtStart)
+        {
+            GameObject weapon2 = Instantiate(startWeapon, transform.position, Quaternion.identity);
+            NetworkServer.Spawn(weapon2, this.connectionToClient);
+            addWeaponsAtStart = false;
+            secondWeapon = weapon2;
+        }
     }
 
     [Client]
     private void onGadgetAdded(GameObject oldGameObject, GameObject newGameObject)
     {
-        newGameObject.transform.SetParent(gameObject.transform);
-        newGameObject.GetComponent<MeshRenderer>().enabled = false;
+        if (isLocalPlayer)
+        {
+            print(newGameObject.name + " added to inventory");
+        }
+    }
+
+    [Client]
+    private void onWeaponAdded(GameObject oldGameObject, GameObject newGameObject)
+    {
+        newGameObject.GetComponent<IWeapon>().initializeOnPlayer(this);
+
         if (isLocalPlayer)
         {
             print(newGameObject.name + " added to inventory");
@@ -39,25 +80,30 @@ public class Inventory : NetworkBehaviour
     {
         if (!isLocalPlayer)
             return;
-        
+
+        if (Keyboard.current[Key.Q].wasPressedThisFrame)
+        {
+            CmdSwapWeapon();
+        }
+
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            currentWeapon.PrimaryAttack(true);
+            currentWeapon.GetComponent<IWeapon>().PrimaryAttack(true);
         }
         
         if (Mouse.current.leftButton.wasReleasedThisFrame)
         {
-            currentWeapon.PrimaryAttack(false);
+            currentWeapon.GetComponent<IWeapon>().PrimaryAttack(false);
         }
 
         if (Mouse.current.rightButton.wasPressedThisFrame)
         {
-            currentWeapon.SecondaryAttack(true);
+            currentWeapon.GetComponent<IWeapon>().SecondaryAttack(true);
         }
         
         if (Mouse.current.rightButton.wasReleasedThisFrame)
         {
-            currentWeapon.SecondaryAttack(false);
+            currentWeapon.GetComponent<IWeapon>().SecondaryAttack(false);
         }
 
         if (Keyboard.current[Key.F1].wasPressedThisFrame)
@@ -65,6 +111,10 @@ public class Inventory : NetworkBehaviour
             if (gadget)
             {
                 gadget.GetComponent<IGadget>().PrimaryUse(true);
+                if (gadget.GetComponent<IGadget>().ChargesLeft <= 0)
+                {
+                    CmdRemoveGadget();
+                }
             }
             else
             {
@@ -77,12 +127,67 @@ public class Inventory : NetworkBehaviour
             if (gadget)
             {
                 gadget.GetComponent<IGadget>().SecondaryUse(true);
+                if (gadget.GetComponent<IGadget>().ChargesLeft <= 0)
+                {
+                    CmdRemoveGadget();
+                }
             }
             else
             {
                 print("no gadget avaiable");
             }
         }
+
+        //update weapon transform on client
+        if (currentWeapon)
+        {
+            currentWeapon.transform.position = weaponAnchor.transform.position;
+            currentWeapon.transform.rotation = weaponAnchor.transform.rotation;
+        }
+        if (gadget)
+        {
+            gadget.transform.position = weaponAnchor.transform.position;
+            gadget.transform.rotation = weaponAnchor.transform.rotation;
+        }
+
+        //update weapon stransform on server
+        CmdUpdateTransforms();
+    }
+
+    [Command]
+    void CmdRemoveGadget()
+    {
+        NetworkServer.Destroy(gadget);
+    }
+
+    [Command]
+    void CmdUpdateTransforms()
+    {
+        if (currentWeapon)
+        {
+            currentWeapon.transform.position = weaponAnchor.transform.position;
+            currentWeapon.transform.rotation = weaponAnchor.transform.rotation;
+        }
+        if (gadget)
+        {
+            gadget.transform.position = weaponAnchor.transform.position;
+            gadget.transform.rotation = weaponAnchor.transform.rotation;
+        }
+    }
+
+    [Command]
+    void CmdSwapWeapon()
+    {
+        currentWeapon.transform.localScale = new Vector3(0, 0, 0);
+        if (currentWeapon == firstWeapon)
+        {
+            currentWeapon = secondWeapon;
+        }
+        else if (secondWeapon)
+        {
+            currentWeapon = firstWeapon;
+        }
+        currentWeapon.transform.localScale = new Vector3(0.07f, 0.07f, 0.07f);
     }
 
     static void GUIDrawProgress(float progress)
@@ -98,7 +203,7 @@ public class Inventory : NetworkBehaviour
         if (!isLocalPlayer)
             return;
 
-        if (currentWeapon.ChargeProgress is float progress)
+        if (currentWeapon != null && currentWeapon.GetComponent<IWeapon>().ChargeProgress is float progress)
         {
             GUIDrawProgress(progress);
         }

@@ -6,32 +6,34 @@ using Mirror;
 public class GadgetExampleBanana : NetworkBehaviour, IGadget
 {
     [SyncVar] [SerializeField] int Charges;
-    [SyncVar]int chargesLeft;
+    [SyncVar]public int chargesLeft;
     [SerializeField] bool isPassive;
 
     [SyncVar] float ChargeProgress = 0f;
 
     bool IGadget.isPassive => isPassive;
     int IGadget.Charges => Charges;
+    int IGadget.ChargesLeft => chargesLeft;
 
     private void Awake()
     {
         chargesLeft = Charges;
     }
-
+    [Client]
     void CmdPrimaryUse()
     {
         if (0 < chargesLeft)
         {
             print("ate a piece of the banana");
             chargesLeft--;
-
         }
         if (chargesLeft <= 0)
         {
-            outOfCharges();
+            print("gadget out of charges");
         }
     }
+
+    [Client]
     void CmdSecondaryUse()
     {
         if (0 < chargesLeft)
@@ -41,7 +43,7 @@ public class GadgetExampleBanana : NetworkBehaviour, IGadget
         }
         if (chargesLeft <= 0)
         {
-            outOfCharges();
+            print("gadget out of charges");
         }
     }
 
@@ -53,12 +55,6 @@ public class GadgetExampleBanana : NetworkBehaviour, IGadget
     void IGadget.SecondaryUse(bool isPressed)
     {
         CmdSecondaryUse();
-    }
-
-    void outOfCharges()
-    {
-        print("gadget out of charges");
-        NetworkServer.Destroy(gameObject);
     }
 
     float? IGadget.ChargeProgress => this.ChargeProgress;

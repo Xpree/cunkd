@@ -36,6 +36,7 @@ public class PlayerCameraController : NetworkBehaviour
         transform.Rotate(Vector3.up * xMovement);
     }
 
+
     public override void OnStartLocalPlayer()
     {
         Camera.main.enabled = false;

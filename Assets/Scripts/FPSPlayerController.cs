@@ -440,11 +440,12 @@ public class FPSPlayerController : NetworkBehaviour
     [Command]
     void CmdPickupObject(ObjectSpawner objectSpawner)
     {
-        GameObject pickedUpObject = objectSpawner.pickupObject();
         Inventory inventory = gameObject.GetComponent<Inventory>();
+        GameObject pickedUpObject = objectSpawner.pickupObject(inventory);
 
         ScoreCard scorecard = gameObject.GetComponent<ScoreCard>();
         IGadget gadget = pickedUpObject.GetComponent<IGadget>();
+        IWeapon weapon = pickedUpObject.GetComponent<IWeapon>();
 
         if (pickedUpObject.name == "Extra Life")
         {
@@ -453,6 +454,10 @@ public class FPSPlayerController : NetworkBehaviour
         if (gadget != null)
         {
             inventory.addGadget(pickedUpObject);
+        }
+        if (weapon != null)
+        {
+            inventory.addWeapon(pickedUpObject);
         }
     }
 

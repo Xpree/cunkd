@@ -3,6 +3,8 @@ public interface IGadget
 
     int Charges { get; }
 
+    int ChargesLeft { get; }
+
     bool isPassive { get; }
     // The primary use of the gadget
     void PrimaryUse(bool isPressed);

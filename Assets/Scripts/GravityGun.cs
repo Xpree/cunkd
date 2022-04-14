@@ -34,6 +34,11 @@ public class GravityGun : NetworkBehaviour, IWeapon
     bool Push = false;
     [SyncVar] float ChargeProgress = 0f;
 
+    void IWeapon.initializeOnPlayer(Inventory player)
+    {
+        AnchorPoint = player.objectAnchor;
+        PlayerCollider = player.gameObject.GetComponent<Collider>();
+    }
 
     [Command]
     void CmdPrimaryAttack(bool isPressed, Vector3 direction, Vector3 position)
