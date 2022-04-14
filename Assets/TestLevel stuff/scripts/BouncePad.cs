@@ -20,9 +20,9 @@ public class BouncePad : NetworkBehaviour
 
     void LaunchObject(Rigidbody rb)
     {
-        print("launching object");
-        rb.AddForce(transform.up * objectForce);
-
+        print("launching object");        
+        if(Util.HasPhysicsAuthority(rb.gameObject))
+            rb.AddForce(Vector3.up * objectForce);
         sphere.SetActive(true);
         nextLaunch = NetworkTime.time + cooldown;
         isReady = false;
