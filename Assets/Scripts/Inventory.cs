@@ -214,7 +214,7 @@ public class Inventory : NetworkBehaviour
 
         GUI.Box(new Rect(Screen.width * 0.5f - 1, Screen.height * 0.5f - 1, 2, 2), GUIContent.none);
 
-        if (currentWeapon.GetComponent<IWeapon>().ChargeProgress is float progress)
+        if (currentWeapon.GetComponent<IWeapon>()?.ChargeProgress is float progress)
         {
             GUIDrawProgress(progress);
         }
