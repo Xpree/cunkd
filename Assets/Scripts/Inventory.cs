@@ -88,6 +88,19 @@ public class Inventory : NetworkBehaviour
         {
             shootRay();
         }
+
+        if (Keyboard.current[Key.Digit1].wasPressedThisFrame)
+        {
+            if(currentWeapon is GravityGun)
+            {
+                currentWeapon = GetComponent<BlackHoleGun>();
+            } 
+            else
+            {
+                currentWeapon = GetComponent<GravityGun>();
+            }
+            
+        }
     }
 
     static void GUIDrawProgress(float progress)
@@ -105,7 +118,7 @@ public class Inventory : NetworkBehaviour
 
         GUI.Box(new Rect(Screen.width * 0.5f - 1, Screen.height * 0.5f - 1, 2, 2), GUIContent.none);
         
-        if (currentWeapon.ChargeProgress is float progress)
+        if (currentWeapon?.ChargeProgress is float progress)
         {
             GUIDrawProgress(progress);
         }
