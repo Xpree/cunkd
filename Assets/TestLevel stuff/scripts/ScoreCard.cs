@@ -71,19 +71,4 @@ public class ScoreCard : NetworkBehaviour
     {
         return livesLeft;
     }
-
-    [ClientCallback]
-    private void Update()
-    {
-        if (!isLocalPlayer)
-            return;
-        if (Keyboard.current[Key.Tab].wasPressedThisFrame)
-        {
-            scoreScreen.SetActive(true);
-        }
-        if (Keyboard.current[Key.Tab].wasReleasedThisFrame)
-        {
-            scoreScreen.SetActive(false);
-        }
-    }
 }

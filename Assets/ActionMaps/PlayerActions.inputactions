@@ -238,7 +238,7 @@
             ]
         },
         {
-            "name": "Player",
+            "name": "Player Movement",
             "id": "73ed27c1-9832-4077-bb6d-3486d2cbbb42",
             "actions": [
                 {
@@ -346,6 +346,230 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "Player Actions",
+            "id": "f80b9821-25d4-45dd-b123-6c5872caabcb",
+            "actions": [
+                {
+                    "name": "Primary Attack",
+                    "type": "Button",
+                    "id": "cfa076d1-6db2-491a-86f9-b8da5afb4671",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Secondary Attack",
+                    "type": "Button",
+                    "id": "d750388b-8d49-4c83-93ac-0e6d4b75b339",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "c462380d-fac8-4ca9-a00f-a9bdf0ec6c80",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Select Item 1",
+                    "type": "Button",
+                    "id": "45a6043f-b93f-4f18-ba93-46561f355742",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Select Item 2",
+                    "type": "Button",
+                    "id": "041be78d-6064-48ec-b8e3-4ddb23354308",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Select Item 3",
+                    "type": "Button",
+                    "id": "67e50ebe-bed8-4504-8964-7638bcadaaec",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Next Item",
+                    "type": "Button",
+                    "id": "6569df22-ccd9-4dd3-8f8a-28bf7d3a2465",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d0cf87d0-0769-44cc-b0e9-b261a755e37a",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Primary Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9125bad3-9017-4a4e-a9e8-b10ab23df15b",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Secondary Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "014c176b-25a1-4679-9fc2-0378092c12f0",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8e019c05-dbc3-42bb-a82b-a3407e4a16bb",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select Item 1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3ac14fc5-012d-419d-9d6f-4bb28da89a0f",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select Item 2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f915fa3c-ae23-4379-8e03-77babe510559",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select Item 3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8edf1586-77ce-410b-832d-9cd640bde889",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Next Item",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Spectator",
+            "id": "27e1a761-8ed5-4b1f-98cb-4362bf415aad",
+            "actions": [
+                {
+                    "name": "Spectate Next",
+                    "type": "Button",
+                    "id": "417c6e09-ad4f-44b4-ae68-302de85b6250",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4e9039c3-9ed7-4f9f-9541-6cc12f12950b",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Spectate Next",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Common",
+            "id": "7e9eaacb-2b71-41d2-a8b1-7721957a1ca5",
+            "actions": [
+                {
+                    "name": "Show Scoreboard",
+                    "type": "Button",
+                    "id": "4ffbbd38-5f11-4ff0-92f8-510488daf1c2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Toggle Menu",
+                    "type": "Button",
+                    "id": "7eead5c2-5e2b-4e97-bb68-16ab118c5ac9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "6c34d432-87dd-4550-b55e-bfde88e6ee9e",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Show Scoreboard",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d45fb9ae-d308-4021-8167-54e999a0c4a9",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

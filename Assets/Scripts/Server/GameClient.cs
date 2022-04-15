@@ -10,6 +10,9 @@ public class GameClient : NetworkBehaviour
 
     public bool Loaded { get { return _loaded; } }
 
+    GameInputs _inputs = null;
+
+
     [Server]
     public LobbyClient GetLobbyClient()
     {
@@ -20,14 +23,25 @@ public class GameClient : NetworkBehaviour
     void CmdLoaded()
     {
         this._loaded = true;
-        GameServer.OnGameClientLoaded();
+        if(GameServer.Instance.HasRoundStarted)
+        {
+            GameServer.TransitionToSpectator(this.gameObject);
+        }
+        else
+        {
+            GameServer.OnGameClientLoaded();
+        }        
     }
 
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
         CmdLoaded();
-        this._loaded = true;
+        _loaded = true;
+
+        _inputs = FindObjectOfType<GameInputs>();
+        _inputs.SetPlayerMode();
+        _inputs.PreventInput();
     }
 
     IEnumerator DelayGameStart(double networkTime)
@@ -38,30 +52,14 @@ public class GameClient : NetworkBehaviour
             yield return null;
         }
 
-        var input = FindObjectOfType<GameInputs>()?.GetComponent<PlayerInput>();
-
-        if (input != null)
-        {
-            input.enabled = true;
-        }
-        else
-        {
-            Debug.Log("Missing input component!");
-        }
-
+        _inputs.EnableInput();
     }
 
 
     [TargetRpc]
     public void TargetGameStart(double networkTime)
     {
+        FindObjectOfType<Countdown>()?.StartCountdown(networkTime);
         StartCoroutine(DelayGameStart(networkTime));
-    }
-
-
-    private void OnGUI()
-    {
-        if (!isLocalPlayer)
-            return;
     }
 }

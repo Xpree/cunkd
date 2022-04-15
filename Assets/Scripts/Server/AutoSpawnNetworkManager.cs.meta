@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 927b66ad3f8d454438bd2700b856ac70
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - NetworkManagerPrefab: {fileID: 8980317232237182240, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

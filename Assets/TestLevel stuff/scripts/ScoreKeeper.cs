@@ -19,12 +19,20 @@ public class ScoreKeeper : NetworkBehaviour
     [HideInInspector] public bool gameOver = false;
     [HideInInspector] public ScoreCard winner;
 
-    [HideInInspector] string scoreScreenText;
+    [SyncVar] string scoreScreenText;
+
+    GameInputs gameInputs;
 
     [ServerCallback]
     void Start()
     {
         spawnPositions = startPositions.GetComponentsInChildren<Transform>();
+    }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        gameInputs = FindObjectOfType<GameInputs>();
     }
 
     [Server]
@@ -121,4 +129,16 @@ public class ScoreKeeper : NetworkBehaviour
             player.scoreScreenText = scoreScreenText;
         }
     }
+
+
+    [ClientCallback]
+    private void Update()
+    {
+        if(gameInputs.ShowScoreboard.WasPressedThisFrame() || gameInputs.ShowScoreboard.WasReleasedThisFrame())
+        {
+            bool activateScoreboard = gameInputs.ShowScoreboard.WasPressedThisFrame();
+            // TODO
+        }
+    }
+
 }

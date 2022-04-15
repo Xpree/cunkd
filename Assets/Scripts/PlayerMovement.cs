@@ -81,10 +81,8 @@ public class PlayerMovement : NetworkBehaviour
         this.HorizontalVelocity = vel;
     }
 
-    void ApplyAcceleration()
+    void ApplyAcceleration(Vector2 move)
     {
-        Vector2 move = _inputs.Move;
-
         Vector3 velocityChange = (move.x * transform.right + move.y * transform.forward).normalized * maxSpeed;
         if (!IsGrounded && !HasStrongAirControl)
         {
@@ -160,9 +158,10 @@ public class PlayerMovement : NetworkBehaviour
             ApplyFriction();
         }
 
-        if (_inputs.MovePressed)
+        Vector2 move = _inputs.Move.ReadValue<Vector2>();
+        if (move.sqrMagnitude > 0)
         {
-            ApplyAcceleration();
+            ApplyAcceleration(move);
         }
     }
 
@@ -171,7 +170,7 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (!isLocalPlayer) { return; }
 
-        if (_inputs.Jump)
+        if (_inputs.Jump.WasPressedThisFrame())
         {
             _performJump = true;
         }

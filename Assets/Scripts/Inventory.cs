@@ -15,6 +15,8 @@ public class Inventory : NetworkBehaviour
 
     bool addWeaponsAtStart = true;
 
+    GameInputs gameInputs;
+
     [Server]
     public override void OnStartServer()
     {
@@ -22,6 +24,12 @@ public class Inventory : NetworkBehaviour
         GameObject weapon = Instantiate(startWeapon, transform.position, Quaternion.identity);
         NetworkServer.Spawn(weapon, this.connectionToClient);
         addWeapon(weapon);
+    }
+
+    public override void OnStartLocalPlayer()
+    {
+        base.OnStartLocalPlayer();
+        gameInputs = FindObjectOfType<GameInputs>();
     }
 
     [Server]
@@ -85,112 +93,79 @@ public class Inventory : NetworkBehaviour
         }
     }
 
-    // Temporary location of attack input
     [Client]
+    void HandleInput()
+    {
+
+        if (gameInputs.NextItem.triggered)
+        {
+            NextInventoryItem();
+        }
+
+        if (gameInputs.SelectItem1.triggered)
+        {
+            CmdswapTo(1);
+        }
+
+        if (gameInputs.SelectItem2.triggered)
+        {
+            CmdswapTo(2);
+        }
+
+        if (gameInputs.SelectItem3.triggered)
+        {
+            CmdswapTo(3);
+        }
+
+        if (gameInputs.PrimaryAttack.WasPressedThisFrame() || gameInputs.PrimaryAttack.WasReleasedThisFrame())
+        {
+            var wasPressed = gameInputs.PrimaryAttack.WasPressedThisFrame();
+            if (equipped == 3)
+            {
+                gadget.GetComponent<IGadget>().PrimaryUse(wasPressed);
+                if (gadget.GetComponent<IGadget>().ChargesLeft <= 0)
+                {
+                    NextInventoryItem();
+                    CmdRemoveGadget();
+                }
+            }
+            else
+                currentWeapon.GetComponent<IWeapon>().PrimaryAttack(wasPressed);
+        }
+
+
+        if (gameInputs.SecondaryAttack.WasPressedThisFrame() || gameInputs.SecondaryAttack.WasReleasedThisFrame())
+        {
+            var wasPressed = gameInputs.SecondaryAttack.WasPressedThisFrame();
+            if (equipped == 3)
+            {
+                gadget.GetComponent<IGadget>().SecondaryUse(wasPressed);
+                if (gadget.GetComponent<IGadget>().ChargesLeft <= 0)
+                {
+                    NextInventoryItem();
+                    CmdRemoveGadget();
+                }
+            }
+            else
+                currentWeapon.GetComponent<IWeapon>().SecondaryAttack(wasPressed);
+        }
+
+
+        if (gameInputs.Interact.triggered)
+        {
+            Interact();
+        }
+    }
+
+    [ClientCallback]
     void Update()
     {
         if (!isLocalPlayer)
             return;
 
-        if (Keyboard.current[Key.Q].wasPressedThisFrame)
-        {
-            NextInventoryItem();
-        }
+        HandleInput();
+        UpdateTransforms();
 
-        if (Keyboard.current[Key.Digit1].wasPressedThisFrame)
-        {
-            CmdswapTo(1);
-        }
-
-        if (Keyboard.current[Key.Digit2].wasPressedThisFrame)
-        {
-            CmdswapTo(2);
-        }
-
-        if (Keyboard.current[Key.Digit3].wasPressedThisFrame)
-        {
-            CmdswapTo(3);
-        }
-
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            if (equipped == 3)
-            {
-                gadget.GetComponent<IGadget>().PrimaryUse(true);
-                if (gadget.GetComponent<IGadget>().ChargesLeft <= 0)
-                {
-                    NextInventoryItem();
-                    CmdRemoveGadget();
-                }
-            }
-            else
-                currentWeapon.GetComponent<IWeapon>().PrimaryAttack(true);
-        }
-        
-        if (Mouse.current.leftButton.wasReleasedThisFrame)
-        {
-            if (equipped == 3)
-            {
-                gadget.GetComponent<IGadget>().PrimaryUse(false);
-                if (gadget.GetComponent<IGadget>().ChargesLeft <= 0)
-                {
-                    NextInventoryItem();
-                    CmdRemoveGadget();
-                }
-            }
-            else
-                currentWeapon.GetComponent<IWeapon>().PrimaryAttack(false);
-        }
-
-        if (Mouse.current.rightButton.wasPressedThisFrame)
-        {
-            if (equipped == 3)
-            {
-                gadget.GetComponent<IGadget>().SecondaryUse(true);
-                if (gadget.GetComponent<IGadget>().ChargesLeft <= 0)
-                {
-                    NextInventoryItem();
-                    CmdRemoveGadget();
-                }
-            }
-            else
-                currentWeapon.GetComponent<IWeapon>().SecondaryAttack(true);
-        }
-        
-        if (Mouse.current.rightButton.wasReleasedThisFrame)
-        {
-            if (equipped == 3)
-            {
-                gadget.GetComponent<IGadget>().SecondaryUse(false);
-                if (gadget.GetComponent<IGadget>().ChargesLeft <= 0)
-                {
-                    NextInventoryItem();
-                    CmdRemoveGadget();
-                }
-            }
-            else
-                currentWeapon.GetComponent<IWeapon>().SecondaryAttack(false);
-        }
-
-        if (Keyboard.current[Key.E].wasPressedThisFrame)
-        {
-            shootRay();
-        }
-
-        //update weapon transform on client
-        if (currentWeapon)
-        {
-            currentWeapon.transform.position = weaponAnchor.transform.position;
-            currentWeapon.transform.rotation = weaponAnchor.transform.rotation;
-        }
-        if (gadget)
-        {
-            gadget.transform.position = weaponAnchor.transform.position;
-            gadget.transform.rotation = weaponAnchor.transform.rotation;
-        }
-
-        //update weapon stransform on server
-        CmdUpdateTransforms();
     }
 
     [Command]
@@ -213,6 +188,25 @@ public class Inventory : NetworkBehaviour
             gadget.transform.position = weaponAnchor.transform.position;
             gadget.transform.rotation = weaponAnchor.transform.rotation;
         }
+    }
+
+    [Client]
+    void UpdateTransforms()
+    {
+        //update weapon transform on client
+        if (currentWeapon)
+        {
+            currentWeapon.transform.position = weaponAnchor.transform.position;
+            currentWeapon.transform.rotation = weaponAnchor.transform.rotation;
+        }
+        if (gadget)
+        {
+            gadget.transform.position = weaponAnchor.transform.position;
+            gadget.transform.rotation = weaponAnchor.transform.rotation;
+        }
+
+        //update weapon stransform on server
+        CmdUpdateTransforms();
     }
 
     int equipped = 1;
@@ -283,7 +277,7 @@ public class Inventory : NetworkBehaviour
     }
 
 
-    void shootRay()
+    void Interact()
     {
         //print("shooting ray");
         RaycastHit hit;

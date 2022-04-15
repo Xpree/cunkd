@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
 
-public class Countdown : NetworkBehaviour
+public class Countdown : MonoBehaviour
 {
     Animator _animator;
     private void Awake()
@@ -11,8 +10,7 @@ public class Countdown : NetworkBehaviour
         _animator = GetComponent<Animator>();
     }
 
-    [ClientRpc]
-    public void RpcStartCountdown(double networkTime)
+    public void StartCountdown(double networkTime)
     {
         _animator.Play("Countdown");
     }

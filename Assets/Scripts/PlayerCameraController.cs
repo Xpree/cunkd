@@ -52,19 +52,8 @@ public class PlayerCameraController : NetworkBehaviour
             return;
         }
         
-        if (Keyboard.current.escapeKey.wasPressedThisFrame)
-        {
-            if (Cursor.lockState == CursorLockMode.Locked)
-            {
-                Cursor.lockState = CursorLockMode.None;
-            }
-            else
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-        }
-
-        moveCamera(_inputs.Look);
+        if(Cursor.lockState == CursorLockMode.Locked)
+            moveCamera(_inputs.Look.ReadValue<Vector2>());
     }
     
     void moveCamera(Vector2 delta)

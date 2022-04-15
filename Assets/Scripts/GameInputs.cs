@@ -5,47 +5,126 @@ using UnityEngine.InputSystem;
 
 public class GameInputs : MonoBehaviour
 {
-	[Header("Character Input Values")]
-	public Vector2 Move;
-	public bool MovePressed;
-	public Vector2 Look;
-	public bool Jump;
+	[HideInInspector]
+	public InputAction Move;
+	[HideInInspector]
+	public InputAction Look;
+	[HideInInspector]
+	public InputAction Jump;
 
-	public void OnMove(InputValue value)
-	{
-		MoveInput(value.Get<Vector2>());
-	}
+	[HideInInspector]
+	public InputAction NextItem;
+	[HideInInspector]
+	public InputAction Interact;
 
-	public void OnLook(InputValue value)
-	{
-		LookInput(value.Get<Vector2>());
-	}
+	[HideInInspector]
+	public InputAction PrimaryAttack;
+	[HideInInspector]
+	public InputAction SecondaryAttack;
 
-	public void OnJump(InputValue value)
-	{
-		JumpInput(value.isPressed);
-	}
+	[HideInInspector]
+	public InputAction SelectItem1;
+	[HideInInspector]
+	public InputAction SelectItem2;
+	[HideInInspector]
+	public InputAction SelectItem3;
 
+	[HideInInspector]
+	public InputAction SpectateNext;
 
-	public void MoveInput(Vector2 newMoveDirection)
-	{
-		Move = newMoveDirection;
-		MovePressed = newMoveDirection.sqrMagnitude > 0;
-	}
+	[HideInInspector]
+	public InputAction ShowScoreboard;
+	[HideInInspector]
+	public InputAction ToggleMenu;
 
-	public void LookInput(Vector2 newLookDirection)
-	{
-		Look = newLookDirection;
-	}
+	[HideInInspector]
+	public InputActionMap PlayerMovementActionMap;
+	[HideInInspector]
+	public InputActionMap PlayerActionsActionMap;
+	[HideInInspector]
+	public InputActionMap SpectatorActionMap;
+	[HideInInspector]
+	public InputActionMap CommonActionMap;
+	[HideInInspector]
+	public PlayerInput Input;
 
-	public void JumpInput(bool newJumpState)
-	{
-		Jump = newJumpState;
-	}
-
-
-    private void FixedUpdate()
+    private void Awake()
     {
-		Jump = false;
+		Input = GetComponent<PlayerInput>();
+		Input.enabled = false;
+
+		CommonActionMap = Input.actions.FindActionMap("Common");
+		CommonActionMap.Enable();
+
+		ShowScoreboard = CommonActionMap.FindAction("Show Scoreboard");
+		ToggleMenu = CommonActionMap.FindAction("Toggle Menu");
+
+		SpectatorActionMap = Input.actions.FindActionMap("Spectator");
+		SpectateNext = SpectatorActionMap.FindAction("Spectate Next");
+
+		PlayerMovementActionMap = Input.actions.FindActionMap("Player Movement");
+		Move = PlayerMovementActionMap.FindAction("Move");
+		Look = PlayerMovementActionMap.FindAction("Look");
+		Jump = PlayerMovementActionMap.FindAction("Jump");
+
+		PlayerActionsActionMap = Input.actions.FindActionMap("Player Actions");
+		NextItem = PlayerActionsActionMap.FindAction("Next Item");
+		Interact = PlayerActionsActionMap.FindAction("Interact");
+		PrimaryAttack = PlayerActionsActionMap.FindAction("Primary Attack");
+		SecondaryAttack = PlayerActionsActionMap.FindAction("Secondary Attack");
+		SelectItem1 = PlayerActionsActionMap.FindAction("Select Item 1");
+		SelectItem2 = PlayerActionsActionMap.FindAction("Select Item 2");
+		SelectItem3 = PlayerActionsActionMap.FindAction("Select Item 3");
+
+	}
+
+	public void EnablePlayerMaps(bool enable)
+    {
+		if(enable)
+        {
+			PlayerActionsActionMap.Enable();
+			PlayerMovementActionMap.Enable();
+        }
+		else
+        {
+			PlayerActionsActionMap.Disable();
+			PlayerMovementActionMap.Disable();
+		}
+	}
+
+	public void EnableSpectatorMaps(bool enable)
+    {
+		if(enable)
+        {
+			SpectatorActionMap.Enable();
+        }
+		else
+        {
+			SpectatorActionMap.Disable();
+        }
     }
+
+	public void SetSpectatorMode()
+    {
+		EnablePlayerMaps(false);
+
+	}
+
+	public void SetPlayerMode()
+    {
+		EnablePlayerMaps(true);
+		
+    }
+
+	public void PreventInput()
+    {
+		Input.enabled = false;
+    }
+
+	public void EnableInput()
+    {
+		Input.enabled = true;
+    }
+
+
 }
