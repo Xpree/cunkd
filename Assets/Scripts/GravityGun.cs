@@ -158,7 +158,7 @@ public class GravityGun : NetworkBehaviour, IWeapon
     [Server]
     Rigidbody FindTarget(bool isPush)
     {
-        float searchRange = isPush ? MaxPushForce : MaxGrabRange;
+        float searchRange = isPush ? MaxRange : MaxGrabRange;
 
         //Raycast target
         RaycastHit hitResult;
