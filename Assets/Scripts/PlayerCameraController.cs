@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 using Mirror;
+using UnityEngine.Events;
 
 public class PlayerCameraController : NetworkBehaviour
 {
@@ -13,13 +10,14 @@ public class PlayerCameraController : NetworkBehaviour
 
     Camera mainCamera;   
     float pitch = 0.0f;
+    [SyncVar]
+    float syncedPitch;
 
     GameInputs _inputs;
 
-    [SyncVar]
-    float syncedPitch;
+    public UnityEvent OnCameraActivated;
+    public UnityEvent OnCameraDeactivated;
     
-    // Start is called before the first frame update
     void Awake()
     {
         playerCamera.enabled = false;
@@ -30,7 +28,6 @@ public class PlayerCameraController : NetworkBehaviour
     public override void OnStartLocalPlayer()
     {
         ActivateCamera();
-        Cursor.lockState = CursorLockMode.Locked;
         _inputs = FindObjectOfType<GameInputs>();
     }
 
@@ -69,22 +66,31 @@ public class PlayerCameraController : NetworkBehaviour
         transform.Rotate(Vector3.up * xMovement);
     }
 
+    static void EnableCamera(Camera camera, bool enable)
+    {
+        if (camera == null)
+            return;
+        camera.enabled = enable;
+        var audioListener = camera.GetComponent<AudioListener>();
+        if(audioListener != null)
+            audioListener.enabled = enable;
+    }
+
     public void ActivateCamera()
     {
         mainCamera = Camera.main;
-        if (mainCamera)
-            mainCamera.enabled = false;
-        playerCamera.enabled = true;
-        playerCamera.GetComponent<AudioListener>().enabled = true;
+        EnableCamera(mainCamera, false);
+        EnableCamera(playerCamera, true);
+        OnCameraActivated?.Invoke();
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void DeactivateCamera()
     {
-        if (mainCamera)
-            mainCamera.enabled = true;
-        playerCamera.enabled = false;
-        playerCamera.GetComponent<AudioListener>().enabled = false;
+        EnableCamera(mainCamera, true);
+        EnableCamera(playerCamera, false);
+        OnCameraDeactivated?.Invoke();
+        Cursor.lockState = CursorLockMode.None;
+
     }
-
-
 }

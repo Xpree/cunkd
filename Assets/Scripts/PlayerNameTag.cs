@@ -21,14 +21,4 @@ public class PlayerNameTag : NetworkBehaviour
         base.OnStartServer();
         PlayerName = LobbyClient.FromConnection(this.connectionToClient).PlayerName;
     }
-
-
-    void Start()
-    {
-        if (isLocalPlayer)
-        {
-            NameCanvas.gameObject.SetActive(false);
-        }
-    }
-
 }
