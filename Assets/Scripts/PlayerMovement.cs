@@ -32,6 +32,9 @@ public class PlayerMovement : NetworkBehaviour
 
     public bool HasGroundContact => IsGrounded || HasCoyoteTime;
 
+    public bool HasMovementInput => _inputs.Move.ReadValue<Vector2>().sqrMagnitude > 0;
+    public bool HasGroundFriction => (IsGrounded || (HasCoyoteTime && HasMovementInput == false)) && _rigidBody.velocity.y < 0;
+
     private void Awake()
     {
         _rigidBody = GetComponent<Rigidbody>();
@@ -153,7 +156,7 @@ public class PlayerMovement : NetworkBehaviour
         ApplyGravity();
         PerformJump();
 
-        if (HasGroundContact && _rigidBody.velocity.y < 0)
+        if (HasGroundFriction)
         {
             ApplyFriction();
         }
