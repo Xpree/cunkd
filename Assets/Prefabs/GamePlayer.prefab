@@ -161,6 +161,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  LobbyClient: {fileID: 0}
 --- !u!114 &114265392388239132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,7 +258,6 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   NameCanvas: {fileID: 5213833520382781269}
-  PlayerName: undefined
 --- !u!114 &7461904422581517656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,12 +272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  index: 0
   livesLeft: 0
-  dead: 0
-  playerName: playerName
-  scoreScreenText: 
-  scoreScreen: {fileID: 0}
 --- !u!114 &-9161402237070379157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,6 +354,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0
+  MouseSensitivity: 25
   playerCamera: {fileID: 6314228708957030162}
   OnCameraActivated:
     m_PersistentCalls:
@@ -428,12 +424,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  maxSpeed: 9
-  decelerationSpeed: 27
-  jumpHeight: 1.8
-  airMovementMultiplier: 1
-  coyoteTime: 1
-  strongAirControlTime: 0.10000000149011612
+  _settings: {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}
   IsGrounded: 0
   GroundNormal: {x: 0, y: 1, z: 0}
   _airJumped: 0

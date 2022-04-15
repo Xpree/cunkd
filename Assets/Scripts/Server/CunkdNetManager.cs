@@ -35,8 +35,6 @@ public class CunkdNetManager : NetworkManager
     [Scene]
     public string AutoHostAndPlay;
 
-    public string LocalPlayerName;
-
     public static CunkdNetManager Instance => NetworkManager.singleton as CunkdNetManager;
 
     public override void Awake()
@@ -145,7 +143,7 @@ public class CunkdNetManager : NetworkManager
     {
         if (!NetworkClient.active)
         {
-            LocalPlayerName = GUILayout.TextField(LocalPlayerName);
+            Settings.playerName = GUILayout.TextField(Settings.playerName);
 
             // Server + Client
             if (Application.platform != RuntimePlatform.WebGLPlayer)

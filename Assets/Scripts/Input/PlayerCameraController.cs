@@ -4,14 +4,12 @@ using UnityEngine.Events;
 
 public class PlayerCameraController : NetworkBehaviour
 {
-    float mouseSensitivity = 25.0f;
     private Transform cameraTransform;
     public Camera playerCamera;
 
     Camera mainCamera;   
     float pitch = 0.0f;
-    [SyncVar]
-    float syncedPitch;
+    [SyncVar] float syncedPitch;
 
     GameInputs _inputs;
 
@@ -50,13 +48,13 @@ public class PlayerCameraController : NetworkBehaviour
         }
         
         if(Cursor.lockState == CursorLockMode.Locked)
-            moveCamera(_inputs.Look.ReadValue<Vector2>());
+            MoveCamera(_inputs.Look.ReadValue<Vector2>());
     }
     
-    void moveCamera(Vector2 delta)
-    {        
-        float xMovement = delta.x * mouseSensitivity * Time.deltaTime;
-        float yMovement = delta.y * mouseSensitivity * Time.deltaTime;
+    void MoveCamera(Vector2 delta)
+    {
+        float xMovement = delta.x * Settings.mouseSensitivityYaw * Time.deltaTime;
+        float yMovement = delta.y * Settings.mouseSensitivityPitch * Time.deltaTime;
 
         pitch -= yMovement;
         pitch = Mathf.Clamp(pitch, -90.0f, 90.0f);

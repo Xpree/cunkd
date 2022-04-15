@@ -4,20 +4,11 @@ using Mirror;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : NetworkBehaviour
 {
-
-    // TODO Move to scripted object
-    public float maxSpeed = 9.0f;
-    public float decelerationSpeed = 27f;
-    public float jumpHeight = 1.8f;
-    public float airMovementMultiplier = 1.0f;
-
-    public double coyoteTime = 1.0f;
-    public double strongAirControlTime = 0.1f;
+    [SerializeField] GameSettings _settings;
 
     GameInputs _inputs;
 
     Rigidbody _rigidBody;
-
 
     [Header("Diagnostics")]
     public bool IsGrounded = false;
@@ -27,8 +18,19 @@ public class PlayerMovement : NetworkBehaviour
     public double _lastGrounded = 0;
     public double _lastJump = 0;
 
-    public bool HasStrongAirControl => NetworkTime.time - _lastJump <= strongAirControlTime;
-    public bool HasCoyoteTime => (NetworkTime.time - _lastGrounded <= coyoteTime && _lastGrounded - _lastJump >= coyoteTime);
+    void ResetState()
+    {
+        _rigidBody.velocity = Vector3.zero;
+        IsGrounded = false;
+        GroundNormal = Vector3.up;
+        _airJumped = false;
+        _performJump = false;
+        _lastGrounded = 0;
+        _lastJump = 0;
+    }
+
+    public bool HasStrongAirControl => NetworkTime.time - _lastJump <= _settings.StrongAirControlTime;
+    public bool HasCoyoteTime => (NetworkTime.time - _lastGrounded <= _settings.CoyoteTime && _lastGrounded - _lastJump >= _settings.CoyoteTime);
 
     public bool HasGroundContact => IsGrounded || HasCoyoteTime;
 
@@ -71,7 +73,7 @@ public class PlayerMovement : NetworkBehaviour
     void ApplyFriction()
     {
         var vel = this.HorizontalVelocity;
-        var speed = Mathf.Max(vel.magnitude - decelerationSpeed * Time.fixedDeltaTime);
+        var speed = Mathf.Max(vel.magnitude - _settings.DecelerationSpeed * Time.fixedDeltaTime);
         if (speed <= 0)
         {
             vel = Vector3.zero;
@@ -86,15 +88,15 @@ public class PlayerMovement : NetworkBehaviour
 
     void ApplyAcceleration(Vector2 move)
     {
-        Vector3 velocityChange = (move.x * transform.right + move.y * transform.forward).normalized * maxSpeed;
+        Vector3 velocityChange = (move.x * transform.right + move.y * transform.forward).normalized * _settings.MaxSpeed;
         if (!IsGrounded && !HasStrongAirControl)
         {
             // Air acceleration
-            velocityChange *= airMovementMultiplier * Time.fixedDeltaTime;
+            velocityChange *= _settings.AirMovementMultiplier * Time.fixedDeltaTime;
         }
 
         Vector3 velocity = this.HorizontalVelocity;
-        float terminalSpeed = Mathf.Max(velocity.magnitude, maxSpeed);
+        float terminalSpeed = Mathf.Max(velocity.magnitude, _settings.MaxSpeed);
         velocity += velocityChange;
         // Makes sure the player can't increase its speed beyond its previous speed or maxSpeed which ever is greater.
         velocity = Vector3.ClampMagnitude(velocity, terminalSpeed);
@@ -125,7 +127,7 @@ public class PlayerMovement : NetworkBehaviour
         }
 
         _lastJump = NetworkTime.time;
-        ApplyJumpForce(jumpHeight);
+        ApplyJumpForce(_settings.JumpHeight);
     }
 
 
@@ -191,11 +193,7 @@ public class PlayerMovement : NetworkBehaviour
     public void TargetRespawn(Vector3 position)
     {
         transform.position = position;
-        _rigidBody.velocity = Vector3.zero;
-        _performJump = false;
-        _airJumped = false;
-        IsGrounded = false;
-        GroundNormal = Vector3.up;
+        ResetState();
     }
 
 }
