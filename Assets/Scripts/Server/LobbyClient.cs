@@ -80,8 +80,8 @@ public class LobbyClient : NetworkBehaviour
     {
         base.OnStartLocalPlayer();
 
-        CmdChangePlayerName(NetworkManagerHUD.PlayerName);
-        this._playerName = NetworkManagerHUD.PlayerName;
+        CmdChangePlayerName(CunkdNetManager.Instance.LocalPlayerName);
+        this._playerName = CunkdNetManager.Instance.LocalPlayerName;
         Local = this;
     }
 
