@@ -81,7 +81,7 @@ public class Spectator : NetworkBehaviour
     [ClientCallback]
     private void Update()
     {
-        if (!isLocalPlayer)
+        if (!isLocalPlayer || gameInputs == null)
             return;
 
         if(gameInputs.SpectateNext.WasPerformedThisFrame())

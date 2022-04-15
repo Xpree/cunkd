@@ -301,6 +301,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1715118129970137712, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+      propertyPath: sceneId
+      value: 1796862743
+      objectReference: {fileID: 0}
+    - target: {fileID: 8980317231648751496, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+      propertyPath: GameStatsPrefab
+      value: 
+      objectReference: {fileID: 6240791917843974184, guid: f9383c3f027f33c4bb28cf39ee2903e8, type: 3}
     - target: {fileID: 8980317232237182241, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
       propertyPath: m_RootOrder
       value: 1

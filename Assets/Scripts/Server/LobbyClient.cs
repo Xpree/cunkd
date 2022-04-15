@@ -34,8 +34,6 @@ public class LobbyClient : NetworkBehaviour
 
     public static LobbyClient Local = null;
 
-    private string lastRoundWinner;
-
     public static LobbyClient FromConnection(NetworkConnectionToClient conn)
     {
         if (conn == null)
@@ -85,9 +83,6 @@ public class LobbyClient : NetworkBehaviour
         Local = this;
     }
 
-    /// <summary>
-    /// Render a UI for the room. Override to provide your own UI
-    /// </summary>
     void OnGUI()
     {
         
@@ -96,11 +91,6 @@ public class LobbyClient : NetworkBehaviour
         {
             DrawPlayerReadyState();
             DrawPlayerReadyButton();
-            
-            if(string.IsNullOrEmpty(lastRoundWinner) == false)
-            {
-                GUILayout.Label($"Last round winner!: {lastRoundWinner}");
-            }
         }
     }
 
@@ -146,9 +136,5 @@ public class LobbyClient : NetworkBehaviour
             GUILayout.EndArea();
         }
     }
-    [TargetRpc]
-    internal void TargetSetWinner(string playerName)
-    {
-        lastRoundWinner = playerName;
-    }
+
 }

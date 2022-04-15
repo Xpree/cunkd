@@ -13,6 +13,8 @@ public class GameServer : MonoBehaviour
     /// </summary>
     public static GameServer Instance => CunkdNetManager.Instance.Game;
 
+    [SerializeField] GameStats GameStatsPrefab;
+
     /// <summary>
     /// The list of maps available
     /// </summary>
@@ -44,6 +46,9 @@ public class GameServer : MonoBehaviour
     public List<Spectator> Spectators = new();
 
     public bool HasRoundStarted => RoundStart >= DelayStart && RoundStart <= NetworkTime.time;
+
+    GameStats _gameStats;
+    public static GameStats Stats => Instance?._gameStats;
 
     private void Start()
     {
@@ -144,8 +149,8 @@ public class GameServer : MonoBehaviour
 
     public void OnServerStarted()
     {
-
-
+        _gameStats = Instantiate(this.GameStatsPrefab);
+        NetworkServer.Spawn(_gameStats.gameObject);
     }
 
     public void OnServerStopped()
