@@ -12,6 +12,13 @@ public class GameClient : NetworkBehaviour
 
     GameInputs _inputs = null;
 
+    [SyncVar]
+    public LobbyClient LobbyClient;
+
+
+    public int ClientIndex => LobbyClient.Index;
+    public string PlayerName => LobbyClient.PlayerName;
+
 
     [Server]
     public LobbyClient GetLobbyClient()

@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using TMPro;
 using Mirror;
 
 public class ScoreKeeper : NetworkBehaviour
@@ -12,54 +10,29 @@ public class ScoreKeeper : NetworkBehaviour
 
     Transform[] spawnPositions;
 
-    public List<ScoreCard> players = new();
     public List<ScoreCard> alivePlayers = new();
-    public List<ScoreCard> deadPlayers = new();
 
     [HideInInspector] public bool gameOver = false;
     [HideInInspector] public ScoreCard winner;
 
-    [SyncVar] string scoreScreenText;
-
-    GameInputs gameInputs;
-
-    [ServerCallback]
-    void Start()
+    public override void OnStartServer()
     {
+        base.OnStartServer();
         spawnPositions = startPositions.GetComponentsInChildren<Transform>();
     }
 
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
-        gameInputs = FindObjectOfType<GameInputs>();
-    }
 
     [Server]
     public void addPlayer(ScoreCard sc)
     {
-        players.Add(sc);
         alivePlayers.Add(sc);
-    }
-
-    [Server]
-    public void removePlayer(ScoreCard sc)
-    {
-        players.Remove(sc);
-        alivePlayers.Remove(sc);
-        deadPlayers.Remove(sc);
-        updatescoreScreenText();
     }
 
     [Server]
     public void InitializeScoreCard(ScoreCard sc)
     {
         addPlayer(sc);
-
         sc.livesLeft = startLives;
-        sc.index = players.Count;
-        sc.playerName = sc.gameObject.GetComponent<PlayerNameTag>().PlayerName;
-        updatescoreScreenText();
     }
 
     [Server]
@@ -68,7 +41,7 @@ public class ScoreKeeper : NetworkBehaviour
         ScoreCard sc = player.GetComponent<ScoreCard>();
         sc.livesLeft--;
 
-        if (0 < sc.getLives())
+        if (sc.Dead == false)
         {
             int index = Random.Range(1, spawnPositions.Length);
             player.TargetRespawn(spawnPositions[index].position);
@@ -76,16 +49,13 @@ public class ScoreKeeper : NetworkBehaviour
         }
         else
         {
-            sc.dead = true;
             alivePlayers.Remove(sc);
-            deadPlayers.Add(sc);
             GameServer.TransitionToSpectator(player.gameObject);
             checkForWinner();
         }
-        updatescoreScreenText();
     }
 
-    [ServerCallback]
+    [Server]
     private void checkForWinner()
     {
         if (GameServer.Instance.HasRoundStarted && alivePlayers.Count == 1)
@@ -111,34 +81,5 @@ public class ScoreKeeper : NetworkBehaviour
         }
     }
 
-
-    [ServerCallback]
-    public void updatescoreScreenText()
-    {
-        scoreScreenText = "Player:\t\tLives:\n";
-        foreach (ScoreCard player in alivePlayers)
-        {
-            scoreScreenText += (player.playerName + "\t\t" + player.livesLeft + "\n");
-        }
-        foreach (ScoreCard player in deadPlayers)
-        {
-            scoreScreenText += (player.playerName + "\t\tDEAD\n");
-        }
-        foreach (ScoreCard player in players)
-        {
-            player.scoreScreenText = scoreScreenText;
-        }
-    }
-
-
-    [ClientCallback]
-    private void Update()
-    {
-        if(gameInputs.ShowScoreboard.WasPressedThisFrame() || gameInputs.ShowScoreboard.WasReleasedThisFrame())
-        {
-            bool activateScoreboard = gameInputs.ShowScoreboard.WasPressedThisFrame();
-            // TODO
-        }
-    }
 
 }

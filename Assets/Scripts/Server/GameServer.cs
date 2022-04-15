@@ -79,6 +79,7 @@ public class GameServer : MonoBehaviour
     void SpawnSpectator(NetworkConnectionToClient conn)
     {
         var spectator = Instantiate(this.SpectatorPrefab);
+        spectator.LobbyClient = LobbyClient.FromConnection(conn);
         NetworkServer.ReplacePlayerForConnection(conn, spectator.gameObject, true);
         Spectators.Add(spectator);
     }
@@ -90,6 +91,7 @@ public class GameServer : MonoBehaviour
         Quaternion rotation = startPos?.rotation ?? Quaternion.identity;
 
         var gamePlayer = Instantiate(this.PlayerPrefab, position, rotation);
+        gamePlayer.LobbyClient = LobbyClient.FromConnection(conn);
         NetworkServer.ReplacePlayerForConnection(conn, gamePlayer.gameObject, true);
         Players.Add(gamePlayer);
     }

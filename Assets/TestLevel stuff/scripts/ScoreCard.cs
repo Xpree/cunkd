@@ -2,73 +2,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
-using TMPro;
-using UnityEngine.InputSystem;
+using System;
 
-public class ScoreCard : NetworkBehaviour
+public class ScoreCard : NetworkBehaviour, IComparable<ScoreCard>
 {
-    [SyncVar] public int index;
-    [SyncVar(hook = nameof(UpdateLives))] public int livesLeft;
-    [HideInInspector][SyncVar] public bool dead;
-    [HideInInspector][SyncVar] public string playerName = "playerName";
-    [HideInInspector][SyncVar(hook = nameof(updateScoreScreenText))] public string scoreScreenText;
+    [SyncVar(hook = nameof(OnLivesChanged))] public int livesLeft;
 
-    [SerializeField] public GameObject scoreScreen;
+    public bool Dead => (livesLeft <= 0);
 
-    ScoreKeeper sk;
-    TextMeshProUGUI text;
+    public string PlayerName => GetComponent<GameClient>()?.PlayerName ?? "<missing>";
 
-    void Start()
+    public int Index => GetComponent<GameClient>()?.ClientIndex ?? -1;
+
+    public int CompareTo(ScoreCard other)
     {
-        text = gameObject.GetComponentsInChildren<TextMeshProUGUI>()[0];
-        sk = FindObjectOfType<ScoreKeeper>();
-        if(NetworkServer.active)
-            sk.InitializeScoreCard(this);
-    }
-
-    [ServerCallback]
-    private void OnDestroy()
-    {
-        if(sk != null)
-            sk.removePlayer(this);
-    }
-
-    [Client]
-    public void UpdateLives(int oldLives, int newLives)
-    {
-        if (isLocalPlayer)
+        if (other.isLocalPlayer)
+            return 1;
+        if (this.isLocalPlayer)
         {
-            updateScoreCard();
-            livesLeft = newLives;
-            if (0 < livesLeft)
-            {
-                text.color = Color.green;
-                text.text = "Lives: " + newLives;
-            }
-            else
-            {
-                dead = true;
-                text.color = Color.red;
-                text.text = "DEAD";
-            }
+            return -1;
         }
+        return this.Index.CompareTo(other.Index);
     }
 
-    [Command]
-    void updateScoreCard()
+    public override void OnStartServer()
     {
-        sk.updatescoreScreenText();
+        base.OnStartServer();
+        FindObjectOfType<ScoreKeeper>()?.InitializeScoreCard(this);
     }
 
-    [Client]
-    public void updateScoreScreenText(string oldText, string newText)
+    public override void OnStartLocalPlayer()
     {
-        scoreScreen.GetComponentInChildren<TextMeshProUGUI>().text = newText;
+        base.OnStartLocalPlayer();
+        FindObjectOfType<Scoreboard>()?.SetLocalLives(livesLeft);
     }
 
-    [Server]
-    public int getLives()
+    void OnLivesChanged(int previous, int current)
     {
-        return livesLeft;
+        if(isLocalPlayer)
+            FindObjectOfType<Scoreboard>()?.SetLocalLives(current);
     }
 }

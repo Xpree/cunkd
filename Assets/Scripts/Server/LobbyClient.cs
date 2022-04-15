@@ -38,7 +38,10 @@ public class LobbyClient : NetworkBehaviour
 
     public static LobbyClient FromConnection(NetworkConnectionToClient conn)
     {
-        foreach(var obj in conn.clientOwnedObjects)
+        if (conn == null)
+            return null;
+
+        foreach (var obj in conn.clientOwnedObjects)
         {
             var client = obj.GetComponent<LobbyClient>();
             if(client != null)
@@ -49,7 +52,6 @@ public class LobbyClient : NetworkBehaviour
 
         return null;
     }
-
 
     public void Awake()
     {
