@@ -13,11 +13,11 @@ GameObject:
   - component: {fileID: 34706451374023929}
   - component: {fileID: 34706451374023934}
   - component: {fileID: 34706451374023935}
-  - component: {fileID: 34706451374023932}
   - component: {fileID: 101371661482201590}
   - component: {fileID: 3625061575254278798}
   - component: {fileID: 8685593953816991701}
   - component: {fileID: 7632334390830229366}
+  - component: {fileID: 642511025332205090}
   m_Layer: 6
   m_Name: Ball
   m_TagString: Untagged
@@ -34077,20 +34077,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 34706451374023933}
   m_Mesh: {fileID: 0}
---- !u!64 &34706451374023932
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 34706451374023933}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
 --- !u!114 &101371661482201590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34180,3 +34166,16 @@ MonoBehaviour:
   syncAngularVelocity: 1
   clearAngularVelocity: 0
   angularVelocitySensitivity: 0.1
+--- !u!135 &642511025332205090
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 34706451374023933}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Center: {x: -1.4194479, y: 0.65503955, z: -0.78204346}

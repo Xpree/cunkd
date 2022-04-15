@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 8500828315235290424}
   - component: {fileID: 8500828315235290425}
   - component: {fileID: 8500828315235290406}
-  - component: {fileID: 8500828315235290407}
+  - component: {fileID: 3730016408140612925}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -396,8 +396,8 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8500828315235290405}
   m_Mesh: {fileID: 0}
---- !u!64 &8500828315235290407
-MeshCollider:
+--- !u!65 &3730016408140612925
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -406,10 +406,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  serializedVersion: 2
+  m_Size: {x: 1.2499999, y: 0, z: 1.1999999}
+  m_Center: {x: 0.53707737, y: 0, z: -0.6928434}
 --- !u!1 &8500828315868471654
 GameObject:
   m_ObjectHideFlags: 0
@@ -423,7 +422,7 @@ GameObject:
   - component: {fileID: 8500828315868471677}
   - component: {fileID: 8500828315868471674}
   - component: {fileID: 8500828315868471675}
-  - component: {fileID: 8500828315868471672}
+  - component: {fileID: 9200778848909006657}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -8958,7 +8957,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1108
+  m_VersionIndex: 1111
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -9043,8 +9042,8 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8500828315868471654}
   m_Mesh: {fileID: 0}
---- !u!64 &8500828315868471672
-MeshCollider:
+--- !u!135 &9200778848909006657
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -9053,10 +9052,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  serializedVersion: 2
+  m_Radius: 1
+  m_Center: {x: 3.3594954, y: 0.39792967, z: -0.92860025}
 --- !u!1 &8500828316288842473
 GameObject:
   m_ObjectHideFlags: 0
