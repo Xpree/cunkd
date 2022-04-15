@@ -48,7 +48,17 @@ public class GameInputs : MonoBehaviour
 	[HideInInspector]
 	public PlayerInput Input;
 
-    private void Awake()
+	public enum InputMode
+	{
+		None = 0,
+		Player,
+		Spectator,
+	}
+
+
+	public InputMode Mode = InputMode.None;
+
+	private void Awake()
     {
 		Input = GetComponent<PlayerInput>();
 		Input.enabled = false;
@@ -104,27 +114,65 @@ public class GameInputs : MonoBehaviour
         }
     }
 
+	void SetInputMode(InputMode mode)
+    {
+		switch(mode)
+        {
+			case InputMode.Player:
+				EnableSpectatorMaps(false);
+				EnablePlayerMaps(true);
+				break;
+			case InputMode.Spectator:
+				EnableSpectatorMaps(true);
+				EnablePlayerMaps(false);
+				break;
+			default:
+				EnablePlayerMaps(false);
+				EnableSpectatorMaps(false);
+				break;
+
+        }
+    }
+
+
 	public void SetSpectatorMode()
     {
-		EnablePlayerMaps(false);
-
+		SetInputMode(InputMode.Spectator);
+		this.Mode = InputMode.Spectator;
 	}
 
 	public void SetPlayerMode()
     {
-		EnablePlayerMaps(true);
-		
-    }
+		SetInputMode(InputMode.Player);
+		this.Mode = InputMode.Player;
+	}
 
 	public void PreventInput()
     {
-		Input.enabled = false;
+		SetInputMode(InputMode.None);
     }
 
 	public void EnableInput()
     {
-		Input.enabled = true;
+		SetInputMode(this.Mode);
     }
 
+
+    private void Update()
+    {		
+		if(ToggleMenu.triggered)
+        {
+			if (Cursor.lockState == CursorLockMode.Locked)
+			{
+				Cursor.lockState = CursorLockMode.None;
+				PreventInput();
+			}
+			else
+			{
+				Cursor.lockState = CursorLockMode.Locked;
+				EnableInput();
+			}
+        }
+    }
 
 }
