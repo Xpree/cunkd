@@ -49,7 +49,6 @@ public class Inventory : NetworkBehaviour
         {
             weapon.transform.localScale = new Vector3(0, 0, 0);
         }
-        print(weapon.name + "added to inventory");
 
         if (currentWeapon == firstWeapon)
         {
