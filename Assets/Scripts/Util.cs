@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,4 +36,28 @@ public static class Util
         }
         return false;
     }
+}
+
+/// <summary>
+/// Use with [SyncVar] or as parameters to remote procedure calls to synchronize a timed event across server and clients.
+/// 
+/// [SyncVar] NetworkTimer _timer;
+/// 
+/// public override void OnServerStart() {
+///     _timer = new NetworkTimer.FromNow(10);
+/// }
+/// 
+/// void FixedUpdate() {
+///     if(_timer.HasTicked) {
+///         Debug.Log("Timer has ticked");
+///     }
+/// }
+/// </summary>
+[Serializable]
+struct NetworkTimer
+{
+    public double TickTime;
+
+    public static NetworkTimer FromNow(double duration) => new NetworkTimer { TickTime = NetworkTime.time + duration };
+    public bool HasTicked => TickTime > 0 && NetworkTime.time > TickTime;
 }

@@ -1,11 +1,11 @@
+using System;
 using UnityEngine;
 using Mirror;
 
 public class BlackHole : NetworkBehaviour
 {
-    [SerializeField] GameSettings _settings;
-    
-    [SyncVar] double _endTime;
+    [SerializeField] GameSettings _settings;    
+    [SyncVar] NetworkTimer _endTime;
 
     public override void OnStartServer()
     {
@@ -14,13 +14,13 @@ public class BlackHole : NetworkBehaviour
             Debug.LogError("Missing GameSettings reference on " + name);
         }
         
-        _endTime = NetworkTime.time + _settings.BlackHole.Duration;
+        _endTime = NetworkTimer.FromNow(_settings.BlackHole.Duration);
     }
 
    
     void FixedUpdate()
     {
-        if (_endTime > 0 && _endTime < NetworkTime.time)
+        if (_endTime.HasTicked)
         {
             if (NetworkServer.active)
             {
