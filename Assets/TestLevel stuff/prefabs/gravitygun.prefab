@@ -149,18 +149,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  _settings: {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}
   AnchorPoint: {fileID: 0}
   TargetMask:
     serializedVersion: 2
     m_Bits: 64
-  MaxGrabRange: 40
-  GrabTime: 0.5
-  GrabTorque: 10
   PlayerCollider: {fileID: 0}
-  MinPushForce: 10
-  MaxPushForce: 100
-  ChargeRate: 1
-  MaxRange: 30
   PushForceMode: 1
 --- !u!114 &3783379925792822204
 MonoBehaviour:

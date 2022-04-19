@@ -7,21 +7,23 @@ public class GravityGun : NetworkBehaviour, IWeapon
     Vector3 aimDirection;
     Vector3 aimPos;
 
+    [SerializeField] GameSettings _settings;
+
     [SerializeField] Transform AnchorPoint;
     [SerializeField] LayerMask TargetMask = ~0;
 
-    //grab
-    [SerializeField] float MaxGrabRange = 40f;
-    [SerializeField] float GrabTime = 0.5f;
-    [SerializeField] float GrabTorque = 10f;
     [SerializeField] Collider PlayerCollider;
+    [SerializeField] ForceMode PushForceMode = ForceMode.Impulse;
+    //grab
+    float MaxGrabRange => _settings.GravityGun.MaxGrabRange;
+    float GrabTime => _settings.GravityGun.GrabTime;
+    float GrabTorque => _settings.GravityGun.GrabTorque;
 
     //push
-    [SerializeField] float MinPushForce = 10f;
-    [SerializeField] float MaxPushForce = 100f;
-    [SerializeField] float ChargeRate = 1f;
-    [SerializeField] float MaxRange = 30f;
-    [SerializeField] ForceMode PushForceMode = ForceMode.Impulse;
+    float MinPushForce => _settings.GravityGun.MinPushForce;
+    float MaxPushForce => _settings.GravityGun.MaxPushForce;
+    float ChargeRate => _settings.GravityGun.ChargeRate;
+    float MaxRange => _settings.GravityGun.MaxRange;
 
     Rigidbody GrabTarget;
     Collider GrabTargetCollider;

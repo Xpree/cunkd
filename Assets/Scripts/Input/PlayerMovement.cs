@@ -29,8 +29,8 @@ public class PlayerMovement : NetworkBehaviour
         _lastJump = 0;
     }
 
-    public bool HasStrongAirControl => NetworkTime.time - _lastJump <= _settings.StrongAirControlTime;
-    public bool HasCoyoteTime => (NetworkTime.time - _lastGrounded <= _settings.CoyoteTime && _lastGrounded - _lastJump >= _settings.CoyoteTime);
+    public bool HasStrongAirControl => NetworkTime.time - _lastJump <= _settings.CharacterMovement.StrongAirControlTime;
+    public bool HasCoyoteTime => (NetworkTime.time - _lastGrounded <= _settings.CharacterMovement.CoyoteTime && _lastGrounded - _lastJump >= _settings.CharacterMovement.CoyoteTime);
 
     public bool HasGroundContact => IsGrounded || HasCoyoteTime;
 
@@ -73,7 +73,7 @@ public class PlayerMovement : NetworkBehaviour
     void ApplyFriction()
     {
         var vel = this.HorizontalVelocity;
-        var speed = Mathf.Max(vel.magnitude - _settings.DecelerationSpeed * Time.fixedDeltaTime);
+        var speed = Mathf.Max(vel.magnitude - _settings.CharacterMovement.DecelerationSpeed * Time.fixedDeltaTime);
         if (speed <= 0)
         {
             vel = Vector3.zero;
@@ -88,15 +88,15 @@ public class PlayerMovement : NetworkBehaviour
 
     void ApplyAcceleration(Vector2 move)
     {
-        Vector3 velocityChange = (move.x * transform.right + move.y * transform.forward).normalized * _settings.MaxSpeed;
+        Vector3 velocityChange = (move.x * transform.right + move.y * transform.forward).normalized * _settings.CharacterMovement.MaxSpeed;
         if (!IsGrounded && !HasStrongAirControl)
         {
             // Air acceleration
-            velocityChange *= _settings.AirMovementMultiplier * Time.fixedDeltaTime;
+            velocityChange *= _settings.CharacterMovement.AirMovementMultiplier * Time.fixedDeltaTime;
         }
 
         Vector3 velocity = this.HorizontalVelocity;
-        float terminalSpeed = Mathf.Max(velocity.magnitude, _settings.MaxSpeed);
+        float terminalSpeed = Mathf.Max(velocity.magnitude, _settings.CharacterMovement.MaxSpeed);
         velocity += velocityChange;
         // Makes sure the player can't increase its speed beyond its previous speed or maxSpeed which ever is greater.
         velocity = Vector3.ClampMagnitude(velocity, terminalSpeed);
@@ -127,7 +127,7 @@ public class PlayerMovement : NetworkBehaviour
         }
 
         _lastJump = NetworkTime.time;
-        ApplyJumpForce(_settings.JumpHeight);
+        ApplyJumpForce(_settings.CharacterMovement.JumpHeight);
     }
 
 

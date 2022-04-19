@@ -1,0 +1,316 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6910466737910070141
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6910466737910070143}
+  - component: {fileID: 6910466737910070140}
+  - component: {fileID: 6910466737910070142}
+  m_Layer: 0
+  m_Name: PlayerInput
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6910466737910070143
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6910466737910070141}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -12.76, y: 1.08, z: 12.76}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6910466737910070140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6910466737910070141}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: a18201d12d891a24fa957016677dcbd8, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: be000f22-6b2e-40fa-9f50-f7a84ae6c2a5
+    m_ActionName: MovementActionMap/MoveForward[/Keyboard/w]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 59e0b50a-f15a-402f-ad40-1646b2ac4c38
+    m_ActionName: MovementActionMap/MoveRight[/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f48504c6-20e6-4eda-8d95-a275c87f3f11
+    m_ActionName: MovementActionMap/MoveLeft[/Keyboard/a]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2b206a9c-0e13-4d83-8096-0d061e092262
+    m_ActionName: MovementActionMap/MoveBack[/Keyboard/s]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d15994fe-ab10-4614-8517-5a123e644037
+    m_ActionName: MovementActionMap/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: cd89b29a-9171-43b8-b74b-cd2be4253779
+    m_ActionName: MovementActionMap/Dash[/Keyboard/leftShift]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 12d91dd7-030a-4cea-9691-3bddeaf5d553
+    m_ActionName: MovementActionMap/Look[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ddac4cff-4b3b-41c8-a806-34a0e9c032cc
+    m_ActionName: CombatActionMap/FireWeapon
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7e04eae9-6f00-4604-8ab4-50aa8331ab5c
+    m_ActionName: CombatActionMap/UseGadget
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 70b8e1a2-7945-4e22-a728-fcf847eca3eb
+    m_ActionName: CombatActionMap/SwapActiveWeapon
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2d3bebf9-1070-41b7-a801-bd9ee4e1cc63
+    m_ActionName: CombatActionMap/ExchangeWeapon
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f6bc73f3-b1a2-4977-afb1-65a5d06c2db0
+    m_ActionName: Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fba73e93-363b-4d75-a993-684954bebd9b
+    m_ActionName: Player/Look[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b58340df-f4f6-4f73-bced-4b04ee9e322c
+    m_ActionName: Player/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 417c6e09-ad4f-44b4-ae68-302de85b6250
+    m_ActionName: Spectator/Spectate Next[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: cfa076d1-6db2-491a-86f9-b8da5afb4671
+    m_ActionName: Player Actions/Primary Attack[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d750388b-8d49-4c83-93ac-0e6d4b75b339
+    m_ActionName: Player Actions/Secondary Attack[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c462380d-fac8-4ca9-a00f-a9bdf0ec6c80
+    m_ActionName: Player Actions/Interact[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 45a6043f-b93f-4f18-ba93-46561f355742
+    m_ActionName: Player Actions/Select Item 1[/Keyboard/1]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 041be78d-6064-48ec-b8e3-4ddb23354308
+    m_ActionName: Player Actions/Select Item 2[/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 67e50ebe-bed8-4504-8964-7638bcadaaec
+    m_ActionName: Player Actions/Select Item 3[/Keyboard/3]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6569df22-ccd9-4dd3-8f8a-28bf7d3a2465
+    m_ActionName: Player Actions/Next Item[/Keyboard/q]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4ffbbd38-5f11-4ff0-92f8-510488daf1c2
+    m_ActionName: Common/Show Scoreboard[/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7eead5c2-5e2b-4e97-bb68-16ab118c5ac9
+    m_ActionName: Common/Toggle Menu[/Keyboard/escape]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: MovementActionMap
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &6910466737910070142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6910466737910070141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6398e3674477e3c4aa7b84e112f35ec0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Move:
+    m_Name: Move
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 3db33ddf-8418-43ab-8954-b6250b503749
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  Look:
+    m_Name: Look
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 58dca8fe-46e8-4502-81f1-04478cceb436
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  Jump:
+    m_Name: Jump
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 5fbf8ea3-9ea3-4dca-af26-02e37d456a6a
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  NextItem:
+    m_Name: Next Item
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 15070a3a-45a3-4037-b1cf-04248f859f98
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  Interact:
+    m_Name: Interact
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: be737a45-5675-434f-8bfb-8222a55b8677
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  PrimaryAttack:
+    m_Name: Primary Attack
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: e7178bea-1614-4f86-818f-93edea03ff50
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  SecondaryAttack:
+    m_Name: Secondary Attack
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: b6b442ca-057b-4505-bbc7-340274607d6a
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  SelectItem1:
+    m_Name: Select Item 1
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: e510359a-e2bc-4e3f-baba-967fd536e84e
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  SelectItem2:
+    m_Name: Select Item 2
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: a2e4798c-1fcf-41f8-99e4-ab3b96d576be
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  SelectItem3:
+    m_Name: Select Item 3
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 721abe4e-5bdd-4156-ab38-dba274d26537
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  SpectateNext:
+    m_Name: Spectate Next
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: a2eac731-3f6f-472c-843f-50849d073283
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  ShowScoreboard:
+    m_Name: Show Scoreboard
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: ef7b457c-11bc-4106-a8e5-ac37d8ef2f7f
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  ToggleMenu:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 35923c45-4379-4c03-a0fd-ba9dbeb8c41f
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  PlayerMovementActionMap:
+    m_Name: 
+    m_Id: 
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  PlayerActionsActionMap:
+    m_Name: 
+    m_Id: 
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  SpectatorActionMap:
+    m_Name: 
+    m_Id: 
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  CommonActionMap:
+    m_Name: 
+    m_Id: 
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  Input: {fileID: 0}
+  Mode: 0

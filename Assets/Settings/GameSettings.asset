@@ -12,9 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4f5f6adab8456c488fa31f5a1dd9555, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  MaxSpeed: 9
-  DecelerationSpeed: 27
-  JumpHeight: 2
-  AirMovementMultiplier: 1
-  CoyoteTime: 1
-  StrongAirControlTime: 0.1
+  CharacterMovement:
+    MaxSpeed: 9
+    DecelerationSpeed: 27
+    JumpHeight: 2
+    CoyoteTime: 1
+    AirMovementMultiplier: 1
+    StrongAirControlTime: 0.1
+  GravityGun:
+    MaxGrabRange: 40
+    GrabTime: 0.5
+    GrabTorque: 10
+    MinPushForce: 10
+    MaxPushForce: 10
+    ChargeRate: 1
+    MaxRange: 30

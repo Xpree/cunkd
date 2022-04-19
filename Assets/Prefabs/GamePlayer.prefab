@@ -306,18 +306,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  _settings: {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}
   AnchorPoint: {fileID: 2077933538375126708}
   TargetMask:
     serializedVersion: 2
     m_Bits: 64
-  MaxGrabRange: 40
-  GrabTime: 0.5
-  GrabTorque: 10
   PlayerCollider: {fileID: 6799120071495980942}
-  MinPushForce: 10
-  MaxPushForce: 50
-  ChargeRate: 1
-  MaxRange: 30
   PushForceMode: 1
 --- !u!114 &-4607323431963591453
 MonoBehaviour:
@@ -354,7 +348,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0
-  MouseSensitivity: 25
   playerCamera: {fileID: 6314228708957030162}
   OnCameraActivated:
     m_PersistentCalls:
