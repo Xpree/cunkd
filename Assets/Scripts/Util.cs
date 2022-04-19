@@ -54,7 +54,7 @@ public static class Util
 /// }
 /// </summary>
 [Serializable]
-struct NetworkTimer
+public struct NetworkTimer
 {
     public double TickTime;
 
