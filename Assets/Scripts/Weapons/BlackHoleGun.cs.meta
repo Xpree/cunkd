@@ -3,7 +3,9 @@ guid: ff10822e0983d3144b087904caf437aa
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - _settings: {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}
+  - blackHole: {fileID: 6033889869813183962, guid: 2faff900bda0fb94fad64bf820c99a4c, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

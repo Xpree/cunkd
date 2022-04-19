@@ -36,6 +36,13 @@ public class GravityGun : NetworkBehaviour, IWeapon
     bool Push = false;
     [SyncVar] float ChargeProgress = 0f;
 
+    private void Start()
+    {
+        if (_settings == null)
+        {
+            Debug.LogError("Missing GameSettings reference on " + name);
+        }
+    }
     void IWeapon.initializeOnPlayer(Inventory player)
     {
         AnchorPoint = player.objectAnchor;

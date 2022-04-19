@@ -21,7 +21,7 @@ public class GameSettings : ScriptableObject
     public CharacterMovementSettings CharacterMovement = new();
 
     [Serializable]
-    public class GravitygunSettings
+    public class GravityGunSettings
     {
         //grab
         public float MaxGrabRange = 40f;
@@ -35,8 +35,30 @@ public class GameSettings : ScriptableObject
         public float MaxRange = 30f;
 
     }
-
     
-    public GravitygunSettings GravityGun = new();
+    public GravityGunSettings GravityGun = new();
+
+
+
+    [Serializable]
+    public class BlackHoleGunSettings
+    {
+        public float Cooldown = 30f;
+        public float Range = 20f;
+    }
+
+    public BlackHoleGunSettings BlackHoleGun = new();
+
+    [Serializable]
+    public class BlackHoleSettings
+    {
+        public float Range = 20f;
+        public float Duration = 5f;
+        public float Intensity = 1f;
+    }
+
+    public BlackHoleSettings BlackHole = new();
+
+
 
 }

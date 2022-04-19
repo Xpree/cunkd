@@ -8,16 +8,26 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon
     Vector3 aimDirection;
     Vector3 aimPos;
 
-    public GameObject blackHole;
-    [SerializeField] float cooldown = 30f;
-    [SerializeField] float timer;
-    [SerializeField] float range = 20f;
+    [SerializeField] GameSettings _settings;
+    float cooldown => _settings.BlackHoleGun.Cooldown;
+    float range => _settings.BlackHoleGun.Range;
+
+    [SerializeField] GameObject blackHole;
     [SerializeField] LayerMask TargetMask = ~0;
 
     Vector3 target;
     Vector3 endTarget;
+    float timer;
 
     bool hasFired = false;
+
+    private void Start()
+    {
+        if (_settings == null)
+        {
+            Debug.LogError("Missing GameSettings reference on " + name);
+        }
+    }
 
     void IWeapon.initializeOnPlayer(Inventory player)
     {
@@ -58,13 +68,14 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon
             return (endTarget + aimPos);
         }
     }
+    
     [ServerCallback]
     // Update is called once per frame
     void FixedUpdate()
     {
         if (hasFired == true)
         {
-            timer = timer + Time.deltaTime;
+            timer = timer + Time.fixedDeltaTime;
             if (timer >= cooldown)
             {
                 hasFired = false;

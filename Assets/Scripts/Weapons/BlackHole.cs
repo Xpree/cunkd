@@ -3,36 +3,42 @@ using Mirror;
 
 public class BlackHole : NetworkBehaviour
 {
-    public float range = 20f;
-    public float duration = 5f;
-    public Collider[] collisions;
-    public float intensity = 1f;
-    public float distance;
-    Vector3 force;
+    [SerializeField] GameSettings _settings;
+    
+    [SyncVar] double _endTime;
 
+    public override void OnStartServer()
+    {
+        if (_settings == null)
+        {
+            Debug.LogError("Missing GameSettings reference on " + name);
+        }
+        
+        _endTime = NetworkTime.time + _settings.BlackHole.Duration;
+    }
+
+   
     void FixedUpdate()
     {
-        if (duration <= 0)
+        if (_endTime > 0 && _endTime < NetworkTime.time)
         {
-            if(NetworkServer.active)
+            if (NetworkServer.active)
             {
                 NetworkServer.Destroy(this.gameObject);
             }
             return;
         }
-        collisions = Physics.OverlapSphere(this.transform.position, range);
-
+        
+        var collisions = Physics.OverlapSphere(this.transform.position, _settings.BlackHole.Range);
         foreach (var collision in collisions)
         {
             var rb = collision.gameObject.GetComponent<Rigidbody>();
             if (rb != null && Util.HasPhysicsAuthority(collision.gameObject))
             {
-                distance = Vector3.Distance(rb.transform.position, transform.position);
-                force = (transform.position - rb.transform.position).normalized / distance * intensity;
+                var distance = Vector3.Distance(rb.transform.position, transform.position);
+                var force = (transform.position - rb.transform.position).normalized / distance * _settings.BlackHole.Intensity;
                 rb.AddForce(force, ForceMode.Force);
             }
         }
-
-        duration = duration - Time.fixedDeltaTime;
     }
 }

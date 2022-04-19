@@ -18,6 +18,14 @@ public class PlayerMovement : NetworkBehaviour
     public double _lastGrounded = 0;
     public double _lastJump = 0;
 
+    private void Start()
+    {
+        if (_settings == null)
+        {
+            Debug.LogError("Missing GameSettings reference on " + name);
+        }
+    }
+
     void ResetState()
     {
         _rigidBody.velocity = Vector3.zero;

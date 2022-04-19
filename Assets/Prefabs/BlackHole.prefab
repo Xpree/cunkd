@@ -242,11 +242,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  range: 20
-  duration: 5
-  collisions: []
-  intensity: 200
-  distance: 0
+  _settings: {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}
 --- !u!114 &4568777201997059838
 MonoBehaviour:
   m_ObjectHideFlags: 0

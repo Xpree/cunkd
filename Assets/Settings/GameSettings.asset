@@ -27,3 +27,10 @@ MonoBehaviour:
     MaxPushForce: 10
     ChargeRate: 1
     MaxRange: 30
+  BlackHoleGun:
+    Cooldown: 10
+    Range: 20
+  BlackHole:
+    Range: 20
+    Duration: 5
+    Intensity: 200
