@@ -100,6 +100,7 @@ public class ObjectSpawner : NetworkBehaviour
         nextSpawnTime = NetworkTime.time + spawnTime;
         spawned = false;
         spawnedObject = null;
+        newSpawnedObject = null;
     }
 
 
@@ -127,7 +128,7 @@ public class ObjectSpawner : NetworkBehaviour
         spawned = true;
     }
 
-
+    [ServerCallback]
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject == spawnedObject)
