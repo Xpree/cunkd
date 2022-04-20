@@ -13,6 +13,8 @@ public class GameServer : MonoBehaviour
     /// </summary>
     public static GameServer Instance => CunkdNetManager.Instance.Game;
 
+    public static GameServer GetInstance() => GameServer.Instance;
+
     [SerializeField] GameStats GameStatsPrefab;
 
     /// <summary>
@@ -215,5 +217,20 @@ public class GameServer : MonoBehaviour
         {
             self.StartRound();
         }
+    }
+
+
+    public static void Respawn(GameObject client)
+    {
+        var spawn = CunkdNetManager.Instance.GetStartPosition();
+        var player = client?.GetComponent<PlayerMovement>();
+        if(player != null)
+        {
+            player.TargetRespawn(spawn.position, spawn.rotation);
+        }
+        else
+        {
+            Debug.LogError("Attempted to respawn a client without PlayerMovement component.");
+        }        
     }
 }
