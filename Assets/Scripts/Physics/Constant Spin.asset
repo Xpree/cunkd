@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95e66c6366d904e98bc83428217d4fd7, type: 3}
+  m_Name: Constant Spin
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"graph":{"variables":{"collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[{"hasDefaultValue":false,"defaultValue":null,"_type":null,"key":"","label":null,"summary":null,"hideLabel":false}],"valueOutputDefinitions":[],"title":"Constant
+      Spin","summary":null,"pan":{"x":0.0,"y":120.0},"zoom":1.0,"elements":[{"coroutine":false,"defaultValues":{},"position":{"x":-393.0,"y":-69.0},"guid":"dcf3c741-a5be-43a1-a96b-4d55871918d3","$version":"A","$type":"Unity.VisualScripting.FixedUpdate","$id":"10"},{"chainable":false,"member":{"name":"angularVelocity","parameterTypes":null,"targetType":"UnityEngine.Rigidbody","targetTypeName":"UnityEngine.Rigidbody","$version":"A"},"defaultValues":{"target":null,"input":{"x":0.0,"y":0.0,"z":0.0,"$type":"UnityEngine.Vector3"}},"position":{"x":-109.0,"y":-79.0},"guid":"aed67ac3-17f4-4b85-896f-0ae0afecbcbe","$version":"A","$type":"Unity.VisualScripting.SetMember","$id":"12"},{"specifyFallback":false,"kind":"Object","defaultValues":{"name":{"$content":"Spin","$type":"System.String"},"object":null},"position":{"x":-356.0,"y":34.0},"guid":"23ce63f4-f662-423d-88ab-2a12c6f38dee","$version":"A","$type":"Unity.VisualScripting.GetVariable","$id":"15"},{"sourceUnit":{"$ref":"10"},"sourceKey":"trigger","destinationUnit":{"$ref":"12"},"destinationKey":"assign","guid":"cfeffed8-4144-4b77-8a0e-38574e47bad1","$type":"Unity.VisualScripting.ControlConnection"},{"sourceUnit":{"$ref":"15"},"sourceKey":"value","destinationUnit":{"$ref":"12"},"destinationKey":"input","guid":"7916a1ce-b87c-4ee0-883c-bb693e5968af","$type":"Unity.VisualScripting.ValueConnection"}],"$version":"A"}}'
+    _objectReferences: []
