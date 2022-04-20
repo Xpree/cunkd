@@ -198,9 +198,10 @@ public class PlayerMovement : NetworkBehaviour
     }
 
     [TargetRpc]
-    public void TargetRespawn(Vector3 position)
+    public void TargetRespawn(Vector3 position, Quaternion rotation)
     {
         transform.position = position;
+        transform.rotation = rotation;
         ResetState();
     }
 

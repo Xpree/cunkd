@@ -43,9 +43,9 @@ public class ScoreKeeper : NetworkBehaviour
 
         if (sc.Dead == false)
         {
-            int index = Random.Range(1, spawnPositions.Length);
-            player.TargetRespawn(spawnPositions[index].position);
-
+            int index = Random.Range(0, spawnPositions.Length);
+            var spawn = spawnPositions[index];
+            player.TargetRespawn(spawn.position, spawn.rotation);
         }
         else
         {
