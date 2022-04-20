@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AutoSpawnNetworkManager : MonoBehaviour
 {
@@ -6,9 +7,11 @@ public class AutoSpawnNetworkManager : MonoBehaviour
 
     void Start()
     {
-        if(FindObjectOfType<CunkdNetManager>() == null)
+        if(CunkdNetManager.Instance == null)
         {
-            Instantiate(NetworkManagerPrefab).StartHost();
+            var cunkd = Instantiate(NetworkManagerPrefab);
+            cunkd.AutoHostAndPlay = SceneManager.GetActiveScene().name;
+            Debug.Log("Autohosting: " + cunkd.AutoHostAndPlay);
         }            
     }
 }
