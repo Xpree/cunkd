@@ -9,9 +9,7 @@ public class AutoSpawnNetworkManager : MonoBehaviour
     {
         if(CunkdNetManager.Instance == null)
         {
-            var cunkd = Instantiate(NetworkManagerPrefab);
-            cunkd.AutoHostAndPlay = SceneManager.GetActiveScene().name;
-            Debug.Log("Autohosting: " + cunkd.AutoHostAndPlay);
+            CunkdNetManager.HostCurrentScene(NetworkManagerPrefab);
         }            
     }
 }

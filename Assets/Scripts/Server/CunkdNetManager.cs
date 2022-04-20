@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Mirror;
 
 /*
@@ -36,6 +37,19 @@ public class CunkdNetManager : NetworkManager
     public string AutoHostAndPlay;
 
     public static CunkdNetManager Instance => NetworkManager.singleton as CunkdNetManager;
+
+
+    public static void HostCurrentScene(CunkdNetManager networkManagerPrefab)
+    {
+        if(!Application.isEditor)
+        {
+            Debug.LogError("AutoHosting current scene is only available from editor.");
+            return;
+        }
+        var cunkd = Instantiate(networkManagerPrefab);
+        cunkd.AutoHostAndPlay = SceneManager.GetActiveScene().name;
+        Debug.Log("Autohosting: " + cunkd.AutoHostAndPlay);
+    }
 
     public override void Awake()
     {
