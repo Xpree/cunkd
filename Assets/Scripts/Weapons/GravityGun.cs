@@ -67,7 +67,6 @@ public class GravityGun : NetworkBehaviour, IWeapon
     [Command]
     void CmdSecondaryAttack(bool isPressed, Vector3 direction, Vector3 position)
     {
-        print("prim attack");
         aimDirection = direction;
         aimPos = position;
         if (!isPressed)
@@ -91,7 +90,7 @@ public class GravityGun : NetworkBehaviour, IWeapon
             }
             //turns off collisions with play, turn on with map too?
             Physics.IgnoreCollision(GrabTargetCollider, PlayerCollider, true);
-            GrabTargetCollider.enabled = false;
+            //GrabTargetCollider.enabled = false;
 
         }
     }
@@ -127,6 +126,7 @@ public class GravityGun : NetworkBehaviour, IWeapon
                 GrabTarget.transform.position = AnchorPos;
                 //GrabTarget.isKinematic = true;
                 //GrabTarget.transform.SetParent(AnchorPoint);
+                GrabTargetCollider.enabled = false;
             }
             else
             {
