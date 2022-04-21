@@ -205,4 +205,13 @@ public class PlayerMovement : NetworkBehaviour
         ResetState();
     }
 
+    
+    [TargetRpc]
+    public void TargetTeleport(Vector3 position, Quaternion rotation)
+    {
+        transform.position = position;
+        transform.rotation = rotation;
+        ResetState();
+    }
+
 }
