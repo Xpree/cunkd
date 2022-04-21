@@ -1,6 +1,6 @@
 using UnityEngine;
-using Mirror;
 using UnityEngine.InputSystem;
+using Mirror;
 
 public class Inventory : NetworkBehaviour
 {
@@ -17,6 +17,11 @@ public class Inventory : NetworkBehaviour
 
     GameInputs gameInputs;
 
+    private void Awake()
+    {
+        gameInputs = GetComponentInChildren<GameInputs>(true);
+    }
+
     [Server]
     public override void OnStartServer()
     {
@@ -24,12 +29,6 @@ public class Inventory : NetworkBehaviour
         GameObject weapon = Instantiate(startWeapon, transform.position, Quaternion.identity);
         NetworkServer.Spawn(weapon, this.connectionToClient);
         addWeapon(weapon);
-    }
-
-    public override void OnStartLocalPlayer()
-    {
-        base.OnStartLocalPlayer();
-        gameInputs = FindObjectOfType<GameInputs>();
     }
 
     [Server]
@@ -92,29 +91,45 @@ public class Inventory : NetworkBehaviour
         }
     }
 
+    public void OnNextItem(InputAction.CallbackContext ctx)
+    {
+        if(ctx.performed)
+        {
+            NextInventoryItem();
+        }
+    }
+    public void OnSelectItem1(InputAction.CallbackContext ctx)
+    {
+        if(ctx.performed)
+        {
+            CmdswapTo(1);
+        }
+    }
+
+    public void OnSelectItem2(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            CmdswapTo(2);
+        }
+    }
+    public void OnSelectItem3(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            CmdswapTo(3);
+        }
+    }
+
+
+    public void OnPrimaryAttack(InputAction.CallbackContext ctx)
+    {
+    }
+
     [Client]
     void HandleInput()
     {
 
-        if (gameInputs.NextItem.triggered)
-        {
-            NextInventoryItem();
-        }
-
-        if (gameInputs.SelectItem1.triggered)
-        {
-            CmdswapTo(1);
-        }
-
-        if (gameInputs.SelectItem2.triggered)
-        {
-            CmdswapTo(2);
-        }
-
-        if (gameInputs.SelectItem3.triggered)
-        {
-            CmdswapTo(3);
-        }
 
         if (gameInputs.PrimaryAttack.WasPressedThisFrame() || gameInputs.PrimaryAttack.WasReleasedThisFrame())
         {

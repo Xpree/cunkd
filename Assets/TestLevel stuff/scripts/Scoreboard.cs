@@ -1,20 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 public class Scoreboard : MonoBehaviour
 {
-    GameInputs gameInputs;
-
     public TextMeshProUGUI livesUI;
     public TextMeshProUGUI scoreboardTextUI;
     public GameObject scoreboard;
-
-    private void Start()
-    {
-        gameInputs = FindObjectOfType<GameInputs>();
-    }
 
     public void SetLocalLives(int lives)
     {
@@ -43,16 +34,17 @@ public class Scoreboard : MonoBehaviour
         return scoreScreenText;
     }
 
+    // Called by Script Machine component in GamePlayerPrefab -> Input
+    public void ShowScoreboard(bool visible)
+    {
+        scoreboard.SetActive(visible);
+    }
+
     private void Update()
     {
-        if (gameInputs.ShowScoreboard.WasPressedThisFrame() || gameInputs.ShowScoreboard.WasReleasedThisFrame())
+        if(scoreboard.activeInHierarchy)
         {
-            bool activateScoreboard = gameInputs.ShowScoreboard.WasPressedThisFrame();
-            if (activateScoreboard)
-            {
-                scoreboardTextUI.text = GetScoreScreenText();
-            }
-            scoreboard.SetActive(activateScoreboard);
+            scoreboardTextUI.text = GetScoreScreenText();
         }
     }
 }

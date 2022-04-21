@@ -1,11 +1,11 @@
 using UnityEngine;
 using Mirror;
+using UnityEngine.InputSystem;
 
 public class Spectator : NetworkBehaviour
 {
     Camera mainCamera;
     PlayerCameraController currentCamera = null;
-    GameInputs gameInputs;
 
     [SyncVar]
     public LobbyClient LobbyClient;
@@ -18,9 +18,8 @@ public class Spectator : NetworkBehaviour
         base.OnStartLocalPlayer();
 
         mainCamera = Camera.main;
+        GetComponent<GameInputs>().EnableInput();
         FindObjectOfType<SpectatorUI>()?.EnableSpectatorUI();
-        gameInputs = FindObjectOfType<GameInputs>();
-        gameInputs.SetSpectatorMode();
     }
 
     public override void OnStopLocalPlayer()
@@ -29,7 +28,7 @@ public class Spectator : NetworkBehaviour
         FindObjectOfType<SpectatorUI>()?.DisableSpectatorUI();
     }
 
-    void NextCamera()
+    public void NextCamera()
     {
         if(currentCamera != null)
         {
@@ -76,17 +75,5 @@ public class Spectator : NetworkBehaviour
 
         if (currentCamera == null)
             mainCamera.enabled = true;
-    }
-
-    [ClientCallback]
-    private void Update()
-    {
-        if (!isLocalPlayer || gameInputs == null)
-            return;
-
-        if(gameInputs.SpectateNext.WasPerformedThisFrame())
-        {
-            NextCamera();
-        }
     }
 }

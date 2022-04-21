@@ -24,13 +24,15 @@ public class GameServer : MonoBehaviour
     [SerializeField] string[] NetworkScene;
 
     [Tooltip("The player avatar prefab")]
-    [SerializeField] GameClient PlayerPrefab;
+    [SerializeField] public GameClient PlayerPrefab;
 
     [Tooltip("The spectator prefab")]
-    [SerializeField] Spectator SpectatorPrefab;
+    [SerializeField] public Spectator SpectatorPrefab;
 
     [Tooltip("The delay of the start of the map in seconds")]
-    [SerializeField] double DelayStart = 4;
+    [SerializeField] public double DelayStart = 4;
+
+    [SerializeField] public GameSettings Settings;
 
     /// <summary>
     /// The NetworkTime.time when the round starts

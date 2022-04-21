@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Mirror;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -6,13 +7,11 @@ public class PlayerMovement : NetworkBehaviour
 {
     [SerializeField] GameSettings _settings;
 
-    GameInputs _inputs;
-
     Rigidbody _rigidBody;
 
     [Header("Diagnostics")]
-    public bool IsGrounded = false;
-    public Vector3 GroundNormal = Vector3.up;
+    public bool _isGrounded = false;
+    public Vector3 _groundNormal = Vector3.up;
     public bool _airJumped = false;
     public bool _performJump = false;
     public double _lastGrounded = 0;
@@ -22,6 +21,8 @@ public class PlayerMovement : NetworkBehaviour
     public float maxFrictionScaling = 1f;
     public float currentMaxSpeed => _settings.CharacterMovement.MaxSpeed * maxSpeedScaling;
     public float currentMaxFriction => _settings.CharacterMovement.DecelerationSpeed * maxFrictionScaling;
+
+    public Vector2 _movementInput = Vector2.zero;
 
     private void Start()
     {
@@ -34,33 +35,30 @@ public class PlayerMovement : NetworkBehaviour
     void ResetState()
     {
         _rigidBody.velocity = Vector3.zero;
-        IsGrounded = false;
-        GroundNormal = Vector3.up;
+        _isGrounded = false;
+        _groundNormal = Vector3.up;
         _airJumped = false;
         _performJump = false;
         _lastGrounded = 0;
         _lastJump = 0;
+        _movementInput = Vector2.zero;
+        maxSpeedScaling = 1f;
+        maxFrictionScaling = 1f;
     }
 
     public bool HasStrongAirControl => NetworkTime.time - _lastJump <= _settings.CharacterMovement.StrongAirControlTime;
     public bool HasCoyoteTime => (NetworkTime.time - _lastGrounded <= _settings.CharacterMovement.CoyoteTime && _lastGrounded - _lastJump >= _settings.CharacterMovement.CoyoteTime);
 
-    public bool HasGroundContact => IsGrounded || HasCoyoteTime;
+    public bool HasGroundContact => _isGrounded || HasCoyoteTime;
 
-    public bool HasMovementInput => _inputs.Move.ReadValue<Vector2>().sqrMagnitude > 0;
-    public bool HasGroundFriction => (IsGrounded || (HasCoyoteTime && HasMovementInput == false)) && _rigidBody.velocity.y < 0;
+    public bool HasMovementInput => _movementInput.sqrMagnitude > 0;
+    public bool HasGroundFriction => (_isGrounded || (HasCoyoteTime && HasMovementInput == false)) && _rigidBody.velocity.y < 0;
 
     private void Awake()
     {
         _rigidBody = GetComponent<Rigidbody>();
         _rigidBody.useGravity = false;
-    }
-
-    public override void OnStartLocalPlayer()
-    {
-        base.OnStartLocalPlayer();
-        _rigidBody.isKinematic = false;        
-        _inputs = FindObjectOfType<GameInputs>();
+        _rigidBody.isKinematic = false;
     }
 
     public Vector3 HorizontalVelocity
@@ -102,7 +100,7 @@ public class PlayerMovement : NetworkBehaviour
     void ApplyAcceleration(Vector2 move)
     {
         Vector3 velocityChange = (move.x * transform.right + move.y * transform.forward).normalized * currentMaxSpeed;
-        if (!IsGrounded && !HasStrongAirControl)
+        if (!_isGrounded && !HasStrongAirControl)
         {
             // Air acceleration
             velocityChange *= _settings.CharacterMovement.AirMovementMultiplier * Time.fixedDeltaTime;
@@ -151,7 +149,7 @@ public class PlayerMovement : NetworkBehaviour
             var contact = collision.GetContact(i);
             if (Vector3.Dot(contact.normal, Vector3.up) > 0.8)
             {
-                IsGrounded = true;
+                _isGrounded = true;
                 _airJumped = false;
                 _lastGrounded = NetworkTime.time;
             }
@@ -160,14 +158,11 @@ public class PlayerMovement : NetworkBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        IsGrounded = false;
+        _isGrounded = false;
     }
 
-    [ClientCallback]
     private void FixedUpdate()
     {
-        if (!isLocalPlayer) { return; }
-
         ApplyGravity();
         PerformJump();
 
@@ -176,22 +171,21 @@ public class PlayerMovement : NetworkBehaviour
             ApplyFriction();
         }
 
-        Vector2 move = _inputs.Move.ReadValue<Vector2>();
-        if (move.sqrMagnitude > 0)
+        if (HasMovementInput)
         {
-            ApplyAcceleration(move);
+            ApplyAcceleration(_movementInput);
         }
     }
 
-    [ClientCallback]
-    private void Update()
+    public void OnMoveAction(InputAction.CallbackContext ctx)
     {
-        if (!isLocalPlayer) { return; }
+        _movementInput = ctx.ReadValue<Vector2>();
+    }
 
-        if (_inputs.Jump.WasPressedThisFrame())
-        {
+    public void OnJumpAction(InputAction.CallbackContext ctx)
+    {
+        if(ctx.performed)
             _performJump = true;
-        }
     }
 
 
@@ -199,7 +193,7 @@ public class PlayerMovement : NetworkBehaviour
     public void TargetAddforce(Vector3 force, ForceMode mode)
     {
         _rigidBody.AddForce(force, mode);
-        IsGrounded = false;
+        _isGrounded = false;
     }
 
     [TargetRpc]

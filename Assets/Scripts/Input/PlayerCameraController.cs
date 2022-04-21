@@ -1,17 +1,16 @@
 using UnityEngine;
 using Mirror;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
-public class PlayerCameraController : NetworkBehaviour
+public class PlayerCameraController : MonoBehaviour
 {
-    private Transform cameraTransform;
+    public Transform playerTransform;
+    public Transform cameraTransform;
     public Camera playerCamera;
 
     Camera mainCamera;   
     float pitch = 0.0f;
-    [SyncVar] float syncedPitch;
-
-    GameInputs _inputs;
 
     public UnityEvent OnCameraActivated;
     public UnityEvent OnCameraDeactivated;
@@ -23,45 +22,21 @@ public class PlayerCameraController : NetworkBehaviour
         playerCamera.GetComponent<AudioListener>().enabled = false;
     }
 
-    public override void OnStartLocalPlayer()
+    public void OnCameraInput(InputAction.CallbackContext ctx)
     {
-        ActivateCamera();
-        _inputs = FindObjectOfType<GameInputs>();
+        if (Cursor.lockState == CursorLockMode.Locked)
+            MoveCamera(ctx.ReadValue<Vector2>());
     }
 
-    public override void OnStopLocalPlayer()
-    {
-        DeactivateCamera();
-    }
-
-    [Command]
-    void CmdUpdatePitch(float pitch)
-    {
-        syncedPitch = pitch;
-    }
-
-    private void Update()
-    {
-        if (!isLocalPlayer) {
-            cameraTransform.localRotation = Quaternion.Euler(syncedPitch, 0.0f, 0.0f);
-            return;
-        }
-        
-        if(Cursor.lockState == CursorLockMode.Locked)
-            MoveCamera(_inputs.Look.ReadValue<Vector2>());
-    }
-    
-    void MoveCamera(Vector2 delta)
+    public void MoveCamera(Vector2 delta)
     {
         float xMovement = delta.x * Settings.mouseSensitivityYaw * Time.deltaTime;
         float yMovement = delta.y * Settings.mouseSensitivityPitch * Time.deltaTime;
 
         pitch -= yMovement;
         pitch = Mathf.Clamp(pitch, -90.0f, 90.0f);
-
-        CmdUpdatePitch(pitch);
         cameraTransform.localRotation = Quaternion.Euler(pitch, 0.0f, 0.0f);
-        transform.Rotate(Vector3.up * xMovement);
+        playerTransform.Rotate(Vector3.up * xMovement);
     }
 
     static void EnableCamera(Camera camera, bool enable)
@@ -73,6 +48,7 @@ public class PlayerCameraController : NetworkBehaviour
         if(audioListener != null)
             audioListener.enabled = enable;
     }
+
 
     public void ActivateCamera()
     {
@@ -89,6 +65,5 @@ public class PlayerCameraController : NetworkBehaviour
         EnableCamera(playerCamera, false);
         OnCameraDeactivated?.Invoke();
         Cursor.lockState = CursorLockMode.None;
-
     }
 }

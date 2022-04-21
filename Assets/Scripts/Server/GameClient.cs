@@ -14,10 +14,17 @@ public class GameClient : NetworkBehaviour
 
     [SyncVar]
     public LobbyClient LobbyClient;
+    public int ClientIndex => LobbyClient?.Index ?? -1;
+    public string PlayerName => LobbyClient?.PlayerName ?? "[DISCONNECTED]";
+
+    public PlayerCameraController CameraController;
 
 
-    public int ClientIndex => LobbyClient.Index;
-    public string PlayerName => LobbyClient.PlayerName;
+    private void Awake()
+    {
+        CameraController = GetComponentInChildren<PlayerCameraController>(true);
+        _inputs = GetComponentInChildren<GameInputs>(true);
+    }
 
 
     [Server]
@@ -46,10 +53,18 @@ public class GameClient : NetworkBehaviour
         CmdLoaded();
         _loaded = true;
 
-        _inputs = FindObjectOfType<GameInputs>();
+        _inputs.gameObject.SetActive(true);
         _inputs.SetPlayerMode();
         _inputs.PreventInput();
+        CameraController.ActivateCamera();
     }
+
+
+    public override void OnStopLocalPlayer()
+    {
+        CameraController.DeactivateCamera();
+    }
+
 
     IEnumerator DelayGameStart(double networkTime)
     {

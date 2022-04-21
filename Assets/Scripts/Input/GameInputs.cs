@@ -88,7 +88,7 @@ public class GameInputs : MonoBehaviour
 
 	}
 
-	public void EnablePlayerMaps(bool enable)
+    public void EnablePlayerMaps(bool enable)
     {
 		if(enable)
         {
