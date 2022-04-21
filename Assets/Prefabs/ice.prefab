@@ -131,6 +131,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  friction: {fileID: 13400000, guid: 851bffd5aa69cca41b2e9446eac5a9aa, type: 2}
-  noFriction: {fileID: 13400000, guid: 988a39039159e8648bbb54a51cdfad23, type: 2}
-  duration: 30
+  _settings: {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}

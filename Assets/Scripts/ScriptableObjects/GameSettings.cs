@@ -59,6 +59,13 @@ public class GameSettings : ScriptableObject
 
     public BlackHoleSettings BlackHole = new();
 
+    [Serializable]
+    public class IceGadgetSettings
+    {
+        public float Duration = 30f;
+        public float Friction = -0.5f;
+    }
 
+    public IceGadgetSettings IceGadget = new();
 
 }
