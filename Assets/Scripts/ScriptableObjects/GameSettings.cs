@@ -60,5 +60,13 @@ public class GameSettings : ScriptableObject
     public BlackHoleSettings BlackHole = new();
 
 
+    [Serializable]
 
+    public class SwapSniperSettings
+    {
+        public float Cooldown = 5f;
+        public float Range = 200f;
+    }
+
+    public SwapSniperSettings SwapSniper = new();
 }

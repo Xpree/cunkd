@@ -214,4 +214,32 @@ public class PlayerMovement : NetworkBehaviour
         ResetState();
     }
 
+    [TargetRpc]
+    public void TargetTeleport(Vector3 position)
+    {
+        transform.position = position;
+        ResetState();
+    }
+
+
+    [Command(requiresAuthority = false)]
+    public void CmdTeleport(Vector3 position)
+    {
+        transform.position = position;
+        TargetTeleport(position);        
+    }
+
+
+    public void Teleport(Vector3 position)
+    {
+        transform.position = position;
+        if(NetworkServer.active)
+        {
+            TargetTeleport(position);
+        }
+        else
+        {
+            CmdTeleport(position);
+        }
+    }
 }

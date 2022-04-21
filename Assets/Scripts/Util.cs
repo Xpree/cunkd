@@ -36,6 +36,18 @@ public static class Util
         }
         return false;
     }
+
+    public static void Teleport(GameObject go, Vector3 position)
+    {
+        go.transform.position = position;
+        if (!Util.HasPhysicsAuthority(go))
+        {
+            var other = go.GetComponent<PlayerMovement>();
+            if (other == null)
+                return;
+            other.Teleport(position);
+        }
+    }
 }
 
 /// <summary>

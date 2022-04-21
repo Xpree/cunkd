@@ -34,3 +34,6 @@ MonoBehaviour:
     Range: 20
     Duration: 5
     Intensity: 200
+  SwapSniper:
+    Cooldown: 1
+    Range: 200
