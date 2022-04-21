@@ -67,8 +67,8 @@ public class GameSettings : ScriptableObject
     }
 
     public IceGadgetSettings IceGadget = new();
-    [Serializable]
 
+    [Serializable]
     public class SwapSniperSettings
     {
         public float Cooldown = 5f;
