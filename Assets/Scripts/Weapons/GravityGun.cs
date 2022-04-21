@@ -12,6 +12,7 @@ public class GravityGun : NetworkBehaviour, IWeapon
     [SerializeField] Transform AnchorPoint;
     [SerializeField] LayerMask TargetMask = ~0;
 
+
     [SerializeField] Collider PlayerCollider;
     [SerializeField] ForceMode PushForceMode = ForceMode.Impulse;
     //grab

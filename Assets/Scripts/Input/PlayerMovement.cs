@@ -18,6 +18,11 @@ public class PlayerMovement : NetworkBehaviour
     public double _lastGrounded = 0;
     public double _lastJump = 0;
 
+    public float maxSpeedScaling = 1f;
+    public float maxFrictionScaling = 1f;
+    public float currentMaxSpeed => _settings.CharacterMovement.MaxSpeed * maxSpeedScaling;
+    public float currentMaxFriction => _settings.CharacterMovement.DecelerationSpeed * maxFrictionScaling;
+
     private void Start()
     {
         if (_settings == null)
@@ -81,7 +86,7 @@ public class PlayerMovement : NetworkBehaviour
     void ApplyFriction()
     {
         var vel = this.HorizontalVelocity;
-        var speed = Mathf.Max(vel.magnitude - _settings.CharacterMovement.DecelerationSpeed * Time.fixedDeltaTime);
+        var speed = Mathf.Max(vel.magnitude - currentMaxFriction * Time.fixedDeltaTime);
         if (speed <= 0)
         {
             vel = Vector3.zero;
@@ -96,7 +101,7 @@ public class PlayerMovement : NetworkBehaviour
 
     void ApplyAcceleration(Vector2 move)
     {
-        Vector3 velocityChange = (move.x * transform.right + move.y * transform.forward).normalized * _settings.CharacterMovement.MaxSpeed;
+        Vector3 velocityChange = (move.x * transform.right + move.y * transform.forward).normalized * currentMaxSpeed;
         if (!IsGrounded && !HasStrongAirControl)
         {
             // Air acceleration
@@ -104,7 +109,7 @@ public class PlayerMovement : NetworkBehaviour
         }
 
         Vector3 velocity = this.HorizontalVelocity;
-        float terminalSpeed = Mathf.Max(velocity.magnitude, _settings.CharacterMovement.MaxSpeed);
+        float terminalSpeed = Mathf.Max(velocity.magnitude, currentMaxSpeed);
         velocity += velocityChange;
         // Makes sure the player can't increase its speed beyond its previous speed or maxSpeed which ever is greater.
         velocity = Vector3.ClampMagnitude(velocity, terminalSpeed);
