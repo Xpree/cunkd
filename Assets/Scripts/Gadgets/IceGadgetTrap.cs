@@ -57,25 +57,5 @@ public class IceGadgetTrap : NetworkBehaviour
             }
             return;
         }
-
-
-        //if (duration <= 0)
-        //{
-        //    if (NetworkServer.active)
-        //    {
-        //        var collisions = Physics.OverlapSphere(this.transform.position, this.GetComponent<CapsuleCollider>().radius);
-        //        foreach (var collision in collisions)
-        //        {
-        //            if (collision != null && collision.tag == "Player")
-        //            {
-        //                collision.gameObject.GetComponent<PlayerMovement>().maxSpeedScaling = 1f;
-        //                collision.gameObject.GetComponent<PlayerMovement>().maxFrictionScaling = 1f;
-        //            }
-        //        }
-        //        NetworkServer.Destroy(this.gameObject);
-        //    }
-        //    return;
-        //}
-        //duration = duration - Time.fixedDeltaTime;
     }
 }
