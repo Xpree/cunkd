@@ -36,7 +36,7 @@ public class ObjectSpawner : NetworkBehaviour
         if (spawnedObject != newSpawnedObject)
         {
             spawnedObject = newSpawnedObject;
-            spawnedObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
+            spawnedObject?.GetComponent<NetworkIdentity>()?.RemoveClientAuthority();
         }
 
         if (spawned)

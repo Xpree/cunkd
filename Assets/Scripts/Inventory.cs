@@ -130,6 +130,25 @@ public class Inventory : NetworkBehaviour
     void HandleInput()
     {
 
+        if (gameInputs.NextItem.triggered)
+        {
+            NextInventoryItem();
+        }
+
+        if (gameInputs.SelectItem1.triggered)
+        {
+            CmdswapTo(1);
+        }
+
+        if (gameInputs.SelectItem2.triggered)
+        {
+            CmdswapTo(2);
+        }
+
+        if (gameInputs.SelectItem3.triggered)
+        {
+            CmdswapTo(3);
+        }
 
         if (gameInputs.PrimaryAttack.WasPressedThisFrame() || gameInputs.PrimaryAttack.WasReleasedThisFrame())
         {
