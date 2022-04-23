@@ -11,14 +11,18 @@ public class ObjectSpawner : NetworkBehaviour, IInteractable
     [SerializeField] ObjectType objectType;
 
 
-    GameObject spawnedObject;
+    [Header("Diagnostics")]
+    [SyncVar(hook = nameof(OnSpawnedItemChanged))] public NetworkItem spawnedItem;
+
     NetworkTimer nextSpawnTime;
 
     public Transform GetSpawnAnchor() => spawnAnchor != null ? spawnAnchor.transform : this.transform;
 
-    public bool IsGadgetSpawner => objectToSpawn?.GetComponent<IGadget>() != null;
-    public bool IsWeaponSpawner => objectToSpawn?.GetComponent<IWeapon>() != null;
+    public bool IsGadgetSpawner => objectToSpawn != null && objectToSpawn.GetComponent<IGadget>() != null;
+    public bool IsWeaponSpawner => objectToSpawn != null && objectToSpawn.GetComponent<IWeapon>() != null;
     public bool IsPowerUpSpawner => !IsGadgetSpawner && !IsWeaponSpawner;
+
+
 
     private void Awake()
     {
@@ -36,9 +40,25 @@ public class ObjectSpawner : NetworkBehaviour, IInteractable
         }
     }
 
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+
+        if(spawnedItem != null)
+        {
+            OnSpawnedItem(spawnedItem);
+        }
+
+    }
+    void OnSpawnedItemChanged(NetworkItem previous, NetworkItem current)
+    {
+        if (current != null)
+            OnSpawnedItem(current);
+    }
+
     private void FixedUpdate()
     {
-        if (spawnedObject)
+        if (spawnedItem)
         {
             if (objectType == ObjectType.Gadget || objectType == ObjectType.Weapon)
             {
@@ -54,63 +74,46 @@ public class ObjectSpawner : NetworkBehaviour, IInteractable
     [Server]
     public void SpawnObject()
     {
-        if (spawnedObject)
+        if (spawnedItem)
         {
-            NetworkServer.Destroy(spawnedObject);
-            spawnedObject = null;
+            NetworkServer.Destroy(spawnedItem.gameObject);
+            spawnedItem = null;
         }
 
-        var go = Instantiate(objectToSpawn, GetSpawnAnchor());
+        var anchor = GetSpawnAnchor();
+        var go = Instantiate(objectToSpawn, anchor.position, anchor.rotation);
         NetworkServer.Spawn(go);
-        OnSpawned(go);
-        RpcSetSpawned(go);
+
+        spawnedItem = go.GetComponent<NetworkItem>();
+        if (spawnedItem != null)
+            OnSpawnedItem(spawnedItem);
     }
 
-    void OnSpawned(GameObject go)
+    void OnSpawnedItem(NetworkItem item)
     {
-        spawnedObject = go;
-        if (go)
-        {
-            go.transform.parent = GetSpawnAnchor();
-            go.transform.localPosition = Vector3.zero;
-            go.transform.localRotation = Quaternion.identity;
-        }
-    }
-
-    [ClientRpc]
-    void RpcSetSpawned(GameObject go)
-    {
-        if (isClientOnly)
-        {
-            OnSpawned(go);
-        }
-    }
-
-
-    void ResetSpawn()
-    {
-        spawnedObject = null;
-        nextSpawnTime = NetworkTimer.FromNow(spawnTime);
+        var parent = GetSpawnAnchor();
+        item.transform.parent = parent;
+        item.transform.localPosition = Vector3.zero;
+        item.transform.localRotation = Quaternion.identity;
     }
 
 
     [Command(requiresAuthority = false)]
     void CmdPickup(NetworkIdentity actor)
     {
-        var networkItem = spawnedObject?.GetComponent<NetworkItem>();
-        if (networkItem != null && (actor?.GetComponent<INetworkItemOwner>()?.CanPickup(networkItem) ?? false))
+        if (spawnedItem != null && (actor?.GetComponent<INetworkItemOwner>()?.CanPickup(spawnedItem) ?? false))
         {
-            networkItem.Pickup(actor);
-            ResetSpawn();
+            spawnedItem.Pickup(actor);
+            spawnedItem = null;
+            nextSpawnTime = NetworkTimer.FromNow(spawnTime);
         }
     }
 
     void IInteractable.Interact(NetworkIdentity actor)
     {
-        var networkItem = spawnedObject?.GetComponent<NetworkItem>();
-        if (actor != null && networkItem != null)
+        if (actor != null && spawnedItem != null)
         {
-            if (actor?.GetComponent<INetworkItemOwner>()?.CanPickup(networkItem) ?? false)
+            if (actor.GetComponent<INetworkItemOwner>()?.CanPickup(spawnedItem) ?? false)
             {
                 CmdPickup(actor);
             }
