@@ -1,17 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class IceGadget : NetworkBehaviour, IGadget
+[RequireComponent(typeof(NetworkItem))]
+public class IceGadget : NetworkBehaviour, IGadget, IEquipable
 {
     public GameObject IceGadgetTrap;
-    Vector3 aimDirection;
-    Vector3 aimPos;
-    Vector3 target;
+
     [SerializeField] LayerMask TargetMask = ~0;
 
-    [SyncVar] [SerializeField] int Charges;
+    [SyncVar][SerializeField] int Charges;
     [SyncVar] public int chargesLeft;
     [SerializeField] bool isPassive;
 
@@ -24,60 +21,87 @@ public class IceGadget : NetworkBehaviour, IGadget
     {
         chargesLeft = Charges;
     }
-    [Client]
-    void CmdPrimaryUse(bool isPressed, Vector3 direction, Vector3 position)
+
+    [Command]
+    void SpawnIceGadget(Vector3 target)
     {
         if (0 < chargesLeft)
         {
-            aimDirection = direction;
-            aimPos = position;
-            target = FindTarget();
-            if(target != new Vector3(0, 0, 0))
-            {
-                SpawnIceGadget(target);
-                chargesLeft--;
-            }
+            var go = Instantiate(IceGadgetTrap, target, Quaternion.identity);
+            NetworkServer.Spawn(go);
+            chargesLeft--;
         }
-        if (chargesLeft <= 0)
-        {
-            print("gadget out of charges");
-        }
-    }
-
-    [Server]
-    void SpawnIceGadget(Vector3 target)
-    {
-        var go = Instantiate(IceGadgetTrap, target, Quaternion.identity);
-        NetworkServer.Spawn(go);
-    }
-
-    [Client]
-    void CmdSecondaryUse()
-    {
-        
-    }
-
-    [Server]
-    Vector3 FindTarget()
-    {
-        //Raycast target
-        RaycastHit hitResult;
-        if (Physics.Raycast(aimPos, aimDirection, out hitResult))
-        {
-            return hitResult.point;
-        }
-        return new Vector3(0, 0, 0);
     }
 
     void IGadget.PrimaryUse(bool isPressed)
     {
-        CmdPrimaryUse(isPressed, Camera.main.transform.forward, Camera.main.transform.position);
+        if (chargesLeft <= 0)
+            return;
+
+        var aimTransform = GetComponent<NetworkItem>().OwnerInteractAimTransform;
+        if (aimTransform == null)
+        {
+            Debug.LogError("Aim transform missing.");
+            return;
+        }
+
+        if (Util.RaycastPoint(aimTransform, 100.0f, TargetMask, out Vector3 point))
+        {
+            SpawnIceGadget(point);
+        }
     }
 
     void IGadget.SecondaryUse(bool isPressed)
     {
-        CmdSecondaryUse();
     }
 
     float? IGadget.ChargeProgress => this.ChargeProgress;
+
+
+    bool holstered;
+    bool IEquipable.IsHolstered => holstered;
+
+    void IEquipable.OnHolstered()
+    {
+        // TODO Animation then set holstered
+        holstered = true;
+        transform.localScale = Vector3.zero;
+    }
+
+    void IEquipable.OnUnholstered()
+    {
+        // TODO Animation then set holstered
+        holstered = false;
+        transform.localScale = Vector3.one;
+    }
+
+    void IEquipable.OnPickedUp(bool startHolstered)
+    {
+        holstered = startHolstered;
+
+        if (holstered)
+            transform.localScale = Vector3.zero;
+        else
+            transform.localScale = Vector3.one;
+    }
+
+    void IEquipable.OnDropped()
+    {
+        this.transform.parent = null;
+        if (holstered)
+        {
+            holstered = false;
+            transform.localScale = Vector3.one;
+        }
+    }
+
+    void IEquipable.OnRemoved()
+    {
+        this.transform.parent = null;
+        if (holstered)
+        {
+            holstered = false;
+            transform.localScale = Vector3.one;
+        }
+    }
 }

@@ -56,4 +56,11 @@ public static class Settings
         set { PlayerPrefs.SetFloat("MouseSensitivityPitch", value); }
     }
 
+    public static bool autoEquipOnPickup
+    {
+        get { return PlayerPrefs.GetInt("AutoEquipOnPickup", 1) != 0; }
+        set { PlayerPrefs.SetInt("AutoEquipOnPickup", value ? 1 : 0); }
+    }
+
+
 }

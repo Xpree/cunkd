@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class GadgetExampleBanana : NetworkBehaviour, IGadget
+[RequireComponent(typeof(NetworkItem))]
+public class GadgetExampleBanana : NetworkBehaviour, IGadget, IEquipable
 {
-    [SyncVar] [SerializeField] int Charges;
-    [SyncVar]public int chargesLeft;
+    [SyncVar][SerializeField] int Charges;
+    [SyncVar] public int chargesLeft;
     [SerializeField] bool isPassive;
 
     [SyncVar] float ChargeProgress = 0f;
@@ -58,4 +59,52 @@ public class GadgetExampleBanana : NetworkBehaviour, IGadget
     }
 
     float? IGadget.ChargeProgress => this.ChargeProgress;
+
+
+    bool holstered;
+    bool IEquipable.IsHolstered => holstered;
+
+    void IEquipable.OnHolstered()
+    {
+        // TODO Animation then set holstered
+        holstered = true;
+        transform.localScale = Vector3.zero;
+    }
+
+    void IEquipable.OnUnholstered()
+    {
+        // TODO Animation then set holstered
+        holstered = false;
+        transform.localScale = Vector3.one;
+    }
+
+    void IEquipable.OnPickedUp(bool startHolstered)
+    {
+        holstered = startHolstered;
+
+        if (holstered)
+            transform.localScale = Vector3.zero;
+        else
+            transform.localScale = Vector3.one;
+    }
+
+    void IEquipable.OnDropped()
+    {
+        this.transform.parent = null;
+        if (holstered)
+        {
+            holstered = false;
+            transform.localScale = Vector3.one;
+        }
+    }
+
+    void IEquipable.OnRemoved()
+    {
+        this.transform.parent = null;
+        if (holstered)
+        {
+            holstered = false;
+            transform.localScale = Vector3.one;
+        }
+    }
 }

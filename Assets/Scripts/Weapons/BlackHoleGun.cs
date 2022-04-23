@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class BlackHoleGun : NetworkBehaviour, IWeapon
+[RequireComponent(typeof(NetworkItem))]
+public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
 {
     Vector3 aimDirection;
     Vector3 aimPos;
@@ -68,7 +69,7 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon
             return (endTarget + aimPos);
         }
     }
-    
+
     [ServerCallback]
     // Update is called once per frame
     void FixedUpdate()
@@ -91,8 +92,73 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon
 
     void IWeapon.SecondaryAttack(bool isPressed)
     {
-        
+
     }
 
     float? IWeapon.ChargeProgress => null;
+
+    bool holstered;
+    bool IEquipable.IsHolstered => holstered;
+
+    System.Collections.IEnumerator testAnimation()
+    {
+        var start = NetworkTimer.Now;
+
+        for (; ; )
+        {
+            var t = start.Elapsed * 5;
+            if (t > 0.99)
+            {
+                break;
+            }
+
+            transform.localScale = Vector3.one * (float)(1.0 - t);
+            yield return null;
+        }
+        transform.localScale = Vector3.zero;
+        holstered = true;
+    }
+
+
+    void IEquipable.OnHolstered()
+    {
+        StartCoroutine(testAnimation());
+    }
+
+    void IEquipable.OnUnholstered()
+    {
+        // TODO Animation then set holstered
+        holstered = false;
+        transform.localScale = Vector3.one;
+    }
+
+    void IEquipable.OnPickedUp(bool startHolstered)
+    {
+        holstered = startHolstered;
+
+        if (holstered)
+            transform.localScale = Vector3.zero;
+        else
+            transform.localScale = Vector3.one;
+    }
+
+    void IEquipable.OnDropped()
+    {
+        this.transform.parent = null;
+        if (holstered)
+        {
+            holstered = false;
+            transform.localScale = Vector3.one;
+        }
+    }
+
+    void IEquipable.OnRemoved()
+    {
+        this.transform.parent = null;
+        if (holstered)
+        {
+            holstered = false;
+            transform.localScale = Vector3.one;
+        }
+    }
 }

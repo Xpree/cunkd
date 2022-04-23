@@ -2,7 +2,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Mirror;
 
-public class GravityGun : NetworkBehaviour, IWeapon
+[RequireComponent(typeof(NetworkItem))]
+public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
 {
     Vector3 aimDirection;
     Vector3 aimPos;
@@ -31,7 +32,7 @@ public class GravityGun : NetworkBehaviour, IWeapon
     float GrabPullTime;
     float GrabTargetRadius;
 
-    Vector3 AnchorPos => AnchorPoint.position; // + AnchorPoint.forward * GrabTargetRadius; //may cause issues with holding larger objects if not implemented
+    Vector3 AnchorPos => AnchorPoint.position + AnchorPoint.forward * GrabTargetRadius; //may cause issues with holding larger objects if not implemented
 
     bool Charging = false;
     bool Push = false;
@@ -46,8 +47,6 @@ public class GravityGun : NetworkBehaviour, IWeapon
     }
     void IWeapon.initializeOnPlayer(Inventory player)
     {
-        AnchorPoint = player.objectAnchor;
-        PlayerCollider = player.gameObject.GetComponent<Collider>();
     }
 
     [Command]
@@ -64,7 +63,7 @@ public class GravityGun : NetworkBehaviour, IWeapon
         ChargeProgress = 0f;
         Push = false;
     }
-    
+
     [Command]
     void CmdSecondaryAttack(bool isPressed, Vector3 direction, Vector3 position)
     {
@@ -197,5 +196,76 @@ public class GravityGun : NetworkBehaviour, IWeapon
     }
 
     float? IWeapon.ChargeProgress => this.ChargeProgress;
+
+    bool holstered = false;
+    bool IEquipable.IsHolstered => holstered;
+
+    System.Collections.IEnumerator testAnimation()
+    {
+        var start = NetworkTimer.Now;
+
+        for (; ; )
+        {
+            var t = start.Elapsed * 5;
+            if (t > 0.99)
+            {
+                break;
+            }
+
+            transform.localScale = Vector3.one * (float)(1.0 - t);
+            yield return null;
+        }
+        transform.localScale = Vector3.zero;
+        holstered = true;
+    }
+
+    void IEquipable.OnHolstered()
+    {
+        StartCoroutine(testAnimation());
+    }
+
+    void IEquipable.OnUnholstered()
+    {
+        // TODO Animation then set holstered
+        holstered = false;
+        transform.localScale = Vector3.one;
+    }
+
+    void IEquipable.OnPickedUp(bool startHolstered)
+    {
+        holstered = startHolstered;
+
+        if (holstered)
+            transform.localScale = Vector3.zero;
+        else
+            transform.localScale = Vector3.one;
+
+        PlayerCollider = GetComponent<NetworkItem>().Owner.GetComponent<Collider>();
+    }
+
+
+    void IEquipable.OnDropped()
+    {
+        this.transform.parent = null;
+        if (holstered)
+        {
+            holstered = false;
+            transform.localScale = Vector3.one;
+        }
+
+        PlayerCollider = null;
+    }
+
+    void IEquipable.OnRemoved()
+    {
+        this.transform.parent = null;
+        if (holstered)
+        {
+            holstered = false;
+            transform.localScale = Vector3.one;
+        }
+        PlayerCollider = null;
+    }
+
 }
 

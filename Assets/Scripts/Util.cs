@@ -14,27 +14,20 @@ public static class Util
         if (go == null)
             return false;
 
-        if (NetworkClient.active)
-        {
-            var identity = go.GetComponent<NetworkIdentity>();
-            if (identity == null)
-            {
-                // Not a network object
-                return true;
-            }
+        var identity = go.GetComponent<NetworkIdentity>();
 
-            // Returns true for every network object the client owns
-            if (identity.hasAuthority)
-                return true;
+        if (identity == null)
+        {
+            // Not a network object
+            return true;
         }
 
-        // Must not be 'else' because host is both server and client
-        if (NetworkServer.active)
-        {
-            // Server is authoritive over everything except Players (objects with GameClient component)
-            return go.GetComponent<GameClient>() == null;
-        }
-        return false;
+        return identity.HasControl();
+    }
+
+    public static bool HasControl(this NetworkIdentity identity)
+    {
+        return identity.hasAuthority || (NetworkServer.active && identity.connectionToClient == null);
     }
 
     public static void Teleport(GameObject go, Vector3 position)
@@ -46,6 +39,48 @@ public static class Util
             if (other == null)
                 return;
             other.Teleport(position);
+        }
+    }
+
+
+    public static Transform GetOwnerAimTransform(NetworkItem item)
+    {
+        return GetPlayerInteractAimTransform(item.Owner);
+    }
+
+    public static Transform GetPlayerInteractAimTransform(GameObject go)
+    {
+        if (go != null)
+        {
+            return go.GetComponentInChildren<PlayerCameraController>()?.playerCamera?.transform;
+        }
+        return null;
+    }
+
+    public static Vector3 RaycastPointOrMaxDistance(Transform transform, float maxDistance, LayerMask targetMask)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(new Ray(transform.position, transform.forward), out hit, maxDistance, targetMask, QueryTriggerInteraction.Ignore))
+        {
+            return hit.point;
+        }
+        else
+        {
+            return transform.position + transform.forward * maxDistance;
+        }
+    }
+
+    public static bool RaycastPoint(Transform transform, float maxDistance, LayerMask targetMask, out Vector3 point)
+    {
+        if (Physics.Raycast(new Ray(transform.position, transform.forward), out RaycastHit hit, maxDistance, targetMask, QueryTriggerInteraction.Ignore))
+        {
+            point = hit.point;
+            return true;
+        }
+        else
+        {
+            point = Vector3.zero;
+            return false;
         }
     }
 }
@@ -70,6 +105,8 @@ public struct NetworkTimer
 {
     public double TickTime;
 
+    public double Elapsed => NetworkTime.time - TickTime;
+    public static NetworkTimer Now => new NetworkTimer { TickTime = NetworkTime.time };
     public static NetworkTimer FromNow(double duration) => new NetworkTimer { TickTime = NetworkTime.time + duration };
     public bool HasTicked => TickTime > 0 && NetworkTime.time > TickTime;
 }

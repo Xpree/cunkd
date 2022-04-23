@@ -128,7 +128,7 @@ public class PlayerMovement : NetworkBehaviour
             return;
         _performJump = false;
 
-        if(!HasGroundContact)
+        if (!HasGroundContact)
         {
             if (_airJumped)
             {
@@ -147,7 +147,7 @@ public class PlayerMovement : NetworkBehaviour
         for (int i = 0; i < collision.contactCount; ++i)
         {
             var contact = collision.GetContact(i);
-            if (Vector3.Dot(contact.normal, Vector3.up) > 0.8)
+            if (Vector3.Dot(contact.normal, Vector3.up) > 0.2)
             {
                 _isGrounded = true;
                 _airJumped = false;
@@ -184,7 +184,7 @@ public class PlayerMovement : NetworkBehaviour
 
     public void OnJumpAction(InputAction.CallbackContext ctx)
     {
-        if(ctx.performed)
+        if (ctx.performed)
             _performJump = true;
     }
 
@@ -204,7 +204,7 @@ public class PlayerMovement : NetworkBehaviour
         ResetState();
     }
 
-    
+
     [TargetRpc]
     public void TargetTeleport(Vector3 position, Quaternion rotation)
     {
@@ -225,14 +225,14 @@ public class PlayerMovement : NetworkBehaviour
     public void CmdTeleport(Vector3 position)
     {
         transform.position = position;
-        TargetTeleport(position);        
+        TargetTeleport(position);
     }
 
 
     public void Teleport(Vector3 position)
     {
         transform.position = position;
-        if(NetworkServer.active)
+        if (NetworkServer.active)
         {
             TargetTeleport(position);
         }

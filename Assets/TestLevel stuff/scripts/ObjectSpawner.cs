@@ -1,139 +1,123 @@
 using Mirror;
 using UnityEngine;
 
-public class ObjectSpawner : NetworkBehaviour
+public class ObjectSpawner : NetworkBehaviour, IInteractable
 {
-    [SyncVar] [SerializeField] GameObject objectToSpawn;
+    [SerializeField] GameObject objectToSpawn;
+    [SerializeField] GameObject spawnAnchor;
     [SerializeField] float spawnTime;
     [SerializeField] bool spawnAtStart;
     enum ObjectType { Weapon, Gadget, Object };
-    [SerializeField]ObjectType objectType;
+    [SerializeField] ObjectType objectType;
 
 
     GameObject spawnedObject;
-    GameObject newSpawnedObject;
-    bool spawned, objectIsReplaced;
-    double nextSpawnTime = 0;
+    NetworkTimer nextSpawnTime;
+
+    public Transform GetSpawnAnchor() => spawnAnchor != null ? spawnAnchor.transform : this.transform;
+
+    public bool IsGadgetSpawner => objectToSpawn?.GetComponent<IGadget>() != null;
+    public bool IsWeaponSpawner => objectToSpawn?.GetComponent<IWeapon>() != null;
+    public bool IsPowerUpSpawner => !IsGadgetSpawner && !IsWeaponSpawner;
 
     private void Awake()
     {
-        if (objectType == ObjectType.Object)
+        if (IsPowerUpSpawner)
         {
             gameObject.GetComponent<MeshRenderer>().enabled = false;
         }
     }
 
+    public override void OnStartServer()
+    {
+        if (spawnAtStart)
+        {
+            SpawnObject();
+        }
+    }
 
-    [ServerCallback]
     private void FixedUpdate()
     {
-        if (!spawnAtStart)
-        {
-            nextSpawnTime = NetworkTime.time + spawnTime;
-            spawnAtStart = true;
-        }
-
-        if (spawnedObject != newSpawnedObject)
-        {
-            spawnedObject = newSpawnedObject;
-            spawnedObject?.GetComponent<NetworkIdentity>()?.RemoveClientAuthority();
-        }
-
-        if (spawned)
+        if (spawnedObject)
         {
             if (objectType == ObjectType.Gadget || objectType == ObjectType.Weapon)
             {
-                spawnedObject.transform.Rotate(0.5f, 1, 0.5f);
+                spawnAnchor.transform.Rotate(0.5f, 1, 0.5f);
             }
         }
-
-        if (nextSpawnTime < NetworkTime.time)
+        else if (NetworkServer.active && nextSpawnTime.HasTicked)
         {
-            if (!spawned || objectIsReplaced)
-            {
-                spawnObject();
-            }
+            SpawnObject();
         }
-
-    }
-    [ServerCallback]
-    public GameObject pickupObject(Inventory inventory)
-    {
-        //print("pickup object");
-        if (spawned)
-        {
-            newSpawnedObject = null;
-            nextSpawnTime = NetworkTime.time + spawnTime;
-            //Weapon
-            if (objectToSpawn.GetComponent<IWeapon>() != null)
-            {
-                newSpawnedObject = inventory.currentWeapon;
-                spawnedObject.GetComponent<NetworkIdentity>().AssignClientAuthority(inventory.connectionToClient);
-            }
-            //Gadget
-            else if (objectToSpawn.GetComponent<IGadget>() != null)
-            {
-                spawnedObject.GetComponent<NetworkIdentity>().AssignClientAuthority(inventory.connectionToClient);
-                if (inventory.gadget)
-                {
-                    newSpawnedObject = inventory.gadget;
-                }
-                else
-                {
-                    spawned = false;
-                }
-            }
-            if (newSpawnedObject)
-            {
-                objectIsReplaced = true;
-                newSpawnedObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
-                newSpawnedObject.transform.localScale = new Vector3(1, 1, 1);
-                newSpawnedObject.transform.position = transform.position + new Vector3(0, 1, 0);
-            }
-            return spawnedObject;
-        }
-        return null;
     }
 
-    void objectWasRemoved()
+    [Server]
+    public void SpawnObject()
     {
-        nextSpawnTime = NetworkTime.time + spawnTime;
-        spawned = false;
-        spawnedObject = null;
-        newSpawnedObject = null;
-    }
-
-
-    [ServerCallback]
-    public void spawnObject()
-    {
-        //print("spawning object...");
         if (spawnedObject)
         {
             NetworkServer.Destroy(spawnedObject);
-        }
-        spawnedObject = Instantiate(objectToSpawn, transform.position + new Vector3(0, 1, 0), objectToSpawn.transform.rotation);
-        newSpawnedObject = spawnedObject;
-        objectIsReplaced = false;
-
-        if (objectType == ObjectType.Gadget || objectType == ObjectType.Weapon)
-        {
-            foreach (Collider collider in spawnedObject.GetComponents<Collider>())
-            {
-                collider.enabled = false;
-            }
+            spawnedObject = null;
         }
 
-        NetworkServer.Spawn(spawnedObject);
-        spawned = true;
+        var go = Instantiate(objectToSpawn, GetSpawnAnchor());
+        NetworkServer.Spawn(go);
+        OnSpawned(go);
+        RpcSetSpawned(go);
     }
 
-    [ServerCallback]
-    private void OnTriggerExit(Collider other)
+    void OnSpawned(GameObject go)
     {
-        if (other.gameObject == spawnedObject)
+        spawnedObject = go;
+        if (go)
         {
-            objectWasRemoved();
+            go.transform.parent = GetSpawnAnchor();
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
+        }
+    }
+
+    [ClientRpc]
+    void RpcSetSpawned(GameObject go)
+    {
+        if (isClientOnly)
+        {
+            OnSpawned(go);
+        }
+    }
+
+
+    void ResetSpawn()
+    {
+        spawnedObject = null;
+        nextSpawnTime = NetworkTimer.FromNow(spawnTime);
+    }
+
+
+    [Command(requiresAuthority = false)]
+    void CmdPickup(NetworkIdentity actor)
+    {
+        var networkItem = spawnedObject?.GetComponent<NetworkItem>();
+        if (networkItem != null && (actor?.GetComponent<INetworkItemOwner>()?.CanPickup(networkItem) ?? false))
+        {
+            networkItem.Pickup(actor);
+            ResetSpawn();
+        }
+    }
+
+    void IInteractable.Interact(NetworkIdentity actor)
+    {
+        var networkItem = spawnedObject?.GetComponent<NetworkItem>();
+        if (actor != null && networkItem != null)
+        {
+            if (actor?.GetComponent<INetworkItemOwner>()?.CanPickup(networkItem) ?? false)
+            {
+                CmdPickup(actor);
+            }
+        }
+        else
+        {
+            Debug.Log("Nothing to interact.");
         }
     }
 }
