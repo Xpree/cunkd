@@ -3,22 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
+[RequireComponent(typeof(NetworkItem))]
 public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
 {
-    Vector3 aimDirection;
-    Vector3 aimPos;
-
     [SerializeField] GameSettings _settings;
     float cooldown => _settings.SwapSniper.Cooldown;
     float range => _settings.SwapSniper.Range;
 
     [SerializeField] LayerMask TargetMask = ~0;
 
-    Rigidbody target;
-    float timer;
-
-    bool hasFired = false;
-    PlayerMovement owner;
+    [SyncVar] NetworkTimer _nextShotTimer;
 
     private void Start()
     {
@@ -26,32 +20,16 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
         {
             Debug.LogError("Missing GameSettings reference on " + name);
         }
+
+        _nextShotTimer = NetworkTimer.Now;
     }
 
-    //Firing-function
-    public void DoPrimaryAttack(bool isPressed, Vector3 direction, Vector3 position)
+    public NetworkIdentity DidHitObject()
     {
-        aimDirection = direction;
-        aimPos = position;
-        if (hasFired == false)
-        {
-
-            target = DidHitObject();
-            hasFired = true;
-            PerformSwap(target);
-        }
-
-    }
-
-    //Checks if a rigidbody was hit
-    public Rigidbody DidHitObject()
-    {
-
-        //Raycast target
-        RaycastHit hitResult;
-        if (Physics.Raycast(aimPos, aimDirection, out hitResult, range, TargetMask))
-        {
-            return hitResult.rigidbody;
+        var aimTransform = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
+        if (Physics.Raycast(aimTransform.position, aimTransform.forward, out RaycastHit hitResult, range, TargetMask))
+        {            
+            return hitResult.rigidbody?.GetComponent<NetworkIdentity>();
         }
         else
         {
@@ -59,37 +37,33 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
         }
     }
 
-
-    void PerformSwap(Rigidbody target)
+    [Command]
+    void CmdPerformSwap(NetworkIdentity target)
     {
-        if (target != null)
-        {
-            Vector3 Swapper = owner.transform.position;
-            Vector3 Swappee = target.position;
+        if (target == null || _nextShotTimer.HasTicked == false)
+            return;
+        _nextShotTimer = NetworkTimer.FromNow(cooldown);
 
-            Util.Teleport(target.gameObject, Swapper);
-            Util.Teleport(owner.gameObject, Swappee);
-        }
-    }
+        var owner = GetComponent<NetworkItem>()?.Owner;
+        if (owner == null)
+            return;
 
-    [ClientCallback]
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        if (hasFired == true)
-        {
-            timer = timer + Time.fixedDeltaTime;
-            if (timer >= cooldown)
-            {
-                hasFired = false;
-                timer = 0;
-            }
-        }
+        Vector3 Swapper = owner.transform.position;
+        Vector3 Swappee = target.transform.position;
+
+        Util.Teleport(target.gameObject, Swapper);
+        Util.Teleport(owner.gameObject, Swappee);
     }
 
     void IWeapon.PrimaryAttack(bool isPressed)
     {
-        DoPrimaryAttack(isPressed, Camera.main.transform.forward, Camera.main.transform.position);
+        if(isPressed)
+        {
+            if(_nextShotTimer.HasTicked)
+            {
+                CmdPerformSwap(DidHitObject());
+            }
+        }
     }
 
     void IWeapon.SecondaryAttack(bool isPressed)
@@ -98,6 +72,9 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     }
 
     float? IWeapon.ChargeProgress => null;
+
+
+    #region IEquipable
 
     bool holstered;
     bool IEquipable.IsHolstered => holstered;
@@ -124,8 +101,6 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
             transform.localScale = Vector3.zero;
         else
             transform.localScale = Vector3.one;
-
-        owner = GetComponent<NetworkItem>().Owner.GetComponent<PlayerMovement>();
     }
 
     void IEquipable.OnDropped()
@@ -147,5 +122,5 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
             transform.localScale = Vector3.one;
         }
     }
-
+    #endregion
 }

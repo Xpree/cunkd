@@ -206,39 +206,27 @@ public class PlayerMovement : NetworkBehaviour
 
 
     [TargetRpc]
-    public void TargetTeleport(Vector3 position, Quaternion rotation)
-    {
-        transform.position = position;
-        transform.rotation = rotation;
-        ResetState();
-    }
-
-    [TargetRpc]
     public void TargetTeleport(Vector3 position)
     {
         transform.position = position;
         ResetState();
+        CmdTeleportComplete();
     }
 
-
-    [Command(requiresAuthority = false)]
-    public void CmdTeleport(Vector3 position)
+    [Command]
+    void CmdTeleportComplete()
     {
-        transform.position = position;
-        TargetTeleport(position);
+        Util.SetClientPhysicsAuthority(GetComponent<NetworkIdentity>(), true);
     }
 
 
+    [Server]
     public void Teleport(Vector3 position)
     {
+        Util.SetClientPhysicsAuthority(GetComponent<NetworkIdentity>(), false);
         transform.position = position;
-        if (NetworkServer.active)
-        {
+        ResetState();
+        if(this.connectionToClient != null)
             TargetTeleport(position);
-        }
-        else
-        {
-            CmdTeleport(position);
-        }
     }
 }
