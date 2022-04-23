@@ -10,6 +10,12 @@ namespace Mirror.Examples.NetworkRoom
             color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
         }
 
+        public override void OnStartClient()
+        {
+            base.OnStartClient();
+            SetColor(color, color);
+        }
+
         // Color32 packs to 4 bytes
         [SyncVar(hook = nameof(SetColor))]
         public Color32 color = Color.black;
