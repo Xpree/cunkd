@@ -24,7 +24,7 @@ MonoBehaviour:
     GrabTime: 0.5
     GrabTorque: 10
     MinPushForce: 10
-    MaxPushForce: 10
+    MaxPushForce: 50
     ChargeRate: 1
     MaxRange: 30
   BlackHoleGun:
@@ -34,6 +34,9 @@ MonoBehaviour:
     Range: 20
     Duration: 5
     Intensity: 200
+  IceGadget:
+    Duration: 30
+    Friction: -0.5
   SwapSniper:
     Cooldown: 1
     Range: 200
