@@ -30,10 +30,6 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
         }
     }
 
-    void IWeapon.initializeOnPlayer(Inventory player)
-    {
-    }
-
     [Command]
     public void CmdPrimaryAttack(bool isPressed, Vector3 direction, Vector3 position)
     {

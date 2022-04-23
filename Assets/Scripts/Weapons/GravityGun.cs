@@ -45,9 +45,6 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             Debug.LogError("Missing GameSettings reference on " + name);
         }
     }
-    void IWeapon.initializeOnPlayer(Inventory player)
-    {
-    }
 
     [Command]
     void CmdPrimaryAttack(bool isPressed, Vector3 direction, Vector3 position)

@@ -2,8 +2,6 @@ using Mirror;
 
 public class DefaultWeapon : NetworkBehaviour, IWeapon
 {
-    void IWeapon.initializeOnPlayer(Inventory player) { }
-
     void IWeapon.PrimaryAttack(bool isPressed) { CmdPrimaryAttack(true); }
 
     void IWeapon.SecondaryAttack(bool isPressed) { }

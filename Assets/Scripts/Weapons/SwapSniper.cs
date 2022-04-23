@@ -5,7 +5,6 @@ using Mirror;
 
 public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
 {
-
     Vector3 aimDirection;
     Vector3 aimPos;
 
@@ -27,11 +26,6 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
         {
             Debug.LogError("Missing GameSettings reference on " + name);
         }
-    }
-
-    void IWeapon.initializeOnPlayer(Inventory player)
-    {
-        owner = player.GetComponent<PlayerMovement>();
     }
 
     //Firing-function
@@ -130,6 +124,8 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
             transform.localScale = Vector3.zero;
         else
             transform.localScale = Vector3.one;
+
+        owner = GetComponent<NetworkItem>().Owner.GetComponent<PlayerMovement>();
     }
 
     void IEquipable.OnDropped()
