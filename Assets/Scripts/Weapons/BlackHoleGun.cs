@@ -6,21 +6,14 @@ using Mirror;
 [RequireComponent(typeof(NetworkItem))]
 public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
 {
-    Vector3 aimDirection;
-    Vector3 aimPos;
-
     [SerializeField] GameSettings _settings;
-    float cooldown => _settings.BlackHoleGun.Cooldown;
-    float range => _settings.BlackHoleGun.Range;
+    float Cooldown => _settings.BlackHoleGun.Cooldown;
+    float MaxRange => _settings.BlackHoleGun.Range;
 
     [SerializeField] GameObject blackHole;
     [SerializeField] LayerMask TargetMask = ~0;
 
-    Vector3 target;
-    Vector3 endTarget;
-    float timer;
-
-    bool hasFired = false;
+    [SyncVar] NetworkTimer nextSpawnTimer;
 
     private void Start()
     {
@@ -28,62 +21,33 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
         {
             Debug.LogError("Missing GameSettings reference on " + name);
         }
+
+        nextSpawnTimer = NetworkTimer.Now;
     }
+
 
     [Command]
-    public void CmdPrimaryAttack(bool isPressed, Vector3 direction, Vector3 position)
+    void CmdSpawnBlackHole(Vector3 target)
     {
-        aimDirection = direction;
-        aimPos = position;
-        if (hasFired == false)
+        if(nextSpawnTimer.HasTicked)
         {
-            target = FindTarget();
-            hasFired = true;
-            SpawnBlackHole(target);
-        }
-
-    }
-    [Server]
-    void SpawnBlackHole(Vector3 target)
-    {
-        var go = Instantiate(blackHole, target, Quaternion.identity);
-        NetworkServer.Spawn(go);
-    }
-    [Server]
-    Vector3 FindTarget()
-    {
-
-        //Raycast target
-        RaycastHit hitResult;
-        if (Physics.Raycast(aimPos, aimDirection, out hitResult, range, TargetMask))
-        {
-            return hitResult.point;
-        }
-        else
-        {
-            endTarget = aimDirection * range;
-            return (endTarget + aimPos);
-        }
-    }
-
-    [ServerCallback]
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        if (hasFired == true)
-        {
-            timer = timer + Time.fixedDeltaTime;
-            if (timer >= cooldown)
-            {
-                hasFired = false;
-                timer = 0;
-            }
+            var go = Instantiate(blackHole, target, Quaternion.identity);
+            NetworkServer.Spawn(go);
+            nextSpawnTimer = NetworkTimer.FromNow(this.Cooldown);
         }
     }
 
     void IWeapon.PrimaryAttack(bool isPressed)
     {
-        CmdPrimaryAttack(isPressed, Camera.main.transform.forward, Camera.main.transform.position);
+        if(isPressed)
+        {
+            if(nextSpawnTimer.HasTicked)
+            {
+                var aimTransform = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
+                var target = Util.RaycastPointOrMaxDistance(aimTransform, MaxRange, TargetMask);
+                CmdSpawnBlackHole(target);
+            }
+        }
     }
 
     void IWeapon.SecondaryAttack(bool isPressed)
@@ -93,6 +57,7 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
 
     float? IWeapon.ChargeProgress => null;
 
+    #region IEquipable
     bool holstered;
     bool IEquipable.IsHolstered => holstered;
 
@@ -157,4 +122,5 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
             transform.localScale = Vector3.one;
         }
     }
+    #endregion
 }
