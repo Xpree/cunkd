@@ -79,22 +79,13 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             body.transform.localPosition = Vector3.zero;
     }
 
-    static void SetClientPhysicsAuthority(NetworkIdentity identity, bool enable)
-    {
-        var netRb = identity.GetComponent<Mirror.Experimental.NetworkRigidbody>();
-        if (netRb != null)
-            netRb.clientAuthority = enable;
-        var netTransform = identity.GetComponent<Mirror.NetworkTransform>();
-        if(netTransform != null)
-            netTransform.clientAuthority = enable;
-    }
 
     [TargetRpc]
     void TargetRpcBeginAttract(NetworkIdentity body)
     {
         if (_pulling)
         {
-            SetClientPhysicsAuthority(body, true);
+            Util.SetClientPhysicsAuthority(body, true);
             _localAttract = body;
             StartCoroutine(PullObject(body.GetComponent<Rigidbody>()));
         }
@@ -122,7 +113,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         if(this.connectionToClient != null)
         {
             identity.AssignClientAuthority(this.connectionToClient);
-            SetClientPhysicsAuthority(identity, true);
+            Util.SetClientPhysicsAuthority(identity, true);
             TargetRpcBeginAttract(identity);
         }
         else // Server owned object
@@ -140,7 +131,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             return;
 
         identity.RemoveClientAuthority();
-        SetClientPhysicsAuthority(identity, false);
+        Util.SetClientPhysicsAuthority(identity, false);
         var rb = identity.GetComponent<Rigidbody>();
         if (rb != null)
         {
@@ -175,7 +166,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             if (collider != null)
                 collider.enabled = true;
 
-            SetClientPhysicsAuthority(_localAttract, false);
+            Util.SetClientPhysicsAuthority(_localAttract, false);
 
             float chargeProgress = 0f;
             if(push && _charging)

@@ -25,6 +25,16 @@ public static class Util
         return identity.HasControl();
     }
 
+    public static void SetClientPhysicsAuthority(NetworkIdentity identity, bool enable)
+    {
+        var netRigidbody = identity.GetComponent<Mirror.Experimental.NetworkRigidbody>();
+        if (netRigidbody != null)
+            netRigidbody.clientAuthority = enable;
+        var netTransform = identity.GetComponent<Mirror.NetworkTransform>();
+        if (netTransform != null)
+            netTransform.clientAuthority = enable;
+    }
+
     public static bool HasControl(this NetworkIdentity identity)
     {
         return identity.hasAuthority || (NetworkServer.active && identity.connectionToClient == null);
@@ -32,16 +42,21 @@ public static class Util
 
     public static void Teleport(GameObject go, Vector3 position)
     {
-        go.transform.position = position;
-        if (!Util.HasPhysicsAuthority(go))
+        if (go == null)
         {
-            var other = go.GetComponent<PlayerMovement>();
-            if (other == null)
-                return;
-            other.Teleport(position);
+            return;
+        }
+
+        var player = go.GetComponent<PlayerMovement>();
+        if (player != null)
+        {
+            player.Teleport(position);
+        }
+        else
+        {
+            go.transform.position = position;
         }
     }
-
 
     public static Transform GetOwnerAimTransform(NetworkItem item)
     {
