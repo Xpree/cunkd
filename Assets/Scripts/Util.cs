@@ -98,6 +98,14 @@ public static class Util
             return false;
         }
     }
+
+    public static void SetJumpForce(Rigidbody rb, float height)
+    {
+        float jumpForce = Mathf.Sqrt(Mathf.Abs((2.0f * rb.mass * Physics.gravity.y) * height));
+        var vel = rb.velocity;
+        vel.y = jumpForce;
+        rb.velocity = vel;
+    }
 }
 
 /// <summary>

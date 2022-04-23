@@ -116,10 +116,7 @@ public class PlayerMovement : NetworkBehaviour
 
     void ApplyJumpForce(float height)
     {
-        float jumpForce = Mathf.Sqrt(Mathf.Abs((2.0f * _rigidBody.mass * Physics.gravity.y) * height));
-        var vel = _rigidBody.velocity;
-        vel.y = jumpForce;
-        _rigidBody.velocity = vel;
+        Util.SetJumpForce(_rigidBody, height);
     }
 
     void PerformJump()
