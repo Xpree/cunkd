@@ -18,7 +18,9 @@ public class Spectator : NetworkBehaviour
         base.OnStartLocalPlayer();
 
         mainCamera = Camera.main;
-        GetComponent<GameInputs>().EnableInput();
+        var inputs = GetComponent<GameInputs>();
+        inputs.SetSpectatorMode();
+        inputs.EnableInput();
         FindObjectOfType<SpectatorUI>()?.EnableSpectatorUI();
     }
 
