@@ -11,10 +11,62 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
     [SerializeField] public float interactMaxDistance = 2.0f;
 
     [Header("Diagnostics")]
-    public GameObject gadget;
-    public GameObject firstWeapon;
-    public GameObject secondWeapon;
-    public ItemSlot equipped = ItemSlot.PrimaryWeapon;
+    [SyncVar] public GameObject syncedFirstWeapon;
+    [SyncVar] public GameObject syncedSecondWeapon;
+    [SyncVar] public GameObject syncedGadget;
+    [SyncVar] public ItemSlot syncedEquipped = ItemSlot.PrimaryWeapon;
+
+    public GameObject localFirstWeapon;
+    public GameObject localSecondWeapon;
+    public GameObject localGadget;
+    public ItemSlot localEquipped = ItemSlot.PrimaryWeapon;
+
+    public GameObject firstWeapon
+    {
+        get { return localFirstWeapon; }
+        set
+        {
+            localFirstWeapon = value;
+            if (this.isServer)
+                syncedFirstWeapon = value;
+        }
+    }
+    public GameObject secondWeapon
+    {
+        get
+        {
+            return localSecondWeapon;
+        }
+        set
+        {
+            secondWeapon = value;
+            if (this.isServer)
+                syncedSecondWeapon = value;
+        }
+    }
+    public GameObject gadget
+    {
+        get { return localGadget; }
+        set
+        {
+            localGadget = value;
+            if (this.isServer)
+                syncedGadget = value;
+        }
+    }
+    public ItemSlot equipped
+    {
+        get { return localEquipped; }
+        set
+        {
+            localEquipped = value;
+            if (this.isServer)
+            {
+                syncedEquipped = value;
+            }
+        }
+    }
+
 
     public IEquipable GetEquipment(ItemSlot slot)
     {
@@ -63,19 +115,67 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
         gameInputs = GetComponentInChildren<GameInputs>(true);
     }
 
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        localFirstWeapon = syncedFirstWeapon;
+        localSecondWeapon = syncedSecondWeapon;
+        localGadget = syncedGadget;
+        localEquipped = syncedEquipped;
+        UpdateEquippedItem(ItemSlot.PrimaryWeapon);
+        UpdateEquippedItem(ItemSlot.SecondaryWeapon);
+        UpdateEquippedItem(ItemSlot.Gadget);
+    }
+
+
+    static void AttachGo(GameObject child, Transform parent)
+    {
+        if (child == null)
+        {
+            return;
+        }
+
+        child.transform.parent = parent;
+        child.transform.localPosition = Vector3.zero;
+        child.transform.localRotation = Quaternion.identity;
+    }
+
+    static void UpdateEquippedItem(GameObject go, Transform anchor, bool holstered)
+    {
+        if (go == null)
+        {
+            return;
+        }
+        AttachGo(go, anchor);
+        go.GetComponent<IEquipable>()?.OnPickedUp(holstered);
+    }
+
+    void UpdateEquippedItem(ItemSlot slot)
+    {
+        switch (slot)
+        {
+            case ItemSlot.PrimaryWeapon:
+                UpdateEquippedItem(firstWeapon, primaryWeaponAnchor, slot != equipped);
+                break;
+            case ItemSlot.SecondaryWeapon:
+                UpdateEquippedItem(secondWeapon, secondaryWeaponAnchor, slot != equipped);
+                break;
+            case ItemSlot.Gadget:
+                UpdateEquippedItem(gadget, gadgetAnchor, slot != equipped);
+                break;
+        }
+    }
+
     void DoDropItem(GameObject go)
     {
         if (go == null)
             return;
 
         go.GetComponent<IEquipable>()?.OnDropped();
-        if (isLocalPlayer)
+        var item = go.GetComponent<NetworkItem>();
+        if (item != null && item.netIdentity.HasControl())
         {
-            var item = go.GetComponent<NetworkItem>();
-            if (item != null)
-            {
-                item.CmdDrop();
-            }
+            item.CmdDrop();
         }
     }
 
@@ -136,12 +236,19 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
     {
         if (equipped != slot)
         {
-            ActiveEquipment?.OnHolstered();
-            while (!IsActiveEquipmentHolstered)
-                yield return null;
-
+            var active = GetEquipment(equipped);
+            if (active != null)
+            {
+                active.OnHolstered();
+                while (active.IsHolstered == false)
+                    yield return null;
+            }
             equipped = slot;
-            ActiveEquipment?.OnUnholstered();
+            active = GetEquipment(slot);
+            if (active != null)
+            {
+                active.OnUnholstered();
+            }
         }
 
     }
@@ -149,40 +256,47 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
     [ClientRpc(includeOwner = false)]
     void RpcEquip(ItemSlot slot)
     {
-        if (isClientOnly)
-        {
-            StartCoroutine(DoEquip(slot));
-        }
+        StartCoroutine(DoEquip(slot));
     }
 
     [Command]
     void CmdEquip(ItemSlot slot)
     {
+        syncedEquipped = slot;
         RpcEquip(slot);
-        StartCoroutine(DoEquip(slot));
+        if (this.isServerOnly)
+            StartCoroutine(DoEquip(slot));
     }
 
     public void Equip(ItemSlot slot)
     {
+        StartCoroutine(DoEquip(slot));
         if (this.netIdentity.HasControl())
         {
-            if (isClientOnly)
-                StartCoroutine(DoEquip(slot));
             CmdEquip(slot);
         }
     }
     #endregion
 
-    // Picks up or replaces 'slotGo' with 'go'
-    void DoPickUpItem(ref GameObject slotGo, GameObject go, ItemSlot slot)
+    // Picks up and replaces the item slot
+    void DoPickUpItem(GameObject go, ItemSlot slot)
     {
-        DoDropItem(slotGo);
-        slotGo = go;
-        var child = go.transform;
-        child.parent = GetSlotAnchor(slot);
-        child.localPosition = Vector3.zero;
-        child.localRotation = Quaternion.identity;
-
+        switch(slot)
+        {
+            case ItemSlot.PrimaryWeapon:
+                DoDropItem(firstWeapon);
+                firstWeapon = go;
+                break;
+            case ItemSlot.SecondaryWeapon:
+                DoDropItem(secondWeapon);
+                secondWeapon = go;
+                break;
+            case ItemSlot.Gadget:
+                DoDropItem(gadget);
+                gadget = go;
+                break;
+        }
+        AttachGo(go, GetSlotAnchor(slot));
         var holstered = equipped != slot;
         go.GetComponent<IEquipable>()?.OnPickedUp(holstered);
         if (holstered && isLocalPlayer && Settings.autoEquipOnPickup)
@@ -343,16 +457,16 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
             if (firstWeapon == null || ((secondWeapon != null) && equipped == ItemSlot.PrimaryWeapon))
             {
                 // Pick up when first slot is empty or both slots are full and the active slot is the primary weapon
-                DoPickUpItem(ref firstWeapon, item.gameObject, ItemSlot.PrimaryWeapon);
+                DoPickUpItem(item.gameObject, ItemSlot.PrimaryWeapon);
             }
             else
             {
-                DoPickUpItem(ref secondWeapon, item.gameObject, ItemSlot.SecondaryWeapon);
+                DoPickUpItem(item.gameObject, ItemSlot.SecondaryWeapon);
             }
         }
         else if (item.GetComponent<IGadget>() != null)
         {
-            DoPickUpItem(ref gadget, item.gameObject, ItemSlot.Gadget);
+            DoPickUpItem(item.gameObject, ItemSlot.Gadget);
         }
         else
         {
