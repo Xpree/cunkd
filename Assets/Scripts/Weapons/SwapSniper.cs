@@ -21,6 +21,11 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
             Debug.LogError("Missing GameSettings reference on " + name);
         }
 
+    }
+
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
         _nextShotTimer = NetworkTimer.Now;
     }
 

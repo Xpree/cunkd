@@ -21,10 +21,13 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
         {
             Debug.LogError("Missing GameSettings reference on " + name);
         }
-
-        nextSpawnTimer = NetworkTimer.Now;
     }
 
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+        nextSpawnTimer = NetworkTimer.FromNow(Cooldown);
+    }
 
     [Command]
     void CmdSpawnBlackHole(Vector3 target)
