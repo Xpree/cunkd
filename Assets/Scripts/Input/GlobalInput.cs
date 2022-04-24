@@ -21,6 +21,22 @@ public class GlobalInput : MonoBehaviour
         }
     }
 
+    static bool TryGUIFloatField(ref string backingString, out float value)
+    {
+        var result = GUILayout.TextField(backingString);
+
+        if(result != backingString)
+        {
+            if(float.TryParse(result, out value))
+            {
+                backingString = result;
+                return true;
+            }
+        }
+        value = 0f;
+        return false;
+    }
+
     void DoSettingsWindow(int windowID)
     {
         GUILayout.Label("Move: WASD\nAim: Mouse\nJump (and double jump): Space\nNext Item: Q\nSelect Item: 1,2,3\nInteract: E");
@@ -32,22 +48,18 @@ public class GlobalInput : MonoBehaviour
 
         GUILayout.BeginHorizontal();
         GUILayout.Label("Horizontal mouse sensitivity:");
-        var senseYaw = GUILayout.TextField(senseYawInput);
-        if (senseYaw != sensePitchInput && float.TryParse(senseYaw, out float yaw))
+        if(TryGUIFloatField(ref senseYawInput, out float yaw))
         {
             Settings.mouseSensitivityYaw = yaw;
         }
-        senseYawInput = senseYaw;
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
         GUILayout.Label("Vertical mouse sensitivity:");
-        var sensePitch = GUILayout.TextField(sensePitchInput);
-        if (sensePitch != sensePitchInput && float.TryParse(sensePitch, out float pitch))
+        if(TryGUIFloatField(ref sensePitchInput, out float pitch))
         {
             Settings.mouseSensitivityPitch = pitch;
         }
-        sensePitchInput = sensePitch;
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
