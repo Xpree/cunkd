@@ -103,8 +103,11 @@ public static class Util
     {
         float jumpForce = Mathf.Sqrt(Mathf.Abs((2.0f * rb.mass * Physics.gravity.y) * height));
         var vel = rb.velocity;
-        vel.y = jumpForce;
-        rb.velocity = vel;
+        if(vel.y < jumpForce)
+        {
+            vel.y = jumpForce;
+            rb.velocity = vel;
+        }
     }
 }
 
