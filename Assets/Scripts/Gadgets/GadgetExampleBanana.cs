@@ -38,7 +38,7 @@ public class GadgetExampleBanana : NetworkBehaviour, IGadget, IEquipable
     [Command]
     void CmdUse()
     {
-        if (cooldownTimer.Use(this.Cooldown))
+        if (cooldownTimer.ServerUse(this.Cooldown))
         {
             TargetTell("ate a piece of the banana");
             if (cooldownTimer.Charges == 0)

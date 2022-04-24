@@ -26,7 +26,7 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
     [Command]
     void SpawnIceGadget(Vector3 target)
     {
-        if(_cooldownTimer.UseCharge())
+        if(_cooldownTimer.ServerUseCharge())
         {
             var go = Instantiate(IceGadgetTrap, target, Quaternion.identity);
             NetworkServer.Spawn(go);

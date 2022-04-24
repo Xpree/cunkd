@@ -32,7 +32,7 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
     [Command]
     void CmdSpawnBlackHole(Vector3 target)
     {
-        if (_cooldownTimer.Use(this.Cooldown))
+        if (_cooldownTimer.ServerUse(this.Cooldown))
         {
             var go = Instantiate(blackHole, target, Quaternion.identity);
             NetworkServer.Spawn(go);

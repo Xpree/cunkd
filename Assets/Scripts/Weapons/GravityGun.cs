@@ -101,6 +101,18 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         if (identity == null)
             return;
 
+        if(_localAttract != null)
+        {
+            GameServer.PurgeOwnedObjects(this.connectionToClient);
+            if(this.connectionToClient != null)
+            {
+                Debug.LogError("Client tried to attract multiple objects.");
+                this.connectionToClient.Disconnect();
+            }
+            Debug.LogError("Tried to attract multiple objects.");
+            return;
+        }
+
         if (this.connectionToClient != null && identity.connectionToClient != null)
             return;
 
@@ -109,8 +121,9 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         {
             return;
         }
-        
-        if(this.connectionToClient != null)
+
+        _localAttract = identity;
+        if (this.connectionToClient != null)
         {
             identity.AssignClientAuthority(this.connectionToClient);
             Util.SetClientPhysicsAuthority(identity, true);
@@ -118,7 +131,6 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         }
         else // Server owned object
         {
-            _localAttract = identity;
             StartCoroutine(PullObject(rb));
         }
         
@@ -180,7 +192,8 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
 
     void IWeapon.SecondaryAttack(bool isPressed)
     {
-        if(isPressed)
+        StopPulling(false);
+        if (isPressed)
         {
             var aimTransform = Util.GetOwnerAimTransform(this.GetComponent<NetworkItem>());
             if (Physics.Raycast(aimTransform.position, aimTransform.forward, out RaycastHit hitResult, MaxGrabRange, TargetMask))
@@ -189,10 +202,6 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
                 var networkIdentity = hitResult.collider.GetComponent<NetworkIdentity>();
                 CmdAttract(networkIdentity);
             }
-        }
-        else
-        {
-            StopPulling(false);
         }
     }
 

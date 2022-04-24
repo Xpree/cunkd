@@ -44,7 +44,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     [Command]
     void CmdPerformSwap(NetworkIdentity target)
     {
-        if (target == null || _cooldownTimer.Use(this.cooldown) == false)
+        if (target == null || _cooldownTimer.ServerUse(this.cooldown) == false)
         {
             // Client predicted wrong. Dont care!
             return;
