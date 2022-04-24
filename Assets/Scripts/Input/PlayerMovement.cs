@@ -54,7 +54,7 @@ public class PlayerMovement : NetworkBehaviour
     public bool HasGroundContact => _isGrounded || HasCoyoteTime;
 
     public bool HasMovementInput => _movementInput.sqrMagnitude > 0;
-    public bool HasGroundFriction => (_isGrounded || (HasCoyoteTime && HasMovementInput == false)) && _rigidBody.velocity.y < 0;
+    public bool HasGroundFriction => (_isGrounded || (HasCoyoteTime && HasMovementInput == false)) && _rigidBody.velocity.y < _settings.CharacterMovement.MaxSpeed * 0.5f;
 
     private void Awake()
     {
@@ -86,14 +86,15 @@ public class PlayerMovement : NetworkBehaviour
     void ApplyFriction()
     {
         var vel = this.HorizontalVelocity;
-        var speed = Mathf.Max(vel.magnitude - currentMaxFriction * Time.fixedDeltaTime);
-        if (speed <= 0)
+        var speed = vel.magnitude;        
+        var newSpeed = speed - currentMaxFriction * Time.fixedDeltaTime;
+        if (newSpeed <= 0)
         {
             vel = Vector3.zero;
         }
         else
         {
-            vel = vel.normalized * speed;
+            vel *= (newSpeed / speed);
         }
 
         this.HorizontalVelocity = vel;
