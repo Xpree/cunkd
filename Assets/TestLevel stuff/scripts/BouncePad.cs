@@ -4,7 +4,7 @@ using UnityEngine;
 public class BouncePad : NetworkBehaviour
 {
     [SerializeField] float cooldown;
-    [SerializeField] float objectForce;
+    [SerializeField] float jumpHeight;
     [SerializeField] GameObject sphere;
     double nextLaunch =0;
     bool isReady = true;
@@ -22,7 +22,9 @@ public class BouncePad : NetworkBehaviour
     {
         print("launching object");        
         if(Util.HasPhysicsAuthority(rb.gameObject))
-            rb.AddForce(Vector3.up * objectForce);
+        {
+            Util.SetJumpForce(rb, jumpHeight);
+        }
         sphere.SetActive(true);
         nextLaunch = NetworkTime.time + cooldown;
         isReady = false;
