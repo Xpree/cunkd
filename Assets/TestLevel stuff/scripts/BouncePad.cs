@@ -20,7 +20,6 @@ public class BouncePad : NetworkBehaviour
 
     void LaunchObject(Rigidbody rb)
     {
-        print("launching object");        
         if(Util.HasPhysicsAuthority(rb.gameObject))
         {
             Util.SetJumpForce(rb, jumpHeight);
