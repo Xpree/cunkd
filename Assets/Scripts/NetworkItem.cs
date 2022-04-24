@@ -67,7 +67,7 @@ public class NetworkItem : NetworkBehaviour
 
     private void OnDestroy()
     {
-        if(owner != null)
+        if(owner != null && owner.activeSelf)
         {
             owner.GetComponent<INetworkItemOwner>()?.OnDestroyed(this);
         }
