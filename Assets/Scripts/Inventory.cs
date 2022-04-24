@@ -67,7 +67,6 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
         }
     }
 
-
     public T GetItemComponent<T>(ItemSlot slot) where T : class
     {
         return slot switch
@@ -309,23 +308,23 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
     {
         if (equipped == ItemSlot.Gadget)
         {
-            if (firstWeapon != null)
+            if (firstWeapon != null && firstWeapon.activeSelf)
                 Equip(ItemSlot.PrimaryWeapon);
-            else if (secondWeapon != null)
+            else if (secondWeapon != null && secondWeapon.activeSelf)
                 Equip(ItemSlot.SecondaryWeapon);
         }
         else if (equipped == ItemSlot.PrimaryWeapon)
         {
-            if (gadget != null)
+            if (gadget != null && gadget.activeSelf)
                 Equip(ItemSlot.Gadget);
-            else if (secondWeapon != null)
+            else if (secondWeapon != null && secondWeapon.activeSelf)
                 Equip(ItemSlot.SecondaryWeapon);
         }
         else if (equipped == ItemSlot.SecondaryWeapon)
         {
-            if (gadget != null)
+            if (gadget != null && gadget.activeSelf)
                 Equip(ItemSlot.Gadget);
-            else if (firstWeapon != null)
+            else if (firstWeapon != null && firstWeapon.activeSelf)
                 Equip(ItemSlot.PrimaryWeapon);
         }
     }

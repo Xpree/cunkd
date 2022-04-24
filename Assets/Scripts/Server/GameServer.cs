@@ -135,6 +135,7 @@ public class GameServer : MonoBehaviour
 
     public static void TransitionToSpectator(GameObject player)
     {
+        GameServer.PurgeOwnedObjects(player);
         var conn = player?.GetComponent<NetworkIdentity>()?.connectionToClient;
         if (conn != null)
         {
@@ -221,6 +222,33 @@ public class GameServer : MonoBehaviour
         }
     }
 
+    public static void PurgeOwnedObjects(NetworkConnectionToClient player)
+    {
+        if (player != null)
+        {
+            var list = new List<NetworkIdentity>(player.clientOwnedObjects);
+            foreach (var item in list)
+            {
+                if (item.GetComponent<GameClient>() != null ||
+                    item.GetComponent<LobbyClient>() != null ||
+                    item.GetComponent<Spectator>() != null)
+                {
+                    continue;
+                }
+
+                NetworkServer.Destroy(item.gameObject);
+            }
+        }
+    }
+
+    public static void PurgeOwnedObjects(GameObject player)
+    {
+        if (player == null)
+            return;
+
+        var conn = player?.GetComponent<NetworkIdentity>()?.connectionToClient;
+        PurgeOwnedObjects(conn);
+    }
 
     public static void Respawn(GameObject client)
     {
