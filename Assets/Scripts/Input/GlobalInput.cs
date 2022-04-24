@@ -1,31 +1,103 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Mirror;
 
 public class GlobalInput : MonoBehaviour
 {
-    public void ToggleFullscreen()
+
+    string senseYawInput;
+    string sensePitchInput;
+    private void Start()
     {
-        var res = Screen.currentResolution;
-        if (Screen.fullScreen)
-        {
-            // Toggle back to 16 by 9 landscape at 75% height of the screen                
-            var h = (res.height >> 2) * 3;
-            var w = h * 16 / 9;
-            Screen.SetResolution(w, h, FullScreenMode.Windowed, res.refreshRate);
-
-        }
-        else
-        {
-            Screen.SetResolution(res.width, res.height, Settings.windowedFullscreenMode ? FullScreenMode.FullScreenWindow : FullScreenMode.ExclusiveFullScreen, res.refreshRate);
-        }
+        sensePitchInput = Settings.mouseSensitivityPitch.ToString();
+        senseYawInput = Settings.mouseSensitivityYaw.ToString();
     }
-
 
     void Update()
     {
-        if(Keyboard.current.altKey.isPressed && Keyboard.current.enterKey.wasPressedThisFrame)
+        if (Keyboard.current.altKey.isPressed && Keyboard.current.enterKey.wasPressedThisFrame)
         {
-            ToggleFullscreen();
+            Util.ToggleFullscreen();
         }
+    }
+
+    void DoSettingsWindow(int windowID)
+    {
+        GUILayout.Label("Move: WASD\nAim: Mouse\nJump (and double jump): Space\nNext Item: Q\nSelect Item: 1,2,3\nInteract: E");
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Player Name:");
+        Settings.playerName = GUILayout.TextField(Settings.playerName);
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Horizontal mouse sensitivity:");
+        var senseYaw = GUILayout.TextField(senseYawInput);
+        if (senseYaw != sensePitchInput && float.TryParse(senseYaw, out float yaw))
+        {
+            Settings.mouseSensitivityYaw = yaw;
+        }
+        senseYawInput = senseYaw;
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Vertical mouse sensitivity:");
+        var sensePitch = GUILayout.TextField(sensePitchInput);
+        if (sensePitch != sensePitchInput && float.TryParse(sensePitch, out float pitch))
+        {
+            Settings.mouseSensitivityPitch = pitch;
+        }
+        sensePitchInput = sensePitch;
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Volume:");
+        Settings.volume = GUILayout.HorizontalSlider(Settings.volume, 0, 1);
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Mute:");
+        Settings.muted = GUILayout.Toggle(Settings.muted, GUIContent.none);
+        GUILayout.EndHorizontal();
+
+
+        if (!Application.isEditor)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Fullscreen (Alt+Enter):");
+            var fullScreen = GUILayout.Toggle(Screen.fullScreen, GUIContent.none);
+            GUILayout.EndHorizontal();
+
+            if (Screen.fullScreen != fullScreen)
+            {
+                Util.ToggleFullscreen();
+            }
+        }
+
+        if (NetworkClient.active || NetworkServer.active)
+        {
+            if (GUILayout.Button("Disconnect"))
+            {
+                CunkdNetManager.Disconnect();
+            }
+        }
+
+        if (NetworkServer.active)
+        {
+            if (LobbyServer.Instance.IsLobbyActive == false && GUILayout.Button("End Game"))
+                GameServer.EndGame();
+        }
+    }
+
+    Rect settingsWindowRect = new Rect(20, 200, 300, 50);
+    private void OnGUI()
+    {
+        if (Cursor.lockState == CursorLockMode.Locked)
+            return;
+
+        settingsWindowRect.x = Screen.width * 0.5f - settingsWindowRect.width * 0.5f;
+        settingsWindowRect.y = Screen.height * 0.5f - settingsWindowRect.height * 0.5f;
+
+        settingsWindowRect = GUILayout.Window(0, settingsWindowRect, DoSettingsWindow, "Settings");
     }
 }

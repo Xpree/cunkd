@@ -120,4 +120,25 @@ public class CunkdNetManager : NetworkManager
             _gameServer.OnClientReady(conn);
         }
     }
+
+    public static void Disconnect()
+    {
+        if(NetworkServer.active)
+        {
+            if(NetworkClient.isConnected)
+            {
+                Instance.StopHost();
+            }
+            else
+            {
+                Instance.StopServer();
+            }
+            Instance.GetComponent<CunkdNetDiscovery>().StopDiscovery();
+        }
+        else if(NetworkClient.isConnected)
+        {
+            Instance.StopClient();
+            Instance.GetComponent<CunkdNetDiscovery>().StopDiscovery();
+        }
+    }
 }

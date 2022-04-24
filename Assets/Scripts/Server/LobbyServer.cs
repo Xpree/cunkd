@@ -173,22 +173,7 @@ public class LobbyServer : MonoBehaviour
 
     void OnGUI()
     {
-        if (!ShowRoomGUI)
-        {
-            return;
-        }
-        if (!IsLobbyActive)
-        {
-            if (NetworkServer.active)
-            {
-                GUILayout.BeginArea(new Rect(Screen.width * 0.5f, 10f, 140f, 30f));
-                if (GUILayout.Button("End Game"))
-                    GameServer.EndGame();
-                GUILayout.EndArea();
-            }
-            return;
-        }
-        else
+        if (ShowRoomGUI && IsLobbyActive)
         {
             GUI.Box(new Rect(10f, 180f, 520f, 150f), "PLAYERS");
             if (allPlayersReady && ShowStartButton && GUI.Button(new Rect(150, 300, 120, 20), "START GAME"))

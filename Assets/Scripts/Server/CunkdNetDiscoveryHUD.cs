@@ -26,7 +26,6 @@ public class CunkdNetDiscoveryHUD : MonoBehaviour
     }
 #endif
 
-
     private IEnumerator StartSearch()
     {
         searching = true;
@@ -45,9 +44,6 @@ public class CunkdNetDiscoveryHUD : MonoBehaviour
 
         if (!NetworkClient.isConnected && !NetworkServer.active && !NetworkClient.active)
             DrawGUI();
-
-        if (NetworkServer.active || NetworkClient.active)
-            StopButtons();
     }
 
     void DrawGUI()
@@ -104,41 +100,6 @@ public class CunkdNetDiscoveryHUD : MonoBehaviour
                 Connect(info);
 
         GUILayout.EndScrollView();
-        GUILayout.EndArea();
-    }
-
-    void StopButtons()
-    {
-        GUILayout.BeginArea(new Rect(10, 40, 100, 25));
-
-        // stop host if host mode
-        if (NetworkServer.active && NetworkClient.isConnected)
-        {
-            if (GUILayout.Button("Stop Host"))
-            {
-                NetworkManager.singleton.StopHost();
-                networkDiscovery.StopDiscovery();
-            }
-        }
-        // stop client if client-only
-        else if (NetworkClient.isConnected)
-        {
-            if (GUILayout.Button("Stop Client"))
-            {
-                NetworkManager.singleton.StopClient();
-                networkDiscovery.StopDiscovery();
-            }
-        }
-        // stop server if server-only
-        else if (NetworkServer.active)
-        {
-            if (GUILayout.Button("Stop Server"))
-            {
-                NetworkManager.singleton.StopServer();
-                networkDiscovery.StopDiscovery();
-            }
-        }
-
         GUILayout.EndArea();
     }
 
