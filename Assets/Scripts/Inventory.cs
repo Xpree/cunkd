@@ -39,7 +39,7 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
         }
         set
         {
-            secondWeapon = value;
+            localSecondWeapon = value;
             if (this.isServer)
                 syncedSecondWeapon = value;
         }
