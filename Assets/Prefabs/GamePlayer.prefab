@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4216737524944602}
   - component: {fileID: 33190644788701022}
   - component: {fileID: 23708975923909982}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Visor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: -9161402237070379157}
   - component: {fileID: 6250309759976022356}
   - component: {fileID: 3215403447819689262}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GamePlayer
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -119,7 +119,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1480027675339556}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -209,9 +209,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 2.0251238
+  m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: -0.0020121336, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!54 &-6233809968765690729
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -394,7 +394,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1257494558084947193}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Gadget Anchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -425,7 +425,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 116390312577866738}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AimLookAt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -459,7 +459,7 @@ GameObject:
   - component: {fileID: 2982627247520786014}
   - component: {fileID: 2497891105056607210}
   - component: {fileID: 7333359883593482680}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: CanvasNametag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -484,7 +484,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.0245, y: 1.388}
+  m_AnchoredPosition: {x: 0.0245, y: 2.388}
   m_SizeDelta: {x: 66.6397, y: 15.5678}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &2982627247520786014
@@ -556,7 +556,7 @@ GameObject:
   - component: {fileID: 3166083699426545778}
   - component: {fileID: 5451354487442201079}
   - component: {fileID: 7241005350317392817}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -571,7 +571,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1941306923591932345}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.635, z: 0.102}
+  m_LocalPosition: {x: 0, y: 1.635, z: 0.102}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -741,7 +741,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4523456069473542299}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Secondary Weapon Anchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -772,7 +772,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1657341516358545143}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Primary Weapon Anchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -805,7 +805,7 @@ GameObject:
   - component: {fileID: 3138541494209382947}
   - component: {fileID: 1736510165009824269}
   - component: {fileID: 4008900414740136170}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -820,7 +820,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4926068573968176962}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -889,7 +889,7 @@ GameObject:
   - component: {fileID: 3821050329011903394}
   - component: {fileID: 5134390344683667921}
   - component: {fileID: 92619081642392380}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Equipment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -904,7 +904,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6350306087258226297}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.4, y: 0.1, z: 0.5}
+  m_LocalPosition: {x: 0.4, y: 1.1, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -958,7 +958,7 @@ GameObject:
   - component: {fileID: 827330752713181009}
   - component: {fileID: 2639041442011451072}
   - component: {fileID: 8512414564007089192}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1339,7 +1339,7 @@ GameObject:
   - component: {fileID: 5531378771205388368}
   - component: {fileID: 5479829740622885800}
   - component: {fileID: 5213833520382781269}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: NameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}

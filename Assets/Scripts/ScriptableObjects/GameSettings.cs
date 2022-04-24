@@ -16,6 +16,11 @@ public class GameSettings : ScriptableObject
         public double CoyoteTime = 1.0;
         public float AirMovementMultiplier = 1.0f;
         public double StrongAirControlTime = 0.1;
+
+
+        public float GroundedRadius = 0.28f;
+        public float GroundedOffset = 0.14f;
+        public LayerMask GroundLayers = ~0;
     }
 
     public CharacterMovementSettings CharacterMovement = new();

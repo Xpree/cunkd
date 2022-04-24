@@ -70,7 +70,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   cooldown: 2
-  objectForce: 500
+  jumpHeight: 2
   sphere: {fileID: 8500828315868471654}
 --- !u!114 &5688716735096469558
 MonoBehaviour:
@@ -119,7 +119,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 0.5
   m_Direction: 1
-  m_Center: {x: -2.64, y: 0.82, z: 1.86}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &8500828315235290405
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,7 +149,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8500828315235290405}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.159, y: 0.637, z: 2.499}
+  m_LocalPosition: {x: -0.6244576, y: 0.637, z: 0.67921317}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -438,7 +438,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8500828315868471654}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.972, y: -0.566, z: 2.752}
+  m_LocalPosition: {x: -3.4584906, y: -0.57, z: 0.93023837}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8957,7 +8957,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1111
+  m_VersionIndex: 1114
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -9084,7 +9084,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8500828316288842473}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 2.5345426, y: 0, z: -1.8197869}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -24,6 +24,8 @@ public class PlayerMovement : NetworkBehaviour
 
     public Vector2 _movementInput = Vector2.zero;
 
+    
+
     private void Start()
     {
         if (_settings == null)
@@ -111,6 +113,7 @@ public class PlayerMovement : NetworkBehaviour
         velocity += velocityChange;
         // Makes sure the player can't increase its speed beyond its previous speed or maxSpeed which ever is greater.
         velocity = Vector3.ClampMagnitude(velocity, terminalSpeed);
+
         this.HorizontalVelocity = velocity;
     }
 
@@ -138,28 +141,21 @@ public class PlayerMovement : NetworkBehaviour
         ApplyJumpForce(_settings.CharacterMovement.JumpHeight);
     }
 
-
-    private void OnCollisionStay(Collision collision)
+    void CheckGrounded()
     {
-        for (int i = 0; i < collision.contactCount; ++i)
+        var m = _settings.CharacterMovement;
+        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - m.GroundedOffset, transform.position.z);
+        _isGrounded = Physics.CheckSphere(spherePosition, m.GroundedRadius, m.GroundLayers, QueryTriggerInteraction.Ignore);
+        if(_isGrounded)
         {
-            var contact = collision.GetContact(i);
-            if (Vector3.Dot(contact.normal, Vector3.up) > 0.2)
-            {
-                _isGrounded = true;
-                _airJumped = false;
-                _lastGrounded = NetworkTime.time;
-            }
+            _airJumped = false;
+            _lastGrounded = NetworkTime.time;
         }
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        _isGrounded = false;
     }
 
     private void FixedUpdate()
     {
+        CheckGrounded();
         ApplyGravity();
         PerformJump();
 
