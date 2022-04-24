@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CharacterMovement:
     MaxSpeed: 9
-    DecelerationSpeed: 27
     JumpHeight: 2
     CoyoteTime: 1
-    AirMovementMultiplier: 1
     StrongAirControlTime: 0.1
+    GroundAcceleration: 10
+    FrictionAcceleration: 6
+    AirAcceleration: 1
+    FrictionMinSpeed: 1
     GroundedRadius: 0.28
     GroundedOffset: 0.16
     GroundLayers:

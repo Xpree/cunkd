@@ -20,7 +20,7 @@ public class PlayerMovement : NetworkBehaviour
     public float maxSpeedScaling = 1f;
     public float maxFrictionScaling = 1f;
     public float currentMaxSpeed => _settings.CharacterMovement.MaxSpeed * maxSpeedScaling;
-    public float currentMaxFriction => _settings.CharacterMovement.DecelerationSpeed * maxFrictionScaling;
+    public float currentMaxFriction => _settings.CharacterMovement.FrictionAcceleration * maxFrictionScaling;
 
     public Vector2 _movementInput = Vector2.zero;
 
@@ -83,11 +83,14 @@ public class PlayerMovement : NetworkBehaviour
         _rigidBody.velocity += (_rigidBody.mass * Time.fixedDeltaTime) * Physics.gravity;
     }
 
+
     void ApplyFriction()
     {
         var vel = this.HorizontalVelocity;
-        var speed = vel.magnitude;        
-        var newSpeed = speed - currentMaxFriction * Time.fixedDeltaTime;
+        var speed = vel.magnitude;
+        var frictionAccel = _settings.CharacterMovement.FrictionAcceleration * maxFrictionScaling * Time.fixedDeltaTime;
+        var friction = Mathf.Max(speed, _settings.CharacterMovement.FrictionMinSpeed) * frictionAccel;
+        var newSpeed = speed - friction;
         if (newSpeed <= 0)
         {
             vel = Vector3.zero;
@@ -100,23 +103,48 @@ public class PlayerMovement : NetworkBehaviour
         this.HorizontalVelocity = vel;
     }
 
-    void ApplyAcceleration(Vector2 move)
+    // Quake style acceleration
+    static Vector3 QuakeAccelerate(Vector3 velocity, Vector3 wishDir, float wishSpeed, float accel)
     {
-        Vector3 velocityChange = (move.x * transform.right + move.y * transform.forward).normalized * currentMaxSpeed;
-        if (!_isGrounded && !HasStrongAirControl)
-        {
-            // Air acceleration
-            velocityChange *= _settings.CharacterMovement.AirMovementMultiplier * Time.fixedDeltaTime;
-        }
+        var currentSpeed = Vector3.Dot(velocity, wishDir);
+        var addSpeed = Mathf.Clamp(wishSpeed - currentSpeed, 0, accel * wishSpeed * Time.fixedDeltaTime);
+        return velocity + addSpeed * wishDir;
+    }
+
+    void Accelerate(Vector3 wishDir, float wishSpeed, float accel)
+    {
+        var addVelocity = accel * wishSpeed * Time.fixedDeltaTime * wishDir;
 
         Vector3 velocity = this.HorizontalVelocity;
         float terminalSpeed = Mathf.Max(velocity.magnitude, currentMaxSpeed);
-        velocity += velocityChange;
+        velocity += addVelocity;
         // Makes sure the player can't increase its speed beyond its previous speed or maxSpeed which ever is greater.
         velocity = Vector3.ClampMagnitude(velocity, terminalSpeed);
 
         this.HorizontalVelocity = velocity;
     }
+
+    void ApplyAcceleration(Vector2 move)
+    {
+        Vector3 wishDir = (move.x * transform.right + move.y * transform.forward).normalized;
+        float wishSpeed = _settings.CharacterMovement.MaxSpeed;
+
+        float acceleration = maxSpeedScaling;
+
+        if (_isGrounded || HasStrongAirControl)
+        {
+            acceleration *= _settings.CharacterMovement.GroundAcceleration;
+        }
+        else
+        {
+            acceleration *= _settings.CharacterMovement.AirAcceleration;
+        }
+
+        //_rigidBody.velocity = QuakeAccelerate(_rigidBody.velocity, wishDir, wishSpeed, acceleration);
+        Accelerate(wishDir, wishSpeed, acceleration);
+    }
+
+
 
     void ApplyJumpForce(float height)
     {

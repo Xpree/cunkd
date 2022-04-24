@@ -10,16 +10,24 @@ public class GameSettings : ScriptableObject
     [Serializable]
     public class CharacterMovementSettings
     {
-        public float MaxSpeed = 9.0f;
-        public float DecelerationSpeed = 27f;
+        public float MaxSpeed = 10.0f;
         public float JumpHeight = 2.0f;
+        
+        [Tooltip("How long a player is consider grounded after not being")]
         public double CoyoteTime = 1.0;
-        public float AirMovementMultiplier = 1.0f;
+        [Tooltip("How long ground acceleration multiplier applies in air after a jump")]
         public double StrongAirControlTime = 0.1;
+
+        public float GroundAcceleration = 10.0f;
+        public float FrictionAcceleration = 6.0f;
+        public float AirAcceleration = 1.0f;
+
+        [Tooltip("Apply friction with atleast this speed")]
+        public float FrictionMinSpeed = 3.0f;
 
 
         public float GroundedRadius = 0.28f;
-        public float GroundedOffset = 0.14f;
+        public float GroundedOffset = 0.16f;
         public LayerMask GroundLayers = ~0;
     }
 
