@@ -4,6 +4,7 @@ using UnityEngine;
 using Mirror;
 
 [RequireComponent(typeof(NetworkItem))]
+[RequireComponent(typeof(NetworkCooldown))]
 public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
 {
     [SerializeField] GameSettings _settings;
@@ -13,7 +14,12 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
     [SerializeField] GameObject blackHole;
     [SerializeField] LayerMask TargetMask = ~0;
 
-    [SyncVar] NetworkTimer nextSpawnTimer;
+    NetworkCooldown _cooldownTimer;
+
+    void Awake()
+    {
+        _cooldownTimer = GetComponent<NetworkCooldown>();
+    }
 
     private void Start()
     {
@@ -23,20 +29,18 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
         }
     }
 
-    public override void OnStartServer()
-    {
-        base.OnStartServer();
-        nextSpawnTimer = NetworkTimer.FromNow(Cooldown);
-    }
-
     [Command]
     void CmdSpawnBlackHole(Vector3 target)
     {
-        if(nextSpawnTimer.HasTicked)
+        if (_cooldownTimer.Use(this.Cooldown))
         {
             var go = Instantiate(blackHole, target, Quaternion.identity);
             NetworkServer.Spawn(go);
-            nextSpawnTimer = NetworkTimer.FromNow(this.Cooldown);
+        }
+        else
+        {
+            // Client predicated wrongly
+            _cooldownTimer.ForceUpdateClients();
         }
     }
 
@@ -44,7 +48,7 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
     {
         if(isPressed)
         {
-            if(nextSpawnTimer.HasTicked)
+            if(_cooldownTimer.Use(this.Cooldown))
             {
                 var aimTransform = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
                 var target = Util.RaycastPointOrMaxDistance(aimTransform, MaxRange, TargetMask);
@@ -64,7 +68,7 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
     bool holstered;
     bool IEquipable.IsHolstered => holstered;
 
-    System.Collections.IEnumerator testAnimation()
+    System.Collections.IEnumerator TestAnimation()
     {
         var start = NetworkTimer.Now;
 
@@ -86,7 +90,7 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
 
     void IEquipable.OnHolstered()
     {
-        StartCoroutine(testAnimation());
+        StartCoroutine(TestAnimation());
     }
 
     void IEquipable.OnUnholstered()
@@ -116,14 +120,5 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
         }
     }
 
-    void IEquipable.OnRemoved()
-    {
-        this.transform.parent = null;
-        if (holstered)
-        {
-            holstered = false;
-            transform.localScale = Vector3.one;
-        }
-    }
     #endregion
 }

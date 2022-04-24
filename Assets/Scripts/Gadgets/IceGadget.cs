@@ -2,40 +2,50 @@ using UnityEngine;
 using Mirror;
 
 [RequireComponent(typeof(NetworkItem))]
+[RequireComponent(typeof(NetworkCooldown))]
 public class IceGadget : NetworkBehaviour, IGadget, IEquipable
 {
     public GameObject IceGadgetTrap;
 
+    [SerializeField] int Charges;
+    [SerializeField] bool isPassive;
     [SerializeField] LayerMask TargetMask = ~0;
 
-    [SyncVar][SerializeField] int Charges;
-    [SyncVar] public int chargesLeft;
-    [SerializeField] bool isPassive;
 
-    [SyncVar] float ChargeProgress = 0f;
+    NetworkCooldown _cooldownTimer;
 
     bool IGadget.isPassive => isPassive;
     int IGadget.Charges => Charges;
-    int IGadget.ChargesLeft => chargesLeft;
-    private void Awake()
+    int IGadget.ChargesLeft => _cooldownTimer.Charges;
+    
+    void Awake()
     {
-        chargesLeft = Charges;
+        _cooldownTimer = GetComponent<NetworkCooldown>();
     }
 
     [Command]
     void SpawnIceGadget(Vector3 target)
     {
-        if (0 < chargesLeft)
+        if(_cooldownTimer.UseCharge())
         {
             var go = Instantiate(IceGadgetTrap, target, Quaternion.identity);
             NetworkServer.Spawn(go);
-            chargesLeft--;
+
+            if(_cooldownTimer.Charges == 0)
+            {
+                NetworkServer.Destroy(this.gameObject);
+            }
+        }
+        else
+        {
+            // Misprediction should not happen but force update just incase.
+            _cooldownTimer.ForceUpdateClients();
         }
     }
 
     void IGadget.PrimaryUse(bool isPressed)
     {
-        if (chargesLeft <= 0)
+        if (isPressed == false || _cooldownTimer.UseCharge() == false)
             return;
 
         var aimTransform = GetComponent<NetworkItem>().OwnerInteractAimTransform;
@@ -55,9 +65,11 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
     {
     }
 
-    float? IGadget.ChargeProgress => this.ChargeProgress;
+
+    float? IGadget.ChargeProgress => null;
 
 
+    #region IEquipable
     bool holstered;
     bool IEquipable.IsHolstered => holstered;
 
@@ -95,13 +107,5 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
         }
     }
 
-    void IEquipable.OnRemoved()
-    {
-        this.transform.parent = null;
-        if (holstered)
-        {
-            holstered = false;
-            transform.localScale = Vector3.one;
-        }
-    }
+    #endregion
 }

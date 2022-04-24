@@ -4,6 +4,7 @@ using UnityEngine;
 using Mirror;
 
 [RequireComponent(typeof(NetworkItem))]
+[RequireComponent(typeof(NetworkCooldown))]
 public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
 {
     [SerializeField] GameSettings _settings;
@@ -12,7 +13,12 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
 
     [SerializeField] LayerMask TargetMask = ~0;
 
-    [SyncVar] NetworkTimer _nextShotTimer;
+    NetworkCooldown _cooldownTimer;
+    
+    void Awake()
+    {
+        _cooldownTimer = GetComponent<NetworkCooldown>();
+    }
 
     private void Start()
     {
@@ -20,13 +26,6 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
         {
             Debug.LogError("Missing GameSettings reference on " + name);
         }
-
-    }
-
-    public override void OnStartServer()
-    {
-        base.OnStartServer();
-        _nextShotTimer = NetworkTimer.Now;
     }
 
     public NetworkIdentity DidHitObject()
@@ -45,9 +44,11 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     [Command]
     void CmdPerformSwap(NetworkIdentity target)
     {
-        if (target == null || _nextShotTimer.HasTicked == false)
+        if (target == null || _cooldownTimer.Use(this.cooldown) == false)
+        {
+            // Client predicted wrong. Dont care!
             return;
-        _nextShotTimer = NetworkTimer.FromNow(cooldown);
+        }
 
         var owner = GetComponent<NetworkItem>()?.Owner;
         if (owner == null)
@@ -64,7 +65,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     {
         if(isPressed)
         {
-            if(_nextShotTimer.HasTicked)
+            if(_cooldownTimer.Use(this.cooldown))
             {
                 CmdPerformSwap(DidHitObject());
             }
@@ -109,16 +110,6 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     }
 
     void IEquipable.OnDropped()
-    {
-        this.transform.parent = null;
-        if (holstered)
-        {
-            holstered = false;
-            transform.localScale = Vector3.one;
-        }
-    }
-
-    void IEquipable.OnRemoved()
     {
         this.transform.parent = null;
         if (holstered)

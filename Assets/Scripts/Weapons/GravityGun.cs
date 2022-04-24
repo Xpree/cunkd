@@ -269,7 +269,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
     bool holstered = false;
     bool IEquipable.IsHolstered => holstered;
 
-    System.Collections.IEnumerator testAnimation()
+    System.Collections.IEnumerator TestAnimation()
     {
         var start = NetworkTimer.Now;
 
@@ -292,7 +292,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
     {
         StopCharging();
         StopPulling(false);
-        StartCoroutine(testAnimation());
+        StartCoroutine(TestAnimation());
     }
 
     void IEquipable.OnUnholstered()
@@ -326,19 +326,6 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             transform.localScale = Vector3.one;
         }
 
-        PlayerCollider = null;
-    }
-
-    void IEquipable.OnRemoved()
-    {
-        StopCharging();
-        StopPulling(false);
-        this.transform.parent = null;
-        if (holstered)
-        {
-            holstered = false;
-            transform.localScale = Vector3.one;
-        }
         PlayerCollider = null;
     }
     #endregion

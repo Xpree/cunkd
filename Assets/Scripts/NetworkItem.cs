@@ -12,45 +12,27 @@ public class NetworkItem : NetworkBehaviour
 
     public Transform OwnerInteractAimTransform => Util.GetPlayerInteractAimTransform(this.Owner);
 
-    void OnDropped()
+    void OnChangedOwner(GameObject actor)
     {
-        if(owner != null)
-            owner.GetComponent<INetworkItemOwner>()?.OnDropped(this);
-    }
-
-    void OnPickedUp()
-    {
-        if(owner != null)
+        owner = actor;
+        if (owner != null)
             owner.GetComponent<INetworkItemOwner>()?.OnPickedUp(this);
     }
 
     [ClientRpc]
-    void RpcDroppedItem()
+    void RpcChangedOwner(GameObject actor)
     {
         if(this.isClientOnly)
         {
-            OnDropped();
-            owner = null;
+            OnChangedOwner(actor);
         }
     }
 
-    [Command]
-    public void CmdDrop()
+    [Server]
+    void ChangeOwner(GameObject actor)
     {
-        this.GetComponent<NetworkIdentity>().RemoveClientAuthority();
-        RpcDroppedItem();
-        OnDropped();
-        owner = null;
-    }
-
-    [ClientRpc]
-    void RpcPickedUpItem(GameObject actor)
-    {
-        if(this.isClientOnly)
-        {
-            owner = actor;
-            OnPickedUp();
-        }
+        RpcChangedOwner(actor);
+        OnChangedOwner(actor);
     }
 
     [Server]
@@ -66,27 +48,39 @@ public class NetworkItem : NetworkBehaviour
         {
             Debug.LogError("NetworkItem is already picked up.");
             return;
-        }
-            
+        }         
 
         if(actor.connectionToClient != null)
         {
             this.GetComponent<NetworkIdentity>().AssignClientAuthority(actor.connectionToClient);
         }
 
-        RpcPickedUpItem(actor.gameObject);
-        owner = actor.gameObject;
-        OnPickedUp();
+        ChangeOwner(actor.gameObject);
+    }
+
+    [Command]
+    public void CmdDropOwnership()
+    {
+        this.GetComponent<NetworkIdentity>().RemoveClientAuthority();
+        ChangeOwner(null);
+    }
+
+    private void OnDestroy()
+    {
+        if(owner != null)
+        {
+            owner.GetComponent<INetworkItemOwner>()?.OnDestroyed(this);
+        }
     }
 }
 
 public interface INetworkItemOwner
 {
     /// <summary>
-    /// Runs on server and all clients when an item is dropped
+    /// Runs on server and all clients when an item is destroyed
     /// </summary>
     /// <param name="item"></param>
-    void OnDropped(NetworkItem item);
+    void OnDestroyed(NetworkItem item);
 
     /// <summary>
     /// Runs on server and all clients when an item is picked up

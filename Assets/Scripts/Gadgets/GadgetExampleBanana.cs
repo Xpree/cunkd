@@ -4,61 +4,74 @@ using UnityEngine;
 using Mirror;
 
 [RequireComponent(typeof(NetworkItem))]
+[RequireComponent(typeof(NetworkCooldown))]
 public class GadgetExampleBanana : NetworkBehaviour, IGadget, IEquipable
 {
-    [SyncVar][SerializeField] int Charges;
-    [SyncVar] public int chargesLeft;
     [SerializeField] bool isPassive;
+    [SerializeField] int Charges;
+    [SerializeField] float Cooldown = 1.0f;
 
-    [SyncVar] float ChargeProgress = 0f;
+    NetworkCooldown cooldownTimer;
 
     bool IGadget.isPassive => isPassive;
     int IGadget.Charges => Charges;
-    int IGadget.ChargesLeft => chargesLeft;
+    int IGadget.ChargesLeft => cooldownTimer.Charges;
 
     private void Awake()
     {
-        chargesLeft = Charges;
-    }
-    [Client]
-    void CmdPrimaryUse()
-    {
-        if (0 < chargesLeft)
-        {
-            print("ate a piece of the banana");
-            chargesLeft--;
-        }
-        if (chargesLeft <= 0)
-        {
-            print("gadget out of charges");
-        }
+        cooldownTimer = GetComponent<NetworkCooldown>();
     }
 
-    [Client]
-    void CmdSecondaryUse()
+    public override void OnStartServer()
     {
-        if (0 < chargesLeft)
+        base.OnStartServer();
+        cooldownTimer.SetCharges(Charges);
+    }
+
+
+    [TargetRpc]
+    void TargetTell(string message)
+    {
+        print(message);
+    }
+
+    [Command]
+    void CmdUse()
+    {
+        if (cooldownTimer.Use(this.Cooldown))
         {
-            print("ate some other piece of the banana");
-            chargesLeft--;
+            TargetTell("ate a piece of the banana");
+            if (cooldownTimer.Charges == 0)
+            {
+                TargetTell("out of banana");
+                NetworkServer.Destroy(this.gameObject);
+                return;
+            }
         }
-        if (chargesLeft <= 0)
+        else
         {
-            print("gadget out of charges");
+            // Use attempt failed. Let client know it still has charges
+            cooldownTimer.ForceUpdateClients();
         }
     }
 
     void IGadget.PrimaryUse(bool isPressed)
     {
-        CmdPrimaryUse();
+        if(cooldownTimer.Use(this.Cooldown))
+        {
+            CmdUse();
+        }
     }
 
     void IGadget.SecondaryUse(bool isPressed)
     {
-        CmdSecondaryUse();
+        if (cooldownTimer.Use(this.Cooldown))
+        {
+            CmdUse();
+        }
     }
 
-    float? IGadget.ChargeProgress => this.ChargeProgress;
+    float? IGadget.ChargeProgress => null;
 
 
     bool holstered;
@@ -89,16 +102,6 @@ public class GadgetExampleBanana : NetworkBehaviour, IGadget, IEquipable
     }
 
     void IEquipable.OnDropped()
-    {
-        this.transform.parent = null;
-        if (holstered)
-        {
-            holstered = false;
-            transform.localScale = Vector3.one;
-        }
-    }
-
-    void IEquipable.OnRemoved()
     {
         this.transform.parent = null;
         if (holstered)

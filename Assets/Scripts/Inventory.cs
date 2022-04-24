@@ -68,16 +68,22 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
     }
 
 
-    public IEquipable GetEquipment(ItemSlot slot)
+    public T GetItemComponent<T>(ItemSlot slot) where T : class
     {
         return slot switch
         {
-            ItemSlot.PrimaryWeapon => firstWeapon != null ? firstWeapon.GetComponent<IEquipable>() : null,
-            ItemSlot.SecondaryWeapon => secondWeapon != null ? secondWeapon.GetComponent<IEquipable>() : null,
-            ItemSlot.Gadget => gadget != null ? gadget.GetComponent<IEquipable>() : null,
+            ItemSlot.PrimaryWeapon => firstWeapon != null ? firstWeapon.GetComponent<T>() : null,
+            ItemSlot.SecondaryWeapon => secondWeapon != null ? secondWeapon.GetComponent<T>() : null,
+            ItemSlot.Gadget => gadget != null ? gadget.GetComponent<T>() : null,
             _ => null,
         };
     }
+
+    public IEquipable GetEquipment(ItemSlot slot)
+    {
+        return GetItemComponent<IEquipable>(slot);
+    }
+
 
     public Transform GetSlotAnchor(ItemSlot slot)
     {
@@ -173,63 +179,11 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
 
         go.GetComponent<IEquipable>()?.OnDropped();
         var item = go.GetComponent<NetworkItem>();
-        if (item != null && item.netIdentity.HasControl())
+        if (item != null && item.hasAuthority)
         {
-            item.CmdDrop();
+            item.CmdDropOwnership();
         }
     }
-
-    #region Remove slot
-    GameObject DoRemoveSlot(ItemSlot slot)
-    {
-        GetEquipment(slot)?.OnRemoved();
-        GameObject removed = null;
-        switch (slot)
-        {
-            case ItemSlot.PrimaryWeapon:
-                removed = firstWeapon;
-                firstWeapon = null;
-                break;
-            case ItemSlot.SecondaryWeapon:
-                removed = secondWeapon;
-                secondWeapon = null;
-                break;
-            case ItemSlot.Gadget:
-                removed = gadget;
-                gadget = null;
-                break;
-        }
-        return removed;
-    }
-
-    [ClientRpc(includeOwner = false)]
-    void RpcRemoveSlot(ItemSlot slot)
-    {
-        if (isClientOnly)
-        {
-            DoRemoveSlot(slot);
-        }
-    }
-
-    [Command]
-    void CmdRemoveSlot(ItemSlot slot)
-    {
-        RpcRemoveSlot(slot);
-        var go = DoRemoveSlot(slot);
-        if (go != null)
-            NetworkServer.Destroy(go);
-    }
-
-    public void RemoveSlot(ItemSlot slot)
-    {
-        if (this.netIdentity.HasControl())
-        {
-            if (isClientOnly)
-                DoRemoveSlot(slot);
-            CmdRemoveSlot(slot);
-        }
-    }
-    #endregion
 
     #region Equip
     System.Collections.IEnumerator DoEquip(ItemSlot slot)
@@ -341,11 +295,6 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
                 activeGadget.PrimaryUse(wasPressed);
             else
                 activeGadget.SecondaryUse(wasPressed);
-
-            if (activeGadget.ChargesLeft <= 0)
-            {
-                RemoveSlot(ItemSlot.Gadget);
-            }
         }
         else
         {
@@ -443,11 +392,15 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
         if (ActiveWeapon?.ChargeProgress is float progress)
         {
             GUIDrawProgress(progress);
-        }
+        }    
     }
 
-    void INetworkItemOwner.OnDropped(NetworkItem item)
+    void INetworkItemOwner.OnDestroyed(NetworkItem item)
     {
+        if(this.hasAuthority && GetItemComponent<NetworkItem>(equipped) == item)
+        {
+            NextItem();
+        }
     }
 
     void INetworkItemOwner.OnPickedUp(NetworkItem item)
@@ -518,5 +471,4 @@ public interface IEquipable
     void OnUnholstered();
     void OnPickedUp(bool startHolstered);
     void OnDropped();
-    void OnRemoved();
 }
