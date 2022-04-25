@@ -197,6 +197,10 @@ public class PlayerMovement : NetworkBehaviour
         {
             ApplyAcceleration(_movementInput);
         }
+
+        // Temp reset
+        maxSpeedScaling = 1f;
+        maxFrictionScaling = 1f;
     }
 
     public void OnMoveAction(InputAction.CallbackContext ctx)
