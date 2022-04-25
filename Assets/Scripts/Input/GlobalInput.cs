@@ -47,6 +47,11 @@ public class GlobalInput : MonoBehaviour
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
+        GUILayout.Label("Auto Equip:");
+        Settings.autoEquipOnPickup = GUILayout.Toggle(Settings.autoEquipOnPickup, GUIContent.none);
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
         GUILayout.Label("Horizontal mouse sensitivity:");
         if(TryGUIFloatField(ref senseYawInput, out float yaw))
         {
