@@ -93,13 +93,13 @@ public class PlayerMovement : NetworkBehaviour
         var frictionAccel = _settings.CharacterMovement.FrictionAcceleration * maxFrictionScaling * Time.fixedDeltaTime;
         var friction = Mathf.Max(speed, _settings.CharacterMovement.FrictionMinSpeed) * frictionAccel;
         var newSpeed = speed - friction;
-        if (newSpeed <= 0)
+        if (newSpeed <= 0 || float.IsNormal(newSpeed) == false)
         {
             vel = Vector3.zero;
         }
         else
         {
-            vel *= (newSpeed / speed);
+            vel = vel.normalized * newSpeed;
         }
 
         this.HorizontalVelocity = vel;
