@@ -196,7 +196,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         if (isPressed)
         {
             var aimTransform = Util.GetOwnerAimTransform(this.GetComponent<NetworkItem>());
-            if (Physics.Raycast(aimTransform.position, aimTransform.forward, out RaycastHit hitResult, MaxGrabRange, TargetMask))
+            if (Physics.SphereCast(aimTransform.position, 0.5f, aimTransform.forward, out RaycastHit hitResult, MaxGrabRange, TargetMask))
             {
                 _pulling = true;
                 var networkIdentity = hitResult.collider.GetComponent<NetworkIdentity>();
@@ -244,7 +244,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             {
                 StopPulling(true);
             }
-            else if (Physics.Raycast(AnchorPoint.position, AnchorPoint.forward, out RaycastHit hitResult, MaxRange, TargetMask))
+            else if (Physics.SphereCast(AnchorPoint.position, 0.5f, AnchorPoint.forward, out RaycastHit hitResult, MaxRange, TargetMask))
             {
                 var networkIdentity = hitResult.collider.GetComponent<NetworkIdentity>();
 
