@@ -23,7 +23,11 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
 
     public GameObject firstWeapon
     {
-        get { return localFirstWeapon; }
+        get {
+            if (localFirstWeapon != null && localFirstWeapon.activeSelf == false)
+                return null;
+            return localFirstWeapon; 
+        }
         set
         {
             localFirstWeapon = value;
@@ -35,6 +39,8 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
     {
         get
         {
+            if (localSecondWeapon != null && localSecondWeapon.activeSelf == false)
+                return null;
             return localSecondWeapon;
         }
         set
@@ -46,7 +52,11 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
     }
     public GameObject gadget
     {
-        get { return localGadget; }
+        get {
+            if (localGadget != null && localGadget.activeSelf == false)
+                return null;
+            return localGadget; 
+        }
         set
         {
             localGadget = value;
