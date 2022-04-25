@@ -1,11 +1,13 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class Scoreboard : MonoBehaviour
 {
     public TextMeshProUGUI livesUI;
     public TextMeshProUGUI scoreboardTextUI;
     public GameObject scoreboard;
+    public Image useButton;
 
     public void SetLocalLives(int lives)
     {
