@@ -239,6 +239,8 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         }
         else if (_charging)
         {
+            FMODUnity.RuntimeManager.PlayOneShot("event:/PlaceholderAudio/Weapons/FPS_Microgame/Launcher/LauncherRelease");
+
             var rb = _localAttract?.GetComponent<Rigidbody>();
             if (rb != null && rb.isKinematic)
             {
