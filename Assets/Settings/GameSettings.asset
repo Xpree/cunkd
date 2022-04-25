@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: GameSettings
   m_EditorClassIdentifier: 
   CharacterMovement:
+    TerminalVelocity: 1000
     MaxSpeed: 9
     JumpHeight: 2
     CoyoteTime: 1
@@ -25,7 +26,7 @@ MonoBehaviour:
     GroundedOffset: 0.16
     GroundLayers:
       serializedVersion: 2
-      m_Bits: 192
+      m_Bits: 128
   GravityGun:
     MaxGrabRange: 40
     GrabTime: 0.5
