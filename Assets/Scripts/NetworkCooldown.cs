@@ -4,54 +4,33 @@ using Mirror;
 // ment to be used by both client and server.
 public class NetworkCooldown : NetworkBehaviour
 {
-    [SyncVar(hook = nameof(OnCooldownChanged))] NetworkTimer cooldownTimer;
+    NetworkTimer serverCooldownTimer;
     NetworkTimer localTimer;
 
-    [SyncVar(hook = nameof(OnChargesChanged))] int charges = -1;
+    int serverCharges = -1;
     int localCharges = -1;
 
-    public bool HasInfiniteCharges => charges < 0;
+    public bool HasInfiniteCharges => serverCharges < 0;
     public int Charges => System.Math.Max(localCharges, 0);
     public bool HasCooldown => localTimer.Elapsed < 0;
 
     [Server]
     public void SetCharges(int count)
     {
-        charges = count;
-    }
-
-
-    void OnCooldownChanged(NetworkTimer previous, NetworkTimer current)
-    {
-        if(localTimer.TickTime < current.TickTime)
-        {
-            localTimer = current;
-        }
-    }
-
-    void OnChargesChanged(int previous, int current)
-    {
-        localCharges = current;
+        serverCharges = count;
     }
 
     public override void OnStartServer()
     {
         base.OnStartServer();
-        cooldownTimer = NetworkTimer.Now;
+        serverCooldownTimer = NetworkTimer.Now;
     }
 
     [ClientRpc]
-    void RpcForceUpdateClients(NetworkTimer cooldownTimer, int charges)
+    void RpcUpdateClients(NetworkTimer cooldownTimer, int charges)
     {
         localTimer = cooldownTimer;
         localCharges = charges;
-    }
-
-    // Call on server if the client predicted wrong, i.e. the server says it's on cooldown but the client think it's not.
-    [Server]
-    public void ForceUpdateClients()
-    {
-        RpcForceUpdateClients(cooldownTimer, charges);
     }
 
     // Sets cooldown and uses a charge if any are set
@@ -59,26 +38,25 @@ public class NetworkCooldown : NetworkBehaviour
     [Server]
     public bool ServerUse(double cooldown)
     {
-        if (cooldownTimer.Elapsed < 0 || ServerUseCharge() == false)
+        if (serverCooldownTimer.Elapsed < 0 || ServerUseCharge() == false)
             return false;
-        cooldownTimer = NetworkTimer.FromNow(cooldown);
+        serverCooldownTimer = NetworkTimer.FromNow(cooldown);
+        RpcUpdateClients(serverCooldownTimer, serverCharges);
         return true;
     }
-
-
 
     [Server]
     public bool ServerUseCharge()
     {
-        if (charges == 0)
+        if (serverCharges == 0)
             return false;
         if (HasInfiniteCharges == false)
         {
-            charges = charges - 1;
+            serverCharges = serverCharges - 1;
+            RpcUpdateClients(serverCooldownTimer, serverCharges);
         }
         return true;
     }
-
 
 
     // Sets cooldown and uses a charge if any are set

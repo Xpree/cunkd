@@ -36,11 +36,6 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
                 NetworkServer.Destroy(this.gameObject);
             }
         }
-        else
-        {
-            // Misprediction should not happen but force update just incase.
-            _cooldownTimer.ForceUpdateClients();
-        }
     }
 
     void IGadget.PrimaryUse(bool isPressed)

@@ -37,11 +37,6 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
             var go = Instantiate(blackHole, target, Quaternion.identity);
             NetworkServer.Spawn(go);
         }
-        else
-        {
-            // Client predicated wrongly
-            _cooldownTimer.ForceUpdateClients();
-        }
     }
 
     void IWeapon.PrimaryAttack(bool isPressed)

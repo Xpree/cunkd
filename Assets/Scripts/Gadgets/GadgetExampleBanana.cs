@@ -48,11 +48,6 @@ public class GadgetExampleBanana : NetworkBehaviour, IGadget, IEquipable
                 return;
             }
         }
-        else
-        {
-            // Use attempt failed. Let client know it still has charges
-            cooldownTimer.ForceUpdateClients();
-        }
     }
 
     void IGadget.PrimaryUse(bool isPressed)
