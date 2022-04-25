@@ -89,6 +89,7 @@ public class LobbyClient : NetworkBehaviour
         CunkdNetManager cunkd = NetworkManager.singleton as CunkdNetManager;
         if (cunkd && cunkd.Lobby.ShowRoomGUI && cunkd.Lobby.IsLobbyActive)
         {
+            Cursor.lockState = CursorLockMode.None;
             DrawPlayerReadyState();
             DrawPlayerReadyButton();
         }
