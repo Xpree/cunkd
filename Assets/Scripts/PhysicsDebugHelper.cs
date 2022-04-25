@@ -30,6 +30,7 @@ public class PhysicsDebugHelper : NetworkBehaviour
     Rect debugWindowRect = new Rect(20, 200, 120, 50);
     private void OnGUI()
     {
-        debugWindowRect = GUILayout.Window(0, debugWindowRect, DoDebugWindow, "Physics Debug");
+        if(Cursor.lockState == CursorLockMode.None)
+            debugWindowRect = GUILayout.Window(0, debugWindowRect, DoDebugWindow, "Physics Debug");
     }
 }

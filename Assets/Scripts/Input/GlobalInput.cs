@@ -109,12 +109,12 @@ public class GlobalInput : MonoBehaviour
     Rect settingsWindowRect = new Rect(20, 200, 300, 50);
     private void OnGUI()
     {
-        if (Cursor.lockState == CursorLockMode.Locked)
-            return;
+       if (Cursor.lockState == CursorLockMode.None)
+       {
+            settingsWindowRect.x = Screen.width * 0.5f - settingsWindowRect.width * 0.5f;
+            settingsWindowRect.y = Screen.height * 0.5f - settingsWindowRect.height * 0.5f;
 
-        settingsWindowRect.x = Screen.width * 0.5f - settingsWindowRect.width * 0.5f;
-        settingsWindowRect.y = Screen.height * 0.5f - settingsWindowRect.height * 0.5f;
-
-        settingsWindowRect = GUILayout.Window(0, settingsWindowRect, DoSettingsWindow, "Settings");
+            settingsWindowRect = GUILayout.Window(0, settingsWindowRect, DoSettingsWindow, "Settings");
+       }
     }
 }
