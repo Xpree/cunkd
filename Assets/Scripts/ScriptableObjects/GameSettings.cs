@@ -10,6 +10,7 @@ public class GameSettings : ScriptableObject
     [Serializable]
     public class CharacterMovementSettings
     {
+        public float TerminalVelocity = 1000.0f;
         public float MaxSpeed = 10.0f;
         public float JumpHeight = 2.0f;
         

@@ -74,7 +74,9 @@ public class PlayerMovement : NetworkBehaviour
 
         set
         {
-            _rigidBody.velocity = new Vector3(value.x, _rigidBody.velocity.y, value.z);
+
+            var max = _settings.CharacterMovement.TerminalVelocity;
+            _rigidBody.velocity = Vector3.ClampMagnitude(new Vector3(value.x, _rigidBody.velocity.y, value.z), max);
         }
     }
 
