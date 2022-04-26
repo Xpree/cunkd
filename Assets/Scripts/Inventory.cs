@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Mirror;
+using UnityEngine.UI;
 
 public class Inventory : NetworkBehaviour, INetworkItemOwner
 {
@@ -20,6 +21,8 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
     public GameObject localSecondWeapon;
     public GameObject localGadget;
     public ItemSlot localEquipped = ItemSlot.PrimaryWeapon;
+
+    Scoreboard scoreBoard;
 
     public GameObject firstWeapon
     {
@@ -128,6 +131,7 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
     private void Awake()
     {
         gameInputs = GetComponentInChildren<GameInputs>(true);
+        scoreBoard = FindObjectOfType<Scoreboard>();
     }
 
     public override void OnStartClient()
@@ -273,7 +277,28 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
         if (!isLocalPlayer)
             return;
 
+        castRay();
         HandleInput();
+    }
+
+    public void castRay()
+    {
+        var transform = Util.GetPlayerInteractAimTransform(this.gameObject);
+        if (transform == null)
+            return;
+
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, interactMaxDistance, this.interactLayerMask))
+        {
+            ObjectSpawner obs = hit.transform.GetComponent<ObjectSpawner>();
+            if (obs && !obs.IsPowerUpSpawner)
+            {
+                scoreBoard.useButton.enabled = true;
+            }
+        }
+        else
+        {
+            scoreBoard.useButton.enabled = false;
+        }
     }
 
     public void Interact()

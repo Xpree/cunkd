@@ -70,13 +70,11 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         body.isKinematic = true;
         body.velocity = Vector3.zero;
         body.angularVelocity = Vector3.zero;
-        body.position = GetAnchorPosition(attractOffset);
-        body.transform.parent = AnchorPoint;
-
-        yield return null;
-
-        if(_pulling)
-            body.transform.localPosition = Vector3.zero;
+        while (_pulling)
+        {
+            body.position = GetAnchorPosition(attractOffset);
+            yield return new WaitForFixedUpdate();
+        }
     }
 
 
