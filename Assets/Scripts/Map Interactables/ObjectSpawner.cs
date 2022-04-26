@@ -22,9 +22,6 @@ public class ObjectSpawner : NetworkBehaviour, IInteractable
     public bool IsWeaponSpawner => objectToSpawn != null && objectToSpawn.GetComponent<IWeapon>() != null;
     public bool IsPowerUpSpawner => !IsGadgetSpawner && !IsWeaponSpawner;
 
-    public float nextActionTime = 0.0f;
-    public float period = 40f;
-
     private void Awake()
     {
         if (IsPowerUpSpawner)
@@ -68,11 +65,6 @@ public class ObjectSpawner : NetworkBehaviour, IInteractable
         }
         else if (NetworkServer.active && nextSpawnTime.HasTicked)
         {
-            SpawnObject();
-        }
-        else if (Time.time > nextActionTime) // temporary timer that spawn balls after 40 seconds...
-        {
-            nextActionTime += period;
             SpawnObject();
         }
     }
