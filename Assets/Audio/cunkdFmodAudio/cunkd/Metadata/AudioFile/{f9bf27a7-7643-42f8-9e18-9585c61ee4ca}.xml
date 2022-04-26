@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{f9bf27a7-7643-42f8-9e18-9585c61ee4ca}">
+		<property name="assetPath">
+			<value>PlaceholderAudio/Footsteps/footsteps_enemy_01.ogg</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>0.14714583333333334</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{cd3fe371-6de4-4111-9fc9-84e9e4ec1769}</destination>
+		</relationship>
+	</object>
+</objects>

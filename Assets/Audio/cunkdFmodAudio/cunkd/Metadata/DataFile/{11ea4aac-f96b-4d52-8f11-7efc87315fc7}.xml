@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="DataFile" id="{11ea4aac-f96b-4d52-8f11-7efc87315fc7}">
+		<property name="assetPath">
+			<value>PlaceholderAudio/Weapons/FPS_Microgame/Weapon_Cooling.wav.meta</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{cd3fe371-6de4-4111-9fc9-84e9e4ec1769}</destination>
+		</relationship>
+	</object>
+</objects>

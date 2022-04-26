@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="EncodableAsset" id="{162b1c7e-7a93-4fe1-bbd7-c754c37d5e67}">
+		<property name="assetPath">
+			<value>PlaceholderAudio/Weapons/Bullet Casings/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{cd3fe371-6de4-4111-9fc9-84e9e4ec1769}</destination>
+		</relationship>
+	</object>
+</objects>

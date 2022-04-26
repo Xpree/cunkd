@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="EventFolder" id="{001584d5-2d4b-4ddb-8f1e-ff0be9bf8d1e}">
+		<property name="name">
+			<value>FPS_Microgame</value>
+		</property>
+		<relationship name="folder">
+			<destination>{4115a024-cfba-4c66-841c-f7f6638746f5}</destination>
+		</relationship>
+	</object>
+</objects>

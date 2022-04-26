@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="DataFile" id="{34f294dc-f33a-4791-b88b-ab21f5a92219}">
+		<property name="assetPath">
+			<value>PlaceholderAudio/Pickups/Pickup_Jetpack.wav.meta</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{cd3fe371-6de4-4111-9fc9-84e9e4ec1769}</destination>
+		</relationship>
+	</object>
+</objects>

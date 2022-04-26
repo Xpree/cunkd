@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="DataFile" id="{7d65a67f-e9ec-4d40-8a16-a897ca0e0c97}">
+		<property name="assetPath">
+			<value>PlaceholderAudio/Weapons/FPS_Microgame/Launcher_Release.wav.meta</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{cd3fe371-6de4-4111-9fc9-84e9e4ec1769}</destination>
+		</relationship>
+	</object>
+</objects>

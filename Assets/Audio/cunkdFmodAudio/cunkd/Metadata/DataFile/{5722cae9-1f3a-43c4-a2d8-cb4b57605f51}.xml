@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="DataFile" id="{5722cae9-1f3a-43c4-a2d8-cb4b57605f51}">
+		<property name="assetPath">
+			<value>PlaceholderAudio/Weapons/FPS_Microgame/Blaster_Shot.wav.meta</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{cd3fe371-6de4-4111-9fc9-84e9e4ec1769}</destination>
+		</relationship>
+	</object>
+</objects>
