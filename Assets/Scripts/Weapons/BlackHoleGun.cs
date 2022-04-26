@@ -45,7 +45,7 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
         {
             if(_cooldownTimer.Use(this.Cooldown))
             {
-                FMODUnity.RuntimeManager.PlayOneShot("event:/SoundStudents/SFX/Weapons/BlackHoleGun");
+                //FMODUnity.RuntimeManager.PlayOneShot("event:/SoundStudents/SFX/Weapons/BlackHoleGun");
 
                 var aimTransform = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
                 var target = Util.RaycastPointOrMaxDistance(aimTransform, MaxRange, TargetMask);

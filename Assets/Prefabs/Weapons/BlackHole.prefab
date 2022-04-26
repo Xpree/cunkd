@@ -125,6 +125,7 @@ GameObject:
   - component: {fileID: 1761250688478877484}
   - component: {fileID: 9059714811944963243}
   - component: {fileID: 4568777201997059838}
+  - component: {fileID: -2831820996974864048}
   m_Layer: 0
   m_Name: BlackHole
   m_TagString: Untagged
@@ -277,3 +278,33 @@ MonoBehaviour:
   showGizmos: 0
   showOverlay: 0
   overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+--- !u!114 &-2831820996974864048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6033889869813183962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 59597841
+      Data2: 1101432860
+      Data3: 544028324
+      Data4: 1154619786
+    Path: event:/SoundStudents/SFX/Weapons/BlackHoleGun
+  Event: 
+  PlayEvent: 1
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
