@@ -264,6 +264,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             }
             else if (Physics.SphereCast(AnchorPoint.position, 0.5f, AnchorPoint.forward, out RaycastHit hitResult, MaxRange, TargetMask))
             {
+                pushVFX.GetComponent<VisualEffect>().Play();
                 var networkIdentity = hitResult.collider.GetComponent<NetworkIdentity>();
 
                 if (networkIdentity != null)
