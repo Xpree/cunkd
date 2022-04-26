@@ -240,7 +240,6 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
                 var position = rb.transform.TransformPoint(localPosition);
                 
                 rb.AddForceAtPosition(direction * pushForce, position, this.PushForceMode);
-                pushVFX.GetComponent<VisualEffect>().Play();
             }
         }
 
@@ -279,6 +278,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
                         var localPosition = t.InverseTransformPoint(hitResult.point);
                         var localDirection = t.InverseTransformDirection(AnchorPoint.forward);                        
                         CmdPush(networkIdentity, localPosition, localDirection, Mathf.Clamp01((float)_chargeBegan.Elapsed));
+                        pushVFX.GetComponent<VisualEffect>().Play();
                     }
                 }
             }
