@@ -128,6 +128,9 @@ GameObject:
   - component: {fileID: 8168253376305743865}
   - component: {fileID: -3118400523729911809}
   - component: {fileID: 8162454346370928035}
+  - component: {fileID: 6442673011942864655}
+  - component: {fileID: 9193244382059747024}
+  - component: {fileID: 8053813949442105519}
   m_Layer: 0
   m_Name: SwapRifle
   m_TagString: Untagged
@@ -197,7 +200,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  teleportVFX: {fileID: 8272284103022893352}
+  animator: {fileID: 9193244382059747024}
   _settings: {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}
   TargetMask:
     serializedVersion: 2
@@ -216,6 +219,60 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  localTimer:
+    TickTime: 0
+  coolDownDuration: 0
+--- !u!95 &6442673011942864655
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4053286044562665193}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a2edd0ad60e24b74c821ea1c1e9c100b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &9193244382059747024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4053286044562665193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f6f3bf89aa97405989c802ba270f815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  clientAuthority: 0
+  animator: {fileID: 6442673011942864655}
+--- !u!114 &8053813949442105519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4053286044562665193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15928e11a6ecfcf409b856e7527c14eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Effects:
+  - Name: Fire
+    VFX: {fileID: 8369641931617526859}
 --- !u!1 &8272284103022893352
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,8 +315,8 @@ VisualEffect:
   m_GameObject: {fileID: 8272284103022893352}
   m_Enabled: 1
   m_Asset: {fileID: 8926484042661614526, guid: d47a2118f9035b94eaafcc8f7fe6bc2d, type: 3}
-  m_InitialEventName: OnPlay
-  m_InitialEventNameOverriden: 0
+  m_InitialEventName: 
+  m_InitialEventNameOverriden: 1
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
   m_ResourceVersion: 1
