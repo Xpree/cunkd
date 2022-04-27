@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{9bbfba72-b5d2-4d35-9a1d-d905f3674717}">
+		<property name="name">
+			<value>Players Left</value>
+		</property>
+		<relationship name="folder">
+			<destination>{f3175451-52e8-4193-903b-a4fc7e20a798}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{1f64af6c-c2c1-465a-9037-428e9b5621c9}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{1f64af6c-c2c1-465a-9037-428e9b5621c9}">
+		<property name="minimum">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>8</value>
+		</property>
+		<property name="initialValue">
+			<value>8</value>
+		</property>
+	</object>
+</objects>
