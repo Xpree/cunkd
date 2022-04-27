@@ -70,6 +70,7 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
         }
     }
 
+    [ServerCallback]
     void FixedUpdate()
     {
         if (_endTime.HasTicked && HasTicked == false)
