@@ -1242,7 +1242,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2104
+  m_VersionIndex: 2107
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1444,9 +1444,10 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   isPassive: 0
-  Charges: 50
-  Cooldown: 0.1
-  force: 1
+  Charges: 100
+  Cooldown: 0.05
+  maxForce: 2
+  acceleration: 0.05
 --- !u!1 &4710763002055484442
 GameObject:
   m_ObjectHideFlags: 0
@@ -2179,7 +2180,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 905
+  m_VersionIndex: 908
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2771,7 +2772,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 942
+  m_VersionIndex: 945
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []

@@ -9,8 +9,9 @@ public class JetPack : NetworkBehaviour, IGadget, IEquipable
 {
     [SerializeField] bool isPassive;
     [SerializeField] int Charges;
-    [SerializeField] float Cooldown = 1.0f;
-    [SerializeField] float force = 1.0f;
+    [SerializeField] float Cooldown = 0.05f;
+    [SerializeField] float maxForce = 1.0f;
+    [SerializeField] float acceleration = 0.01f;
 
     NetworkCooldown cooldownTimer;
 
@@ -19,6 +20,7 @@ public class JetPack : NetworkBehaviour, IGadget, IEquipable
     int IGadget.ChargesLeft => cooldownTimer.Charges;
 
 
+    GameInputs gameInputs;
     private void Awake()
     {
         cooldownTimer = GetComponent<NetworkCooldown>();
@@ -31,20 +33,21 @@ public class JetPack : NetworkBehaviour, IGadget, IEquipable
         cooldownTimer.coolDownDuration = Cooldown;
     }
 
-
     [TargetRpc]
     void TargetTell(string message)
     {
         print(message);
     }
 
+    float force = 0;
+
     [Command]
-    void CmdUse()
+    void fly()
     {
         if (cooldownTimer.ServerUse(this.Cooldown))
         {
+            force = Mathf.Min(force += acceleration, maxForce);
             RpcFlyLikeSatan();
-            //TargetTell("used one fuel cell");
             if (cooldownTimer.Charges == 0)
             {
                 TargetTell("out of fuel");
@@ -54,27 +57,34 @@ public class JetPack : NetworkBehaviour, IGadget, IEquipable
         }
     }
 
-    [ClientRpc]
+    bool timeToFly = false;
+    private void FixedUpdate()
+    {
+        if (timeToFly)
+        {
+            fly();
+        }
+    }
+
+    [TargetRpc]
     void RpcFlyLikeSatan()
     {
+        //print("Look mom I'm flying!");
+        force = Mathf.Min(force += acceleration, maxForce);
         PlayerMovement pm = GetComponentInParent<PlayerMovement>();
         pm.ApplyJumpForce(force);
     }
 
     void IGadget.PrimaryUse(bool isPressed)
     {
-        //if (cooldownTimer.Use(this.Cooldown))
-        //{
-        //    CmdUse();
-        //}
+        force = 0;
+        timeToFly = isPressed;
     }
 
     void IGadget.SecondaryUse(bool isPressed)
     {
-        if (cooldownTimer.Use(this.Cooldown))
-        {
-            CmdUse();
-        }
+        force = 0;
+        timeToFly = isPressed;
     }
 
     float? IGadget.ChargeProgress => null;
