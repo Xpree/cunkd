@@ -250,6 +250,8 @@ MonoBehaviour:
   Effects:
   - Name: Ready
     VFX: {fileID: 4892419075162572662}
+  - Name: Fire
+    VFX: {fileID: 8265570915776807587}
 --- !u!95 &5309527546514703037
 Animator:
   serializedVersion: 4

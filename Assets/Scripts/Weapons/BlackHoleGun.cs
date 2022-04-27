@@ -60,8 +60,9 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
 
                 var aimTransform = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
                 var target = Util.RaycastPointOrMaxDistance(aimTransform, MaxRange, TargetMask);
-                ReadyVFX.GetComponent<VisualEffect>().Stop();
-                ShootVFX.GetComponent<VisualEffect>().Play();
+                //ReadyVFX.GetComponent<VisualEffect>().Stop();
+                //ShootVFX.GetComponent<VisualEffect>().Play();
+                animator.SetTrigger("Fire");
                 _endTime = NetworkTimer.FromNow(Cooldown);
                 HasTicked = false;
                 CmdSpawnBlackHole(target);

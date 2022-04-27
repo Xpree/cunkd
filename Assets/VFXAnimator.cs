@@ -31,4 +31,21 @@ public class VFXAnimator : MonoBehaviour
         }
 
     }
+
+    public void StopEffect(string name)
+    {
+        if (Effects == null || Effects.Length == 0)
+        {
+            return;
+        }
+
+        foreach (var effect in Effects)
+        {
+            if (effect.Name == name)
+            {
+                effect.VFX.Stop();
+            }
+        }
+
+    }
 }
