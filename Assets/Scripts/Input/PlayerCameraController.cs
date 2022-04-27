@@ -18,8 +18,7 @@ public class PlayerCameraController : MonoBehaviour
     void Awake()
     {
         playerCamera.enabled = false;
-        cameraTransform = playerCamera.transform;
-        playerCamera.GetComponent<AudioListener>().enabled = false;
+        cameraTransform = playerCamera.transform;        
     }
 
     public void OnCameraInput(InputAction.CallbackContext ctx)
@@ -43,10 +42,7 @@ public class PlayerCameraController : MonoBehaviour
     {
         if (camera == null)
             return;
-        camera.enabled = enable;
-        var audioListener = camera.GetComponent<AudioListener>();
-        if(audioListener != null)
-            audioListener.enabled = enable;
+        camera.enabled = enable;        
     }
 
 

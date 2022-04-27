@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{10d0ae74-7eae-4ddf-aac6-eddb0e8482fc}">
+		<property name="name">
+			<value>Grab Object</value>
+		</property>
+		<relationship name="folder">
+			<destination>{f3175451-52e8-4193-903b-a4fc7e20a798}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{cf1e42f1-5b6e-4669-827b-1fd7af57a296}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{cf1e42f1-5b6e-4669-827b-1fd7af57a296}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

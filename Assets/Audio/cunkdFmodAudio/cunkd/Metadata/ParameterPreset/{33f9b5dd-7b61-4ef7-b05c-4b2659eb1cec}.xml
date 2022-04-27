@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{33f9b5dd-7b61-4ef7-b05c-4b2659eb1cec}">
+		<property name="name">
+			<value>Shot away object</value>
+		</property>
+		<relationship name="folder">
+			<destination>{f3175451-52e8-4193-903b-a4fc7e20a798}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{6894a82c-af96-4a8b-a987-4a26fea46b09}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{6894a82c-af96-4a8b-a987-4a26fea46b09}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

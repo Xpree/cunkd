@@ -208,6 +208,20 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         }
     }
 
+    public static void PlayOneShotWithParameters(string fmodEvent, Vector3 position, params (string name, float value)[] parameters)
+    {
+        FMOD.Studio.EventInstance instance = FMODUnity.RuntimeManager.CreateInstance(fmodEvent);
+
+        foreach (var (name, value) in parameters)
+        {
+            instance.setParameterByName(name, value);
+        }
+
+        instance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(position));
+        instance.start();
+        instance.release();
+    }
+
     void IWeapon.SecondaryAttack(bool isPressed)
     {
         StopPulling(false);
@@ -257,7 +271,11 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         }
         else if (_charging)
         {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/PlaceholderAudio/Weapons/FPS_Microgame/Launcher/LauncherRelease");
+            //------------
+            
+            PlayOneShotWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.transform.position, ("Shot away object", 1f));
+            //------------
+            //FMODUnity.RuntimeManager.PlayOneShot("event:/PlaceholderAudio/Weapons/FPS_Microgame/Launcher/LauncherRelease");
 
             var rb = _localAttract?.GetComponent<Rigidbody>();
             if (rb != null && rb.isKinematic)
