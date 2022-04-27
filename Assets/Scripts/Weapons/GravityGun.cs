@@ -200,9 +200,11 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             if(push && _charging)
             {
                 chargeProgress = Mathf.Clamp01((float)_chargeBegan.Elapsed);
+                pushVFX.GetComponent<VisualEffect>().Play();
             }
             CmdStopAttract(_localAttract, _localAttract.transform.position, AnchorPoint.transform.forward, chargeProgress);
             _localAttract = null;
+            attractVFX.GetComponent<VisualEffect>().Stop();
         }
     }
 
