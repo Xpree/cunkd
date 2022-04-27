@@ -10,7 +10,7 @@ public class NetworkCooldown : NetworkBehaviour
     int serverCharges = -1;
     int localCharges = -1;
 
-    public bool HasInfiniteCharges => serverCharges < 0;
+    public bool HasInfiniteCharges => localCharges < 0;
     public int Charges => System.Math.Max(localCharges, 0);
     public bool HasCooldown => localTimer.Elapsed < 0;
 
@@ -18,12 +18,27 @@ public class NetworkCooldown : NetworkBehaviour
     public void SetCharges(int count)
     {
         serverCharges = count;
+        localCharges = count;
     }
 
     public override void OnStartServer()
     {
         base.OnStartServer();
         serverCooldownTimer = NetworkTimer.Now;
+        localTimer = serverCooldownTimer;
+    }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        // Bad solution that will create unnecessary spam but will help late join
+        CmdForceUpdateClients();
+    }
+
+    [Command(requiresAuthority = false)]
+    void CmdForceUpdateClients()
+    {
+        RpcUpdateClients(serverCooldownTimer, serverCharges);
     }
 
     [ClientRpc]
@@ -33,14 +48,28 @@ public class NetworkCooldown : NetworkBehaviour
         localCharges = charges;
     }
 
+    bool DispenseServerCharge()
+    {
+        if (serverCharges == 0)
+            return false;
+        if (serverCharges < 0)
+        {
+            serverCharges = serverCharges - 1;
+            localCharges = serverCharges;
+        }
+        return true;
+
+    }
+
     // Sets cooldown and uses a charge if any are set
     // Returns false if on cooldown or no charges are left
     [Server]
     public bool ServerUse(double cooldown)
     {
-        if (serverCooldownTimer.Elapsed < 0 || ServerUseCharge() == false)
+        if (serverCooldownTimer.Elapsed < 0 || DispenseServerCharge() == false)
             return false;
         serverCooldownTimer = NetworkTimer.FromNow(cooldown);
+        localTimer = serverCooldownTimer;
         RpcUpdateClients(serverCooldownTimer, serverCharges);
         return true;
     }
@@ -48,14 +77,15 @@ public class NetworkCooldown : NetworkBehaviour
     [Server]
     public bool ServerUseCharge()
     {
-        if (serverCharges == 0)
-            return false;
-        if (HasInfiniteCharges == false)
+        if (DispenseServerCharge())
         {
-            serverCharges = serverCharges - 1;
             RpcUpdateClients(serverCooldownTimer, serverCharges);
+            return true;
         }
-        return true;
+        else
+        {
+            return false;
+        }
     }
 
 
