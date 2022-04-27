@@ -46,6 +46,7 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
         if (_cooldownTimer.ServerUse(this.Cooldown))
         {
             animator.SetTrigger("Fire");
+            HasTicked = false;
             var go = Instantiate(blackHole, target, Quaternion.identity);
             NetworkServer.Spawn(go);
         }
@@ -64,7 +65,6 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
                 //ReadyVFX.GetComponent<VisualEffect>().Stop();
                 //ShootVFX.GetComponent<VisualEffect>().Play();
                 _endTime = NetworkTimer.FromNow(Cooldown);
-                HasTicked = false;
                 CmdSpawnBlackHole(target);
             }
         }
