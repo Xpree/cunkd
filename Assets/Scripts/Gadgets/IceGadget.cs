@@ -23,6 +23,12 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
         _cooldownTimer = GetComponent<NetworkCooldown>();
     }
 
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+        _cooldownTimer.SetCharges(Charges);
+    }
+
     [Command]
     void SpawnIceGadget(Vector3 target)
     {

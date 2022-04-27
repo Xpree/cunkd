@@ -18,6 +18,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     void Awake()
     {
         _cooldownTimer = GetComponent<NetworkCooldown>();
+        _cooldownTimer.coolDownDuration = cooldown;
     }
 
     private void Start()

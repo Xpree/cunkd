@@ -26,6 +26,7 @@ public class GadgetExampleBanana : NetworkBehaviour, IGadget, IEquipable
     {
         base.OnStartServer();
         cooldownTimer.SetCharges(Charges);
+        cooldownTimer.coolDownDuration = Cooldown;
     }
 
 

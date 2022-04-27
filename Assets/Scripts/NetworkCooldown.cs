@@ -5,7 +5,9 @@ using Mirror;
 public class NetworkCooldown : NetworkBehaviour
 {
     NetworkTimer serverCooldownTimer;
-    NetworkTimer localTimer;
+    public NetworkTimer localTimer;
+
+    public double coolDownDuration;
 
     int serverCharges = -1;
     int localCharges = -1;

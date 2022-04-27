@@ -19,6 +19,7 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
     void Awake()
     {
         _cooldownTimer = GetComponent<NetworkCooldown>();
+        _cooldownTimer.coolDownDuration = Cooldown;
     }
 
     private void Start()
