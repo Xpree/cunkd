@@ -63,10 +63,10 @@ public class JetPack : NetworkBehaviour, IGadget, IEquipable
 
     void IGadget.PrimaryUse(bool isPressed)
     {
-        if (cooldownTimer.Use(this.Cooldown))
-        {
-            CmdUse();
-        }
+        //if (cooldownTimer.Use(this.Cooldown))
+        //{
+        //    CmdUse();
+        //}
     }
 
     void IGadget.SecondaryUse(bool isPressed)
