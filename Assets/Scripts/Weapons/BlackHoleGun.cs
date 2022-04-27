@@ -64,7 +64,7 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
                 var target = Util.RaycastPointOrMaxDistance(aimTransform, MaxRange, TargetMask);
                 //ReadyVFX.GetComponent<VisualEffect>().Stop();
                 //ShootVFX.GetComponent<VisualEffect>().Play();
-                _endTime = NetworkTimer.FromNow(Cooldown);
+                //_endTime = NetworkTimer.FromNow(Cooldown);
                 CmdSpawnBlackHole(target);
             }
         }
@@ -73,7 +73,7 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
     [ServerCallback]
     void FixedUpdate()
     {
-        if (_endTime.HasTicked && HasTicked == false)
+        if (_cooldownTimer.HasCooldown == false && HasTicked == false)
         {
             animator.SetTrigger("Ready");
             HasTicked = true;
