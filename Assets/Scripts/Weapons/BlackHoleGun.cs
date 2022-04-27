@@ -8,6 +8,8 @@ using UnityEngine.VFX;
 [RequireComponent(typeof(NetworkCooldown))]
 public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
 {
+    [SerializeField] Animator animator;
+
     [SerializeField] GameObject ShootVFX;
     [SerializeField] GameObject ReadyVFX;
 
@@ -20,6 +22,8 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
 
     NetworkCooldown _cooldownTimer;
     [SyncVar] NetworkTimer _endTime;
+
+    bool HasTicked;
 
     void Awake()
     {
@@ -59,6 +63,7 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
                 ReadyVFX.GetComponent<VisualEffect>().Stop();
                 ShootVFX.GetComponent<VisualEffect>().Play();
                 _endTime = NetworkTimer.FromNow(Cooldown);
+                HasTicked = false;
                 CmdSpawnBlackHole(target);
             }
         }
@@ -66,9 +71,11 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
 
     void FixedUpdate()
     {
-        if (_endTime.HasTicked)
+        if (_endTime.HasTicked && HasTicked == false)
         {
-            ReadyVFX.GetComponent<VisualEffect>().Play();
+            animator.SetTrigger("Ready");
+            HasTicked = true;
+            //ReadyVFX.GetComponent<VisualEffect>().Play();
         }
     }
 
