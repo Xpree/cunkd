@@ -194,7 +194,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  animator: {fileID: 5309527546514703037}
+  animator: {fileID: 7946163913266512066}
   ShootVFX: {fileID: 2758604397798819583}
   ReadyVFX: {fileID: 6085541189861766774}
   _settings: {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}

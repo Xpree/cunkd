@@ -8,7 +8,7 @@ using UnityEngine.VFX;
 [RequireComponent(typeof(NetworkCooldown))]
 public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
 {
-    [SerializeField] Animator animator;
+    [SerializeField] NetworkAnimator animator;
 
     [SerializeField] GameObject ShootVFX;
     [SerializeField] GameObject ReadyVFX;
