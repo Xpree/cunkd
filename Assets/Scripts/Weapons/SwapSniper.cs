@@ -60,7 +60,6 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
         Vector3 Swapper = owner.transform.position;
         Vector3 Swappee = target.transform.position;
         
-        teleportVFX.GetComponent<VisualEffect>().Play();
         Util.Teleport(target.gameObject, Swapper);
         Util.Teleport(owner.gameObject, Swappee);
 
@@ -73,6 +72,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
             if(_cooldownTimer.Use(this.cooldown))
             {
                 CmdPerformSwap(DidHitObject());
+                teleportVFX.GetComponent<VisualEffect>().Play();
             }
         }
     }
