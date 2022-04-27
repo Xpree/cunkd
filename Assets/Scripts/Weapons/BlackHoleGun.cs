@@ -41,8 +41,6 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
     {
         if (_cooldownTimer.ServerUse(this.Cooldown))
         {
-            ShootVFX.GetComponent<VisualEffect>().Play();
-            _endTime = NetworkTimer.FromNow(Cooldown);
             var go = Instantiate(blackHole, target, Quaternion.identity);
             NetworkServer.Spawn(go);
         }
@@ -59,6 +57,8 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
                 var aimTransform = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
                 var target = Util.RaycastPointOrMaxDistance(aimTransform, MaxRange, TargetMask);
                 ReadyVFX.GetComponent<VisualEffect>().Stop();
+                ShootVFX.GetComponent<VisualEffect>().Play();
+                _endTime = NetworkTimer.FromNow(Cooldown);
                 CmdSpawnBlackHole(target);
             }
         }
