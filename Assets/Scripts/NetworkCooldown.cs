@@ -54,7 +54,7 @@ public class NetworkCooldown : NetworkBehaviour
     {
         if (serverCharges == 0)
             return false;
-        if (serverCharges < 0)
+        if (serverCharges > 0)
         {
             serverCharges = serverCharges - 1;
             localCharges = serverCharges;
