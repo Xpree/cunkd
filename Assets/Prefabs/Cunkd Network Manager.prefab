@@ -1,5 +1,98 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1863993566
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1863993569}
+  - component: {fileID: 1863993568}
+  - component: {fileID: 1863993567}
+  m_Layer: 0
+  m_Name: MusicPlayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1863993569
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863993566}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -41.499966, y: -17.358704, z: -17.602142}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8980317232237182241}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1863993568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863993566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -806784807
+      Data2: 1308458740
+      Data3: 58343863
+      Data4: -1886301696
+    Path: event:/PlaceholderAudio/Ambience/FPS_Microgame/WindAmbience
+  Event: 
+  PlayEvent: 1
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &1863993567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863993566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1731170888
+      Data2: 1109352051
+      Data3: -1541816684
+      Data4: 1458721361
+    Path: event:/SoundStudents/Music/Exempel_2
+  Event: 
+  PlayEvent: 1
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &3952021894089368970
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,6 +262,7 @@ Transform:
   - {fileID: 8980317232431589012}
   - {fileID: 8980317231648751499}
   - {fileID: 8952787938669767169}
+  - {fileID: 1863993569}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -199,13 +293,11 @@ MonoBehaviour:
   playerSpawnMethod: 0
   spawnPrefabs:
   - {fileID: 1588750985201798, guid: 8d867d2f745da0e4d985a853272ec66b, type: 3}
-  - {fileID: 34706451374023933, guid: 264b7a91e0926224a99ee2e7b265d91b, type: 3}
   - {fileID: 6929195253134160416, guid: 7198592e9b40e1945a708ab3990b3578, type: 3}
   - {fileID: 8500828314429844309, guid: c9ef4705ae961834f8119ebffbe96ada, type: 3}
   - {fileID: 2039958916600553822, guid: 6826e418ebdeade4eb37687bcf5e1dc1, type: 3}
   - {fileID: 5769685091094781207, guid: 514a8fec496f9414cbfbe9b748c49f52, type: 3}
   - {fileID: 1139254171913846, guid: 52f1c9ea06cfd154cb68ff9d1b66fc13, type: 3}
-  - {fileID: 4102480405156711657, guid: 0bfd74d1cc354af41b278b18fa065f81, type: 3}
   - {fileID: 2547505589391764945, guid: 000bbbd4b9996da4ba774b6e8ac46268, type: 3}
   - {fileID: 1465914663504421285, guid: afe6940a4ae7290428a4104cfdab6ab4, type: 3}
   - {fileID: 5769685091094781207, guid: 60c9ce2809146d445a2e92a4641d2fe8, type: 3}
