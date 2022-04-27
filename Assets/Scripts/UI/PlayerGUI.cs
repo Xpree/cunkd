@@ -85,6 +85,14 @@ public class PlayerGUI : MonoBehaviour
         }
     }
 
+    public void assignCamera(Camera camera)
+    {
+        print("assigning camera");
+        Canvas canvas = GetComponent<Canvas>();
+        canvas.worldCamera = camera;
+        canvas.planeDistance = 0.4f;
+    }
+
     void updateCooldown(RawImage cooldownIcon, GameObject go)
     {
         NetworkCooldown cooldown = null;

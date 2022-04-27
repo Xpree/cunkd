@@ -387,11 +387,17 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
             UseActiveEquipment(true, wasPressed);
         }
 
-        if (gameInputs.SecondaryAttack.WasPressedThisFrame() || gameInputs.SecondaryAttack.WasReleasedThisFrame())
+        if (gameInputs.SecondaryAttack.IsPressed())
         {
-            var wasPressed = gameInputs.SecondaryAttack.WasPressedThisFrame();
+            var wasPressed = gameInputs.SecondaryAttack.IsPressed();
             UseActiveEquipment(false, wasPressed);
         }
+
+        //if (gameInputs.SecondaryAttack.WasPressedThisFrame() || gameInputs.SecondaryAttack.WasReleasedThisFrame())
+        //{
+        //    var wasPressed = gameInputs.SecondaryAttack.WasPressedThisFrame();
+        //    UseActiveEquipment(false, wasPressed);
+        //}
 
         if (gameInputs.Interact.triggered)
         {

@@ -148,7 +148,7 @@ public class PlayerMovement : NetworkBehaviour
 
 
 
-    void ApplyJumpForce(float height)
+    public void ApplyJumpForce(float height)
     {
         Util.SetJumpForce(_rigidBody, height);
     }
