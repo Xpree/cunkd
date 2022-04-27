@@ -10,9 +10,6 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
 {
     [SerializeField] NetworkAnimator animator;
 
-    [SerializeField] GameObject ShootVFX;
-    [SerializeField] GameObject ReadyVFX;
-
     [SerializeField] GameSettings _settings;
     float Cooldown => _settings.BlackHoleGun.Cooldown;
     float MaxRange => _settings.BlackHoleGun.Range;
@@ -21,7 +18,6 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
     [SerializeField] LayerMask TargetMask = ~0;
 
     NetworkCooldown _cooldownTimer;
-    [SyncVar] NetworkTimer _endTime;
 
     bool HasTicked;
 
@@ -33,7 +29,6 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
 
     private void Start()
     {
-        ReadyVFX.GetComponent<VisualEffect>().Play();
         if (_settings == null)
         {
             Debug.LogError("Missing GameSettings reference on " + name);
@@ -62,9 +57,6 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
 
                 var aimTransform = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
                 var target = Util.RaycastPointOrMaxDistance(aimTransform, MaxRange, TargetMask);
-                //ReadyVFX.GetComponent<VisualEffect>().Stop();
-                //ShootVFX.GetComponent<VisualEffect>().Play();
-                //_endTime = NetworkTimer.FromNow(Cooldown);
                 CmdSpawnBlackHole(target);
             }
         }
@@ -77,7 +69,6 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
         {
             animator.SetTrigger("Ready");
             HasTicked = true;
-            //ReadyVFX.GetComponent<VisualEffect>().Play();
         }
     }
 
