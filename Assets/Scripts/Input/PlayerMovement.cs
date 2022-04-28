@@ -6,7 +6,7 @@ using Mirror;
 public class PlayerMovement : NetworkBehaviour
 {
     [SerializeField] GameSettings _settings;
-
+    [SerializeField] NetworkAnimator animator;
     Rigidbody _rigidBody;
 
     [Header("Diagnostics")]
@@ -24,7 +24,7 @@ public class PlayerMovement : NetworkBehaviour
 
     public Vector2 _movementInput = Vector2.zero;
 
-    
+    public bool landed;
 
     private void Start()
     {
@@ -182,6 +182,15 @@ public class PlayerMovement : NetworkBehaviour
             _airJumped = false;
             _lastGrounded = NetworkTime.time;
         }
+        if (_isGrounded && landed)
+        {
+            animator.SetTrigger("land");
+            landed = false;
+        }
+        if(!_isGrounded)
+        {
+            landed = true;
+        }
     }
 
     private void FixedUpdate()
@@ -189,7 +198,6 @@ public class PlayerMovement : NetworkBehaviour
         CheckGrounded();
         ApplyGravity();
         PerformJump();
-
         if (HasGroundFriction)
         {
             ApplyFriction();
