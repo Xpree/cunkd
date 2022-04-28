@@ -270,13 +270,9 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             _chargeBegan = NetworkTimer.Now;
         }
         else if (_charging)
-        {
-            //------------
+        {                        
+            PlayOneShotWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.transform.position, ("Grab Object", 1f), ("Object recived start loading", 1f), ("Shot away object", 1f));
             
-            PlayOneShotWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.transform.position, ("Shot away object", 1f));
-            //------------
-            //FMODUnity.RuntimeManager.PlayOneShot("event:/PlaceholderAudio/Weapons/FPS_Microgame/Launcher/LauncherRelease");
-
             var rb = _localAttract?.GetComponent<Rigidbody>();
             if (rb != null && rb.isKinematic)
             {
