@@ -6,9 +6,7 @@ using UnityEngine.VFX;
 [RequireComponent(typeof(NetworkItem))]
 public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
 {
-    [SerializeField] GameObject attractVFX;
-    [SerializeField] GameObject holdVFX;
-    [SerializeField] GameObject pushVFX;
+    [SerializeField] NetworkAnimator animator;
 
 
     [SerializeField] GameSettings _settings;
@@ -44,9 +42,6 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         {
             Debug.LogError("Missing GameSettings reference on " + name);
         }
-        attractVFX.GetComponent<VisualEffect>().Stop();
-        holdVFX.GetComponent<VisualEffect>().enabled = false;
-        pushVFX.GetComponent<VisualEffect>().Stop();
     }
 
     public Vector3 GetAnchorPosition(float offset)
@@ -77,8 +72,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
 
         grabTargetCollider.enabled = false;
         body.isKinematic = true;
-        holdVFX.GetComponent<VisualEffect>().enabled = true;
-        attractVFX.GetComponent<VisualEffect>().Stop();
+        //animator.SetTrigger("Hold");
         body.velocity = Vector3.zero;
         body.angularVelocity = Vector3.zero;
         while (_pulling)
@@ -97,8 +91,8 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             Util.SetClientPhysicsAuthority(body, true);
             _localAttract = body;
             StartCoroutine(PullObject(body.GetComponent<Rigidbody>()));
-            attractVFX.GetComponent<VisualEffect>().Play();
-            
+            animator.SetTrigger("Attract");
+
         }
         else
         {
@@ -150,7 +144,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
     [Command]
     void CmdStopAttract(NetworkIdentity identity, Vector3 position, Vector3 direction, float chargeProgress)
     {
-        attractVFX.GetComponent<VisualEffect>().Stop();
+        //animator.SetTrigger("StopAttract");
         if (identity == null)
             return;
 
@@ -171,7 +165,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             {
                 float pushForce = Mathf.Lerp(MinPushForce, MaxPushForce, Mathf.Clamp01(chargeProgress));
                 rb.AddForce(direction * pushForce, this.PushForceMode);
-                pushVFX.GetComponent<VisualEffect>().Play();
+                animator.SetTrigger("Fire");
             }
         }
 
@@ -187,7 +181,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             var rb = _localAttract.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                holdVFX.GetComponent<VisualEffect>().enabled = false;
+                //animator.SetTrigger("StopHold");
                 rb.isKinematic = false;
             }
             var collider = _localAttract.GetComponent<Collider>();
@@ -200,11 +194,11 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             if(push && _charging)
             {
                 chargeProgress = Mathf.Clamp01((float)_chargeBegan.Elapsed);
-                pushVFX.GetComponent<VisualEffect>().Play();
+                animator.SetTrigger("Fire");
             }
             CmdStopAttract(_localAttract, _localAttract.transform.position, AnchorPoint.transform.forward, chargeProgress);
             _localAttract = null;
-            attractVFX.GetComponent<VisualEffect>().Stop();
+            animator.SetTrigger("StopAttract");
         }
     }
 
