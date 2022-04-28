@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using UnityEngine.VFX;
 
 [RequireComponent(typeof(NetworkItem))]
 [RequireComponent(typeof(NetworkCooldown))]
 public class JetPack : NetworkBehaviour, IGadget, IEquipable
 {
+    [SerializeField] NetworkAnimator animator;
+
     [SerializeField] bool isPassive;
     [SerializeField] int Charges;
     [SerializeField] float Cooldown = 0.05f;
@@ -48,6 +51,7 @@ public class JetPack : NetworkBehaviour, IGadget, IEquipable
         {
             force = Mathf.Min(force += acceleration, maxForce);
             RpcFlyLikeSatan();
+            animator.SetTrigger("Fly");
             if (cooldownTimer.Charges == 0)
             {
                 TargetTell("out of fuel");
@@ -63,6 +67,10 @@ public class JetPack : NetworkBehaviour, IGadget, IEquipable
         if (timeToFly)
         {
             fly();
+        }
+        else
+        {
+            animator.SetTrigger("StopFly");
         }
     }
 
