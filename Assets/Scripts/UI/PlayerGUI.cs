@@ -137,11 +137,21 @@ public class PlayerGUI : MonoBehaviour
 
         updateCharges(chargesSlot3, inventory.syncedGadget);
 
-        if (inventory.syncedEquipped == ItemSlot.PrimaryWeapon)
+        selectedIcon.enabled = false;
+        if (inventory.syncedEquipped == ItemSlot.PrimaryWeapon && inventory.syncedFirstWeapon)
+        {
             selectedIcon.rectTransform.position = primaryWeaponIcon.rectTransform.position;
-        else if (inventory.syncedEquipped == ItemSlot.SecondaryWeapon)
+            selectedIcon.enabled = true;
+        }
+        else if (inventory.syncedEquipped == ItemSlot.SecondaryWeapon && inventory.syncedSecondWeapon)
+        {
             selectedIcon.rectTransform.position = secondaryWeaponIcon.rectTransform.position;
-        else if (inventory.syncedEquipped == ItemSlot.Gadget)
+            selectedIcon.enabled = true;
+        }
+        else if (inventory.syncedEquipped == ItemSlot.Gadget && inventory.syncedGadget)
+        {
             selectedIcon.rectTransform.position = gadgetIcon.rectTransform.position;
+            selectedIcon.enabled = true;
+        }
     }
 }
