@@ -1,11 +1,42 @@
 using Mirror;
+using UnityEngine.Events;
+using Unity.VisualScripting;
+using UnityEngine;
+using System;
 
 // Network synchronized cooldown and charges with local prediction
 // ment to be used by both client and server.
 public class NetworkCooldown : NetworkBehaviour
 {
     NetworkTimer serverCooldownTimer;
-    public NetworkTimer localTimer;
+    NetworkTimer _localTimer;
+
+    bool _cooldownStarted = false;
+    void SetCooldown(bool value)
+    {
+        if (_cooldownStarted == value)
+            return;
+        _cooldownStarted = value;
+
+        if(_cooldownStarted)
+        {
+            EventBus.Trigger(nameof(EventNetworkCooldownBegin), this.gameObject);
+        }
+        else
+        {
+            EventBus.Trigger(nameof(EventNetworkCooldownEnd), this.gameObject);
+        }
+    }
+
+    public NetworkTimer localTimer 
+    { 
+        get { return _localTimer; }
+        set
+        {
+            _localTimer = value;
+            SetCooldown(_localTimer.Elapsed < 0);
+        }
+    }
 
     public double coolDownDuration;
 
@@ -15,6 +46,11 @@ public class NetworkCooldown : NetworkBehaviour
     public bool HasInfiniteCharges => localCharges < 0;
     public int Charges => System.Math.Max(localCharges, 0);
     public bool HasCooldown => localTimer.Elapsed < 0;
+
+    private void FixedUpdate()
+    {
+        SetCooldown(HasCooldown);
+    }
 
     [Server]
     public void SetCharges(int count)
@@ -63,6 +99,15 @@ public class NetworkCooldown : NetworkBehaviour
 
     }
 
+
+    // Sets cooldown and uses a charge if any are set
+    // Returns false if on cooldown or no charges are left
+    [Server]
+    public bool ServerUse()
+    {
+        return ServerUse(coolDownDuration);
+    }
+
     // Sets cooldown and uses a charge if any are set
     // Returns false if on cooldown or no charges are left
     [Server]
@@ -90,6 +135,11 @@ public class NetworkCooldown : NetworkBehaviour
         }
     }
 
+    [Client]
+    public bool Use()
+    {
+        return this.Use(this.coolDownDuration);
+    }
 
     // Sets cooldown and uses a charge if any are set
     // Returns false if on cooldown or no charges are left
@@ -102,6 +152,7 @@ public class NetworkCooldown : NetworkBehaviour
         return true;  
     }
 
+
     [Client]
     public bool UseCharge()
     {
@@ -113,4 +164,23 @@ public class NetworkCooldown : NetworkBehaviour
         }
         return true;
     }
+}
+
+[UnitTitle("On Network Cooldown Begin")]
+[UnitCategory("Events\\Network Cooldown")]
+public class EventNetworkCooldownBegin : GameObjectEventUnit<EmptyEventArgs>
+{
+    public override Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventNetworkCooldownBegin);
+}
+
+
+[UnitTitle("On Network Cooldown End")]
+[UnitCategory("Events\\Network Cooldown")]
+public class EventNetworkCooldownEnd : GameObjectEventUnit<EmptyEventArgs>
+{
+    public override Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventNetworkCooldownBegin);
 }

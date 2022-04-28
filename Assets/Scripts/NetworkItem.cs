@@ -1,5 +1,6 @@
 using UnityEngine;
 using Mirror;
+using Unity.VisualScripting;
 
 /// <summary>
 /// Helper component to give client authority over an object when picked up
@@ -16,7 +17,10 @@ public class NetworkItem : NetworkBehaviour
     {
         owner = actor;
         if (owner != null)
+        {
             owner.GetComponent<INetworkItemOwner>()?.OnPickedUp(this);
+        }
+            
     }
 
     [ClientRpc]
@@ -94,4 +98,102 @@ public interface INetworkItemOwner
     /// <param name="item"></param>
     /// <returns>Return true if item can be picked up</returns>
     bool CanPickup(NetworkItem item);
+}
+
+
+
+
+[UnitTitle("On Primary Attack Pressed")]
+[UnitCategory("Events\\Network Item")]
+public class EventPrimaryAttackPressed : GameObjectEventUnit<EmptyEventArgs>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventPrimaryAttackPressed);
+}
+
+
+[UnitTitle("On Primary Attack Released")]
+[UnitCategory("Events\\Network Item")]
+public class EventPrimaryAttackReleased : GameObjectEventUnit<EmptyEventArgs>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventPrimaryAttackReleased);
+}
+
+
+[UnitTitle("On Secondary Attack Pressed")]
+[UnitCategory("Events\\Network Item")]
+public class EventSecondaryAttackPressed : GameObjectEventUnit<EmptyEventArgs>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventSecondaryAttackPressed);
+}
+
+
+[UnitTitle("On Secondary Attack Release")]
+[UnitCategory("Events\\Network Item")]
+public class EventSecondaryAttackReleased : GameObjectEventUnit<EmptyEventArgs>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventSecondaryAttackReleased);
+}
+
+
+[UnitTitle("On Item Holstered")]
+[UnitCategory("Events\\Network Item")]
+public class EventItemHolstered : GameObjectEventUnit<EmptyEventArgs>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventItemHolstered);
+}
+
+[UnitTitle("On Item Unholstered")]
+[UnitCategory("Events\\Network Item")]
+public class EventItemUnholstered : GameObjectEventUnit<EmptyEventArgs>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventItemUnholstered);
+}
+
+
+[UnitTitle("On Item Picked Up")]
+[UnitCategory("Events\\Network Item")]
+public class EventItemPickedUp : GameObjectEventUnit<bool>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventItemPickedUp);
+
+    [DoNotSerialize]// No need to serialize ports.
+    public ValueOutput startHolstered { get; private set; }// The event output data to return when the event is triggered.
+
+
+    protected override void Definition()
+    {
+        base.Definition();
+        // Setting the value on our port.
+        startHolstered = ValueOutput<bool>(nameof(startHolstered));
+    }
+
+    // Setting the value on our port.
+    protected override void AssignArguments(Flow flow, bool data)
+    {
+        flow.SetValue(startHolstered, data);
+    }
+}
+
+
+[UnitTitle("On Item Dropped")]
+[UnitCategory("Events\\Network Item")]
+public class EventItemDropped : GameObjectEventUnit<EmptyEventArgs>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventItemDropped);
 }

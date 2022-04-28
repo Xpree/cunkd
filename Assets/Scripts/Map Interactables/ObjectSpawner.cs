@@ -56,6 +56,7 @@ public class ObjectSpawner : NetworkBehaviour, IInteractable
 
     private void FixedUpdate()
     {
+        /*
         if (spawnedItem)
         {
             if (objectType == ObjectType.Gadget || objectType == ObjectType.Weapon)
@@ -63,7 +64,8 @@ public class ObjectSpawner : NetworkBehaviour, IInteractable
                 spawnAnchor.transform.Rotate(0.5f, 1, 0.5f);
             }
         }
-        else if (NetworkServer.active && nextSpawnTime.HasTicked)
+        else */
+        if (NetworkServer.active && nextSpawnTime.HasTicked)
         {
             SpawnObject();
         }

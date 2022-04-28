@@ -7,20 +7,15 @@ using UnityEngine.VFX;
 [RequireComponent(typeof(NetworkItem))]
 [RequireComponent(typeof(NetworkCooldown))]
 public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
-{
-    [SerializeField] NetworkAnimator animator;
-
+{    
     [SerializeField] GameSettings _settings;
-    float Cooldown => _settings.BlackHoleGun.Cooldown;
-    float MaxRange => _settings.BlackHoleGun.Range;
+    public float Cooldown => _settings.BlackHoleGun.Cooldown;
+    public float MaxRange => _settings.BlackHoleGun.Range;
 
     [SerializeField] GameObject blackHole;
-    [SerializeField] LayerMask TargetMask = ~0;
+    [SerializeField] public LayerMask TargetMask = ~0;
 
     NetworkCooldown _cooldownTimer;
-
-    bool HasTicked;
-
     void Awake()
     {
         _cooldownTimer = GetComponent<NetworkCooldown>();
@@ -36,12 +31,10 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
     }
 
     [Command]
-    void CmdSpawnBlackHole(Vector3 target)
+    public void CmdSpawnBlackHole(Vector3 target)
     {
         if (_cooldownTimer.ServerUse(this.Cooldown))
         {
-            animator.SetTrigger("Fire");
-            HasTicked = false;
             var go = Instantiate(blackHole, target, Quaternion.identity);
             NetworkServer.Spawn(go);
         }
@@ -49,32 +42,22 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
 
     void IWeapon.PrimaryAttack(bool isPressed)
     {
+        /*
         if(isPressed)
         {
             if(_cooldownTimer.Use(this.Cooldown))
             {
-                //FMODUnity.RuntimeManager.PlayOneShot("event:/SoundStudents/SFX/Weapons/BlackHoleGun");
-
                 var aimTransform = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
                 var target = Util.RaycastPointOrMaxDistance(aimTransform, MaxRange, TargetMask);
                 CmdSpawnBlackHole(target);
             }
         }
-    }
-
-    [ServerCallback]
-    void FixedUpdate()
-    {
-        if (_cooldownTimer.HasCooldown == false && HasTicked == false)
-        {
-            animator.SetTrigger("Ready");
-            HasTicked = true;
-        }
+        */
     }
 
     void IWeapon.SecondaryAttack(bool isPressed)
     {
-
+        
     }
 
     float? IWeapon.ChargeProgress => null;
