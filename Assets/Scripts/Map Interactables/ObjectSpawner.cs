@@ -54,18 +54,10 @@ public class ObjectSpawner : NetworkBehaviour, IInteractable
             OnSpawnedItem(current);
     }
 
+    [ServerCallback]
     private void FixedUpdate()
     {
-        /*
-        if (spawnedItem)
-        {
-            if (objectType == ObjectType.Gadget || objectType == ObjectType.Weapon)
-            {
-                spawnAnchor.transform.Rotate(0.5f, 1, 0.5f);
-            }
-        }
-        else */
-        if (NetworkServer.active && nextSpawnTime.HasTicked)
+        if (spawnedItem == null && nextSpawnTime.HasTicked)
         {
             SpawnObject();
         }

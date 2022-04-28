@@ -493,20 +493,14 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
 
     bool INetworkItemOwner.CanPickup(NetworkItem item)
     {
-
-        if (item.GetComponent<IEquipable>() != null)
+        if (item.GetComponent<IWeapon>() != null)
         {
-            if (item.GetComponent<IWeapon>() != null)
-            {
-                return firstWeapon == null || secondWeapon == null || equipped == ItemSlot.PrimaryWeapon || equipped == ItemSlot.SecondaryWeapon;
-            }
-            else if (item.GetComponent<IGadget>() != null)
-            {
-                return gadget == null || equipped == ItemSlot.Gadget;
-            }
-
+            return firstWeapon == null || secondWeapon == null || equipped == ItemSlot.PrimaryWeapon || equipped == ItemSlot.SecondaryWeapon;
         }
-
+        else if (item.GetComponent<IGadget>() != null)
+        {
+            return gadget == null || equipped == ItemSlot.Gadget;
+        }
         return false;
     }
 }
