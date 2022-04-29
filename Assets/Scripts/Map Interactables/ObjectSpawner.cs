@@ -12,7 +12,7 @@ public class ObjectSpawner : NetworkBehaviour, IInteractable
 
 
     [Header("Diagnostics")]
-    [SyncVar(hook = nameof(OnSpawnedItemChanged))] public NetworkItem spawnedItem;
+    [SyncVar(hook = nameof(OnSpawnedItemChanged))] public GameObject spawnedItem;
 
     NetworkTimer nextSpawnTime;
 
@@ -42,16 +42,23 @@ public class ObjectSpawner : NetworkBehaviour, IInteractable
     {
         base.OnStartClient();
 
-        if(spawnedItem != null)
+        if (spawnedItem != null)
         {
-            OnSpawnedItem(spawnedItem);
+            var item = spawnedItem.GetComponent<NetworkItem>();
+            if (item != null)
+                OnSpawnedItem(item);
         }
 
     }
-    void OnSpawnedItemChanged(NetworkItem previous, NetworkItem current)
+    void OnSpawnedItemChanged(GameObject previous, GameObject current)
     {
+
         if (current != null)
-            OnSpawnedItem(current);
+        {
+            var item = current.GetComponent<NetworkItem>();
+            if (item != null)
+                OnSpawnedItem(item);
+        }
     }
 
     [ServerCallback]
@@ -75,10 +82,12 @@ public class ObjectSpawner : NetworkBehaviour, IInteractable
         var anchor = GetSpawnAnchor();
         var go = Instantiate(objectToSpawn, anchor.position, anchor.rotation);
         NetworkServer.Spawn(go);
+        nextSpawnTime = NetworkTimer.FromNow(spawnTime);
 
-        spawnedItem = go.GetComponent<NetworkItem>();
-        if (spawnedItem != null)
-            OnSpawnedItem(spawnedItem);
+        spawnedItem = go;
+        var item = spawnedItem.GetComponent<NetworkItem>();
+        if (item != null)
+            OnSpawnedItem(item);
     }
 
     void OnSpawnedItem(NetworkItem item)
@@ -93,10 +102,13 @@ public class ObjectSpawner : NetworkBehaviour, IInteractable
     [Command(requiresAuthority = false)]
     void CmdPickup(NetworkIdentity actor)
     {
-        if (spawnedItem != null && (actor?.GetComponent<INetworkItemOwner>()?.CanPickup(spawnedItem) ?? false))
+        if (spawnedItem == null)
+            return;
+        var item = spawnedItem.GetComponent<NetworkItem>();
+        if (item != null && (actor?.GetComponent<INetworkItemOwner>()?.CanPickup(item) ?? false))
         {
-            spawnedItem.Pickup(actor);
-            spawnedItem = null;
+            item.Pickup(actor);
+            item = null;
             nextSpawnTime = NetworkTimer.FromNow(spawnTime);
         }
     }
@@ -105,7 +117,10 @@ public class ObjectSpawner : NetworkBehaviour, IInteractable
     {
         if (actor != null && spawnedItem != null)
         {
-            if (actor.GetComponent<INetworkItemOwner>()?.CanPickup(spawnedItem) ?? false)
+            var item = spawnedItem.GetComponent<NetworkItem>();
+            if (item == null)
+                return;
+            if (actor.GetComponent<INetworkItemOwner>()?.CanPickup(item) ?? false)
             {
                 CmdPickup(actor);
             }
