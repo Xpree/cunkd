@@ -76,6 +76,19 @@ public class NetworkItem : NetworkBehaviour
             owner.GetComponent<INetworkItemOwner>()?.OnDestroyed(this);
         }
     }
+
+    [Command(requiresAuthority = false)]
+    public void CmdTryPickup(NetworkIdentity actor)
+    {
+        if (Owner != null)
+            return;
+
+        var itemOwner = actor.GetComponent<INetworkItemOwner>();
+        if (itemOwner  == null || itemOwner.CanPickup(this) == false)
+            return;
+        
+        Pickup(actor);
+    }    
 }
 
 public interface INetworkItemOwner
@@ -98,6 +111,33 @@ public interface INetworkItemOwner
     /// <param name="item"></param>
     /// <returns>Return true if item can be picked up</returns>
     bool CanPickup(NetworkItem item);
+}
+
+
+
+[UnitTitle("On Player Interact")]
+[UnitCategory("Events\\Player Actions")]
+public class EventPlayerInteract: GameObjectEventUnit<NetworkIdentity>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventPlayerInteract);
+
+    [DoNotSerialize]// No need to serialize ports.
+    public ValueOutput interactingEntity { get; private set; }// The event output data to return when the event is triggered.
+
+    protected override void Definition()
+    {
+        base.Definition();
+        // Setting the value on our port.
+        interactingEntity = ValueOutput<NetworkIdentity>(nameof(interactingEntity));
+    }
+
+    // Setting the value on our port.
+    protected override void AssignArguments(Flow flow, NetworkIdentity data)
+    {
+        flow.SetValue(interactingEntity, data);
+    }
 }
 
 

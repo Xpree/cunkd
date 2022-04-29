@@ -327,6 +327,7 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
 
         if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, interactMaxDistance, this.interactLayerMask))
         {
+            EventBus.Trigger(nameof(EventPlayerInteract), hit.collider.gameObject, this.netIdentity);
             hit.transform.GetComponent<IInteractable>()?.Interact(this.netIdentity);
         }
     }
