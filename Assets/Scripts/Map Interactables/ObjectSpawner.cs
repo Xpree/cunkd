@@ -108,7 +108,7 @@ public class ObjectSpawner : NetworkBehaviour, IInteractable
         if (item != null && (actor?.GetComponent<INetworkItemOwner>()?.CanPickup(item) ?? false))
         {
             item.Pickup(actor);
-            item = null;
+            spawnedItem = null;
             nextSpawnTime = NetworkTimer.FromNow(spawnTime);
         }
     }
