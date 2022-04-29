@@ -182,6 +182,11 @@ public class PlayerMovement : NetworkBehaviour
             _airJumped = false;
             _lastGrounded = NetworkTime.time;
         }
+    }
+
+    [Command]
+    private void playLanding()
+    {
         if (_isGrounded && landed)
         {
             animator.SetTrigger("land");
@@ -198,6 +203,7 @@ public class PlayerMovement : NetworkBehaviour
         CheckGrounded();
         ApplyGravity();
         PerformJump();
+        playLanding();
         if (HasGroundFriction)
         {
             ApplyFriction();
