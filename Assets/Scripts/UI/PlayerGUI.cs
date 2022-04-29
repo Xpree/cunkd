@@ -77,7 +77,7 @@ public class PlayerGUI : MonoBehaviour
         if (go)
         {
             icon.enabled = true;
-            icon.texture = AssetPreview.GetAssetPreview(go);
+            //icon.texture = AssetPreview.GetAssetPreview(go);
         }
         else
         {
