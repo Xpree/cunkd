@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Mirror;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class Inventory : NetworkBehaviour, INetworkItemOwner
 {
@@ -78,15 +79,24 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
         }
     }
 
-    public T GetItemComponent<T>(ItemSlot slot) where T : class
+    public GameObject GetItem(ItemSlot slot)
     {
         return slot switch
         {
-            ItemSlot.PrimaryWeapon => firstWeapon != null ? firstWeapon.GetComponent<T>() : null,
-            ItemSlot.SecondaryWeapon => secondWeapon != null ? secondWeapon.GetComponent<T>() : null,
-            ItemSlot.Gadget => gadget != null ? gadget.GetComponent<T>() : null,
+            ItemSlot.PrimaryWeapon => firstWeapon,
+            ItemSlot.SecondaryWeapon => secondWeapon,
+            ItemSlot.Gadget => gadget,
             _ => null,
         };
+    }
+    public T GetItemComponent<T>(ItemSlot slot) where T : class
+    {
+        var item = GetItem(slot);
+        if(item != null)
+        {
+            return item.GetComponent<T>();
+        }
+        return null;
     }
 
     public IEquipable GetEquipment(ItemSlot slot)
@@ -164,6 +174,7 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
         }
         AttachGo(go, anchor);
         go.GetComponent<IEquipable>()?.OnPickedUp(holstered);
+        EventBus.Trigger<bool>(nameof(EventItemPickedUp), go, holstered);
     }
 
     void UpdateEquippedItem(ItemSlot slot)
@@ -188,6 +199,7 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
             return;
 
         go.GetComponent<IEquipable>()?.OnDropped();
+        EventBus.Trigger(nameof(EventItemDropped), go);
         var item = go.GetComponent<NetworkItem>();
         if (item != null && item.hasAuthority)
         {
@@ -200,6 +212,12 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
     {
         if (equipped != slot)
         {
+            var item = GetItem(equipped);
+            if (item != null)
+            {
+                EventBus.Trigger(nameof(EventItemHolstered), item);
+            }
+
             var active = GetEquipment(equipped);
             if (active != null)
             {
@@ -212,6 +230,12 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
             if (active != null)
             {
                 active.OnUnholstered();
+            }
+            
+            item = GetItem(equipped);
+            if (item != null)
+            {
+                EventBus.Trigger(nameof(EventItemUnholstered), item);
             }
         }
 
@@ -262,7 +286,9 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
         }
         AttachGo(go, GetSlotAnchor(slot));
         var holstered = equipped != slot;
+
         go.GetComponent<IEquipable>()?.OnPickedUp(holstered);
+        EventBus.Trigger<bool>(nameof(EventItemPickedUp), go, holstered);
         if (holstered && isLocalPlayer && Settings.autoEquipOnPickup)
         {
             Equip(slot);
@@ -307,8 +333,15 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
 
     public void UseActiveEquipment(bool primaryAttack, bool wasPressed)
     {
+        if (primaryAttack)
+        {
+            if (wasPressed)
+                EventBus.Trigger(nameof(EventPrimaryAttackPressed), this.GetItem(equipped));
+        }
+
         if (!CanUseActiveEquipment)
             return;
+
 
         if (equipped == ItemSlot.Gadget)
         {
@@ -461,20 +494,14 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
 
     bool INetworkItemOwner.CanPickup(NetworkItem item)
     {
-
-        if (item.GetComponent<IEquipable>() != null)
+        if (item.GetComponent<IWeapon>() != null)
         {
-            if (item.GetComponent<IWeapon>() != null)
-            {
-                return firstWeapon == null || secondWeapon == null || equipped == ItemSlot.PrimaryWeapon || equipped == ItemSlot.SecondaryWeapon;
-            }
-            else if (item.GetComponent<IGadget>() != null)
-            {
-                return gadget == null || equipped == ItemSlot.Gadget;
-            }
-
+            return firstWeapon == null || secondWeapon == null || equipped == ItemSlot.PrimaryWeapon || equipped == ItemSlot.SecondaryWeapon;
         }
-
+        else if (item.GetComponent<IGadget>() != null)
+        {
+            return gadget == null || equipped == ItemSlot.Gadget;
+        }
         return false;
     }
 }
