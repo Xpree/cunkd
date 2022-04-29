@@ -121,4 +121,12 @@ public class ObjectSpawner : NetworkBehaviour, IInteractable
             Debug.Log("Nothing to interact.");
         }
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (spawnedItem && IsPowerUpSpawner)
+        {
+            spawnedItem.GetComponent<Rigidbody>().useGravity = true;
+        }
+    }
 }
