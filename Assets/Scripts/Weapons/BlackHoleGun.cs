@@ -38,8 +38,24 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon
         }
     }
 
+    public bool Shoot()
+    {
+        if(_cooldownTimer.Use())
+        {
+            var aim = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
+            var target = Util.RaycastPointOrMaxDistance(aim, MaxRange, TargetMask);
+            CmdSpawnBlackHole(target);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     void IWeapon.PrimaryAttack(bool isPressed)
     {
+        
     }
 
     void IWeapon.SecondaryAttack(bool isPressed)

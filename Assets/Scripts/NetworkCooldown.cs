@@ -182,5 +182,5 @@ public class EventNetworkCooldownEnd : GameObjectEventUnit<EmptyEventArgs>
 {
     public override Type MessageListenerType => null;
 
-    protected override string hookName => nameof(EventNetworkCooldownBegin);
+    protected override string hookName => nameof(EventNetworkCooldownEnd);
 }

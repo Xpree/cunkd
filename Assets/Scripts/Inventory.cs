@@ -333,14 +333,15 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
 
     public void UseActiveEquipment(bool primaryAttack, bool wasPressed)
     {
-        if (!CanUseActiveEquipment)
-            return;
-
-        if(primaryAttack)
+        if (primaryAttack)
         {
             if (wasPressed)
                 EventBus.Trigger(nameof(EventPrimaryAttackPressed), this.GetItem(equipped));
         }
+
+        if (!CanUseActiveEquipment)
+            return;
+
 
         if (equipped == ItemSlot.Gadget)
         {
