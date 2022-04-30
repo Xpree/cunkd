@@ -92,8 +92,8 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1150828765175267351}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
+  m_IsTrigger: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 2, y: 2, z: 1.2}
   m_Center: {x: 0, y: 0, z: 0}
@@ -234,6 +234,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  displayName: Sniper Combobulator
   ItemType: 0
 --- !u!114 &-3118400523729911809
 MonoBehaviour:
@@ -267,7 +268,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  coolDownDuration: 0
+  CooldownDuration: 0
 --- !u!114 &8053813949442105519
 MonoBehaviour:
   m_ObjectHideFlags: 0

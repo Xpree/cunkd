@@ -43,7 +43,7 @@ public class PlayerGUI : MonoBehaviour
         if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, inventory.interactMaxDistance, inventory.interactLayerMask))
         {
             obs = hit.transform.GetComponent<ObjectSpawner>();
-            if (obs && !obs.IsPowerUpSpawner && obs.spawnedItem)
+            if (obs && obs.IsEquipmentSpawner && obs.spawnedItem)
             {
                 interactiveButton(obs);
             }
@@ -60,10 +60,10 @@ public class PlayerGUI : MonoBehaviour
 
     public void interactiveButton(ObjectSpawner obs)
     {
-        if (obs && !obs.IsPowerUpSpawner && obs.spawnedItem)
+        if (obs && obs.IsEquipmentSpawner && obs.spawnedItem)
         {
             interactButton.enabled = true;
-            intreractableInfoText.text = "Pick up " + obs.spawnedItem.name.Substring(0, obs.spawnedItem.name.Length - 7);
+            intreractableInfoText.text = "Pick up " + obs.spawnedItem.GetComponent<NetworkItem>().DisplayName;
         }
         else
         {
@@ -72,12 +72,12 @@ public class PlayerGUI : MonoBehaviour
         }
     }
 
-    void setIcon(RawImage icon, GameObject go)
+    void setIcon(RawImage icon, NetworkItem item)
     {
-        if (go)
+        if (item != null)
         {
             icon.enabled = true;
-            //icon.texture = AssetPreview.GetAssetPreview(go);
+            //icon.texture = AssetPreview.GetAssetPreview(item.gameObject);
         }
         else
         {
@@ -93,30 +93,24 @@ public class PlayerGUI : MonoBehaviour
         canvas.planeDistance = 0.4f;
     }
 
-    void updateCooldown(RawImage cooldownIcon, GameObject go)
+    void updateCooldown(RawImage cooldownIcon, NetworkCooldown cooldown)
     {
-        NetworkCooldown cooldown = null;
-        if (go)
-            cooldown = go.GetComponent<NetworkCooldown>();
         if (cooldown && cooldown.HasCooldown)
         {
-            cooldownIcon.rectTransform.localScale = new Vector3(1,Mathf.Clamp((float)-cooldown.localTimer.Elapsed / (float)cooldown.coolDownDuration * 1,0,1),1);
+            float t = Mathf.Clamp01(cooldown.CooldownRemaining / cooldown.CooldownDuration);
+            cooldownIcon.rectTransform.localScale = new Vector3(1,t,1);
         }
         else if (cooldownIcon.rectTransform.localScale.y != 0)
         {
-            cooldownIcon.rectTransform.localScale = new Vector3(0, 0, 0);
+            cooldownIcon.rectTransform.localScale = Vector3.zero;
         }
     }
 
-    void updateCharges(TextMeshProUGUI chargesText, GameObject go)
+    void updateCharges(TextMeshProUGUI chargesText, NetworkCooldown cooldown)
     {
-        if (go)
+        if (cooldown != null && cooldown.HasInfiniteCharges == false)
         {
-            var gadget = go.GetComponent<IGadget>();
-            if (gadget != null)
-            {
-                chargesText.text = gadget.ChargesLeft + "/" + gadget.Charges;
-            }
+            chargesText.text = cooldown.Charges + "/" + cooldown.MaxCharges;
         }
         else
         {
@@ -124,34 +118,36 @@ public class PlayerGUI : MonoBehaviour
         }
     }
 
+    void updateItem(NetworkItem item, RawImage icon, RawImage cooldownIconSlot, TextMeshProUGUI chargesSlot, bool equipped)
+    {
+        if(item == null)
+        {
+            setIcon(icon, null);
+            updateCooldown(cooldownIconSlot, null);
+            if (chargesSlot != null)
+                updateCharges(chargesSlot, null);
+        } 
+        else
+        {
+            setIcon(icon, item);
+            var cooldown = item.GetComponent<NetworkCooldown>();
+            updateCooldown(cooldownIconSlot, cooldown);
+            if(chargesSlot != null)
+                updateCharges(chargesSlot, cooldown);
+
+            if (equipped)
+            {
+                selectedIcon.rectTransform.position = icon.rectTransform.position;
+                selectedIcon.enabled = true;
+            }
+        }
+    }
+
     public void updateGUI(Inventory inventory)
     {
-
-        setIcon(primaryWeaponIcon, inventory.syncedFirstWeapon);
-        setIcon(secondaryWeaponIcon, inventory.syncedSecondWeapon);
-        setIcon(gadgetIcon, inventory.syncedGadget);
-
-        updateCooldown(cooldownIconSlot1, inventory.syncedFirstWeapon);
-        updateCooldown(cooldownIconSlot2, inventory.syncedSecondWeapon);
-        updateCooldown(cooldownIconSlot3, inventory.syncedGadget);
-
-        updateCharges(chargesSlot3, inventory.syncedGadget);
-
         selectedIcon.enabled = false;
-        if (inventory.syncedEquipped == ItemSlot.PrimaryWeapon && inventory.syncedFirstWeapon)
-        {
-            selectedIcon.rectTransform.position = primaryWeaponIcon.rectTransform.position;
-            selectedIcon.enabled = true;
-        }
-        else if (inventory.syncedEquipped == ItemSlot.SecondaryWeapon && inventory.syncedSecondWeapon)
-        {
-            selectedIcon.rectTransform.position = secondaryWeaponIcon.rectTransform.position;
-            selectedIcon.enabled = true;
-        }
-        else if (inventory.syncedEquipped == ItemSlot.Gadget && inventory.syncedGadget)
-        {
-            selectedIcon.rectTransform.position = gadgetIcon.rectTransform.position;
-            selectedIcon.enabled = true;
-        }
+        updateItem(inventory.firstWeapon, primaryWeaponIcon, cooldownIconSlot1, null, inventory.equipped == ItemSlot.PrimaryWeapon);
+        updateItem(inventory.secondWeapon, secondaryWeaponIcon, cooldownIconSlot2, null, inventory.equipped == ItemSlot.SecondaryWeapon);
+        updateItem(inventory.gadget, gadgetIcon, cooldownIconSlot3, null, inventory.equipped == ItemSlot.Gadget);
     }
 }

@@ -1,11 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // Static game settings that wont be changed by the player
 [CreateAssetMenu(fileName = "GameSettings", menuName = "Scriptable Objects/Game Settings")]
-[Unity.VisualScripting.Inspectable]
 public class GameSettings : ScriptableObject
 {
     [Serializable]
@@ -54,7 +51,15 @@ public class GameSettings : ScriptableObject
     public GravityGunSettings GravityGun = new();
 
 
-    [Unity.VisualScripting.Inspectable]
+
+    [Serializable]
+    public class BlackHoleGunSettings
+    {
+        public float Cooldown = 30f;
+        public float Range = 20f;
+    }
+
+
     public BlackHoleGunSettings BlackHoleGun = new();
 
     [Serializable]
@@ -86,16 +91,5 @@ public class GameSettings : ScriptableObject
     public SwapSniperSettings SwapSniper = new();
 
 
-    public BlackHoleGunSettings GetBlackHoleGunSettings() => BlackHoleGun;
 }
 
-
-[Serializable]
-[Unity.VisualScripting.Inspectable]
-public class BlackHoleGunSettings
-{
-    [Unity.VisualScripting.Inspectable]
-    public float Cooldown = 30f;
-    [Unity.VisualScripting.Inspectable]
-    public float Range = 20f;
-}

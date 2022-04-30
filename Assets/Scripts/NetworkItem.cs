@@ -7,6 +7,10 @@ using Unity.VisualScripting;
 /// </summary>
 public class NetworkItem : NetworkBehaviour
 {
+    [SerializeField] string displayName;
+
+    public string DisplayName => string.IsNullOrEmpty(displayName) ? this.gameObject.name : displayName;
+
     [DoNotSerialize]
     public ItemType ItemType = ItemType.Weapon;
 
@@ -128,7 +132,6 @@ public class NetworkItem : NetworkBehaviour
     }
 
     // Call to trigger "On Primary Attack Fired" in Visual scripting
-    [Client]
     public void OnPrimaryAttackFired()
     {
         EventBus.Trigger(nameof(EventPrimaryAttackFired), this.gameObject);
@@ -149,13 +152,11 @@ public class NetworkItem : NetworkBehaviour
     }
 
     // Call to trigger "On Secondary Attack Fired" in Visual scripting
-    [Client]
     public void OnSecondaryAttackFired()
     {
         EventBus.Trigger(nameof(EventSecondaryAttackFired), this.gameObject);
         CmdPrimaryAttackFired();
     }
-
 
     public void OnPrimaryAttack(bool wasPressed)
     {
@@ -178,6 +179,8 @@ public class NetworkItem : NetworkBehaviour
         else
             EventBus.Trigger(nameof(EventSecondaryAttackReleased), this.gameObject);
     }
+
+
 }
 
 public interface INetworkItemOwner

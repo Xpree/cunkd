@@ -20,7 +20,7 @@ public class BlackHoleGun : NetworkBehaviour
         _item.ItemType = ItemType.Weapon;
 
         _cooldownTimer = GetComponent<NetworkCooldown>();
-        _cooldownTimer.coolDownDuration = Cooldown;
+        _cooldownTimer.CooldownDuration = Cooldown;
     }
 
     private void Start()

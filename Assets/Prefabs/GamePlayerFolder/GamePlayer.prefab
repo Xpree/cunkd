@@ -107,6 +107,7 @@ GameObject:
   - component: {fileID: 6875562024045520083}
   - component: {fileID: 7164593917592417887}
   - component: {fileID: -7453657956266782716}
+  - component: {fileID: 1049667391910673329}
   m_Layer: 8
   m_Name: GamePlayer
   m_TagString: Player
@@ -322,14 +323,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 9
   interactMaxDistance: 2
-  syncedFirstWeapon: {fileID: 0}
-  syncedSecondWeapon: {fileID: 0}
-  syncedGadget: {fileID: 0}
-  syncedEquipped: 0
-  localFirstWeapon: {fileID: 0}
-  localSecondWeapon: {fileID: 0}
-  localGadget: {fileID: 0}
-  localEquipped: 0
 --- !u!114 &6250309759976022356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -442,6 +435,27 @@ MonoBehaviour:
   Effects:
   - Name: land
     VFX: {fileID: 3184377637864885618}
+--- !u!114 &1049667391910673329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1480027675339556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f42d100bcfc94247a66d821f8c0f8b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  interactLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  interactMaxDistance: 2
+  aimTransform: {fileID: 0}
+  interactAimObject: {fileID: 0}
+  hoveringOnAimObject: 0
 --- !u!1 &598865172076735772
 GameObject:
   m_ObjectHideFlags: 0
@@ -465,7 +479,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 598865172076735772}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1187,6 +1201,7 @@ GameObject:
   - component: {fileID: 827330752713181009}
   - component: {fileID: 2639041442011451072}
   - component: {fileID: 8512414564007089192}
+  - component: {fileID: 4403063223634106921}
   m_Layer: 8
   m_Name: Input
   m_TagString: Untagged
@@ -1383,123 +1398,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6398e3674477e3c4aa7b84e112f35ec0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Move:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  Look:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  Jump:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  NextItem:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  Interact:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  PrimaryAttack:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  SecondaryAttack:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  SelectItem1:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  SelectItem2:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  SelectItem3:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  SpectateNext:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  ShowScoreboard:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  ToggleMenu:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
   PlayerMovementActionMap:
     m_Name: 
     m_Id: 
@@ -1539,9 +1437,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data:
-    _json: '{"declarations":{"collection":{"$content":[],"$version":"A"},"$version":"A"}}'
-    _objectReferences: []
+    _json: '{"declarations":{"collection":{"$content":[{"name":"PlayerInteract","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"Interact,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"PlayerInventory","value":{"$content":1,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"Inventory,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+    _objectReferences:
+    - {fileID: 1049667391910673329}
+    - {fileID: -9161402237070379157}
 --- !u!114 &8512414564007089192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7530130407731218548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2fe5546f775c47d2820aa5e8a715f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"nest":{"source":"Macro","macro":0,"embed":null}}'
+    _objectReferences:
+    - {fileID: 11400000, guid: 648e127af1475994285edcece4122141, type: 2}
+--- !u!114 &4403063223634106921
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

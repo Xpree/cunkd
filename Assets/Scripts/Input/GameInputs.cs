@@ -6,38 +6,6 @@ using UnityEngine.InputSystem;
 public class GameInputs : MonoBehaviour
 {
 	[HideInInspector]
-	public InputAction Move;
-	[HideInInspector]
-	public InputAction Look;
-	[HideInInspector]
-	public InputAction Jump;
-
-	[HideInInspector]
-	public InputAction NextItem;
-	[HideInInspector]
-	public InputAction Interact;
-
-	[HideInInspector]
-	public InputAction PrimaryAttack;
-	[HideInInspector]
-	public InputAction SecondaryAttack;
-
-	[HideInInspector]
-	public InputAction SelectItem1;
-	[HideInInspector]
-	public InputAction SelectItem2;
-	[HideInInspector]
-	public InputAction SelectItem3;
-
-	[HideInInspector]
-	public InputAction SpectateNext;
-
-	[HideInInspector]
-	public InputAction ShowScoreboard;
-	[HideInInspector]
-	public InputAction ToggleMenu;
-
-	[HideInInspector]
 	public InputActionMap PlayerMovementActionMap;
 	[HideInInspector]
 	public InputActionMap PlayerActionsActionMap;
@@ -66,26 +34,12 @@ public class GameInputs : MonoBehaviour
 		CommonActionMap = Input.actions.FindActionMap("Common");
 		CommonActionMap.Enable();
 
-		ShowScoreboard = CommonActionMap.FindAction("Show Scoreboard");
-		ToggleMenu = CommonActionMap.FindAction("Toggle Menu");
 
 		SpectatorActionMap = Input.actions.FindActionMap("Spectator");
-		SpectateNext = SpectatorActionMap.FindAction("Spectate Next");
 
 		PlayerMovementActionMap = Input.actions.FindActionMap("Player Movement");
-		Move = PlayerMovementActionMap.FindAction("Move");
-		Look = PlayerMovementActionMap.FindAction("Look");
-		Jump = PlayerMovementActionMap.FindAction("Jump");
 
 		PlayerActionsActionMap = Input.actions.FindActionMap("Player Actions");
-		NextItem = PlayerActionsActionMap.FindAction("Next Item");
-		Interact = PlayerActionsActionMap.FindAction("Interact");
-		PrimaryAttack = PlayerActionsActionMap.FindAction("Primary Attack");
-		SecondaryAttack = PlayerActionsActionMap.FindAction("Secondary Attack");
-		SelectItem1 = PlayerActionsActionMap.FindAction("Select Item 1");
-		SelectItem2 = PlayerActionsActionMap.FindAction("Select Item 2");
-		SelectItem3 = PlayerActionsActionMap.FindAction("Select Item 3");
-
 	}
 
     public void EnablePlayerMaps(bool enable)
@@ -157,22 +111,17 @@ public class GameInputs : MonoBehaviour
 		SetInputMode(this.Mode);
     }
 
-
-    private void Update()
-    {		
-		if(ToggleMenu.triggered)
-        {
-			if (Cursor.lockState == CursorLockMode.Locked)
-			{
-				Cursor.lockState = CursorLockMode.None;
-				PreventInput();
-			}
-			else
-			{
-				Cursor.lockState = CursorLockMode.Locked;
-				EnableInput();
-			}
-        }
-    }
-
+	public void ToggleMenu()
+    {
+		if (Cursor.lockState == CursorLockMode.Locked)
+		{
+			Cursor.lockState = CursorLockMode.None;
+			PreventInput();
+		}
+		else
+		{
+			Cursor.lockState = CursorLockMode.Locked;
+			EnableInput();
+		}
+	}
 }

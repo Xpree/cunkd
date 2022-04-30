@@ -149,6 +149,7 @@ public struct NetworkTimer
     public double TickTime;
 
     public double Elapsed => NetworkTime.time - TickTime;
+    public double Remaining => TickTime - NetworkTime.time;
     public static NetworkTimer Now => new NetworkTimer { TickTime = NetworkTime.time };
     public static NetworkTimer FromNow(double duration) => new NetworkTimer { TickTime = NetworkTime.time + duration };
 

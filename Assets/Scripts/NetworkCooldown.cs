@@ -1,13 +1,15 @@
 using Mirror;
-using UnityEngine.Events;
-using Unity.VisualScripting;
 using UnityEngine;
-using System;
+using Unity.VisualScripting;
 
 // Network synchronized cooldown and charges with local prediction
 // ment to be used by both client and server.
 public class NetworkCooldown : NetworkBehaviour
 {
+    [HideInInspector]
+    public float CooldownDuration;
+    public float CooldownRemaining => Mathf.Max((float)_localTimer.Remaining, 0);
+
     NetworkTimer serverCooldownTimer;
     NetworkTimer _localTimer;
 
@@ -28,7 +30,7 @@ public class NetworkCooldown : NetworkBehaviour
         }
     }
 
-    public NetworkTimer localTimer 
+    NetworkTimer localTimer 
     { 
         get { return _localTimer; }
         set
@@ -37,15 +39,20 @@ public class NetworkCooldown : NetworkBehaviour
             SetCooldown(_localTimer.Elapsed < 0);
         }
     }
+    public bool HasCooldown => localTimer.Elapsed < 0;
 
-    public double coolDownDuration;
+    int maxCharges = -1;
 
     int serverCharges = -1;
     int localCharges = -1;
-
-    public bool HasInfiniteCharges => localCharges < 0;
     public int Charges => System.Math.Max(localCharges, 0);
-    public bool HasCooldown => localTimer.Elapsed < 0;
+
+    public bool HasInfiniteCharges => maxCharges < 0;
+    public int MaxCharges
+    {
+        get { return System.Math.Max(maxCharges, 0); }
+        set { maxCharges = value; }
+    }
 
     private void FixedUpdate()
     {
@@ -57,6 +64,7 @@ public class NetworkCooldown : NetworkBehaviour
     {
         serverCharges = count;
         localCharges = count;
+        maxCharges = count;
     }
 
     public override void OnStartServer()
@@ -76,14 +84,20 @@ public class NetworkCooldown : NetworkBehaviour
     [Command(requiresAuthority = false)]
     void CmdForceUpdateClients()
     {
-        RpcUpdateClients(serverCooldownTimer, serverCharges);
+        DoUpdateClients();
     }
 
     [ClientRpc]
-    void RpcUpdateClients(NetworkTimer cooldownTimer, int charges)
+    void RpcUpdateClients(NetworkTimer cooldownTimer, int charges, int maximumCharges)
     {
         localTimer = cooldownTimer;
         localCharges = charges;
+        maxCharges = maximumCharges;
+    }
+
+    void DoUpdateClients()
+    {
+        RpcUpdateClients(serverCooldownTimer, serverCharges, maxCharges);
     }
 
     bool DispenseServerCharge()
@@ -105,7 +119,7 @@ public class NetworkCooldown : NetworkBehaviour
     [Server]
     public bool ServerUse()
     {
-        return ServerUse(coolDownDuration);
+        return ServerUse(CooldownDuration);
     }
 
     // Sets cooldown and uses a charge if any are set
@@ -117,7 +131,7 @@ public class NetworkCooldown : NetworkBehaviour
             return false;
         serverCooldownTimer = NetworkTimer.FromNow(cooldown);
         localTimer = serverCooldownTimer;
-        RpcUpdateClients(serverCooldownTimer, serverCharges);
+        DoUpdateClients();
         return true;
     }
 
@@ -126,7 +140,7 @@ public class NetworkCooldown : NetworkBehaviour
     {
         if (DispenseServerCharge())
         {
-            RpcUpdateClients(serverCooldownTimer, serverCharges);
+            DoUpdateClients();
             return true;
         }
         else
@@ -138,7 +152,7 @@ public class NetworkCooldown : NetworkBehaviour
     [Client]
     public bool Use()
     {
-        return this.Use(this.coolDownDuration);
+        return this.Use(this.CooldownDuration);
     }
 
     // Sets cooldown and uses a charge if any are set

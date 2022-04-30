@@ -49,6 +49,56 @@ public class EventPlayerInteract : GameObjectEventUnit<NetworkIdentity>
     }
 }
 
+[UnitTitle("On Player Interact Hover Start")]
+[UnitCategory("Events\\Player Actions")]
+public class EventPlayerInteractHoverStart : GameObjectEventUnit<NetworkIdentity>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventPlayerInteractHoverStart);
+
+    [DoNotSerialize]// No need to serialize ports.
+    public ValueOutput interactingEntity { get; private set; }// The event output data to return when the event is triggered.
+
+    protected override void Definition()
+    {
+        base.Definition();
+        // Setting the value on our port.
+        interactingEntity = ValueOutput<NetworkIdentity>(nameof(interactingEntity));
+    }
+
+    // Setting the value on our port.
+    protected override void AssignArguments(Flow flow, NetworkIdentity data)
+    {
+        flow.SetValue(interactingEntity, data);
+    }
+}
+
+[UnitTitle("On Player Interact Hover End")]
+[UnitCategory("Events\\Player Actions")]
+public class EventPlayerInteractHoverEnd : GameObjectEventUnit<NetworkIdentity>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventPlayerInteractHoverEnd);
+
+    [DoNotSerialize]// No need to serialize ports.
+    public ValueOutput interactingEntity { get; private set; }// The event output data to return when the event is triggered.
+
+    protected override void Definition()
+    {
+        base.Definition();
+        // Setting the value on our port.
+        interactingEntity = ValueOutput<NetworkIdentity>(nameof(interactingEntity));
+    }
+
+    // Setting the value on our port.
+    protected override void AssignArguments(Flow flow, NetworkIdentity data)
+    {
+        flow.SetValue(interactingEntity, data);
+    }
+}
+
 
 [UnitTitle("On Primary Attack Fired")]
 [UnitCategory("Events\\Network Item")]
@@ -59,6 +109,24 @@ public class EventPrimaryAttackFired : GameObjectEventUnit<EmptyEventArgs>
     protected override string hookName => nameof(EventPrimaryAttackFired);
 }
 
+
+[UnitTitle("On Primary Attack Begin")]
+[UnitCategory("Events\\Network Item")]
+public class EventPrimaryAttackBegin : GameObjectEventUnit<EmptyEventArgs>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventPrimaryAttackBegin);
+}
+
+[UnitTitle("On Primary Attack End")]
+[UnitCategory("Events\\Network Item")]
+public class EventPrimaryAttackEnd : GameObjectEventUnit<EmptyEventArgs>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventPrimaryAttackEnd);
+}
 
 [UnitTitle("On Primary Attack Pressed")]
 [UnitCategory("Events\\Network Item")]
@@ -89,6 +157,25 @@ public class EventSecondaryAttackFired : GameObjectEventUnit<EmptyEventArgs>
     protected override string hookName => nameof(EventSecondaryAttackFired);
 }
 
+
+
+[UnitTitle("On Secondary Attack Begin")]
+[UnitCategory("Events\\Network Item")]
+public class EventSecondaryAttackBegin : GameObjectEventUnit<EmptyEventArgs>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventSecondaryAttackBegin);
+}
+
+[UnitTitle("On Secondary Attack End")]
+[UnitCategory("Events\\Network Item")]
+public class EventSecondaryAttackEnd : GameObjectEventUnit<EmptyEventArgs>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventSecondaryAttackEnd);
+}
 
 [UnitTitle("On Secondary Attack Pressed")]
 [UnitCategory("Events\\Network Item")]

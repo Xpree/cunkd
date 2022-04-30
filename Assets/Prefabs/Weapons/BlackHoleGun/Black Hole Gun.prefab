@@ -214,6 +214,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  displayName: Blackhole Gun
   ItemType: 0
 --- !u!114 &8162454346370928035
 MonoBehaviour:
@@ -229,7 +230,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  coolDownDuration: 0
+  CooldownDuration: 0
 --- !u!114 &1057481433090885412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -557,7 +558,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7618931280888435499}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 0
   m_Radius: 4.5676956
   m_Height: 16.41418

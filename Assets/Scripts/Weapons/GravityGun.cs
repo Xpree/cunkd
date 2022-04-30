@@ -4,7 +4,7 @@ using Mirror;
 using UnityEngine.VFX;
 
 [RequireComponent(typeof(NetworkItem))]
-public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
+public class GravityGun : NetworkBehaviour
 {
     [SerializeField] NetworkAnimator animator;
 
@@ -44,6 +44,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         }
     }
 
+#if false
     public Vector3 GetAnchorPosition(float offset)
     {
         return AnchorPoint.position + AnchorPoint.forward * offset;
@@ -302,7 +303,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
 
     float? IWeapon.ChargeProgress => _charging ? Mathf.Clamp01((float)_chargeBegan.Elapsed) : null;
 
-    #region IEquipable
+#region IEquipable
     bool holstered = false;
     bool IEquipable.IsHolstered => holstered;
 
@@ -365,6 +366,8 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
 
         PlayerCollider = null;
     }
-    #endregion
+#endregion
+
+#endif
 }
 

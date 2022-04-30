@@ -20,7 +20,7 @@ public class SwapSniper : NetworkBehaviour
         _item.ItemType = ItemType.Weapon;
 
         _cooldownTimer = GetComponent<NetworkCooldown>();
-        _cooldownTimer.coolDownDuration = cooldown;
+        _cooldownTimer.CooldownDuration = cooldown;
     }
 
     private void Start()
