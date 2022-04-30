@@ -22,20 +22,21 @@ public class ObjectSpawner : NetworkBehaviour
 
     public Transform GetSpawnAnchor() => spawnAnchor != null ? spawnAnchor.transform : this.transform;
 
-    private void Start()
-    {
-        GetComponent<MeshRenderer>().enabled = IsEquipmentSpawner;
-        interactColldier.enabled = false;
-    }
-
     private void OnEnable()
     {
+        GetComponent<MeshRenderer>().enabled = IsEquipmentSpawner;
+        interactColldier.enabled = spawnedItem != null && spawnedItem.GetComponent<NetworkItem>() != null;
+
         if (IsEquipmentSpawner)
+        {
             EventBus.Register(new EventHook(nameof(EventPlayerInteract), this.gameObject), new System.Action<NetworkIdentity>(Pickup));
+        }
+            
     }
 
     private void OnDisable()
     {
+        interactColldier.enabled = false;
         if (IsEquipmentSpawner)
             EventBus.Unregister(new EventHook(nameof(EventPlayerInteract), this.gameObject), new System.Action<NetworkIdentity>(Pickup));
     }
@@ -121,6 +122,7 @@ public class ObjectSpawner : NetworkBehaviour
             item.Pickup(actor);
             spawnedItem = null;
             nextSpawnTime = NetworkTimer.FromNow(spawnTime);
+            interactColldier.enabled = false;
         }
     }
 
