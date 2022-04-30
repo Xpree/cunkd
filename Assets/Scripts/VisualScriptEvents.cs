@@ -100,6 +100,26 @@ public class EventSecondaryAttackReleased : GameObjectEventUnit<EmptyEventArgs>
 }
 
 
+[UnitTitle("On Item Activated")]
+[UnitCategory("Events\\Network Item")]
+public class EventItemActivated : GameObjectEventUnit<EmptyEventArgs>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventItemActivated);
+}
+
+[UnitTitle("On Item Deactivated")]
+[UnitCategory("Events\\Network Item")]
+public class EventItemDeactivated : GameObjectEventUnit<EmptyEventArgs>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventItemDeactivated);
+}
+
+
+
 [UnitTitle("On Item Holstered")]
 [UnitCategory("Events\\Network Item")]
 public class EventItemHolstered : GameObjectEventUnit<EmptyEventArgs>

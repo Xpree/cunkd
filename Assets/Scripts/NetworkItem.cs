@@ -13,6 +13,27 @@ public class NetworkItem : NetworkBehaviour
 
     public Transform OwnerInteractAimTransform => Util.GetPlayerInteractAimTransform(this.Owner);
 
+    bool _activated = false;
+    public bool Activated
+    {
+        get
+        {
+            return _activated;
+        }
+        set
+        {
+            _activated = value;
+            if(_activated)
+            {
+                EventBus.Trigger(nameof(EventItemActivated), this.gameObject);
+            }
+            else
+            {
+                EventBus.Trigger(nameof(EventItemDeactivated), this.gameObject);
+            }
+        }
+    }
+
     void OnChangedOwner(GameObject actor)
     {
         owner = actor;
