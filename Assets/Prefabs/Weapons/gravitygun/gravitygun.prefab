@@ -257,6 +257,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   displayName: Gravity Gun
+  rotationCenter: {fileID: 4464136994276526158}
+  PickupColldider: {fileID: 5266428791023291606}
   ItemType: 0
 --- !u!114 &8169214423861732058
 MonoBehaviour:

@@ -102,6 +102,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   displayName: Ice Gadget
+  rotationCenter: {fileID: 2980025407742363149}
+  PickupColldider: {fileID: 3475851605051110721}
   ItemType: 1
 --- !u!114 &2852530366991114646
 MonoBehaviour:

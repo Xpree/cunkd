@@ -105,7 +105,7 @@ public class ObjectSpawner : NetworkBehaviour
     {
         var parent = GetSpawnAnchor();
         item.transform.parent = parent;
-        item.transform.localPosition = Vector3.zero;
+        item.SetPositionWithRotationCenter(parent);
         item.transform.localRotation = Quaternion.identity;
         interactColldier.enabled = true;
     }

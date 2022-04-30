@@ -118,7 +118,9 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   displayName: Banana
-  ItemType: 0
+  rotationCenter: {fileID: 4608460220811360064}
+  PickupColldider: {fileID: 2727430984441613394}
+  ItemType: 1
 --- !u!114 &6492595513888819284
 MonoBehaviour:
   m_ObjectHideFlags: 0

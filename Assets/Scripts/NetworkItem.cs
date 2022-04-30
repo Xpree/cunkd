@@ -8,8 +8,12 @@ using Unity.VisualScripting;
 public class NetworkItem : NetworkBehaviour
 {
     [SerializeField] string displayName;
+    [SerializeField] Transform rotationCenter;
+    public Collider PickupColldider;
 
     public string DisplayName => string.IsNullOrEmpty(displayName) ? this.gameObject.name : displayName;
+
+    public Transform RotationCenter => rotationCenter ?? this.transform;
 
     [DoNotSerialize]
     public ItemType ItemType = ItemType.Weapon;
@@ -39,6 +43,24 @@ public class NetworkItem : NetworkBehaviour
                 EventBus.Trigger(nameof(EventItemDeactivated), this.gameObject);
             }
         }
+    }
+
+    public bool PickupEnabled
+    {
+        get { return PickupColldider.enabled; }
+        set { PickupColldider.enabled = value; }
+    }
+
+    public void SetPositionWithRotationCenter(Transform target)
+    {
+        this.transform.position = target.position;
+        this.transform.position = target.position - (RotationCenter.position - target.position);
+    }
+
+    private void Awake()
+    {
+        if (PickupColldider == null)
+            Debug.LogError("Missing Pickup colldier on: " + this.name);
     }
 
     void OnChangedOwner(GameObject actor)

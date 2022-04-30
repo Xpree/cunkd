@@ -1540,6 +1540,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   displayName: Jetpack
+  rotationCenter: {fileID: 427117330482908859}
+  PickupColldider: {fileID: 7918212240452518327}
   ItemType: 1
 --- !u!114 &-2435825764171679950
 MonoBehaviour:
@@ -1570,7 +1572,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  animator: {fileID: 0}
   isPassive: 0
   Charges: 100
   Cooldown: 0.05

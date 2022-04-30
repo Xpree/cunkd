@@ -215,6 +215,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   displayName: Blackhole Gun
+  rotationCenter: {fileID: 7679393172858511098}
+  PickupColldider: {fileID: 3478947421943283792}
   ItemType: 0
 --- !u!114 &8162454346370928035
 MonoBehaviour:
@@ -293,13 +295,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data:
-    _json: '{"declarations":{"collection":{"$content":[{"name":"Pickup Collider","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.Collider,
-      UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"Rotate
-      In World","value":{"$content":1,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.Transform,
-      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
-    _objectReferences:
-    - {fileID: 3478947421943283792}
-    - {fileID: 7679393172858511098}
+    _json: '{"declarations":{"collection":{"$content":[],"$version":"A"},"$version":"A"}}'
+    _objectReferences: []
 --- !u!114 &8743281015036137630
 MonoBehaviour:
   m_ObjectHideFlags: 0
