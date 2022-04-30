@@ -73,13 +73,3 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon
 
     float? IWeapon.ChargeProgress => null;
 }
-
-
-[UnitTitle("On Gun Fired")]
-[UnitCategory("Events\\Network Item")]
-public class EventGunFired : GameObjectEventUnit<EmptyEventArgs>
-{
-    public override System.Type MessageListenerType => null;
-
-    protected override string hookName => nameof(EventGunFired);
-}

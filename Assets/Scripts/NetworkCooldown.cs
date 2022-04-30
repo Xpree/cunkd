@@ -165,22 +165,3 @@ public class NetworkCooldown : NetworkBehaviour
         return true;
     }
 }
-
-[UnitTitle("On Network Cooldown Begin")]
-[UnitCategory("Events\\Network Cooldown")]
-public class EventNetworkCooldownBegin : GameObjectEventUnit<EmptyEventArgs>
-{
-    public override Type MessageListenerType => null;
-
-    protected override string hookName => nameof(EventNetworkCooldownBegin);
-}
-
-
-[UnitTitle("On Network Cooldown End")]
-[UnitCategory("Events\\Network Cooldown")]
-public class EventNetworkCooldownEnd : GameObjectEventUnit<EmptyEventArgs>
-{
-    public override Type MessageListenerType => null;
-
-    protected override string hookName => nameof(EventNetworkCooldownEnd);
-}
