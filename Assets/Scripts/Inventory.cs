@@ -334,11 +334,21 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
 
     public void UseActiveEquipment(bool primaryAttack, bool wasPressed)
     {
+        var item = GetItemComponent<NetworkItem>(equipped);
+        if (item == null)
+        {
+            return;
+        }
+
         if (primaryAttack)
         {
-            if (wasPressed)
-                EventBus.Trigger(nameof(EventPrimaryAttackPressed), this.GetItem(equipped));
+            item.OnPrimaryAttack(wasPressed);
         }
+        else
+        {
+            item.OnSecondaryAttack(wasPressed);
+        }
+
 
         if (!CanUseActiveEquipment)
             return;
@@ -471,7 +481,11 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
 
     void INetworkItemOwner.OnPickedUp(NetworkItem item)
     {
-        if (item.GetComponent<IWeapon>() != null)
+        if (item.GetComponent<IGadget>() != null || item.ItemType == ItemType.Gadget)
+        {
+            DoPickUpItem(item.gameObject, ItemSlot.Gadget);
+        }
+        else if (item.GetComponent<IWeapon>() != null || item.ItemType == ItemType.Weapon)
         {
             if (firstWeapon == null || ((secondWeapon != null) && equipped == ItemSlot.PrimaryWeapon))
             {
@@ -483,10 +497,6 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
                 DoPickUpItem(item.gameObject, ItemSlot.SecondaryWeapon);
             }
         }
-        else if (item.GetComponent<IGadget>() != null)
-        {
-            DoPickUpItem(item.gameObject, ItemSlot.Gadget);
-        }
         else
         {
             Debug.LogError("Unknown item picked up.");
@@ -495,13 +505,13 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
 
     bool INetworkItemOwner.CanPickup(NetworkItem item)
     {
-        if (item.GetComponent<IWeapon>() != null)
-        {
-            return firstWeapon == null || secondWeapon == null || equipped == ItemSlot.PrimaryWeapon || equipped == ItemSlot.SecondaryWeapon;
-        }
-        else if (item.GetComponent<IGadget>() != null)
+        if (item.GetComponent<IGadget>() != null || item.ItemType == ItemType.Gadget)
         {
             return gadget == null || equipped == ItemSlot.Gadget;
+        }
+        else if (item.GetComponent<IWeapon>() != null || item.ItemType == ItemType.Weapon)
+        {
+            return firstWeapon == null || secondWeapon == null || equipped == ItemSlot.PrimaryWeapon || equipped == ItemSlot.SecondaryWeapon;
         }
         return false;
     }

@@ -7,6 +7,9 @@ using Unity.VisualScripting;
 /// </summary>
 public class NetworkItem : NetworkBehaviour
 {
+    [DoNotSerialize]
+    public ItemType ItemType = ItemType.Weapon;
+
     GameObject owner;
 
     public GameObject Owner => owner;
@@ -109,7 +112,72 @@ public class NetworkItem : NetworkBehaviour
             return;
         
         Pickup(actor);
-    }    
+    }
+
+
+    [ClientRpc(includeOwner = false)]
+    void RpcPrimaryAttackFired()
+    {
+        EventBus.Trigger(nameof(EventPrimaryAttackFired), this.gameObject);
+    }
+
+    [Command]
+    void CmdPrimaryAttackFired()
+    {
+        RpcPrimaryAttackFired();
+    }
+
+    // Call to trigger "On Primary Attack Fired" in Visual scripting
+    [Client]
+    public void OnPrimaryAttackFired()
+    {
+        EventBus.Trigger(nameof(EventPrimaryAttackFired), this.gameObject);
+        CmdPrimaryAttackFired();
+    }
+
+
+    [ClientRpc(includeOwner = false)]
+    void RpcSecondaryAttackFired()
+    {
+        EventBus.Trigger(nameof(EventSecondaryAttackFired), this.gameObject);
+    }
+
+    [Command]
+    void CmdSecondaryAttackFired()
+    {
+        RpcSecondaryAttackFired();
+    }
+
+    // Call to trigger "On Secondary Attack Fired" in Visual scripting
+    [Client]
+    public void OnSecondaryAttackFired()
+    {
+        EventBus.Trigger(nameof(EventSecondaryAttackFired), this.gameObject);
+        CmdPrimaryAttackFired();
+    }
+
+
+    public void OnPrimaryAttack(bool wasPressed)
+    {
+        if (!Activated)
+            return;
+
+        if(wasPressed)
+            EventBus.Trigger(nameof(EventPrimaryAttackPressed), this.gameObject);
+        else
+            EventBus.Trigger(nameof(EventPrimaryAttackReleased), this.gameObject);
+    }
+
+    public void OnSecondaryAttack(bool wasPressed)
+    {
+        if (!Activated)
+            return;
+
+        if (wasPressed)
+            EventBus.Trigger(nameof(EventSecondaryAttackPressed), this.gameObject);
+        else
+            EventBus.Trigger(nameof(EventSecondaryAttackReleased), this.gameObject);
+    }
 }
 
 public interface INetworkItemOwner
@@ -134,3 +202,9 @@ public interface INetworkItemOwner
     bool CanPickup(NetworkItem item);
 }
 
+[System.Serializable]
+public enum ItemType
+{
+    Weapon,
+    Gadget
+}

@@ -50,13 +50,13 @@ public class EventPlayerInteract : GameObjectEventUnit<NetworkIdentity>
 }
 
 
-[UnitTitle("On Gun Fired")]
+[UnitTitle("On Primary Attack Fired")]
 [UnitCategory("Events\\Network Item")]
-public class EventGunFired : GameObjectEventUnit<EmptyEventArgs>
+public class EventPrimaryAttackFired : GameObjectEventUnit<EmptyEventArgs>
 {
     public override System.Type MessageListenerType => null;
 
-    protected override string hookName => nameof(EventGunFired);
+    protected override string hookName => nameof(EventPrimaryAttackFired);
 }
 
 
@@ -77,6 +77,16 @@ public class EventPrimaryAttackReleased : GameObjectEventUnit<EmptyEventArgs>
     public override System.Type MessageListenerType => null;
 
     protected override string hookName => nameof(EventPrimaryAttackReleased);
+}
+
+
+[UnitTitle("On Secondary Attack Fired")]
+[UnitCategory("Events\\Network Item")]
+public class EventSecondaryAttackFired : GameObjectEventUnit<EmptyEventArgs>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventSecondaryAttackFired);
 }
 
 

@@ -157,9 +157,9 @@ GameObject:
   - component: {fileID: 1057481433090885412}
   - component: {fileID: 4380918290357192344}
   - component: {fileID: 5572640954892714355}
-  - component: {fileID: 2431201624997671022}
   - component: {fileID: 8743281015036137630}
   - component: {fileID: 4517699431709225799}
+  - component: {fileID: 2431201624997671022}
   m_Layer: 0
   m_Name: Black Hole Gun
   m_TagString: Untagged
@@ -214,6 +214,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  ItemType: 0
 --- !u!114 &8162454346370928035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,22 +299,6 @@ MonoBehaviour:
     _objectReferences:
     - {fileID: 3478947421943283792}
     - {fileID: 7679393172858511098}
---- !u!114 &2431201624997671022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4053286044562665193}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efe58df89b5b74a97a123b5ed2b70422, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _data:
-    _json: '{"nest":{"source":"Macro","macro":0,"embed":null}}'
-    _objectReferences:
-    - {fileID: 11400000, guid: bd2bcf634f6f34a4f8e926788dd2ed18, type: 2}
 --- !u!114 &8743281015036137630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -349,9 +334,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _data:
     _json: '{"nest":{"source":"Embed","macro":null,"embed":{"variables":{"collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":"General
-      Events","summary":"Handles On Gun Fire","pan":{"x":0.0,"y":0.0},"zoom":1.0,"elements":[{"chainable":false,"member":{"name":"Play","parameterTypes":[],"targetType":"UnityEngine.VFX.VisualEffect","targetTypeName":"UnityEngine.VFX.VisualEffect","$version":"A"},"defaultValues":{"target":{"$content":0,"$type":"UnityEngine.Object"}},"position":{"x":31.0,"y":-50.0},"guid":"57d340f2-b1aa-4e26-9791-e640585c2f7d","$version":"A","$type":"Unity.VisualScripting.InvokeMember","$id":"10"},{"coroutine":false,"defaultValues":{"target":null},"position":{"x":-230.0,"y":-83.0},"guid":"5960b59a-05d1-4a9e-925d-5d7c936ebc57","$version":"A","$type":"EventGunFired","$id":"13"},{"sourceUnit":{"$ref":"13"},"sourceKey":"trigger","destinationUnit":{"$ref":"10"},"destinationKey":"enter","guid":"206d0fe2-716a-475b-9a9c-165f1865b0f1","$type":"Unity.VisualScripting.ControlConnection"}],"$version":"A"}}}'
+      Events","summary":null,"pan":{"x":0.0,"y":0.0},"zoom":1.0,"elements":[{"coroutine":false,"defaultValues":{"target":null},"position":{"x":-278.0,"y":-226.0},"guid":"6ac56ace-fd4d-4818-b94a-1e4c80bc6c47","$version":"A","$type":"EventPrimaryAttackFired","$id":"10"},{"chainable":false,"member":{"name":"Play","parameterTypes":[],"targetType":"UnityEngine.VFX.VisualEffect","targetTypeName":"UnityEngine.VFX.VisualEffect","$version":"A"},"defaultValues":{"target":{"$content":0,"$type":"UnityEngine.Object"}},"position":{"x":-12.0,"y":-228.0},"guid":"014b89fa-9d81-4f7f-945a-088b67f78e8c","$version":"A","$type":"Unity.VisualScripting.InvokeMember","$id":"12"},{"sourceUnit":{"$ref":"10"},"sourceKey":"trigger","destinationUnit":{"$ref":"12"},"destinationKey":"enter","guid":"c53eacec-c581-45d2-9e17-20f818ea7aee","$type":"Unity.VisualScripting.ControlConnection"}],"$version":"A"}}}'
     _objectReferences:
     - {fileID: 8265570915776807587}
+--- !u!114 &2431201624997671022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4053286044562665193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efe58df89b5b74a97a123b5ed2b70422, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"nest":{"source":"Macro","macro":0,"embed":null}}'
+    _objectReferences:
+    - {fileID: 11400000, guid: bd2bcf634f6f34a4f8e926788dd2ed18, type: 2}
 --- !u!1 &6085541189861766774
 GameObject:
   m_ObjectHideFlags: 0

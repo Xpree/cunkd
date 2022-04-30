@@ -1,15 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
-using UnityEngine.VFX;
 
 [RequireComponent(typeof(NetworkItem))]
 [RequireComponent(typeof(NetworkCooldown))]
-public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
+public class SwapSniper : NetworkBehaviour
 {
-    [SerializeField] NetworkAnimator animator;
-
     [SerializeField] GameSettings _settings;
     float cooldown => _settings.SwapSniper.Cooldown;
     float range => _settings.SwapSniper.Range;
@@ -17,9 +12,13 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     [SerializeField] LayerMask TargetMask = ~0;
 
     NetworkCooldown _cooldownTimer;
+    NetworkItem _item;
     
     void Awake()
     {
+        _item = GetComponent<NetworkItem>();
+        _item.ItemType = ItemType.Weapon;
+
         _cooldownTimer = GetComponent<NetworkCooldown>();
         _cooldownTimer.coolDownDuration = cooldown;
     }
@@ -32,18 +31,6 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
         }
     }
 
-    public NetworkIdentity DidHitObject()
-    {
-        var aimTransform = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
-        if (Physics.Raycast(aimTransform.position, aimTransform.forward, out RaycastHit hitResult, range, TargetMask))
-        {            
-            return hitResult.rigidbody?.GetComponent<NetworkIdentity>();
-        }
-        else
-        {
-            return null;
-        }
-    }
 
     [Command]
     void CmdPerformSwap(NetworkIdentity target)
@@ -54,7 +41,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
             return;
         }
 
-        var owner = GetComponent<NetworkItem>()?.Owner;
+        var owner = _item.Owner;
         if (owner == null)
             return;
 
@@ -63,66 +50,29 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
 
         Util.Teleport(target.gameObject, Swapper);
         Util.Teleport(owner.gameObject, Swappee);
-        animator.SetTrigger("Fire");
-
     }
 
-    void IWeapon.PrimaryAttack(bool isPressed)
+
+    public bool Shoot()
     {
-        if(isPressed)
+        if (_cooldownTimer.Use(this.cooldown))
         {
-            if(_cooldownTimer.Use(this.cooldown))
+            _item.OnPrimaryAttackFired();
+
+            var aimTransform = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
+            if (Physics.SphereCast(aimTransform.position, 0.25f, aimTransform.forward, out RaycastHit hitResult, range, TargetMask))
             {
-                CmdPerformSwap(DidHitObject());
+                var target = hitResult.rigidbody?.GetComponent<NetworkIdentity>();
+                if(target != null)
+                {
+                    CmdPerformSwap(target);
+                }
             }
+            return true;
         }
-    }
-
-    void IWeapon.SecondaryAttack(bool isPressed)
-    {
-
-    }
-
-    float? IWeapon.ChargeProgress => null;
-
-
-    #region IEquipable
-
-    bool holstered;
-    bool IEquipable.IsHolstered => holstered;
-
-    void IEquipable.OnHolstered()
-    {
-        // TODO Animation then set holstered
-        holstered = true;
-        transform.localScale = Vector3.zero;
-    }
-
-    void IEquipable.OnUnholstered()
-    {
-        // TODO Animation then set holstered
-        holstered = false;
-        transform.localScale = Vector3.one;
-    }
-
-    void IEquipable.OnPickedUp(bool startHolstered)
-    {
-        holstered = startHolstered;
-
-        if (holstered)
-            transform.localScale = Vector3.zero;
         else
-            transform.localScale = Vector3.one;
-    }
-
-    void IEquipable.OnDropped()
-    {
-        this.transform.parent = null;
-        if (holstered)
         {
-            holstered = false;
-            transform.localScale = Vector3.one;
+            return false;
         }
     }
-    #endregion
 }
