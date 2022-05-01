@@ -146,8 +146,8 @@ public class PlayerGUI : MonoBehaviour
     public void updateGUI(Inventory inventory)
     {
         selectedIcon.enabled = false;
-        updateItem(inventory.firstWeapon, primaryWeaponIcon, cooldownIconSlot1, null, inventory.equipped == ItemSlot.PrimaryWeapon);
-        updateItem(inventory.secondWeapon, secondaryWeaponIcon, cooldownIconSlot2, null, inventory.equipped == ItemSlot.SecondaryWeapon);
-        updateItem(inventory.gadget, gadgetIcon, cooldownIconSlot3, null, inventory.equipped == ItemSlot.Gadget);
+        updateItem(inventory.firstWeapon, primaryWeaponIcon, cooldownIconSlot1, chargesSlot1, inventory.equipped == ItemSlot.PrimaryWeapon);
+        updateItem(inventory.secondWeapon, secondaryWeaponIcon, cooldownIconSlot2, chargesSlot2, inventory.equipped == ItemSlot.SecondaryWeapon);
+        updateItem(inventory.gadget, gadgetIcon, cooldownIconSlot3, chargesSlot3, inventory.equipped == ItemSlot.Gadget);
     }
 }
