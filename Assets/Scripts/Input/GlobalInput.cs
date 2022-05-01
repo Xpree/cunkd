@@ -11,6 +11,8 @@ public class GlobalInput : MonoBehaviour
     {
         sensePitchInput = Settings.mouseSensitivityPitch.ToString();
         senseYawInput = Settings.mouseSensitivityYaw.ToString();
+
+        FMODUnity.RuntimeManager.MuteAllEvents(Settings.muted);
     }
 
     void Update()
@@ -74,9 +76,11 @@ public class GlobalInput : MonoBehaviour
 
         GUILayout.BeginHorizontal();
         GUILayout.Label("Mute:");
+        var previouslyMuted = Settings.muted;
         Settings.muted = GUILayout.Toggle(Settings.muted, GUIContent.none);
+        if(previouslyMuted != Settings.muted)
+            FMODUnity.RuntimeManager.MuteAllEvents(Settings.muted);
         GUILayout.EndHorizontal();
-
 
         if (!Application.isEditor)
         {
