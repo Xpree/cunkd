@@ -105,6 +105,7 @@ MonoBehaviour:
   rotationCenter: {fileID: 2980025407742363149}
   PickupColldider: {fileID: 3475851605051110721}
   ItemType: 1
+  itemAimTransform: {fileID: 0}
 --- !u!114 &2852530366991114646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,13 +152,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data:
-    _json: '{"declarations":{"collection":{"$content":[{"name":"Pickup Collider","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.Collider,
-      UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"Rotate
-      In World","value":{"$content":1,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.Transform,
-      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
-    _objectReferences:
-    - {fileID: 3475851605051110721}
-    - {fileID: 2980025407742363149}
+    _json: '{"declarations":{"collection":{"$content":[],"$version":"A"},"$version":"A"}}'
+    _objectReferences: []
 --- !u!114 &5420530182049906414
 MonoBehaviour:
   m_ObjectHideFlags: 0

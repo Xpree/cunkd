@@ -152,11 +152,13 @@ public class NetworkItem : NetworkBehaviour
         }
     }
 
-    public Vector3 RaycastPointOrMaxDistance(float maxDistance, LayerMask layerMask)
+    public Vector3 ProjectileHitscanPoint(float maxDistance)
     {
         var aimRay = this.AimRay;
 
-        if (Physics.Raycast(aimRay, out RaycastHit hit, maxDistance, layerMask, QueryTriggerInteraction.Ignore))
+        var settings = GameServer.Instance.Settings;
+
+        if (Physics.SphereCast(aimRay, settings.SmallSphereCastRadius, out RaycastHit hit, maxDistance, settings.ProtectileTargetLayers, QueryTriggerInteraction.Ignore))
         {
             return hit.point;
         }
@@ -166,25 +168,15 @@ public class NetworkItem : NetworkBehaviour
         }
     }
 
-    public Vector3 SphereCastPointOrMaxDistance(float maxDistance, LayerMask layerMask, float radius)
+
+
+    public NetworkIdentity ProjectileHitScanIdentity(float maxDistance)
     {
         var aimRay = this.AimRay;
 
-        if (Physics.SphereCast(aimRay, radius, out RaycastHit hit, maxDistance, layerMask, QueryTriggerInteraction.Ignore))
-        {
-            return hit.point;
-        }
-        else
-        {
-            return aimRay.GetPoint(maxDistance);
-        }
-    }
+        var settings = GameServer.Instance.Settings;
 
-    public NetworkIdentity SphereCastNetworkIdentity(float maxDistance, LayerMask layerMask, float radius)
-    {
-        var aimRay = this.AimRay;
-
-        if (Physics.SphereCast(aimRay, radius, out RaycastHit hit, maxDistance, layerMask, QueryTriggerInteraction.Ignore))
+        if (Physics.SphereCast(aimRay, settings.SmallSphereCastRadius, out RaycastHit hit, maxDistance, settings.ProtectileTargetLayers, QueryTriggerInteraction.Ignore))
         {
             return hit.collider.GetComponent<NetworkIdentity>();
         }

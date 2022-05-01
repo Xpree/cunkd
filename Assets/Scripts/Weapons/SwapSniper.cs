@@ -6,43 +6,31 @@ using Unity.VisualScripting;
 [RequireComponent(typeof(NetworkCooldown))]
 public class SwapSniper : NetworkBehaviour
 {
-    [SerializeField] GameSettings _settings;
-    float cooldown => _settings.SwapSniper.Cooldown;
-    float range => _settings.SwapSniper.Range;
-
-    [SerializeField] LayerMask TargetMask = ~0;
-
-    NetworkCooldown _cooldownTimer;
-    NetworkItem _item;
+    NetworkCooldown cooldown;
+    NetworkItem item;
 
     void Awake()
     {
-        _item = GetComponent<NetworkItem>();
-        _item.ItemType = ItemType.Weapon;
+        item = GetComponent<NetworkItem>();
+        item.ItemType = ItemType.Weapon;
 
-        _cooldownTimer = GetComponent<NetworkCooldown>();
-        _cooldownTimer.CooldownDuration = cooldown;
+        var settings = GameServer.Instance.Settings.SwapSniper;
+        cooldown = GetComponent<NetworkCooldown>();
+        cooldown.CooldownDuration = settings.Cooldown;
     }
-
-    private void Start()
-    {
-        if (_settings == null)
-        {
-            Debug.LogError("Missing GameSettings reference on " + name);
-        }
-    }
-
 
     [Command]
     void CmdPerformSwap(NetworkIdentity target)
     {
-        if (target == null || _cooldownTimer.ServerUse(this.cooldown) == false)
+        var settings = GameServer.Instance.Settings.SwapSniper;
+
+        if (target == null || cooldown.ServerUse(settings.Cooldown) == false)
         {
             // Client predicted wrong. Dont care!
             return;
         }
 
-        var owner = _item.Owner;
+        var owner = item.Owner;
         if (owner == null)
             return;
 
@@ -62,12 +50,13 @@ public class SwapSniper : NetworkBehaviour
 
     public bool Shoot()
     {
-        if (_cooldownTimer.Use(this.cooldown))
+        var settings = GameServer.Instance.Settings.SwapSniper;
+        if (cooldown.Use(settings.Cooldown))
         {
             EventBus.Trigger(nameof(EventPrimaryAttackFired), this.gameObject);
             CmdTriggerPrimaryAttackFired();
 
-            var target = _item.SphereCastNetworkIdentity(range, TargetMask, _settings.SmallSphereCastRadius);
+            var target = item.ProjectileHitScanIdentity(settings.Range);
             if (target != null)
             {
                 CmdPerformSwap(target);

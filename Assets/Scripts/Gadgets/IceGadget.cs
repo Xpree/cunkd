@@ -2,46 +2,60 @@ using UnityEngine;
 using Mirror;
 
 [RequireComponent(typeof(NetworkItem))]
+[RequireComponent(typeof(NetworkCooldown))]
 public class IceGadget : NetworkBehaviour
 {
     public GameObject IceGadgetTrap;
     [SerializeField] LayerMask TargetMask = ~0;
-    NetworkItem _item;
-    bool _used = false;
+    NetworkItem item;
+
+    // Mostly for displaying 1/1 in UI
+    NetworkCooldown cooldown;
 
     void Awake()
     {
-        _item = GetComponent<NetworkItem>();
-        _item.ItemType = ItemType.Gadget;
+        item = GetComponent<NetworkItem>();
+        item.ItemType = ItemType.Gadget;
+
+        var settings = GameServer.Instance.Settings.IceGadget;
+        cooldown = GetComponent<NetworkCooldown>();
+        cooldown.MaxCharges = settings.Charges;
+        cooldown.CooldownDuration = settings.Cooldown;
+    }
+
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+        cooldown.SetCharges(1);
     }
 
     [Command]
     void SpawnIceGadget(Vector3 target)
     {
-        if (_used)
-            return;
-        _used = true;
-        var go = Instantiate(IceGadgetTrap, target, Quaternion.identity);
-        NetworkServer.Spawn(go);
-        NetworkServer.Destroy(this.gameObject);
+        if(cooldown.ServerUse())
+        {
+            var go = Instantiate(IceGadgetTrap, target, Quaternion.identity);
+            NetworkServer.Spawn(go);
+            if(cooldown.Charges == 0)
+                NetworkServer.Destroy(this.gameObject);
+        }
     }
 
     public bool Use()
     {
-        if (_used)
-            return false;
-        _used = true;
-
-        var aimTransform = GetComponent<NetworkItem>().OwnerInteractAimTransform;
-        if (Util.RaycastPoint(aimTransform, 100.0f, TargetMask, out Vector3 point))
+        if(cooldown.Use())
         {
+            var settings = GameServer.Instance.Settings.IceGadget;
+
+            // TODO: Throwing logic?
+            var point = item.ProjectileHitscanPoint(settings.MaxRange);
             SpawnIceGadget(point);
+            return true;
         }
         else
         {
-            SpawnIceGadget(_item.Owner.transform.position);
+            return false;
         }
-        return true;
     }
 
 }

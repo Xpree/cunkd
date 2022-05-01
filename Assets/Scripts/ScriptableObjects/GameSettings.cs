@@ -57,7 +57,6 @@ public class GameSettings : ScriptableObject
     {
         public float Cooldown = 30f;
         public float Range = 20f;
-        public LayerMask TargetMask = ~0;
     }
 
 
@@ -78,6 +77,10 @@ public class GameSettings : ScriptableObject
     {
         public float Duration = 30f;
         public float Friction = -0.5f;
+
+        public float MaxRange = 20f;
+        public float Cooldown = 0f;
+        public int Charges = 1;
     }
 
     public IceGadgetSettings IceGadget = new();
@@ -92,7 +95,7 @@ public class GameSettings : ScriptableObject
     public SwapSniperSettings SwapSniper = new();
 
 
-
+    public LayerMask ProtectileTargetLayers;
     public float SmallSphereCastRadius = 0.25f;
 }
 

@@ -25,7 +25,8 @@ public class BlackHoleGun : NetworkBehaviour
     [Command]
     public void CmdSpawnBlackHole(Vector3 target)
     {
-        if (cooldownTimer.ServerUse())
+        var settings = GameServer.Instance.Settings.BlackHoleGun;
+        if (cooldownTimer.ServerUse(settings.Cooldown))
         {
             NetworkEventBus.TriggerExcludeOwner(nameof(EventPrimaryAttackFired), this.netIdentity);
             var go = Instantiate(blackHolePrefab, target, Quaternion.identity);
@@ -41,7 +42,7 @@ public class BlackHoleGun : NetworkBehaviour
             EventBus.Trigger(nameof(EventPrimaryAttackFired), this.gameObject);
 
             var settings = GameServer.Instance.Settings.BlackHoleGun;
-            var target = item.RaycastPointOrMaxDistance(settings.Range, settings.TargetMask);
+            var target = item.ProjectileHitscanPoint(settings.Range);
             CmdSpawnBlackHole(target);
 
             return true;
