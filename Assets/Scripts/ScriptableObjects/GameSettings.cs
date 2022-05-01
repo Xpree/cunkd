@@ -97,5 +97,6 @@ public class GameSettings : ScriptableObject
 
     public LayerMask ProtectileTargetLayers;
     public float SmallSphereCastRadius = 0.25f;
+    public float AutodespawnTimer = 30.0f;
 }
 

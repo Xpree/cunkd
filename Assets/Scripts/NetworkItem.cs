@@ -45,6 +45,8 @@ public class NetworkItem : NetworkBehaviour
     bool _secondaryAttack;
     bool _activated = false;
 
+    Coroutine _despawnCoroutine = null;
+
     void SetPrimaryAttack(bool pressed)
     {
         _primaryAttack = pressed;
@@ -224,11 +226,28 @@ public class NetworkItem : NetworkBehaviour
         }
     }
 
+    System.Collections.IEnumerator Autodespawn()
+    {
+        yield return new WaitForSecondsRealtime(GameServer.Instance.Settings.AutodespawnTimer);
+        NetworkServer.Destroy(this.gameObject);
+    }
+
     [Server]
     void ChangeOwner(GameObject actor)
     {
+        if(_despawnCoroutine != null)
+        {
+            StopCoroutine(_despawnCoroutine);
+            _despawnCoroutine = null;
+        }
+        
         RpcChangedOwner(actor);
         OnChangedOwner(actor);
+
+        if (actor == null && GameServer.Instance.Settings.AutodespawnTimer > 0)
+        {
+            _despawnCoroutine = StartCoroutine(Autodespawn());
+        }
     }
 
     [Server]
