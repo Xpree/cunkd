@@ -150,6 +150,8 @@ public class NetworkItem : NetworkBehaviour
     [Command]
     void CmdPrimaryAttackFired()
     {
+        if (NetworkClient.active == false)
+            EventBus.Trigger(nameof(EventPrimaryAttackFired), this.gameObject);
         RpcPrimaryAttackFired();
     }
 
