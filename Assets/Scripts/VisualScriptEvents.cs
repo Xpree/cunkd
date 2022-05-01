@@ -100,6 +100,35 @@ public class EventPlayerInteractHoverEnd : GameObjectEventUnit<NetworkIdentity>
 }
 
 
+[UnitTitle("On Player Landed")]
+[UnitCategory("Events\\Player Events")]
+public class EventPlayerLanded : GameObjectEventUnit<EmptyEventArgs>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventPlayerLanded);
+}
+
+[UnitTitle("On Player Jumped")]
+[UnitCategory("Events\\Player Events")]
+public class EventPlayerJumped : GameObjectEventUnit<EmptyEventArgs>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventPlayerJumped);
+}
+
+
+[UnitTitle("On Player Air Jumped")]
+[UnitCategory("Events\\Player Events")]
+public class EventPlayerAirJumped : GameObjectEventUnit<EmptyEventArgs>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventPlayerAirJumped);
+}
+
+
 [UnitTitle("On Primary Attack Fired")]
 [UnitCategory("Events\\Network Item")]
 public class EventPrimaryAttackFired : GameObjectEventUnit<EmptyEventArgs>
