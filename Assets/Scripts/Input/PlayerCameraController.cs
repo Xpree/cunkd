@@ -42,7 +42,10 @@ public class PlayerCameraController : MonoBehaviour
     {
         if (camera == null)
             return;
-        camera.enabled = enable;        
+        camera.enabled = enable;
+        var listener = camera.GetComponent<FMODUnity.StudioListener>();
+        if(listener != null)
+            listener.enabled = enable;
     }
 
 
