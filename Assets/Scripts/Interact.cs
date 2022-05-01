@@ -16,9 +16,28 @@ public class Interact : NetworkBehaviour
     [HideInInspector]
     public bool hoveringOnAimObject = false;
 
+    PlayerCameraController playerCameraController;
+
     private void Start()
     {
         aimTransform = Util.GetPlayerInteractAimTransform(this.gameObject);
+        playerCameraController = GetComponentInChildren<PlayerCameraController>(true);
+    }
+
+    private void OnEnable()
+    {
+        EventBus.Register(new EventHook(nameof(EventPlayerCameraDeactivated), this), new System.Action<EmptyEventArgs>(OnPlayerCameraDeactivated));
+    }
+
+    private void OnDisable()
+    {
+        StopHovering();
+        EventBus.Unregister(new EventHook(nameof(EventPlayerCameraDeactivated), this), new System.Action<EmptyEventArgs>(OnPlayerCameraDeactivated));
+    }
+
+    void OnPlayerCameraDeactivated(EmptyEventArgs args)
+    {
+        StopHovering();
     }
 
     public bool RaycastInteract(out RaycastHit hit)
@@ -44,31 +63,27 @@ public class Interact : NetworkBehaviour
         if(hoveringOnAimObject)
         {
             hoveringOnAimObject = false;
-            if(interactAimObject != null)
-                EventBus.Trigger(nameof(EventPlayerInteractHoverEnd), interactAimObject, this.netIdentity);
+            if(interactAimObject != null && interactAimObject.activeSelf)
+                EventBus.Trigger(nameof(EventPlayerInteractHoverStop), interactAimObject, this.netIdentity);
             interactAimObject = null;
-            FindObjectOfType<PlayerGUI>()?.interactiveButton(null);
         }
     }
 
     void SetHover(GameObject gameObject)
     {
-        if (interactAimObject != gameObject)
+        if (interactAimObject != gameObject && gameObject.activeSelf)
         {
             StopHovering();
 
             interactAimObject = gameObject;
             hoveringOnAimObject = true;
             EventBus.Trigger(nameof(EventPlayerInteractHoverStart), interactAimObject, this.netIdentity);
-            ObjectSpawner obs = gameObject.GetComponent<ObjectSpawner>();
-            if (obs != null)
-                FindObjectOfType<PlayerGUI>()?.interactiveButton(obs);
         }
     }
 
     private void FixedUpdate()
     {
-        if(this.netIdentity.HasControl())
+        if(this.netIdentity.HasControl() && playerCameraController.IsCameraActive)
         {
             if (RaycastInteract(out RaycastHit hit))
             {

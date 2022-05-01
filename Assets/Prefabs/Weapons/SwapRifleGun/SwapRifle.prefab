@@ -235,8 +235,9 @@ MonoBehaviour:
   syncInterval: 0.1
   displayName: Sniper Combobulator
   rotationCenter: {fileID: 3718999277748368082}
-  PickupColldider: {fileID: 4391620082639551554}
+  PickupCollider: {fileID: 4391620082639551554}
   ItemType: 0
+  itemAimTransform: {fileID: 0}
 --- !u!114 &-3118400523729911809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,10 +252,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  _settings: {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}
-  TargetMask:
-    serializedVersion: 2
-    m_Bits: 448
 --- !u!114 &8162454346370928035
 MonoBehaviour:
   m_ObjectHideFlags: 0

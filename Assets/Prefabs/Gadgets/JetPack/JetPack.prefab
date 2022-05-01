@@ -1542,7 +1542,7 @@ MonoBehaviour:
   syncInterval: 0.1
   displayName: Jetpack
   rotationCenter: {fileID: 427117330482908859}
-  PickupColldider: {fileID: 7918212240452518327}
+  PickupCollider: {fileID: 7918212240452518327}
   ItemType: 1
   itemAimTransform: {fileID: 0}
 --- !u!114 &-2435825764171679950

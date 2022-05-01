@@ -120,7 +120,7 @@ MonoBehaviour:
   syncInterval: 0.1
   displayName: Banana
   rotationCenter: {fileID: 4608460220811360064}
-  PickupColldider: {fileID: 2727430984441613394}
+  PickupCollider: {fileID: 2727430984441613394}
   ItemType: 1
   itemAimTransform: {fileID: 0}
 --- !u!114 &6492595513888819284

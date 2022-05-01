@@ -56,7 +56,7 @@ public class SwapSniper : NetworkBehaviour
             EventBus.Trigger(nameof(EventPrimaryAttackFired), this.gameObject);
             CmdTriggerPrimaryAttackFired();
 
-            var target = item.ProjectileHitScanIdentity(settings.Range);
+            var target = item.ProjectileHitscanIdentity(settings.Range);
             if (target != null)
             {
                 CmdPerformSwap(target);

@@ -72,6 +72,20 @@ public class PlayerGUI : MonoBehaviour
         }
     }
 
+    public void interactiveItemButton(NetworkItem obs)
+    {
+        if (obs != null)
+        {
+            interactButton.enabled = true;
+            intreractableInfoText.text = "Pick up " + obs.DisplayName;
+        }
+        else
+        {
+            interactButton.enabled = false;
+            intreractableInfoText.text = "";
+        }
+    }
+
     void setIcon(RawImage icon, NetworkItem item)
     {
         if (item != null)

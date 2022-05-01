@@ -9,7 +9,7 @@ public class NetworkItem : NetworkBehaviour
 {
     [SerializeField] string displayName;
     [SerializeField] Transform rotationCenter;
-    public Collider PickupColldider;
+    public Collider PickupCollider;
 
     public string DisplayName => string.IsNullOrEmpty(displayName) ? this.gameObject.name : displayName;
 
@@ -68,7 +68,7 @@ public class NetworkItem : NetworkBehaviour
     [Command]
     void CmdPrimaryPressed(bool pressed)
     {
-        if(isServerOnly)
+        if (isServerOnly)
             SetPrimaryAttack(pressed);
         RpcPrimaryPressed(pressed);
     }
@@ -107,10 +107,10 @@ public class NetworkItem : NetworkBehaviour
 
     public void OnPrimaryAttack(bool wasPressed)
     {
-        if(wasPressed != _primaryAttack)
+        if (wasPressed != _primaryAttack)
         {
             SetPrimaryAttack(wasPressed);
-            CmdPrimaryPressed(wasPressed);            
+            CmdPrimaryPressed(wasPressed);
         }
     }
 
@@ -119,7 +119,7 @@ public class NetworkItem : NetworkBehaviour
         if (wasPressed != _secondaryAttack)
         {
             SetSecondaryAttack(wasPressed);
-            CmdSecondaryPressed(wasPressed);            
+            CmdSecondaryPressed(wasPressed);
         }
     }
 
@@ -134,7 +134,7 @@ public class NetworkItem : NetworkBehaviour
             if (_activated == value)
                 return;
 
-            if(!value)
+            if (!value)
             {
                 if (_primaryAttack)
                     SetPrimaryAttack(false);
@@ -170,9 +170,7 @@ public class NetworkItem : NetworkBehaviour
         }
     }
 
-
-
-    public NetworkIdentity ProjectileHitScanIdentity(float maxDistance)
+    public NetworkIdentity ProjectileHitscanIdentity(float maxDistance)
     {
         var aimRay = this.AimRay;
 
@@ -188,11 +186,10 @@ public class NetworkItem : NetworkBehaviour
         }
     }
 
-
     public bool PickupEnabled
     {
-        get { return PickupColldider.enabled; }
-        set { PickupColldider.enabled = value; }
+        get { return PickupCollider.enabled; }
+        set { PickupCollider.enabled = value; }
     }
 
     public void SetPositionWithRotationCenter(Transform target)
@@ -203,8 +200,32 @@ public class NetworkItem : NetworkBehaviour
 
     private void Awake()
     {
-        if (PickupColldider == null)
+        if (PickupCollider == null)
             Debug.LogError("Missing Pickup colldier on: " + this.name);
+    }
+
+    private void OnEnable()
+    {
+        EventBus.Register(new EventHook(nameof(EventPlayerInteract), PickupCollider.gameObject), new System.Action<NetworkIdentity>(CmdTryPickup));
+        EventBus.Register(new EventHook(nameof(EventPlayerInteractHoverStart), PickupCollider.gameObject), new System.Action<NetworkIdentity>(OnInteractHoverStart));
+        EventBus.Register(new EventHook(nameof(EventPlayerInteractHoverStop), PickupCollider.gameObject), new System.Action<NetworkIdentity>(OnInteractHoverStop));
+    }
+
+    private void OnDisable()
+    {
+        EventBus.Unregister(new EventHook(nameof(EventPlayerInteract), PickupCollider.gameObject), new System.Action<NetworkIdentity>(CmdTryPickup));
+        EventBus.Unregister(new EventHook(nameof(EventPlayerInteractHoverStart), PickupCollider.gameObject), new System.Action<NetworkIdentity>(OnInteractHoverStart));
+        EventBus.Unregister(new EventHook(nameof(EventPlayerInteractHoverStop), PickupCollider.gameObject), new System.Action<NetworkIdentity>(OnInteractHoverStop));
+    }
+
+    void OnInteractHoverStart(NetworkIdentity player)
+    {
+        FindObjectOfType<PlayerGUI>()?.interactiveItemButton(this);
+    }
+
+    void OnInteractHoverStop(NetworkIdentity player)
+    {
+        FindObjectOfType<PlayerGUI>()?.interactiveItemButton(null);
     }
 
     void OnChangedOwner(GameObject actor)
@@ -212,7 +233,14 @@ public class NetworkItem : NetworkBehaviour
         owner = actor;
         if (owner != null)
         {
+            PickupEnabled = false;
             owner.GetComponent<INetworkItemOwner>()?.OnPickedUp(this);
+        }
+        else
+        {
+            this.transform.parent = null;
+            PickupEnabled = true;
+            Debug.Log("Enabling pickup");
         }
 
     }
@@ -235,12 +263,12 @@ public class NetworkItem : NetworkBehaviour
     [Server]
     void ChangeOwner(GameObject actor)
     {
-        if(_despawnCoroutine != null)
+        if (_despawnCoroutine != null)
         {
             StopCoroutine(_despawnCoroutine);
             _despawnCoroutine = null;
         }
-        
+
         RpcChangedOwner(actor);
         OnChangedOwner(actor);
 
@@ -273,6 +301,20 @@ public class NetworkItem : NetworkBehaviour
         ChangeOwner(actor.gameObject);
     }
 
+    [Command(requiresAuthority = false)]
+    public void CmdTryPickup(NetworkIdentity actor)
+    {
+        if (Owner != null)
+            return;
+
+        var itemOwner = actor.GetComponent<INetworkItemOwner>();
+        if (itemOwner == null || itemOwner.CanPickup(this) == false)
+            return;
+
+        Pickup(actor);
+    }
+
+
     [Command]
     public void CmdDropOwnership()
     {
@@ -288,18 +330,6 @@ public class NetworkItem : NetworkBehaviour
         }
     }
 
-    [Command(requiresAuthority = false)]
-    public void CmdTryPickup(NetworkIdentity actor)
-    {
-        if (Owner != null)
-            return;
-
-        var itemOwner = actor.GetComponent<INetworkItemOwner>();
-        if (itemOwner == null || itemOwner.CanPickup(this) == false)
-            return;
-
-        Pickup(actor);
-    }
 
 }
 

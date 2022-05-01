@@ -24,6 +24,27 @@ public class EventNetworkCooldownEnd : GameObjectEventUnit<EmptyEventArgs>
     protected override string hookName => nameof(EventNetworkCooldownEnd);
 }
 
+
+
+[UnitTitle("On Player Camera Activated")]
+[UnitCategory("Events\\Player Camera")]
+public class EventPlayerCameraActivated : GameObjectEventUnit<EmptyEventArgs>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventPlayerCameraActivated);
+}
+
+[UnitTitle("On Player Camera Deactivated")]
+[UnitCategory("Events\\Player Camera")]
+public class EventPlayerCameraDeactivated : GameObjectEventUnit<EmptyEventArgs>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventPlayerCameraDeactivated);
+}
+
+
 [UnitTitle("On Player Interact")]
 [UnitCategory("Events\\Player Actions")]
 public class EventPlayerInteract : GameObjectEventUnit<NetworkIdentity>
@@ -74,13 +95,13 @@ public class EventPlayerInteractHoverStart : GameObjectEventUnit<NetworkIdentity
     }
 }
 
-[UnitTitle("On Player Interact Hover End")]
+[UnitTitle("On Player Interact Hover Stop")]
 [UnitCategory("Events\\Player Actions")]
-public class EventPlayerInteractHoverEnd : GameObjectEventUnit<NetworkIdentity>
+public class EventPlayerInteractHoverStop : GameObjectEventUnit<NetworkIdentity>
 {
     public override System.Type MessageListenerType => null;
 
-    protected override string hookName => nameof(EventPlayerInteractHoverEnd);
+    protected override string hookName => nameof(EventPlayerInteractHoverStop);
 
     [DoNotSerialize]// No need to serialize ports.
     public ValueOutput interactingEntity { get; private set; }// The event output data to return when the event is triggered.

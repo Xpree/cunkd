@@ -216,7 +216,7 @@ MonoBehaviour:
   syncInterval: 0.1
   displayName: Blackhole Gun
   rotationCenter: {fileID: 7679393172858511098}
-  PickupColldider: {fileID: 3478947421943283792}
+  PickupCollider: {fileID: 3478947421943283792}
   ItemType: 0
   itemAimTransform: {fileID: 0}
 --- !u!114 &8162454346370928035
