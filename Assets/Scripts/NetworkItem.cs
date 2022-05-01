@@ -13,9 +13,9 @@ public class NetworkItem : NetworkBehaviour
 
     public string DisplayName => string.IsNullOrEmpty(displayName) ? this.gameObject.name : displayName;
 
-    public Transform RotationCenter => rotationCenter ?? this.transform;
+    public Transform RotationCenter => rotationCenter == null ? this.transform : rotationCenter;
 
-    [DoNotSerialize]
+    [HideInInspector]
     public ItemType ItemType = ItemType.Weapon;
 
     GameObject owner;
@@ -23,6 +23,13 @@ public class NetworkItem : NetworkBehaviour
     public GameObject Owner => owner;
 
     public Transform OwnerInteractAimTransform => Util.GetPlayerInteractAimTransform(this.Owner);
+
+    [Tooltip("Defaults to OwnerInteractAimTransform if set to None")]
+    [SerializeField] Transform itemAimTransform;
+
+    public Transform AimTransform => itemAimTransform == null ? OwnerInteractAimTransform : itemAimTransform;
+
+    public Ray AimRay => this.AimTransform.ForwardRay();
 
     bool _activated = false;
     public bool Activated
@@ -34,7 +41,7 @@ public class NetworkItem : NetworkBehaviour
         set
         {
             _activated = value;
-            if(_activated)
+            if (_activated)
             {
                 EventBus.Trigger(nameof(EventItemActivated), this.gameObject);
             }
@@ -44,6 +51,49 @@ public class NetworkItem : NetworkBehaviour
             }
         }
     }
+
+    public Vector3 RaycastPointOrMaxDistance(float maxDistance, LayerMask layerMask)
+    {
+        var aimRay = this.AimRay;
+
+        if (Physics.Raycast(aimRay, out RaycastHit hit, maxDistance, layerMask, QueryTriggerInteraction.Ignore))
+        {
+            return hit.point;
+        }
+        else
+        {
+            return aimRay.GetPoint(maxDistance);
+        }
+    }
+
+    public Vector3 SphereCastPointOrMaxDistance(float maxDistance, LayerMask layerMask, float radius)
+    {
+        var aimRay = this.AimRay;
+
+        if (Physics.SphereCast(aimRay, radius, out RaycastHit hit, maxDistance, layerMask, QueryTriggerInteraction.Ignore))
+        {
+            return hit.point;
+        }
+        else
+        {
+            return aimRay.GetPoint(maxDistance);
+        }
+    }
+
+    public NetworkIdentity SphereCastNetworkIdentity(float maxDistance, LayerMask layerMask, float radius)
+    {
+        var aimRay = this.AimRay;
+
+        if (Physics.SphereCast(aimRay, radius, out RaycastHit hit, maxDistance, layerMask, QueryTriggerInteraction.Ignore))
+        {
+            return hit.collider.GetComponent<NetworkIdentity>();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
 
     public bool PickupEnabled
     {
@@ -70,13 +120,13 @@ public class NetworkItem : NetworkBehaviour
         {
             owner.GetComponent<INetworkItemOwner>()?.OnPickedUp(this);
         }
-            
+
     }
 
     [ClientRpc]
     void RpcChangedOwner(GameObject actor)
     {
-        if(this.isClientOnly)
+        if (this.isClientOnly)
         {
             OnChangedOwner(actor);
         }
@@ -102,9 +152,9 @@ public class NetworkItem : NetworkBehaviour
         {
             Debug.LogError("NetworkItem is already picked up.");
             return;
-        }         
+        }
 
-        if(actor.connectionToClient != null)
+        if (actor.connectionToClient != null)
         {
             this.GetComponent<NetworkIdentity>().AssignClientAuthority(actor.connectionToClient);
         }
@@ -121,7 +171,7 @@ public class NetworkItem : NetworkBehaviour
 
     private void OnDestroy()
     {
-        if(owner != null && owner.activeSelf)
+        if (owner != null && owner.activeSelf)
         {
             owner.GetComponent<INetworkItemOwner>()?.OnDestroyed(this);
         }
@@ -134,52 +184,10 @@ public class NetworkItem : NetworkBehaviour
             return;
 
         var itemOwner = actor.GetComponent<INetworkItemOwner>();
-        if (itemOwner  == null || itemOwner.CanPickup(this) == false)
+        if (itemOwner == null || itemOwner.CanPickup(this) == false)
             return;
-        
+
         Pickup(actor);
-    }
-
-
-    [ClientRpc(includeOwner = false)]
-    void RpcPrimaryAttackFired()
-    {
-        EventBus.Trigger(nameof(EventPrimaryAttackFired), this.gameObject);
-    }
-
-    [Command]
-    void CmdPrimaryAttackFired()
-    {
-        if (NetworkClient.active == false)
-            EventBus.Trigger(nameof(EventPrimaryAttackFired), this.gameObject);
-        RpcPrimaryAttackFired();
-    }
-
-    // Call to trigger "On Primary Attack Fired" in Visual scripting
-    public void OnPrimaryAttackFired()
-    {
-        EventBus.Trigger(nameof(EventPrimaryAttackFired), this.gameObject);
-        CmdPrimaryAttackFired();
-    }
-
-
-    [ClientRpc(includeOwner = false)]
-    void RpcSecondaryAttackFired()
-    {
-        EventBus.Trigger(nameof(EventSecondaryAttackFired), this.gameObject);
-    }
-
-    [Command]
-    void CmdSecondaryAttackFired()
-    {
-        RpcSecondaryAttackFired();
-    }
-
-    // Call to trigger "On Secondary Attack Fired" in Visual scripting
-    public void OnSecondaryAttackFired()
-    {
-        EventBus.Trigger(nameof(EventSecondaryAttackFired), this.gameObject);
-        CmdPrimaryAttackFired();
     }
 
     public void OnPrimaryAttack(bool wasPressed)
@@ -187,7 +195,7 @@ public class NetworkItem : NetworkBehaviour
         if (!Activated)
             return;
 
-        if(wasPressed)
+        if (wasPressed)
             EventBus.Trigger(nameof(EventPrimaryAttackPressed), this.gameObject);
         else
             EventBus.Trigger(nameof(EventPrimaryAttackReleased), this.gameObject);

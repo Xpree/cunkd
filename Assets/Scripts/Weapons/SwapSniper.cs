@@ -1,5 +1,6 @@
 using UnityEngine;
 using Mirror;
+using Unity.VisualScripting;
 
 [RequireComponent(typeof(NetworkItem))]
 [RequireComponent(typeof(NetworkCooldown))]
@@ -13,7 +14,7 @@ public class SwapSniper : NetworkBehaviour
 
     NetworkCooldown _cooldownTimer;
     NetworkItem _item;
-    
+
     void Awake()
     {
         _item = GetComponent<NetworkItem>();
@@ -52,21 +53,24 @@ public class SwapSniper : NetworkBehaviour
         Util.Teleport(owner.gameObject, Swappee);
     }
 
+    [Command]
+    void CmdTriggerPrimaryAttackFired()
+    {
+        NetworkEventBus.TriggerExcludeOwner(nameof(EventPrimaryAttackFired), this.netIdentity);
+    }
+
 
     public bool Shoot()
     {
         if (_cooldownTimer.Use(this.cooldown))
         {
-            _item.OnPrimaryAttackFired();
+            EventBus.Trigger(nameof(EventPrimaryAttackFired), this.gameObject);
+            CmdTriggerPrimaryAttackFired();
 
-            var aimTransform = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
-            if (Physics.SphereCast(aimTransform.position, 0.25f, aimTransform.forward, out RaycastHit hitResult, range, TargetMask))
+            var target = _item.SphereCastNetworkIdentity(range, TargetMask, _settings.SmallSphereCastRadius);
+            if (target != null)
             {
-                var target = hitResult.rigidbody?.GetComponent<NetworkIdentity>();
-                if(target != null)
-                {
-                    CmdPerformSwap(target);
-                }
+                CmdPerformSwap(target);
             }
             return true;
         }

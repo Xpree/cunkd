@@ -1,55 +1,49 @@
 using UnityEngine;
 using Mirror;
+using Unity.VisualScripting;
 
 [RequireComponent(typeof(NetworkItem))]
 [RequireComponent(typeof(NetworkCooldown))]
 public class BlackHoleGun : NetworkBehaviour
-{    
-    [SerializeField] GameSettings _settings;
-    public float Cooldown => _settings.BlackHoleGun.Cooldown;
-    public float MaxRange => _settings.BlackHoleGun.Range;
+{
+    [SerializeField] GameObject blackHolePrefab;
 
-    [SerializeField] GameObject blackHole;
-    [SerializeField] public LayerMask TargetMask = ~0;
+    NetworkCooldown cooldownTimer;
+    NetworkItem item;
 
-    NetworkCooldown _cooldownTimer;
-    NetworkItem _item;
+
     void Awake()
     {
-        _item = GetComponent<NetworkItem>();
-        _item.ItemType = ItemType.Weapon;
+        item = GetComponent<NetworkItem>();
+        item.ItemType = ItemType.Weapon;
 
-        _cooldownTimer = GetComponent<NetworkCooldown>();
-        _cooldownTimer.CooldownDuration = Cooldown;
-    }
-
-    private void Start()
-    {
-        if (_settings == null)
-        {
-            Debug.LogError("Missing GameSettings reference on " + name);
-        }
+        var settings = GameServer.Instance.Settings.BlackHoleGun;
+        cooldownTimer = GetComponent<NetworkCooldown>();
+        cooldownTimer.CooldownDuration = settings.Cooldown;
     }
 
     [Command]
     public void CmdSpawnBlackHole(Vector3 target)
     {
-        if (_cooldownTimer.ServerUse())
+        if (cooldownTimer.ServerUse())
         {
-            var go = Instantiate(blackHole, target, Quaternion.identity);
+            NetworkEventBus.TriggerExcludeOwner(nameof(EventPrimaryAttackFired), this.netIdentity);
+            var go = Instantiate(blackHolePrefab, target, Quaternion.identity);
             NetworkServer.Spawn(go);
         }
     }
 
     public bool Shoot()
     {
-        if(_cooldownTimer.Use())
+        if (cooldownTimer.Use())
         {
-            _item.OnPrimaryAttackFired();
+            // Note: This is always successful so CmdSpawnBlackHole can handle triggering the clients
+            EventBus.Trigger(nameof(EventPrimaryAttackFired), this.gameObject);
 
-            var aim = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
-            var target = Util.RaycastPointOrMaxDistance(aim, MaxRange, TargetMask);
+            var settings = GameServer.Instance.Settings.BlackHoleGun;
+            var target = item.RaycastPointOrMaxDistance(settings.Range, settings.TargetMask);
             CmdSpawnBlackHole(target);
+
             return true;
         }
         else

@@ -218,6 +218,7 @@ MonoBehaviour:
   rotationCenter: {fileID: 7679393172858511098}
   PickupColldider: {fileID: 3478947421943283792}
   ItemType: 0
+  itemAimTransform: {fileID: 0}
 --- !u!114 &8162454346370928035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,11 +248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  _settings: {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}
-  blackHole: {fileID: 6033889869813183962, guid: 2faff900bda0fb94fad64bf820c99a4c, type: 3}
-  TargetMask:
-    serializedVersion: 2
-    m_Bits: 448
+  blackHolePrefab: {fileID: 6033889869813183962, guid: 2faff900bda0fb94fad64bf820c99a4c, type: 3}
 --- !u!114 &4380918290357192344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,7 +329,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _data:
     _json: '{"nest":{"source":"Embed","macro":null,"embed":{"variables":{"collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":"General
-      Events","summary":null,"pan":{"x":0.0,"y":0.0},"zoom":1.0,"elements":[{"coroutine":false,"defaultValues":{"target":null},"position":{"x":-278.0,"y":-226.0},"guid":"6ac56ace-fd4d-4818-b94a-1e4c80bc6c47","$version":"A","$type":"EventPrimaryAttackFired","$id":"10"},{"chainable":false,"member":{"name":"Play","parameterTypes":[],"targetType":"UnityEngine.VFX.VisualEffect","targetTypeName":"UnityEngine.VFX.VisualEffect","$version":"A"},"defaultValues":{"target":{"$content":0,"$type":"UnityEngine.Object"}},"position":{"x":-12.0,"y":-228.0},"guid":"014b89fa-9d81-4f7f-945a-088b67f78e8c","$version":"A","$type":"Unity.VisualScripting.InvokeMember","$id":"12"},{"sourceUnit":{"$ref":"10"},"sourceKey":"trigger","destinationUnit":{"$ref":"12"},"destinationKey":"enter","guid":"c53eacec-c581-45d2-9e17-20f818ea7aee","$type":"Unity.VisualScripting.ControlConnection"}],"$version":"A"}}}'
+      Events","summary":null,"pan":{"x":0.0,"y":0.0},"zoom":1.0,"elements":[{"coroutine":false,"defaultValues":{"target":null},"position":{"x":-278.0,"y":-226.0},"guid":"6ac56ace-fd4d-4818-b94a-1e4c80bc6c47","$version":"A","$type":"EventPrimaryAttackFired","$id":"10"},{"chainable":false,"member":{"name":"Play","parameterTypes":[],"targetType":"UnityEngine.VFX.VisualEffect","targetTypeName":"UnityEngine.VFX.VisualEffect","$version":"A"},"defaultValues":{"target":{"$content":0,"$type":"UnityEngine.Object"}},"position":{"x":-12.0,"y":-228.0},"guid":"014b89fa-9d81-4f7f-945a-088b67f78e8c","$version":"A","$type":"Unity.VisualScripting.InvokeMember","$id":"12"},{"chainable":false,"member":{"name":"LogDebug","parameterTypes":["System.String"],"targetType":"GameClient","targetTypeName":"GameClient","$version":"A"},"defaultValues":{"target":null,"%text":{"$content":"Primary
+      Attack Fired!","$type":"System.String"}},"position":{"x":219.0,"y":-137.0},"guid":"d02e7148-2b6f-419b-85e8-efa6a5a407a9","$version":"A","$type":"Unity.VisualScripting.InvokeMember","$id":"15"},{"member":{"name":"Owner","parameterTypes":null,"targetType":"NetworkItem","targetTypeName":"NetworkItem","$version":"A"},"defaultValues":{"target":null},"position":{"x":-67.0,"y":-45.0},"guid":"ca077eb9-14e4-48d4-afc0-bf171f3e41bc","$version":"A","$type":"Unity.VisualScripting.GetMember","$id":"18"},{"sourceUnit":{"$ref":"10"},"sourceKey":"trigger","destinationUnit":{"$ref":"12"},"destinationKey":"enter","guid":"c53eacec-c581-45d2-9e17-20f818ea7aee","$type":"Unity.VisualScripting.ControlConnection"},{"sourceUnit":{"$ref":"12"},"sourceKey":"exit","destinationUnit":{"$ref":"15"},"destinationKey":"enter","guid":"db17b569-ba60-4bdc-a593-b8fea356e517","$type":"Unity.VisualScripting.ControlConnection"},{"sourceUnit":{"$ref":"18"},"sourceKey":"value","destinationUnit":{"$ref":"15"},"destinationKey":"target","guid":"d2d27084-eae6-4182-a391-5e31a6986525","$type":"Unity.VisualScripting.ValueConnection"}],"$version":"A"}}}'
     _objectReferences:
     - {fileID: 8265570915776807587}
 --- !u!114 &2431201624997671022
