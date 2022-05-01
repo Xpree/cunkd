@@ -25,6 +25,16 @@ public static class Util
         return identity.HasControl();
     }
 
+    public static void SetPhysicsSynchronized(NetworkIdentity identity, bool enable)
+    {
+        var netRigidbody = identity.GetComponent<Mirror.Experimental.NetworkRigidbody>();
+        if (netRigidbody != null)
+            netRigidbody.enabled = enable;
+        var netTransform = identity.GetComponent<Mirror.NetworkTransform>();
+        if (netTransform != null)
+            netTransform.enabled = enable;
+    }
+
     public static void SetClientPhysicsAuthority(NetworkIdentity identity, bool enable)
     {
         var netRigidbody = identity.GetComponent<Mirror.Experimental.NetworkRigidbody>();
