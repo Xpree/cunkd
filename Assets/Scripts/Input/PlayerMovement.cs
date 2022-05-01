@@ -184,7 +184,6 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
-    [Command]
     private void playLanding()
     {
         if (_isGrounded && landed)
