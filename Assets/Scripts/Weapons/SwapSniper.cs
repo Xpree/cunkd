@@ -51,7 +51,7 @@ public class SwapSniper : NetworkBehaviour
     public bool Shoot()
     {
         var settings = GameServer.Instance.Settings.SwapSniper;
-        if (cooldown.Use(settings.Cooldown))
+        if (this.netIdentity.HasControl() && cooldown.Use(settings.Cooldown))
         {
             EventBus.Trigger(nameof(EventPrimaryAttackFired), this.gameObject);
             CmdTriggerPrimaryAttackFired();

@@ -53,7 +53,7 @@ public class GadgetExampleBanana : NetworkBehaviour
 
     public bool Use()
     {
-        if(cooldownTimer.Use())
+        if(this.netIdentity.HasControl() && cooldownTimer.Use())
         {
             CmdUse();
             return true;

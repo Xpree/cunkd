@@ -43,7 +43,7 @@ public class IceGadget : NetworkBehaviour
 
     public bool Use()
     {
-        if(cooldown.Use())
+        if(this.netIdentity.HasControl() && cooldown.Use())
         {
             var settings = GameServer.Instance.Settings.IceGadget;
 

@@ -36,7 +36,7 @@ public class BlackHoleGun : NetworkBehaviour
 
     public bool Shoot()
     {
-        if (cooldownTimer.Use())
+        if (this.netIdentity.HasControl() && cooldownTimer.Use())
         {
             // Note: This is always successful so CmdSpawnBlackHole can handle triggering the clients
             EventBus.Trigger(nameof(EventPrimaryAttackFired), this.gameObject);
@@ -44,7 +44,6 @@ public class BlackHoleGun : NetworkBehaviour
             var settings = GameServer.Instance.Settings.BlackHoleGun;
             var target = item.ProjectileHitscanPoint(settings.Range);
             CmdSpawnBlackHole(target);
-
             return true;
         }
         else
