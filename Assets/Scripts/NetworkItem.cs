@@ -22,6 +22,15 @@ public class NetworkItem : NetworkBehaviour
 
     public GameObject Owner => owner;
 
+    public T GetOwnerComponent<T>()
+    {
+        if (owner == null || owner.activeSelf == false)
+        {
+            return default(T);
+        }
+        return owner.GetComponent<T>();
+    }
+
     public Transform OwnerInteractAimTransform => Util.GetPlayerInteractAimTransform(this.Owner);
 
     [Tooltip("Defaults to OwnerInteractAimTransform if set to None")]
@@ -31,7 +40,87 @@ public class NetworkItem : NetworkBehaviour
 
     public Ray AimRay => this.AimTransform.ForwardRay();
 
+
+    bool _primaryAttack;
+    bool _secondaryAttack;
     bool _activated = false;
+
+    void SetPrimaryAttack(bool pressed)
+    {
+        _primaryAttack = pressed;
+        if (_activated)
+        {
+            if (pressed)
+                EventBus.Trigger(nameof(EventPrimaryAttackPressed), this.gameObject);
+            else
+                EventBus.Trigger(nameof(EventPrimaryAttackReleased), this.gameObject);
+        }
+    }
+
+    [ClientRpc(includeOwner = false)]
+    void RpcPrimaryPressed(bool pressed)
+    {
+        SetPrimaryAttack(pressed);
+    }
+
+    [Command]
+    void CmdPrimaryPressed(bool pressed)
+    {
+        if(isServerOnly)
+            SetPrimaryAttack(pressed);
+        RpcPrimaryPressed(pressed);
+    }
+
+    void SetSecondaryAttack(bool pressed)
+    {
+        _secondaryAttack = pressed;
+        if (_activated)
+        {
+            if (pressed)
+                EventBus.Trigger(nameof(EventSecondaryAttackPressed), this.gameObject);
+            else
+                EventBus.Trigger(nameof(EventSecondaryAttackReleased), this.gameObject);
+        }
+    }
+
+
+    [ClientRpc(includeOwner = false)]
+    void RpcSecondaryPressed(bool pressed)
+    {
+        SetSecondaryAttack(pressed);
+    }
+
+    [Command]
+    void CmdSecondaryPressed(bool pressed)
+    {
+        if (isServerOnly)
+            SetSecondaryAttack(pressed);
+        RpcSecondaryPressed(pressed);
+    }
+
+    public bool PrimaryAttackPressed => _activated && _primaryAttack;
+    public bool SecondaryAttackPressed => _activated && _secondaryAttack;
+
+    public bool AnyAttackPressed => _activated && (_primaryAttack || _secondaryAttack);
+
+    public void OnPrimaryAttack(bool wasPressed)
+    {
+        if(wasPressed != _primaryAttack)
+        {
+            SetPrimaryAttack(wasPressed);
+            CmdPrimaryPressed(wasPressed);            
+        }
+    }
+
+    public void OnSecondaryAttack(bool wasPressed)
+    {
+        if (wasPressed != _secondaryAttack)
+        {
+            SetSecondaryAttack(wasPressed);
+            CmdSecondaryPressed(wasPressed);            
+        }
+    }
+
     public bool Activated
     {
         get
@@ -40,6 +129,17 @@ public class NetworkItem : NetworkBehaviour
         }
         set
         {
+            if (_activated == value)
+                return;
+
+            if(!value)
+            {
+                if (_primaryAttack)
+                    SetPrimaryAttack(false);
+                if (_secondaryAttack)
+                    SetSecondaryAttack(false);
+            }
+
             _activated = value;
             if (_activated)
             {
@@ -189,29 +289,6 @@ public class NetworkItem : NetworkBehaviour
 
         Pickup(actor);
     }
-
-    public void OnPrimaryAttack(bool wasPressed)
-    {
-        if (!Activated)
-            return;
-
-        if (wasPressed)
-            EventBus.Trigger(nameof(EventPrimaryAttackPressed), this.gameObject);
-        else
-            EventBus.Trigger(nameof(EventPrimaryAttackReleased), this.gameObject);
-    }
-
-    public void OnSecondaryAttack(bool wasPressed)
-    {
-        if (!Activated)
-            return;
-
-        if (wasPressed)
-            EventBus.Trigger(nameof(EventSecondaryAttackPressed), this.gameObject);
-        else
-            EventBus.Trigger(nameof(EventSecondaryAttackReleased), this.gameObject);
-    }
-
 
 }
 

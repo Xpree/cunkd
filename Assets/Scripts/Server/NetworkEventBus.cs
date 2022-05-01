@@ -14,17 +14,26 @@ public class NetworkEventBus : NetworkBehaviour
         DontDestroyOnLoad(this);
     }
 
+    static void DoTrigger(string trigger, NetworkIdentity target)
+    {
+        if (target == null || target.isActiveAndEnabled == false)
+        {
+            return;
+        }
+        EventBus.Trigger(trigger, target.gameObject);
+    }
+
     [ClientRpc]
     void RpcTriggerExcludeOwner(string trigger, NetworkIdentity target)
     {
-        if(target.hasAuthority == false)
-            EventBus.Trigger(trigger, target.gameObject);
+        if(target == null || target.hasAuthority == false)
+            DoTrigger(trigger, target);
     }
 
     [Server]
     public static void TriggerExcludeOwner(string trigger, NetworkIdentity target)
     {
-        if (target.isClient == false) // will be handled by Rpc call otherwise
+        if (target.isServerOnly) // will be handled by Rpc call otherwise
         {
             if(target.connectionToClient != null)
                 EventBus.Trigger(trigger, target.gameObject);
@@ -35,13 +44,13 @@ public class NetworkEventBus : NetworkBehaviour
     [ClientRpc]
     void RpcTriggerAll(string trigger, NetworkIdentity target)
     {
-        EventBus.Trigger(trigger, target.gameObject);
+        DoTrigger(trigger, target);
     }
 
     [Server]
     public static void TriggerAll(string trigger, NetworkIdentity target)
     {
-        if (target.isClient == false) // will be handled by Rpc call otherwise
+        if (target.isServerOnly) // will be handled by Rpc call otherwise
             EventBus.Trigger(trigger, target.gameObject);
         instance.RpcTriggerAll(trigger, target);
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using UnityEngine.VFX;
+using Unity.VisualScripting;
 
 [RequireComponent(typeof(NetworkItem))]
 [RequireComponent(typeof(NetworkCooldown))]
@@ -16,6 +17,9 @@ public class JetPack : NetworkBehaviour
 
     NetworkCooldown cooldownTimer;
     NetworkItem item;
+
+    float force = 0;
+    bool isUsing = false;
 
     private void Awake()
     {
@@ -39,51 +43,62 @@ public class JetPack : NetworkBehaviour
         print(message);
     }
 
-    float force = 0;
-
-    [Command]
-    void fly()
+    [Server]
+    void SetUsing(bool value)
     {
-        if (cooldownTimer.ServerUse(this.Cooldown))
+        if (isUsing == value)
+        {
+            return;
+        }
+
+        isUsing = value;
+
+        // Reset force on when stopping/starting
+        force = 0;
+
+        if (isUsing)
+        {
+            NetworkEventBus.TriggerAll(nameof(EventPrimaryAttackBegin), this.netIdentity);
+        }
+        else
+        {
+            NetworkEventBus.TriggerAll(nameof(EventPrimaryAttackEnd), this.netIdentity);
+        }
+    }
+
+    System.Collections.IEnumerator DestroyItem()
+    {
+        // Delay Destruction to allow for events to trigger
+        yield return new WaitForSeconds(0.5f);
+        NetworkServer.Destroy(this.gameObject);
+    }
+
+    [Server]
+    void Fly()
+    {
+        if (isUsing && cooldownTimer.ServerUse(this.Cooldown))
         {
             force = Mathf.Min(force += acceleration, maxForce);
-            RpcFlyLikeSatan();
-            //animator.SetTrigger("Fly");
+            RpcFlyLikeSatan(force);
             if (cooldownTimer.Charges == 0)
             {
-                TargetTell("out of fuel");
-                NetworkServer.Destroy(this.gameObject);
+                SetUsing(false);
+                StartCoroutine(DestroyItem());
                 return;
             }
         }
     }
 
-    bool timeToFly = false;
+    [ServerCallback]
     private void FixedUpdate()
     {
-        if (timeToFly)
-        {
-            fly();
-        }
-        else
-        {
-            //animator.SetTrigger("StopFly");
-        }
+        SetUsing(item.AnyAttackPressed && cooldownTimer.Charges > 0);
+        Fly();
     }
 
     [TargetRpc]
-    void RpcFlyLikeSatan()
+    void RpcFlyLikeSatan(float height)
     {
-        //print("Look mom I'm flying!");
-        force = Mathf.Min(force += acceleration, maxForce);
-        PlayerMovement pm = GetComponentInParent<PlayerMovement>();
-        pm.ApplyJumpForce(force);
+        item.GetOwnerComponent<PlayerMovement>()?.ApplyJumpForce(height);
     }
-
-
-    public bool StartFlying()
-    {
-        return false;
-    }
-
 }
