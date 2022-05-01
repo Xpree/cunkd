@@ -38,9 +38,6 @@ MonoBehaviour:
   BlackHoleGun:
     Cooldown: 10
     Range: 20
-    TargetMask:
-      serializedVersion: 2
-      m_Bits: 448
   BlackHole:
     Range: 20
     Duration: 5
@@ -51,10 +48,10 @@ MonoBehaviour:
     MaxRange: 20
     Cooldown: 0
     Charges: 1
-    TargetLayer:
-      serializedVersion: 2
-      m_Bits: 448
   SwapSniper:
     Cooldown: 1
     Range: 200
+  ProtectileTargetLayers:
+    serializedVersion: 2
+    m_Bits: 448
   SmallSphereCastRadius: 0.25
