@@ -34,8 +34,7 @@ public class GameInputs : MonoBehaviour
 		CommonActionMap = Input.actions.FindActionMap("Common");
 		CommonActionMap.Enable();
 
-
-		SpectatorActionMap = Input.actions.FindActionMap("Spectator");
+        SpectatorActionMap = Input.actions.FindActionMap("Spectator");
 
 		PlayerMovementActionMap = Input.actions.FindActionMap("Player Movement");
 
@@ -124,4 +123,12 @@ public class GameInputs : MonoBehaviour
 			EnableInput();
 		}
 	}
+
+	public void OnToggleMenu(InputAction.CallbackContext ctx)
+    {
+		if (ctx.performed)
+		{
+			ToggleMenu();
+		}
+    }
 }
