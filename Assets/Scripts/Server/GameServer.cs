@@ -22,6 +22,7 @@ public class GameServer : MonoBehaviour
     /// </summary>
     [Scene]
     [SerializeField] string[] NetworkScene;
+    [SerializeField] public int SelectedScene;
 
     [Tooltip("The player avatar prefab")]
     [SerializeField] public GameClient PlayerPrefab;
@@ -62,10 +63,24 @@ public class GameServer : MonoBehaviour
         }
     }
 
+    public static void SelectNextMap()
+    {
+        var self = CunkdNetManager.Instance.Game;
+
+        self.SelectedScene += 1;
+        if (self.SelectedScene >= self.NetworkScene.Length)
+            self.SelectedScene = 0;
+    }
+
+    public static string SelectMapName() {
+        var self = CunkdNetManager.Instance.Game;
+        return System.IO.Path.GetFileNameWithoutExtension(self.NetworkScene[self.SelectedScene]);
+    }
+
     public static void BeginGame()
     {
-        var netManager = CunkdNetManager.Instance;
-        netManager.ServerChangeScene(netManager.Game.NetworkScene[0]);
+        var self = CunkdNetManager.Instance.Game;
+        CunkdNetManager.Instance.ServerChangeScene(self.NetworkScene[self.SelectedScene]);
     }
 
     public static void EndGame()

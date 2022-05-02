@@ -119,13 +119,6 @@ public class LobbyServer : MonoBehaviour
         allPlayersReady = false;
     }
 
-
-    public void StartGame()
-    {
-        GameServer.BeginGame();
-    }
-
-
     public void OnDisconnect(NetworkConnectionToClient conn)
     {
         _lobbyPlayers.RemoveConnectedPlayer(conn);
@@ -171,16 +164,30 @@ public class LobbyServer : MonoBehaviour
         SpawnOrReplaceClient(conn);
     }
 
+
+    static int selectedMap = 0;
+    
     void OnGUI()
     {
         if (ShowRoomGUI && IsLobbyActive)
         {
-            GUI.Box(new Rect(10f, 180f, 520f, 150f), "PLAYERS");
-            if (allPlayersReady && ShowStartButton && GUI.Button(new Rect(150, 300, 120, 20), "START GAME"))
-            {
-                // set to false to hide it in the game scene
-                ShowStartButton = false;
-                this.StartGame();
+            GUI.Box(new Rect(10f, 180f, 520f, 250f), "PLAYERS");
+            if (allPlayersReady && ShowStartButton)
+            {                
+                if(GUI.Button(new Rect(20, 330, 120, 20), "Next Map"))
+                {
+                    GameServer.SelectNextMap();
+                }
+
+                GUI.Label(new Rect(150, 330, 300f, 30f), "Map: " + GameServer.SelectMapName());
+
+                if (GUI.Button(new Rect(150, 300, 120, 20), "START GAME"))
+                {
+                    // set to false to hide it in the game scene
+                    ShowStartButton = false;
+                    GameServer.BeginGame();
+                }
+                
             }
         }
     }
