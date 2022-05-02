@@ -122,11 +122,11 @@ public class ObjectSpawner : NetworkBehaviour, IInteractable
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (spawnedItem && IsPowerUpSpawner)
-        {
-            spawnedItem.GetComponent<Rigidbody>().useGravity = true;
-        }
-    }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (spawnedItem && IsPowerUpSpawner)
+    //    {
+    //        spawnedItem.GetComponent<Rigidbody>().useGravity = true;
+    //    }
+    //}
 }
