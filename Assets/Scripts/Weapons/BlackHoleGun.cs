@@ -1,58 +1,48 @@
-using System.Collections;
 using UnityEngine;
 using Mirror;
 using Unity.VisualScripting;
 
 [RequireComponent(typeof(NetworkItem))]
 [RequireComponent(typeof(NetworkCooldown))]
-public class BlackHoleGun : NetworkBehaviour, IWeapon
-{    
-    [SerializeField] GameSettings _settings;
-    public float Cooldown => _settings.BlackHoleGun.Cooldown;
-    public float MaxRange => _settings.BlackHoleGun.Range;
+public class BlackHoleGun : NetworkBehaviour
+{
+    [SerializeField] GameObject blackHolePrefab;
 
-    [SerializeField] GameObject blackHole;
-    [SerializeField] public LayerMask TargetMask = ~0;
+    NetworkCooldown cooldownTimer;
+    NetworkItem item;
 
-    NetworkCooldown _cooldownTimer;
+
     void Awake()
     {
-        _cooldownTimer = GetComponent<NetworkCooldown>();
-        _cooldownTimer.coolDownDuration = Cooldown;
-    }
+        item = GetComponent<NetworkItem>();
+        item.ItemType = ItemType.Weapon;
 
-    private void Start()
-    {
-        if (_settings == null)
-        {
-            Debug.LogError("Missing GameSettings reference on " + name);
-        }
+        var settings = GameServer.Instance.Settings.BlackHoleGun;
+        cooldownTimer = GetComponent<NetworkCooldown>();
+        cooldownTimer.CooldownDuration = settings.Cooldown;
     }
 
     [Command]
     public void CmdSpawnBlackHole(Vector3 target)
     {
-        if (_cooldownTimer.ServerUse())
+        var settings = GameServer.Instance.Settings.BlackHoleGun;
+        if (cooldownTimer.ServerUse(settings.Cooldown))
         {
-            var go = Instantiate(blackHole, target, Quaternion.identity);
+            NetworkEventBus.TriggerExcludeOwner(nameof(EventPrimaryAttackFired), this.netIdentity);
+            var go = Instantiate(blackHolePrefab, target, Quaternion.identity);
             NetworkServer.Spawn(go);
-            RpcGunFired();
         }
-    }
-
-    [ClientRpc(includeOwner = false)]
-    void RpcGunFired()
-    {
-        EventBus.Trigger(nameof(EventGunFired), this.gameObject);
     }
 
     public bool Shoot()
     {
-        if(_cooldownTimer.Use())
+        if (this.netIdentity.HasControl() && cooldownTimer.Use())
         {
-            var aim = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
-            var target = Util.RaycastPointOrMaxDistance(aim, MaxRange, TargetMask);
-            EventBus.Trigger(nameof(EventGunFired), this.gameObject);
+            // Note: This is always successful so CmdSpawnBlackHole can handle triggering the clients
+            EventBus.Trigger(nameof(EventPrimaryAttackFired), this.gameObject);
+
+            var settings = GameServer.Instance.Settings.BlackHoleGun;
+            var target = item.ProjectileHitscanPoint(settings.Range);
             CmdSpawnBlackHole(target);
             return true;
         }
@@ -61,25 +51,4 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon
             return false;
         }
     }
-
-    void IWeapon.PrimaryAttack(bool isPressed)
-    {
-        
-    }
-
-    void IWeapon.SecondaryAttack(bool isPressed)
-    {
-    }
-
-    float? IWeapon.ChargeProgress => null;
-}
-
-
-[UnitTitle("On Gun Fired")]
-[UnitCategory("Events\\Network Item")]
-public class EventGunFired : GameObjectEventUnit<EmptyEventArgs>
-{
-    public override System.Type MessageListenerType => null;
-
-    protected override string hookName => nameof(EventGunFired);
 }

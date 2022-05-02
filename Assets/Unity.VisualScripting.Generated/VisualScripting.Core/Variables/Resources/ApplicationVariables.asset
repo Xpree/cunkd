@@ -18,7 +18,6 @@ MonoBehaviour:
       Server","value":null,"typeHandle":{"Identification":"GameServer, Assembly-CSharp,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"Lobby
       Server","value":null,"typeHandle":{"Identification":"LobbyServer, Assembly-CSharp,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"GameSettings","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"GameSettings,
-      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
-    _objectReferences:
-    - {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"NetworkItemRotation","value":{"x":30.0,"y":60.0,"z":30.0,"$type":"UnityEngine.Vector3"},"typeHandle":{"Identification":"UnityEngine.Vector3,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+    _objectReferences: []

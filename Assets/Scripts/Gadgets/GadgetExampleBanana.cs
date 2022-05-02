@@ -5,28 +5,28 @@ using Mirror;
 
 [RequireComponent(typeof(NetworkItem))]
 [RequireComponent(typeof(NetworkCooldown))]
-public class GadgetExampleBanana : NetworkBehaviour, IGadget, IEquipable
+public class GadgetExampleBanana : NetworkBehaviour
 {
-    [SerializeField] bool isPassive;
     [SerializeField] int Charges;
     [SerializeField] float Cooldown = 1.0f;
 
     NetworkCooldown cooldownTimer;
-
-    bool IGadget.isPassive => isPassive;
-    int IGadget.Charges => Charges;
-    int IGadget.ChargesLeft => cooldownTimer.Charges;
+    NetworkItem item;
 
     private void Awake()
     {
+        item = GetComponent<NetworkItem>();
+        item.ItemType = ItemType.Gadget;
+
         cooldownTimer = GetComponent<NetworkCooldown>();
+        cooldownTimer.CooldownDuration = Cooldown;
+        cooldownTimer.MaxCharges = Charges;
     }
 
     public override void OnStartServer()
     {
         base.OnStartServer();
         cooldownTimer.SetCharges(Charges);
-        cooldownTimer.coolDownDuration = Cooldown;
     }
 
 
@@ -39,7 +39,7 @@ public class GadgetExampleBanana : NetworkBehaviour, IGadget, IEquipable
     [Command]
     void CmdUse()
     {
-        if (cooldownTimer.ServerUse(this.Cooldown))
+        if (cooldownTimer.ServerUse())
         {
             TargetTell("ate a piece of the banana");
             if (cooldownTimer.Charges == 0)
@@ -51,59 +51,16 @@ public class GadgetExampleBanana : NetworkBehaviour, IGadget, IEquipable
         }
     }
 
-    void IGadget.PrimaryUse(bool isPressed)
+    public bool Use()
     {
-        if(cooldownTimer.Use(this.Cooldown))
+        if(this.netIdentity.HasControl() && cooldownTimer.Use())
         {
             CmdUse();
+            return true;
         }
-    }
-
-    void IGadget.SecondaryUse(bool isPressed)
-    {
-        if (cooldownTimer.Use(this.Cooldown))
-        {
-            CmdUse();
-        }
-    }
-
-    float? IGadget.ChargeProgress => null;
-
-
-    bool holstered;
-    bool IEquipable.IsHolstered => holstered;
-
-    void IEquipable.OnHolstered()
-    {
-        // TODO Animation then set holstered
-        holstered = true;
-        transform.localScale = Vector3.zero;
-    }
-
-    void IEquipable.OnUnholstered()
-    {
-        // TODO Animation then set holstered
-        holstered = false;
-        transform.localScale = Vector3.one;
-    }
-
-    void IEquipable.OnPickedUp(bool startHolstered)
-    {
-        holstered = startHolstered;
-
-        if (holstered)
-            transform.localScale = Vector3.zero;
         else
-            transform.localScale = Vector3.one;
-    }
-
-    void IEquipable.OnDropped()
-    {
-        this.transform.parent = null;
-        if (holstered)
         {
-            holstered = false;
-            transform.localScale = Vector3.one;
-        }
+            return false;
+        }        
     }
 }
