@@ -18,7 +18,7 @@ public class Pullable : NetworkBehaviour
     public Vector3 TargetPosition => target.transform.position + pullOffset * target.transform.forward;
     public bool IsFixed => pullingCollider.enabled == false;
 
-    public bool IsBeingPulled => pulling;
+    public bool IsBeingPulled => pulling && target != null && target.activeSelf;
 
 
     private void OnValidate()
@@ -42,6 +42,7 @@ public class Pullable : NetworkBehaviour
             Util.SetPhysicsSynchronized(this.netIdentity, true);
             body.isKinematic = false;
             pullingCollider.enabled = true;
+            this.transform.parent = null;
         }
         else
         {
@@ -55,9 +56,14 @@ public class Pullable : NetworkBehaviour
         {
             pullingCollider.enabled = false;
             body.isKinematic = true;
-            body.velocity = Vector3.zero;
-            body.angularVelocity = Vector3.zero;
             body.position = TargetPosition;
+            body.transform.parent = target.transform;
+            body.velocity = Vector3.zero;
+            body.angularVelocity = Vector3.zero;            
+        }
+        else
+        {
+            body.transform.localPosition = Vector3.zero;
         }
     }
 
@@ -97,14 +103,4 @@ public class Pullable : NetworkBehaviour
         body.velocity = (TargetPosition - body.position) / timeToAnchor;
     }
 
-    void Update()
-    {
-        if (!pulling)
-            return;
-        
-        if (pullingCollider.enabled == false)
-        {
-            body.position = TargetPosition;
-        }
-    }
 }

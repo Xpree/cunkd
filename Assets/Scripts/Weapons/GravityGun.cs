@@ -31,7 +31,8 @@ public class GravityGun : NetworkBehaviour
     GameObject _localPullObject;
 
     NetworkItem item;
-    
+
+   
     private void Awake()
     {
         item = GetComponent<NetworkItem>();
@@ -43,6 +44,26 @@ public class GravityGun : NetworkBehaviour
         {
             Debug.LogError("Missing GameSettings reference on " + name);
         }
+    }
+
+    private void OnDestroy()
+    {
+        StopPulling();
+    }
+
+    private void OnEnable()
+    {
+        EventBus.Register(new EventHook(nameof(EventItemDeactivated), item.gameObject), new System.Action<EmptyEventArgs>(OnItemDeactivated));
+    }
+
+    private void OnDisable()
+    {
+        EventBus.Unregister(new EventHook(nameof(EventItemDeactivated), item.gameObject), new System.Action<EmptyEventArgs>(OnItemDeactivated));
+    }
+
+    void OnItemDeactivated(EmptyEventArgs args)
+    {
+        StopPulling();
     }
 
     bool HasPullObject()
