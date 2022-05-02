@@ -219,8 +219,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  localTimer:
-    TickTime: 0
   coolDownDuration: 0
 --- !u!95 &6442673011942864655
 Animator:
