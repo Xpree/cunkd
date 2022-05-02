@@ -10,9 +10,8 @@ public static class Settings
 
     public static float volume
     {
-        get { return Mathf.Clamp01(PlayerPrefs.GetFloat("Volume", 0.5f)); }
-        set { PlayerPrefs.SetFloat("Volume", value); }
-        //set { PlayerPrefs.SetFloat("Volume", AudioSettings.Singleton.MasterVolumeLevel); }
+        get { return Mathf.Clamp01(PlayerPrefs.GetFloat("Volume", 0.5f)); }        
+        set { PlayerPrefs.SetFloat("Volume", value); }        
     }
 
     public static bool windowedFullscreenMode
