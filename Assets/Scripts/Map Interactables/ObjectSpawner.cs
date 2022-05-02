@@ -24,6 +24,7 @@ public class ObjectSpawner : NetworkBehaviour
 
     private void OnEnable()
     {
+        GetComponent<Collider>().enabled = !IsEquipmentSpawner;
         GetComponent<MeshRenderer>().enabled = IsEquipmentSpawner;
         interactCollider.enabled = spawnedItem != null && spawnedItem.GetComponent<NetworkItem>() != null;
 
@@ -170,12 +171,11 @@ public class ObjectSpawner : NetworkBehaviour
         }
     }
 
-    // private void OnTriggerExit(Collider other)
-    // {
-    //     if(spawnedItem)
-    //     {
-    //         other.GetComponent<Rigidbody>().useGravity = true;
-
-    //     }
-    // }
+    private void OnTriggerExit(Collider other)
+    {
+        if (spawnedItem && !IsEquipmentSpawner)
+        {
+            spawnedItem.GetComponent<Rigidbody>().useGravity = true;
+        }
+    }
 }
