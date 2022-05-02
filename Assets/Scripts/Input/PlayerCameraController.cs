@@ -2,6 +2,7 @@ using UnityEngine;
 using Mirror;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using Unity.VisualScripting;
 
 public class PlayerCameraController : MonoBehaviour
 {
@@ -9,16 +10,16 @@ public class PlayerCameraController : MonoBehaviour
     public Transform cameraTransform;
     public Camera playerCamera;
 
-    Camera mainCamera;   
+    Camera mainCamera;
     float pitch = 0.0f;
 
     public UnityEvent OnCameraActivated;
     public UnityEvent OnCameraDeactivated;
-    
+
     void Awake()
     {
         playerCamera.enabled = false;
-        cameraTransform = playerCamera.transform;        
+        cameraTransform = playerCamera.transform;
     }
 
     public void OnCameraInput(InputAction.CallbackContext ctx)
@@ -42,7 +43,10 @@ public class PlayerCameraController : MonoBehaviour
     {
         if (camera == null)
             return;
-        camera.enabled = enable;        
+        camera.enabled = enable;
+        var listener = camera.GetComponent<FMODUnity.StudioListener>();
+        if (listener != null)
+            listener.enabled = enable;
     }
 
 
@@ -53,6 +57,8 @@ public class PlayerCameraController : MonoBehaviour
         EnableCamera(playerCamera, true);
         OnCameraActivated?.Invoke();
         Cursor.lockState = CursorLockMode.Locked;
+
+        EventBus.Trigger(nameof(EventPlayerCameraActivated), playerTransform.gameObject);
     }
 
     public void DeactivateCamera()
@@ -61,5 +67,9 @@ public class PlayerCameraController : MonoBehaviour
         EnableCamera(playerCamera, false);
         OnCameraDeactivated?.Invoke();
         Cursor.lockState = CursorLockMode.None;
+
+        EventBus.Trigger(nameof(EventPlayerCameraDeactivated), playerTransform.gameObject);
     }
+
+    public bool IsCameraActive => playerCamera.enabled;
 }

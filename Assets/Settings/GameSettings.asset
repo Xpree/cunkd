@@ -45,6 +45,13 @@ MonoBehaviour:
   IceGadget:
     Duration: 30
     Friction: -0.5
+    MaxRange: 20
+    Cooldown: 0
+    Charges: 1
   SwapSniper:
     Cooldown: 1
     Range: 200
+  ProtectileTargetLayers:
+    serializedVersion: 2
+    m_Bits: 448
+  SmallSphereCastRadius: 0.25

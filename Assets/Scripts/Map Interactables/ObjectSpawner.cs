@@ -1,7 +1,8 @@
 using Mirror;
 using UnityEngine;
+using Unity.VisualScripting;
 
-public class ObjectSpawner : NetworkBehaviour, IInteractable
+public class ObjectSpawner : NetworkBehaviour
 {
     [SerializeField] GameObject objectToSpawn;
     [SerializeField] GameObject spawnAnchor;
@@ -9,24 +10,45 @@ public class ObjectSpawner : NetworkBehaviour, IInteractable
     [SerializeField] bool spawnAtStart;
     enum ObjectType { Weapon, Gadget, Object };
     [SerializeField] ObjectType objectType;
-
+    [SerializeField] Collider interactCollider;
 
     [Header("Diagnostics")]
-    [SyncVar(hook = nameof(OnSpawnedItemChanged))] public NetworkItem spawnedItem;
+    [SyncVar(hook = nameof(OnSpawnedItemChanged))] public GameObject spawnedItem;
 
     NetworkTimer nextSpawnTime;
+    
+
+    public bool IsEquipmentSpawner => objectToSpawn.GetComponent<NetworkItem>() != null;
 
     public Transform GetSpawnAnchor() => spawnAnchor != null ? spawnAnchor.transform : this.transform;
 
-    public bool IsGadgetSpawner => objectToSpawn != null && objectToSpawn.GetComponent<IGadget>() != null;
-    public bool IsWeaponSpawner => objectToSpawn != null && objectToSpawn.GetComponent<IWeapon>() != null;
-    public bool IsPowerUpSpawner => !IsGadgetSpawner && !IsWeaponSpawner;
-
-    private void Awake()
+    private void OnEnable()
     {
-        if (IsPowerUpSpawner)
+        GetComponent<MeshRenderer>().enabled = IsEquipmentSpawner;
+        interactCollider.enabled = spawnedItem != null && spawnedItem.GetComponent<NetworkItem>() != null;
+
+        if (IsEquipmentSpawner)
         {
-            gameObject.GetComponent<MeshRenderer>().enabled = false;
+            if(interactCollider == null)
+            {
+                Debug.Log("Missing interact collider on " + this.name);
+                return;
+            }
+            EventBus.Register(new EventHook(nameof(EventPlayerInteract), interactCollider.gameObject), new System.Action<NetworkIdentity>(Pickup));
+            EventBus.Register(new EventHook(nameof(EventPlayerInteractHoverStart), interactCollider.gameObject), new System.Action<NetworkIdentity>(OnInteractHoverStart));
+            EventBus.Register(new EventHook(nameof(EventPlayerInteractHoverStop), interactCollider.gameObject), new System.Action<NetworkIdentity>(OnInteractHoverStop));
+        }
+            
+    }
+
+    private void OnDisable()
+    {
+        interactCollider.enabled = false;
+        if (IsEquipmentSpawner)
+        {
+            EventBus.Unregister(new EventHook(nameof(EventPlayerInteract), interactCollider.gameObject), new System.Action<NetworkIdentity>(Pickup));
+            EventBus.Unregister(new EventHook(nameof(EventPlayerInteractHoverStart), interactCollider.gameObject), new System.Action<NetworkIdentity>(OnInteractHoverStart));
+            EventBus.Unregister(new EventHook(nameof(EventPlayerInteractHoverStop), interactCollider.gameObject), new System.Action<NetworkIdentity>(OnInteractHoverStop));
         }
     }
 
@@ -42,28 +64,39 @@ public class ObjectSpawner : NetworkBehaviour, IInteractable
     {
         base.OnStartClient();
 
-        if(spawnedItem != null)
+        if (spawnedItem != null)
         {
-            OnSpawnedItem(spawnedItem);
+            var item = spawnedItem.GetComponent<NetworkItem>();
+            if (item != null)
+                OnSpawnedItem(item);
         }
 
     }
-    void OnSpawnedItemChanged(NetworkItem previous, NetworkItem current)
+    void OnSpawnedItemChanged(GameObject previous, GameObject current)
     {
+        interactCollider.enabled = false;
         if (current != null)
-            OnSpawnedItem(current);
+        {
+            var item = current.GetComponent<NetworkItem>();
+            if (item != null)
+                OnSpawnedItem(item);
+        }
     }
 
+    void OnInteractHoverStart(NetworkIdentity player)
+    {
+        FindObjectOfType<PlayerGUI>()?.interactiveButton(this);
+    }
+
+    void OnInteractHoverStop(NetworkIdentity player)
+    {
+        FindObjectOfType<PlayerGUI>()?.interactiveButton(null);
+    }
+
+    [ServerCallback]
     private void FixedUpdate()
     {
-        if (spawnedItem)
-        {
-            if (objectType == ObjectType.Gadget || objectType == ObjectType.Weapon)
-            {
-                spawnAnchor.transform.Rotate(0.5f, 1, 0.5f);
-            }
-        }
-        else if (NetworkServer.active && nextSpawnTime.HasTicked)
+        if (spawnedItem == null && nextSpawnTime.HasTicked)
         {
             SpawnObject();
         }
@@ -81,52 +114,68 @@ public class ObjectSpawner : NetworkBehaviour, IInteractable
         var anchor = GetSpawnAnchor();
         var go = Instantiate(objectToSpawn, anchor.position, anchor.rotation);
         NetworkServer.Spawn(go);
+        nextSpawnTime = NetworkTimer.FromNow(spawnTime);
 
-        spawnedItem = go.GetComponent<NetworkItem>();
-        if (spawnedItem != null)
-            OnSpawnedItem(spawnedItem);
+        spawnedItem = go;
+        var item = spawnedItem.GetComponent<NetworkItem>();
+        if (item != null)
+            OnSpawnedItem(item);
     }
 
     void OnSpawnedItem(NetworkItem item)
     {
         var parent = GetSpawnAnchor();
         item.transform.parent = parent;
-        item.transform.localPosition = Vector3.zero;
+        item.SetPositionWithRotationCenter(parent);
         item.transform.localRotation = Quaternion.identity;
+        interactCollider.enabled = true;
     }
 
 
     [Command(requiresAuthority = false)]
     void CmdPickup(NetworkIdentity actor)
     {
-        if (spawnedItem != null && (actor?.GetComponent<INetworkItemOwner>()?.CanPickup(spawnedItem) ?? false))
+        if (spawnedItem == null)
+            return;
+        var item = spawnedItem.GetComponent<NetworkItem>();
+        if (item != null && (actor?.GetComponent<INetworkItemOwner>()?.CanPickup(item) ?? false))
         {
-            spawnedItem.Pickup(actor);
+            item.Pickup(actor);
             spawnedItem = null;
             nextSpawnTime = NetworkTimer.FromNow(spawnTime);
+            interactCollider.enabled = false;
         }
     }
 
-    void IInteractable.Interact(NetworkIdentity actor)
+
+    public void Pickup(NetworkIdentity actor)
     {
         if (actor != null && spawnedItem != null)
         {
-            if (actor.GetComponent<INetworkItemOwner>()?.CanPickup(spawnedItem) ?? false)
+            var item = spawnedItem.GetComponent<NetworkItem>();
+            if (item == null)
+                return;
+            if (actor.GetComponent<INetworkItemOwner>()?.CanPickup(item) ?? false)
             {
                 CmdPickup(actor);
+            }
+            else
+            {
+                Debug.Log("TODO: Unable to pickup feedback.");
             }
         }
         else
         {
-            Debug.Log("Nothing to interact.");
+            Debug.Log("Nothing to pick up.");
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (IsPowerUpSpawner)
-        {
-            other.GetComponent<Rigidbody>().useGravity = true;
-        }
-    }
+    // private void OnTriggerExit(Collider other)
+    // {
+    //     if(spawnedItem)
+    //     {
+    //         other.GetComponent<Rigidbody>().useGravity = true;
+
+    //     }
+    // }
 }

@@ -1,26 +1,70 @@
 using Mirror;
+using UnityEngine;
+using Unity.VisualScripting;
 
 // Network synchronized cooldown and charges with local prediction
 // ment to be used by both client and server.
 public class NetworkCooldown : NetworkBehaviour
 {
-    NetworkTimer serverCooldownTimer;
-    public NetworkTimer localTimer;
+    [HideInInspector]
+    public float CooldownDuration;
+    public float CooldownRemaining => Mathf.Max((float)_localTimer.Remaining, 0);
 
-    public double coolDownDuration;
+    NetworkTimer serverCooldownTimer;
+    NetworkTimer _localTimer;
+
+    bool _cooldownStarted = false;
+    void SetCooldown(bool value)
+    {
+        if (_cooldownStarted == value)
+            return;
+        _cooldownStarted = value;
+
+        if(_cooldownStarted)
+        {
+            EventBus.Trigger(nameof(EventNetworkCooldownBegin), this.gameObject);
+        }
+        else
+        {
+            EventBus.Trigger(nameof(EventNetworkCooldownEnd), this.gameObject);
+        }
+    }
+
+    NetworkTimer localTimer 
+    { 
+        get { return _localTimer; }
+        set
+        {
+            _localTimer = value;
+            SetCooldown(_localTimer.Elapsed < 0);
+        }
+    }
+    public bool HasCooldown => localTimer.Elapsed < 0;
+
+    int maxCharges = -1;
 
     int serverCharges = -1;
     int localCharges = -1;
-
-    public bool HasInfiniteCharges => localCharges < 0;
     public int Charges => System.Math.Max(localCharges, 0);
-    public bool HasCooldown => localTimer.Elapsed < 0;
+
+    public bool HasInfiniteCharges => maxCharges < 0;
+    public int MaxCharges
+    {
+        get { return System.Math.Max(maxCharges, 0); }
+        set { maxCharges = value; }
+    }
+
+    private void FixedUpdate()
+    {
+        SetCooldown(HasCooldown);
+    }
 
     [Server]
     public void SetCharges(int count)
     {
         serverCharges = count;
         localCharges = count;
+        maxCharges = count;
     }
 
     public override void OnStartServer()
@@ -40,14 +84,20 @@ public class NetworkCooldown : NetworkBehaviour
     [Command(requiresAuthority = false)]
     void CmdForceUpdateClients()
     {
-        RpcUpdateClients(serverCooldownTimer, serverCharges);
+        DoUpdateClients();
     }
 
     [ClientRpc]
-    void RpcUpdateClients(NetworkTimer cooldownTimer, int charges)
+    void RpcUpdateClients(NetworkTimer cooldownTimer, int charges, int maximumCharges)
     {
         localTimer = cooldownTimer;
         localCharges = charges;
+        maxCharges = maximumCharges;
+    }
+
+    void DoUpdateClients()
+    {
+        RpcUpdateClients(serverCooldownTimer, serverCharges, maxCharges);
     }
 
     bool DispenseServerCharge()
@@ -63,6 +113,15 @@ public class NetworkCooldown : NetworkBehaviour
 
     }
 
+
+    // Sets cooldown and uses a charge if any are set
+    // Returns false if on cooldown or no charges are left
+    [Server]
+    public bool ServerUse()
+    {
+        return ServerUse(CooldownDuration);
+    }
+
     // Sets cooldown and uses a charge if any are set
     // Returns false if on cooldown or no charges are left
     [Server]
@@ -72,7 +131,7 @@ public class NetworkCooldown : NetworkBehaviour
             return false;
         serverCooldownTimer = NetworkTimer.FromNow(cooldown);
         localTimer = serverCooldownTimer;
-        RpcUpdateClients(serverCooldownTimer, serverCharges);
+        DoUpdateClients();
         return true;
     }
 
@@ -81,7 +140,7 @@ public class NetworkCooldown : NetworkBehaviour
     {
         if (DispenseServerCharge())
         {
-            RpcUpdateClients(serverCooldownTimer, serverCharges);
+            DoUpdateClients();
             return true;
         }
         else
@@ -90,6 +149,11 @@ public class NetworkCooldown : NetworkBehaviour
         }
     }
 
+    [Client]
+    public bool Use()
+    {
+        return this.Use(this.CooldownDuration);
+    }
 
     // Sets cooldown and uses a charge if any are set
     // Returns false if on cooldown or no charges are left
@@ -101,6 +165,7 @@ public class NetworkCooldown : NetworkBehaviour
         localTimer = NetworkTimer.FromNow(cooldown);
         return true;  
     }
+
 
     [Client]
     public bool UseCharge()

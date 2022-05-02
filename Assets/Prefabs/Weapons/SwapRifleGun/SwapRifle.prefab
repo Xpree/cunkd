@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3718999277748368082}
   - component: {fileID: 7715756562886833934}
   - component: {fileID: 7926653161079733930}
+  - component: {fileID: 4391620082639551554}
   m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
@@ -25,12 +26,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1150828765175267351}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.175}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.35}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3678308957761631315}
+  m_Father: {fileID: 2648606691855005486}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &7715756562886833934
@@ -83,6 +84,51 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1150828765175267351}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &4391620082639551554
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150828765175267351}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 2, y: 2, z: 1.2}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1995767018286815783
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2648606691855005486}
+  m_Layer: 0
+  m_Name: Mesh Anchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2648606691855005486
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1995767018286815783}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3718999277748368082}
+  m_Father: {fileID: 3678308957761631315}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3509391183605136892
 GameObject:
   m_ObjectHideFlags: 0
@@ -107,7 +153,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3509391183605136892}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 564, y: 324, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -128,9 +174,10 @@ GameObject:
   - component: {fileID: 8168253376305743865}
   - component: {fileID: -3118400523729911809}
   - component: {fileID: 8162454346370928035}
-  - component: {fileID: 6442673011942864655}
-  - component: {fileID: 9193244382059747024}
-  - component: {fileID: 8053813949442105519}
+  - component: {fileID: 7496363072154887546}
+  - component: {fileID: 1988423035463612057}
+  - component: {fileID: 2376375577225403979}
+  - component: {fileID: 8878153815958389920}
   m_Layer: 0
   m_Name: SwapRifle
   m_TagString: Untagged
@@ -150,7 +197,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3718999277748368082}
+  - {fileID: 2648606691855005486}
   - {fileID: 4544863243754344426}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -186,6 +233,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  displayName: Sniper Combobulator
+  rotationCenter: {fileID: 3718999277748368082}
+  PickupCollider: {fileID: 4391620082639551554}
+  ItemType: 0
+  itemAimTransform: {fileID: 0}
 --- !u!114 &-3118400523729911809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,11 +252,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  animator: {fileID: 9193244382059747024}
-  _settings: {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}
-  TargetMask:
-    serializedVersion: 2
-    m_Bits: 448
 --- !u!114 &8162454346370928035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,30 +266,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  localTimer:
-    TickTime: 0
-  coolDownDuration: 0
---- !u!95 &6442673011942864655
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4053286044562665193}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a2edd0ad60e24b74c821ea1c1e9c100b, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &9193244382059747024
+  CooldownDuration: 0
+--- !u!114 &7496363072154887546
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -251,14 +276,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4053286044562665193}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f6f3bf89aa97405989c802ba270f815, type: 3}
+  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  clientAuthority: 0
-  animator: {fileID: 6442673011942864655}
---- !u!114 &8053813949442105519
+  _data:
+    _json: '{"declarations":{"collection":{"$content":[],"$version":"A"},"$version":"A"}}'
+    _objectReferences: []
+--- !u!114 &1988423035463612057
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -267,12 +291,49 @@ MonoBehaviour:
   m_GameObject: {fileID: 4053286044562665193}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15928e11a6ecfcf409b856e7527c14eb, type: 3}
+  m_Script: {fileID: 11500000, guid: efe58df89b5b74a97a123b5ed2b70422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Effects:
-  - Name: Fire
-    VFX: {fileID: 8369641931617526859}
+  _data:
+    _json: '{"nest":{"source":"Embed","macro":null,"embed":{"title":"Attack Cycle","summary":null,"pan":{"x":12.0,"y":-303.1436},"zoom":1.0,"elements":[{"nest":{"source":"Embed","macro":null,"embed":{"variables":{"collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":"Ready","summary":null,"pan":{"x":-25.20831,"y":55.67358},"zoom":1.0,"elements":[{"coroutine":false,"defaultValues":{"target":null},"position":{"x":-279.0,"y":-31.0},"guid":"d328b2da-afae-4e1a-a659-2ab47df8242f","$version":"A","$type":"EventPrimaryAttackPressed","$id":"14"},{"chainable":false,"member":{"name":"Shoot","parameterTypes":[],"targetType":"SwapSniper","targetTypeName":"SwapSniper","$version":"A"},"defaultValues":{"target":null},"position":{"x":-13.0,"y":-33.0},"guid":"905472f2-0cbd-4a76-8dde-06b8fca09371","$version":"A","$type":"Unity.VisualScripting.InvokeMember","$id":"16"},{"sourceUnit":{"$ref":"14"},"sourceKey":"trigger","destinationUnit":{"$ref":"16"},"destinationKey":"enter","guid":"3bf89c35-049b-48ac-9b8e-8ef80835e39d","$type":"Unity.VisualScripting.ControlConnection"},{"position":{"xMin":-341.0,"yMin":-117.0,"xMax":190.0,"yMax":203.0},"label":"Primary
+      Attack","comment":null,"color":{"r":0.0,"g":0.0,"b":0.0,"a":1.0},"guid":"6435408a-bd8d-4f8d-a649-382839031873","$version":"A","$type":"Unity.VisualScripting.GraphGroup"}],"$version":"A"}},"isStart":false,"position":{"x":-242.0,"y":-267.0},"width":170.0,"guid":"16505cba-5201-4b17-a818-9bb97729735f","$version":"A","$type":"Unity.VisualScripting.FlowState","$id":"4"},{"nest":{"source":"Embed","macro":null,"embed":{"variables":{"collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":"Cooldown","summary":null,"pan":{"x":40.0,"y":-137.3914},"zoom":1.0,"elements":[],"$version":"A"}},"isStart":false,"position":{"x":84.0,"y":-237.0},"width":170.0,"guid":"7df31049-e782-427d-88f6-e03fc989c3f7","$version":"A","$type":"Unity.VisualScripting.FlowState","$id":"21"},{"nest":{"source":"Embed","macro":null,"embed":{"variables":{"collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":"Inactive","summary":null,"pan":{"x":0.0,"y":0.0},"zoom":1.0,"elements":[],"$version":"A"}},"isStart":true,"position":{"x":-244.0,"y":-512.0},"width":170.0,"guid":"fec6ed94-9ffd-4e5a-8183-1fd548145598","$version":"A","$type":"Unity.VisualScripting.FlowState","$id":"31"},{"nest":{"source":"Embed","macro":null,"embed":{"variables":{"collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":null,"summary":null,"pan":{"x":-31.50015,"y":-167.653},"zoom":1.0,"elements":[{"defaultValues":{},"position":{"x":9.0,"y":-174.0},"guid":"92e7a471-9a49-4314-ab46-e5f6c1cac30a","$version":"A","$type":"Unity.VisualScripting.TriggerStateTransition","$id":"51"},{"coroutine":false,"defaultValues":{"target":null},"position":{"x":-266.0,"y":-175.0},"guid":"dd23f324-78e6-45fd-b487-2f0747213785","$version":"A","$type":"EventNetworkCooldownBegin","$id":"53"},{"sourceUnit":{"$ref":"53"},"sourceKey":"trigger","destinationUnit":{"$ref":"51"},"destinationKey":"trigger","guid":"b4b8adc6-a871-4bcb-a20f-02b3fad8fa4a","$type":"Unity.VisualScripting.ControlConnection"}],"$version":"A"}},"source":{"$ref":"4"},"destination":{"$ref":"21"},"guid":"20af76d8-c4d6-4d3c-bed6-d821db6c88ae","$version":"A","$type":"Unity.VisualScripting.FlowStateTransition"},{"nest":{"source":"Embed","macro":null,"embed":{"variables":{"collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":"Deactivated","summary":null,"pan":{"x":0.0,"y":0.0},"zoom":1.0,"elements":[{"defaultValues":{},"position":{"x":35.0,"y":-45.0},"guid":"c07f524a-04aa-486d-9165-dd56559b50a4","$version":"A","$type":"Unity.VisualScripting.TriggerStateTransition","$id":"66"},{"coroutine":false,"defaultValues":{"target":null},"position":{"x":-201.0,"y":-46.0},"guid":"c33ef732-3228-42ae-a4e7-e3f4e94f0a1d","$version":"A","$type":"EventItemDeactivated","$id":"68"},{"sourceUnit":{"$ref":"68"},"sourceKey":"trigger","destinationUnit":{"$ref":"66"},"destinationKey":"trigger","guid":"62c69d7c-04e9-4816-a128-808425470486","$type":"Unity.VisualScripting.ControlConnection"}],"$version":"A"}},"source":{"$ref":"4"},"destination":{"$ref":"31"},"guid":"45832510-ae24-4fce-8bdc-ed21b6b78a9f","$version":"A","$type":"Unity.VisualScripting.FlowStateTransition"},{"nest":{"source":"Embed","macro":null,"embed":{"variables":{"collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":null,"summary":null,"pan":{"x":0.0,"y":0.0},"zoom":1.0,"elements":[{"defaultValues":{},"position":{"x":100.0,"y":-50.0},"guid":"818caacf-aa72-4210-85d3-fc344cf64b79","$version":"A","$type":"Unity.VisualScripting.TriggerStateTransition","$id":"81"},{"coroutine":false,"defaultValues":{"target":null},"position":{"x":-197.0,"y":-47.0},"guid":"5a32a54b-0d0f-4eef-83c5-88cae3f63441","$version":"A","$type":"EventNetworkCooldownEnd","$id":"83"},{"sourceUnit":{"$ref":"83"},"sourceKey":"trigger","destinationUnit":{"$ref":"81"},"destinationKey":"trigger","guid":"3a670972-57d6-4347-a5b2-2c6a0ef71cc4","$type":"Unity.VisualScripting.ControlConnection"}],"$version":"A"}},"source":{"$ref":"21"},"destination":{"$ref":"4"},"guid":"02f13f5a-6feb-4cf4-bdd9-abb953b1d8ed","$version":"A","$type":"Unity.VisualScripting.FlowStateTransition"},{"nest":{"source":"Embed","macro":null,"embed":{"variables":{"collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":"Activated
+      without cooldown","summary":null,"pan":{"x":185.0,"y":96.0},"zoom":1.0,"elements":[{"defaultValues":{},"position":{"x":331.0,"y":26.0},"guid":"df569696-90f7-45d0-a60e-6a3ba1ed3554","$version":"A","$type":"Unity.VisualScripting.TriggerStateTransition","$id":"96"},{"member":{"name":"HasCooldown","parameterTypes":null,"targetType":"NetworkCooldown","targetTypeName":"NetworkCooldown","$version":"A"},"defaultValues":{"target":null},"position":{"x":-41.0,"y":103.0},"guid":"f9c3697a-795b-4e80-a024-4908fe11addc","$version":"A","$type":"Unity.VisualScripting.GetMember","$id":"98"},{"defaultValues":{},"position":{"x":183.0,"y":3.0},"guid":"2dfb93fc-6b85-40af-ba63-21de75ff6f90","$version":"A","$type":"Unity.VisualScripting.If","$id":"101"},{"coroutine":false,"defaultValues":{"target":null},"position":{"x":-84.0,"y":-16.0},"guid":"62f39db3-0b1d-41b9-96a6-fcc36a428311","$version":"A","$type":"EventItemActivated","$id":"103"},{"sourceUnit":{"$ref":"101"},"sourceKey":"ifFalse","destinationUnit":{"$ref":"96"},"destinationKey":"trigger","guid":"cffe4a1d-7457-443e-9a25-49950f4dbfa3","$type":"Unity.VisualScripting.ControlConnection"},{"sourceUnit":{"$ref":"103"},"sourceKey":"trigger","destinationUnit":{"$ref":"101"},"destinationKey":"enter","guid":"72c9f286-b2ee-427d-a60d-ffa38f98aad8","$type":"Unity.VisualScripting.ControlConnection"},{"sourceUnit":{"$ref":"98"},"sourceKey":"value","destinationUnit":{"$ref":"101"},"destinationKey":"condition","guid":"ccfc22da-db38-4f6f-8214-3fcabec19d6c","$type":"Unity.VisualScripting.ValueConnection"}],"$version":"A"}},"source":{"$ref":"31"},"destination":{"$ref":"4"},"guid":"69d34e2d-606f-4602-b461-55d44a6e8241","$version":"A","$type":"Unity.VisualScripting.FlowStateTransition"},{"nest":{"source":"Embed","macro":null,"embed":{"variables":{"collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":"Deactivated","summary":null,"pan":{"x":0.0,"y":0.0},"zoom":1.0,"elements":[{"defaultValues":{},"position":{"x":72.0,"y":-60.0},"guid":"6807c9ea-a927-40f2-9846-7faf9a771810","$version":"A","$type":"Unity.VisualScripting.TriggerStateTransition","$id":"118"},{"coroutine":false,"defaultValues":{"target":null},"position":{"x":-171.0,"y":-60.0},"guid":"81fac12a-ef32-4556-aa6c-84a028930cad","$version":"A","$type":"EventItemDeactivated","$id":"120"},{"sourceUnit":{"$ref":"120"},"sourceKey":"trigger","destinationUnit":{"$ref":"118"},"destinationKey":"trigger","guid":"f6c35dda-bfce-4cda-9ba0-34c175861eda","$type":"Unity.VisualScripting.ControlConnection"}],"$version":"A"}},"source":{"$ref":"21"},"destination":{"$ref":"31"},"guid":"b90aa0f3-53f0-496a-aa65-80f00957cc69","$version":"A","$type":"Unity.VisualScripting.FlowStateTransition"},{"nest":{"source":"Embed","macro":null,"embed":{"variables":{"collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":"Activated
+      with cooldown","summary":null,"pan":{"x":0.0,"y":0.0},"zoom":1.0,"elements":[{"defaultValues":{},"position":{"x":101.0,"y":-50.0},"guid":"73cfaca2-6a86-447f-8a5d-ba343785f339","$version":"A","$type":"Unity.VisualScripting.TriggerStateTransition","$id":"133"},{"member":{"name":"HasCooldown","parameterTypes":null,"targetType":"NetworkCooldown","targetTypeName":"NetworkCooldown","$version":"A"},"defaultValues":{"target":null},"position":{"x":-306.0,"y":47.0},"guid":"7c588902-d181-42a6-86c8-fbf4a8b6bd66","$version":"A","$type":"Unity.VisualScripting.GetMember","$id":"135"},{"defaultValues":{},"position":{"x":-81.0,"y":-53.0},"guid":"23f1c5a2-d979-48d4-bbd9-42ef8954cdc9","$version":"A","$type":"Unity.VisualScripting.If","$id":"138"},{"coroutine":false,"defaultValues":{"target":null},"position":{"x":-317.0,"y":-65.0},"guid":"69e10613-04a7-4afb-b7b6-92798e966e91","$version":"A","$type":"EventItemActivated","$id":"140"},{"sourceUnit":{"$ref":"138"},"sourceKey":"ifTrue","destinationUnit":{"$ref":"133"},"destinationKey":"trigger","guid":"51d14af0-78da-4f20-a502-19974195a1fb","$type":"Unity.VisualScripting.ControlConnection"},{"sourceUnit":{"$ref":"140"},"sourceKey":"trigger","destinationUnit":{"$ref":"138"},"destinationKey":"enter","guid":"4994e2f3-016e-40ad-9653-f198bcf65510","$type":"Unity.VisualScripting.ControlConnection"},{"sourceUnit":{"$ref":"135"},"sourceKey":"value","destinationUnit":{"$ref":"138"},"destinationKey":"condition","guid":"4bd68cae-0dda-48b8-8d17-d09fa6b70106","$type":"Unity.VisualScripting.ValueConnection"}],"$version":"A"}},"source":{"$ref":"31"},"destination":{"$ref":"21"},"guid":"a93fbf9e-1d5e-47bf-9e05-4827be727df5","$version":"A","$type":"Unity.VisualScripting.FlowStateTransition"},{"position":{"xMin":-285.0,"yMin":-568.0,"xMax":293.0,"yMax":-96.0},"label":"Attack
+      Cycle","comment":null,"color":{"r":0.0,"g":0.0,"b":0.0,"a":1.0},"guid":"45551dc9-094d-4e84-8abd-616f4d36fa08","$version":"A","$type":"Unity.VisualScripting.GraphGroup"}],"$version":"A"}}}'
+    _objectReferences: []
+--- !u!114 &2376375577225403979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4053286044562665193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2fe5546f775c47d2820aa5e8a715f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"nest":{"source":"Embed","macro":null,"embed":{"variables":{"collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":"General
+      Events","summary":"Handles On Primary Attack Fired\n","pan":{"x":0.0,"y":0.0},"zoom":1.0,"elements":[{"coroutine":false,"defaultValues":{"target":null},"position":{"x":-324.0,"y":-187.0},"guid":"95f5cdfe-eb40-4c1d-8a4c-2f41799b3d93","$version":"A","$type":"EventPrimaryAttackFired","$id":"10"},{"chainable":false,"member":{"name":"Play","parameterTypes":[],"targetType":"UnityEngine.VFX.VisualEffect","targetTypeName":"UnityEngine.VFX.VisualEffect","$version":"A"},"defaultValues":{"target":{"$content":0,"$type":"UnityEngine.Object"}},"position":{"x":-68.0,"y":-180.0},"guid":"aaeec99a-e720-46c5-99af-f7e7f6b61a9d","$version":"A","$type":"Unity.VisualScripting.InvokeMember","$id":"12"},{"sourceUnit":{"$ref":"10"},"sourceKey":"trigger","destinationUnit":{"$ref":"12"},"destinationKey":"enter","guid":"dc0a1585-64d9-4660-a226-765dbbc465e7","$type":"Unity.VisualScripting.ControlConnection"}],"$version":"A"}}}'
+    _objectReferences:
+    - {fileID: 8369641931617526859}
+--- !u!114 &8878153815958389920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4053286044562665193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efe58df89b5b74a97a123b5ed2b70422, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"nest":{"source":"Macro","macro":0,"embed":null}}'
+    _objectReferences:
+    - {fileID: 11400000, guid: bd2bcf634f6f34a4f8e926788dd2ed18, type: 2}
 --- !u!1 &8272284103022893352
 GameObject:
   m_ObjectHideFlags: 0
@@ -299,7 +360,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8272284103022893352}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -564, y: -324, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

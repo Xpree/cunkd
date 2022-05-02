@@ -1,13 +1,17 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Mirror;
+using Unity.VisualScripting;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : NetworkBehaviour
 {
     [SerializeField] GameSettings _settings;
-    [SerializeField] NetworkAnimator animator;
     Rigidbody _rigidBody;
+
+    // NOTE: underscored variables is not intended to be used outside this class.
+    // They are only public to be able to see them in Unity editor.
+    // If you need to know about them consider triggering events when they change.
 
     [Header("Diagnostics")]
     public bool _isGrounded = false;
@@ -24,7 +28,7 @@ public class PlayerMovement : NetworkBehaviour
 
     public Vector2 _movementInput = Vector2.zero;
 
-    public bool landed;
+    public bool _landed;
 
     private void Start()
     {
@@ -41,6 +45,7 @@ public class PlayerMovement : NetworkBehaviour
         _groundNormal = Vector3.up;
         _airJumped = false;
         _performJump = false;
+        _landed = false;
         _lastGrounded = 0;
         _lastJump = 0;
         _movementInput = Vector2.zero;
@@ -141,16 +146,22 @@ public class PlayerMovement : NetworkBehaviour
         {
             acceleration *= _settings.CharacterMovement.AirAcceleration;
         }
-
+        
         //_rigidBody.velocity = QuakeAccelerate(_rigidBody.velocity, wishDir, wishSpeed, acceleration);
         Accelerate(wishDir, wishSpeed, acceleration);
     }
 
-
-
     public void ApplyJumpForce(float height)
     {
         Util.SetJumpForce(_rigidBody, height);
+    }
+
+
+    [Command]
+    void CmdPerformedJump(bool airJump)
+    {
+        var trigger = airJump ? nameof(EventPlayerAirJumped) : nameof(EventPlayerJumped);
+        NetworkEventBus.TriggerExcludeOwner(trigger, this.netIdentity);
     }
 
     void PerformJump()
@@ -168,8 +179,21 @@ public class PlayerMovement : NetworkBehaviour
             _airJumped = true;
         }
 
+        var trigger = _airJumped ? nameof(EventPlayerAirJumped) : nameof(EventPlayerJumped);
+        EventBus.Trigger(trigger, this.gameObject);
+        CmdPerformedJump(_airJumped);
         _lastJump = NetworkTime.time;
         ApplyJumpForce(_settings.CharacterMovement.JumpHeight);
+    }
+
+    void SetLanded(bool value)
+    {
+        bool trigger = !_landed && value;
+        _landed = value;
+        if(trigger)
+        {
+            EventBus.Trigger(nameof(EventPlayerLanded), this.gameObject);
+        }
     }
 
     void CheckGrounded()
@@ -182,19 +206,14 @@ public class PlayerMovement : NetworkBehaviour
             _airJumped = false;
             _lastGrounded = NetworkTime.time;
         }
-        if (_isGrounded && landed)
-        {
-            animator.SetTrigger("land");
-            landed = false;
-        }
-        if(!_isGrounded)
-        {
-            landed = true;
-        }
+        SetLanded(_isGrounded);
     }
 
+    
     private void FixedUpdate()
     {
+        // NOTE: Runs on all clients
+
         CheckGrounded();
         ApplyGravity();
         PerformJump();

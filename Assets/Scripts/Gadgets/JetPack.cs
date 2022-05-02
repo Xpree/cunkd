@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using UnityEngine.VFX;
+using Unity.VisualScripting;
 
 [RequireComponent(typeof(NetworkItem))]
 [RequireComponent(typeof(NetworkCooldown))]
-public class JetPack : NetworkBehaviour, IGadget, IEquipable
+public class JetPack : NetworkBehaviour
 {
-    [SerializeField] NetworkAnimator animator;
-
     [SerializeField] bool isPassive;
     [SerializeField] int Charges;
     [SerializeField] float Cooldown = 0.05f;
@@ -17,23 +16,25 @@ public class JetPack : NetworkBehaviour, IGadget, IEquipable
     [SerializeField] float acceleration = 0.01f;
 
     NetworkCooldown cooldownTimer;
+    NetworkItem item;
 
-    bool IGadget.isPassive => isPassive;
-    int IGadget.Charges => Charges;
-    int IGadget.ChargesLeft => cooldownTimer.Charges;
+    float force = 0;
+    bool isUsing = false;
 
-
-    GameInputs gameInputs;
     private void Awake()
     {
+        item = GetComponent<NetworkItem>();
+        item.ItemType = ItemType.Gadget;
+
         cooldownTimer = GetComponent<NetworkCooldown>();
+        cooldownTimer.CooldownDuration = Cooldown;
+        cooldownTimer.MaxCharges = Charges;
     }
 
     public override void OnStartServer()
     {
         base.OnStartServer();
         cooldownTimer.SetCharges(Charges);
-        cooldownTimer.coolDownDuration = Cooldown;
     }
 
     [TargetRpc]
@@ -42,96 +43,62 @@ public class JetPack : NetworkBehaviour, IGadget, IEquipable
         print(message);
     }
 
-    float force = 0;
-
-    [Command]
-    void fly()
+    [Server]
+    void SetUsing(bool value)
     {
-        if (cooldownTimer.ServerUse(this.Cooldown))
+        if (isUsing == value)
+        {
+            return;
+        }
+
+        isUsing = value;
+
+        // Reset force on when stopping/starting
+        force = 0;
+
+        if (isUsing)
+        {
+            NetworkEventBus.TriggerAll(nameof(EventPrimaryAttackBegin), this.netIdentity);
+        }
+        else
+        {
+            NetworkEventBus.TriggerAll(nameof(EventPrimaryAttackEnd), this.netIdentity);
+        }
+    }
+
+    System.Collections.IEnumerator DestroyItem()
+    {
+        // Delay Destruction to allow for events to trigger
+        yield return new WaitForSeconds(0.5f);
+        NetworkServer.Destroy(this.gameObject);
+    }
+
+    [Server]
+    void Fly()
+    {
+        if (isUsing && cooldownTimer.ServerUse(this.Cooldown))
         {
             force = Mathf.Min(force += acceleration, maxForce);
-            RpcFlyLikeSatan();
-            animator.SetTrigger("Fly");
+            RpcFlyLikeSatan(force);
             if (cooldownTimer.Charges == 0)
             {
-                TargetTell("out of fuel");
-                NetworkServer.Destroy(this.gameObject);
+                SetUsing(false);
+                StartCoroutine(DestroyItem());
                 return;
             }
         }
     }
 
-    bool timeToFly = false;
+    [ServerCallback]
     private void FixedUpdate()
     {
-        if (timeToFly)
-        {
-            fly();
-        }
-        else
-        {
-            animator.SetTrigger("StopFly");
-        }
+        SetUsing(item.AnyAttackPressed && cooldownTimer.Charges > 0);
+        Fly();
     }
 
     [TargetRpc]
-    void RpcFlyLikeSatan()
+    void RpcFlyLikeSatan(float height)
     {
-        //print("Look mom I'm flying!");
-        force = Mathf.Min(force += acceleration, maxForce);
-        PlayerMovement pm = GetComponentInParent<PlayerMovement>();
-        pm.ApplyJumpForce(force);
-    }
-
-    void IGadget.PrimaryUse(bool isPressed)
-    {
-        force = 0;
-        timeToFly = isPressed;
-    }
-
-    void IGadget.SecondaryUse(bool isPressed)
-    {
-        force = 0;
-        timeToFly = isPressed;
-    }
-
-    float? IGadget.ChargeProgress => null;
-
-
-    bool holstered;
-    bool IEquipable.IsHolstered => holstered;
-
-    void IEquipable.OnHolstered()
-    {
-        // TODO Animation then set holstered
-        holstered = true;
-        transform.localScale = Vector3.zero;
-    }
-
-    void IEquipable.OnUnholstered()
-    {
-        // TODO Animation then set holstered
-        holstered = false;
-        transform.localScale = Vector3.one;
-    }
-
-    void IEquipable.OnPickedUp(bool startHolstered)
-    {
-        holstered = startHolstered;
-
-        if (holstered)
-            transform.localScale = Vector3.zero;
-        else
-            transform.localScale = Vector3.one;
-    }
-
-    void IEquipable.OnDropped()
-    {
-        this.transform.parent = null;
-        if (holstered)
-        {
-            holstered = false;
-            transform.localScale = Vector3.one;
-        }
+        item.GetOwnerComponent<PlayerMovement>()?.ApplyJumpForce(height);
     }
 }

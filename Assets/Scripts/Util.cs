@@ -25,6 +25,16 @@ public static class Util
         return identity.HasControl();
     }
 
+    public static void SetPhysicsSynchronized(NetworkIdentity identity, bool enable)
+    {
+        var netRigidbody = identity.GetComponent<Mirror.Experimental.NetworkRigidbody>();
+        if (netRigidbody != null)
+            netRigidbody.enabled = enable;
+        var netTransform = identity.GetComponent<Mirror.NetworkTransform>();
+        if (netTransform != null)
+            netTransform.enabled = enable;
+    }
+
     public static void SetClientPhysicsAuthority(NetworkIdentity identity, bool enable)
     {
         var netRigidbody = identity.GetComponent<Mirror.Experimental.NetworkRigidbody>();
@@ -85,6 +95,19 @@ public static class Util
         }
     }
 
+    public static Vector3 SphereCastPointOrMaxDistance(Transform transform, float maxDistance, LayerMask targetMask, float radius)
+    {
+        RaycastHit hit;
+        if (Physics.SphereCast(new Ray(transform.position, transform.forward), radius, out hit, maxDistance, targetMask, QueryTriggerInteraction.Ignore))
+        {
+            return hit.point;
+        }
+        else
+        {
+            return transform.position + transform.forward * maxDistance;
+        }
+    }
+
     public static bool RaycastPoint(Transform transform, float maxDistance, LayerMask targetMask, out Vector3 point)
     {
         if (Physics.Raycast(new Ray(transform.position, transform.forward), out RaycastHit hit, maxDistance, targetMask, QueryTriggerInteraction.Ignore))
@@ -126,6 +149,12 @@ public static class Util
             Screen.SetResolution(res.width, res.height, Settings.windowedFullscreenMode ? FullScreenMode.FullScreenWindow : FullScreenMode.ExclusiveFullScreen, res.refreshRate);
         }
     }
+
+
+    public static Ray ForwardRay(this Transform transform)
+    {
+        return new (transform.position, transform.forward);
+    }
 }
 
 /// <summary>
@@ -149,6 +178,7 @@ public struct NetworkTimer
     public double TickTime;
 
     public double Elapsed => NetworkTime.time - TickTime;
+    public double Remaining => TickTime - NetworkTime.time;
     public static NetworkTimer Now => new NetworkTimer { TickTime = NetworkTime.time };
     public static NetworkTimer FromNow(double duration) => new NetworkTimer { TickTime = NetworkTime.time + duration };
 

@@ -39,6 +39,9 @@ public class CunkdNetManager : NetworkManager
     public static CunkdNetManager Instance => NetworkManager.singleton as CunkdNetManager;
 
 
+    [SerializeField] NetworkEventBus eventBusPrefab;
+
+
     public static void HostCurrentScene(CunkdNetManager networkManagerPrefab)
     {
         if(!Application.isEditor)
@@ -57,6 +60,21 @@ public class CunkdNetManager : NetworkManager
         _gameServer = GetComponentInChildren<GameServer>(true);
         this.dontDestroyOnLoad = true;
         base.Awake();
+
+        if(eventBusPrefab == null)
+        {
+            Debug.LogError("Missing event bus prefab.");
+        }
+    }
+
+    public override void OnValidate()
+    {
+        base.OnValidate();
+
+        if(eventBusPrefab != null && !this.spawnPrefabs.Contains(eventBusPrefab.gameObject))
+        {
+            this.spawnPrefabs.Add(eventBusPrefab.gameObject);
+        }
     }
 
     public override void Start()
@@ -77,12 +95,18 @@ public class CunkdNetManager : NetworkManager
     {
         _lobbyServer.OnServerStarted();
         _gameServer.OnServerStarted();
+
+        var eventBus = Instantiate(eventBusPrefab);
+        NetworkServer.Spawn(eventBus.gameObject);
     }
 
     public override void OnStopServer()
     {
         _lobbyServer.OnServerStopped();
         _gameServer.OnServerStopped();
+        var eventBus = FindObjectOfType<NetworkEventBus>()?.gameObject;
+        if(eventBus != null)
+            NetworkServer.Destroy(eventBus);
     }
 
     /// <summary>

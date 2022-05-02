@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // Static game settings that wont be changed by the player
@@ -61,6 +59,7 @@ public class GameSettings : ScriptableObject
         public float Range = 20f;
     }
 
+
     public BlackHoleGunSettings BlackHoleGun = new();
 
     [Serializable]
@@ -78,6 +77,10 @@ public class GameSettings : ScriptableObject
     {
         public float Duration = 30f;
         public float Friction = -0.5f;
+
+        public float MaxRange = 20f;
+        public float Cooldown = 0f;
+        public int Charges = 1;
     }
 
     public IceGadgetSettings IceGadget = new();
@@ -90,4 +93,10 @@ public class GameSettings : ScriptableObject
     }
 
     public SwapSniperSettings SwapSniper = new();
+
+
+    public LayerMask ProtectileTargetLayers;
+    public float SmallSphereCastRadius = 0.25f;
+    public float AutodespawnTimer = 30.0f;
 }
+

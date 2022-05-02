@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using UnityEngine.InputSystem;
+using Unity.VisualScripting;
 
 public class GameClient : NetworkBehaviour
 {
@@ -83,5 +84,11 @@ public class GameClient : NetworkBehaviour
     {
         FindObjectOfType<Countdown>()?.StartCountdown(networkTime);
         StartCoroutine(DelayGameStart(networkTime));
+    }
+
+
+    public void LogDebug(string text)
+    {
+        Debug.Log($"[Player: {this.PlayerName}] {text}");
     }
 }
