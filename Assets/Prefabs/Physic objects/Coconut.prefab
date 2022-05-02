@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5769685091094781216}
   - component: {fileID: 5769685091094781231}
   - component: {fileID: 5769685091094781230}
+  - component: {fileID: 4519883226565551639}
   - component: {fileID: 5769685091094781227}
   - component: {fileID: -9078684999050906523}
   - component: {fileID: -7766302872826980937}
@@ -18,9 +19,7 @@ GameObject:
   - component: {fileID: 9077691601482770709}
   - component: {fileID: 2669256157162491320}
   - component: {fileID: 2811403817185381882}
-  - component: {fileID: 4404098802279138240}
-  - component: {fileID: 8741374254473128439}
-  - component: {fileID: 6903113166752818647}
+  - component: {fileID: 9153501990334155846}
   m_Layer: 6
   m_Name: Coconut
   m_TagString: Untagged
@@ -93,6 +92,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &4519883226565551639
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5769685091094781207}
+  m_Material: {fileID: 13400000, guid: 75efab1bed6a25d4185a245ea2b70a2f, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!114 &5769685091094781227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,7 +132,7 @@ Rigidbody:
   m_Mass: 0.98
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
@@ -2384,7 +2397,7 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!114 &4404098802279138240
+--- !u!114 &9153501990334155846
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2399,34 +2412,6 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   breakVelocity: 50
-  breakChance: 50
+  breakChance: 70
   coconutTopHalf: {fileID: 742040715351281123, guid: 05069b327d6b071419e15889ecd177fa, type: 3}
   coconutBottomHalf: {fileID: 6025989945593155366, guid: 00e9145b3a3d58540b9909e6aac7828f, type: 3}
---- !u!64 &8741374254473128439
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5769685091094781207}
-  m_Material: {fileID: 13400000, guid: 75efab1bed6a25d4185a245ea2b70a2f, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
---- !u!114 &6903113166752818647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5769685091094781207}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 789325a2a102b4647b0302aa1986fd21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
