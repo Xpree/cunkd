@@ -31,7 +31,13 @@ public class PlayerMovement : NetworkBehaviour
     public bool _landed;
 
     public Animator _localAnimator;
-    
+
+    public GameObject _platform;
+    public GameObject _lastPlatform;
+    public Vector3 _lastPlatformPosition = Vector3.zero;
+    // TODO: Make rotation relative movement
+    //public Quaternion _lastPlatformRotation = Quaternion.identity;
+
     private void Start()
     {
         if (_settings == null)
@@ -214,10 +220,48 @@ public class PlayerMovement : NetworkBehaviour
     }
 
     
+    void ApplyPlatformRelativeMovement()
+    {
+        if (_platform == null || !_isGrounded)
+        {
+            _lastPlatform = null;
+            return;
+        }
+
+        if (_lastPlatform != _platform)
+        {
+            _lastPlatform = _platform;
+            _lastPlatformPosition = _platform.transform.position;
+
+            
+            //_lastPlatformRotation = _platform.transform.localRotation;
+            return;
+        }
+
+        Vector3 pos = _platform.transform.position;
+        Vector3 delta = pos - _lastPlatformPosition;
+        _lastPlatformPosition = pos;
+        _rigidBody.MovePosition(_rigidBody.position + delta);
+
+        
+        /*
+        Quaternion rot = _platform.transform.localRotation;
+        Quaternion deltaRot = rot * Quaternion.Inverse(_lastPlatformRotation);
+        Vector3 angles = new Vector3(0, deltaRot.eulerAngles.y, 0);
+        transform.Rotate(angles);
+        _lastPlatformRotation = rot;
+        */
+       
+        _platform = null;
+    }
+
+    
     private void FixedUpdate()
     {
         // NOTE: Runs on all clients
-
+        
+        ApplyPlatformRelativeMovement();
+        
         CheckGrounded();
         ApplyGravity();
         PerformJump();
@@ -229,8 +273,7 @@ public class PlayerMovement : NetworkBehaviour
         if (HasMovementInput)
         {
             ApplyAcceleration(_movementInput);
-        }
-
+        }        
         // Temp reset
         maxSpeedScaling = 1f;
         maxFrictionScaling = 1f;
@@ -287,5 +330,13 @@ public class PlayerMovement : NetworkBehaviour
         ResetState();
         if(this.connectionToClient != null)
             TargetTeleport(position);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Platform"))
+        {
+            _platform = other.gameObject;
+        }
     }
 }
