@@ -43,4 +43,9 @@ public class AudioSettings : MonoBehaviour
     {
         SFXVolume = newSFXVolume;
     }
+
+    public void SetMuted(bool muted)
+    {        
+            FMODUnity.RuntimeManager.MuteAllEvents(muted);
+    }
 }

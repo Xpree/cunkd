@@ -11,13 +11,13 @@ GameObject:
   - component: {fileID: 5769685091094781216}
   - component: {fileID: 5769685091094781231}
   - component: {fileID: 5769685091094781230}
-  - component: {fileID: 5769685091094781229}
   - component: {fileID: 5769685091094781227}
   - component: {fileID: -9078684999050906523}
   - component: {fileID: -7766302872826980937}
   - component: {fileID: 9063515585945652782}
   - component: {fileID: 9077691601482770709}
   - component: {fileID: -5138233859024549668}
+  - component: {fileID: 8628808010557528897}
   m_Layer: 6
   m_Name: BallOfLaunch
   m_TagString: Untagged
@@ -90,19 +90,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &5769685091094781229
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5769685091094781207}
-  m_Material: {fileID: 13400000, guid: 75efab1bed6a25d4185a245ea2b70a2f, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5769685091094781227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,3 +209,16 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   newcolour: {fileID: 0}
+--- !u!135 &8628808010557528897
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5769685091094781207}
+  m_Material: {fileID: 13400000, guid: 75efab1bed6a25d4185a245ea2b70a2f, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
