@@ -65,8 +65,9 @@ public class NetworkItem : NetworkBehaviour
     [Command]
     public void CmdDropOwnership()
     {
-        this.GetComponent<NetworkIdentity>().RemoveClientAuthority();
-        ChangeOwner(null);
+        // this.GetComponent<NetworkIdentity>().RemoveClientAuthority();
+        // ChangeOwner(null);
+        NetworkServer.Destroy(this.gameObject);
     }
 
     private void OnDestroy()
