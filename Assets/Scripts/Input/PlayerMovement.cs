@@ -30,6 +30,8 @@ public class PlayerMovement : NetworkBehaviour
 
     public bool _landed;
 
+    public Animator _localAnimator;
+    
     private void Start()
     {
         if (_settings == null)
@@ -63,6 +65,7 @@ public class PlayerMovement : NetworkBehaviour
 
     private void Awake()
     {
+        _localAnimator = GetComponent<Animator>();        
         _rigidBody = GetComponent<Rigidbody>();
         _rigidBody.useGravity = false;
         _rigidBody.isKinematic = false;
@@ -193,6 +196,7 @@ public class PlayerMovement : NetworkBehaviour
         if(trigger)
         {
             EventBus.Trigger(nameof(EventPlayerLanded), this.gameObject);
+            _localAnimator.SetTrigger("land");
         }
     }
 
