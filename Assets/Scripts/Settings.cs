@@ -10,8 +10,7 @@ public static class Settings
 
     public static float volume
     {
-        get { return Mathf.Clamp01(PlayerPrefs.GetFloat("Volume", 0.5f)); }
-        //get { return PlayerPrefs.GetFloat("Volume"); }
+        get { return Mathf.Clamp01(PlayerPrefs.GetFloat("Volume", 0.5f)); }        
         set { PlayerPrefs.SetFloat("Volume", value); }        
     }
 

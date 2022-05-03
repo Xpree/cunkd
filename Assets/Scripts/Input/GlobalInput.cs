@@ -72,6 +72,7 @@ public class GlobalInput : MonoBehaviour
         GUILayout.BeginHorizontal();
         GUILayout.Label("Volume:");
         Settings.volume = GUILayout.HorizontalSlider(Settings.volume, 0, 1);
+        AudioSettings.Singleton.MasterVolumeLevel(Settings.volume);
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
@@ -79,7 +80,7 @@ public class GlobalInput : MonoBehaviour
         var previouslyMuted = Settings.muted;
         Settings.muted = GUILayout.Toggle(Settings.muted, GUIContent.none);
         if(previouslyMuted != Settings.muted)
-            FMODUnity.RuntimeManager.MuteAllEvents(Settings.muted);
+            AudioSettings.Singleton.SetMuted(Settings.muted);            
         GUILayout.EndHorizontal();
 
         if (!Application.isEditor)
