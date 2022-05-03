@@ -63,7 +63,7 @@ public class PlayerGUI : MonoBehaviour
         if (obs && obs.IsEquipmentSpawner && obs.spawnedItem)
         {
             interactButton.enabled = true;
-            intreractableInfoText.text = "Pick up " + obs.spawnedItem.GetComponent<NetworkItem>().DisplayName;
+            intreractableInfoText.text = "Pick up ";// + obs.spawnedItem.GetComponent<NetworkItem>().DisplayName;
         }
         else
         {
@@ -77,7 +77,7 @@ public class PlayerGUI : MonoBehaviour
         if (obs != null)
         {
             interactButton.enabled = true;
-            intreractableInfoText.text = "Pick up " + obs.DisplayName;
+            intreractableInfoText.text = "Pick up ";// + obs.DisplayName;
         }
         else
         {
@@ -160,8 +160,8 @@ public class PlayerGUI : MonoBehaviour
     public void updateGUI(Inventory inventory)
     {
         selectedIcon.enabled = false;
-        updateItem(inventory.firstWeapon, primaryWeaponIcon, cooldownIconSlot1, chargesSlot1, inventory.equipped == ItemSlot.PrimaryWeapon);
-        updateItem(inventory.secondWeapon, secondaryWeaponIcon, cooldownIconSlot2, chargesSlot2, inventory.equipped == ItemSlot.SecondaryWeapon);
-        updateItem(inventory.gadget, gadgetIcon, cooldownIconSlot3, chargesSlot3, inventory.equipped == ItemSlot.Gadget);
+        updateItem(inventory.GetItemComponent<NetworkItem>(ItemSlot.PrimaryWeapon), primaryWeaponIcon, cooldownIconSlot1, chargesSlot1, inventory.equipped == ItemSlot.PrimaryWeapon);
+        updateItem(inventory.GetItemComponent<NetworkItem>(ItemSlot.SecondaryWeapon), secondaryWeaponIcon, cooldownIconSlot2, chargesSlot2, inventory.equipped == ItemSlot.SecondaryWeapon);
+        updateItem(inventory.GetItemComponent<NetworkItem>(ItemSlot.Gadget), gadgetIcon, cooldownIconSlot3, chargesSlot3, inventory.equipped == ItemSlot.Gadget);
     }
 }

@@ -18,8 +18,11 @@ public class Interact : NetworkBehaviour
 
     PlayerCameraController playerCameraController;
 
+    GameInputs gameInputs;
+
     private void Start()
     {
+        gameInputs = GetComponentInChildren<GameInputs>();
         aimTransform = Util.GetPlayerInteractAimTransform(this.gameObject);
         playerCameraController = GetComponentInChildren<PlayerCameraController>(true);
     }
@@ -94,9 +97,14 @@ public class Interact : NetworkBehaviour
             {
                 StopHovering();
             }
+
+
+            if (gameInputs.Interact.triggered)
+                TriggerInteract();
         }
     }
 
+    /*
     // TODO: Remove this
     private void OnGUI()
     {
@@ -104,4 +112,5 @@ public class Interact : NetworkBehaviour
             return;        
         GUI.Box(new Rect(Screen.width * 0.5f - 1, Screen.height * 0.5f - 1, 2, 2), GUIContent.none);
     }
+    */
 }
