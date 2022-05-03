@@ -758,10 +758,10 @@
 	</object>
 	<object class="TransitionRegion" id="{ed2316d2-1a78-49ee-ac3b-050e4276333d}">
 		<property name="position">
-			<value>0.20000000000000001</value>
+			<value>0</value>
 		</property>
 		<property name="length">
-			<value>27.799999999999976</value>
+			<value>27.999999999999975</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{7ebbc294-34e5-4403-a6ba-094214f66924}</destination>
@@ -795,7 +795,7 @@
 	</object>
 	<object class="NamedMarker" id="{aba24f8d-a130-4e99-85d4-f9f5a2fb4ffb}">
 		<property name="position">
-			<value>38</value>
+			<value>39</value>
 		</property>
 		<property name="name">
 			<value>Object recived/start loading</value>
