@@ -198,6 +198,7 @@
 			<destination>{d6d34734-5a69-41fc-882d-b7440326670c}</destination>
 			<destination>{c04908a3-27ea-4e00-a50f-fcf5dd16ce71}</destination>
 			<destination>{73fba827-8b06-42f0-bd8a-31d9aabf0693}</destination>
+			<destination>{61a481bb-f7b6-470b-827d-15e12ac98a6f}</destination>
 		</relationship>
 	</object>
 	<object class="ParameterProxy" id="{62b9a706-1086-4d9e-a2cf-3688571783c3}">
@@ -309,7 +310,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{a9455743-de3a-45c1-b400-74aad989dd83}">
 		<property name="volume">
-			<value>-42</value>
+			<value>-22.5</value>
 		</property>
 		<property name="name">
 			<value>Standby hum</value>
@@ -758,10 +759,10 @@
 	</object>
 	<object class="TransitionRegion" id="{ed2316d2-1a78-49ee-ac3b-050e4276333d}">
 		<property name="position">
-			<value>0</value>
+			<value>3.5</value>
 		</property>
 		<property name="length">
-			<value>27.999999999999975</value>
+			<value>24.499999999999975</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{7ebbc294-34e5-4403-a6ba-094214f66924}</destination>
@@ -859,6 +860,23 @@
 		</relationship>
 		<relationship name="triggerConditions">
 			<destination>{929f07ce-a4c0-4e19-9ba8-3a1074eeb593}</destination>
+		</relationship>
+	</object>
+	<object class="TransitionRegion" id="{61a481bb-f7b6-470b-827d-15e12ac98a6f}">
+		<property name="position">
+			<value>0</value>
+		</property>
+		<property name="length">
+			<value>3</value>
+		</property>
+		<relationship name="timeline">
+			<destination>{7ebbc294-34e5-4403-a6ba-094214f66924}</destination>
+		</relationship>
+		<relationship name="markerTrack">
+			<destination>{7a4c50bd-4cdf-48ff-8d8b-faaaf6a689b3}</destination>
+		</relationship>
+		<relationship name="destination">
+			<destination>{9bce03a3-2eb8-4be9-8b21-865c4e25da5f}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{620eae23-7a2d-490b-b42a-76d2f773b74c}">
