@@ -58,7 +58,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         {
             var target = targetObject;
             var progress = GetChargeProgress();
-            if(target != null || target.GetComponent<Pullable>().IsFixed)
+            if(target != null && target.GetComponent<Pullable>().IsFixed)
             {
                 var aimPoint = item.InteractAimPoint(24);
                 var aimDirection = (aimPoint - target.transform.position).normalized;
