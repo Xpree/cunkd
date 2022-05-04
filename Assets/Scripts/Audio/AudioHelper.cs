@@ -17,4 +17,18 @@ public static class AudioHelper
         instance.start();
         instance.release();
     }
+
+    public static void PlayOneShotAttachedWithParameters(string fmodEvent, GameObject gameObject, params (string name, float value)[] parameters)
+    {
+        FMOD.Studio.EventInstance instance = FMODUnity.RuntimeManager.CreateInstance(fmodEvent);
+
+        foreach (var (name, value) in parameters)
+        {
+            instance.setParameterByName(name, value);
+        }            
+        
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(instance, gameObject.transform, gameObject.GetComponent<Rigidbody>());
+        instance.start();
+        instance.release();
+    }
 }
