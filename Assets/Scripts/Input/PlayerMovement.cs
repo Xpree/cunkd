@@ -35,11 +35,16 @@ public class PlayerMovement : NetworkBehaviour
     public GameObject _platform;
     public GameObject _lastPlatform;
     public Vector3 _lastPlatformPosition = Vector3.zero;
+    public GameObject body;
     // TODO: Make rotation relative movement
     //public Quaternion _lastPlatformRotation = Quaternion.identity;
 
     private void Start()
     {
+        if(isLocalPlayer)
+        {
+            body.SetActive(false);
+        }
         if (_settings == null)
         {
             Debug.LogError("Missing GameSettings reference on " + name);
