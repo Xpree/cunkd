@@ -62,11 +62,11 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             {
                 var aimPoint = item.InteractAimPoint(24);
                 var aimDirection = (aimPoint - target.transform.position).normalized;
-                CmdStopPulling();
+                justStop();
                 CmdPush(target, aimDirection, progress);
                 return;
             }
-            CmdStopPulling();
+            justStop();
             var pushedObject = item.ProjectileHitscanIdentity(MaxRange);
 
             if(pushedObject == null)
@@ -80,7 +80,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
 
     void IWeapon.SecondaryAttack(bool isPressed)
     {
-        CmdStopPulling();
+        justStop();
         if (isPressed)
         {
             var target = item.ProjectileHitscanComponent<Pullable>(MaxGrabRange);
@@ -148,14 +148,23 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
     [Command]
     void CmdStopPulling()
     {
-        StopPulling();
+        if (isServerOnly)
+        {
+            StopPulling();
+        }
         RpcStopPulling();
     }
 
-    [ClientRpc]
+    [ClientRpc(includeOwner = false)]
     void RpcStopPulling()
     {
         StopPulling();
+    }
+
+    void justStop()
+    {
+        StopPulling();
+        CmdStopPulling();
     }
     
     void OnDisable()
