@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 6445545870037735266}
   - component: {fileID: 6834629529071060142}
   - component: {fileID: 3481232803029442486}
+  - component: {fileID: -4564715765322642669}
   m_Layer: 0
   m_Name: gravitygun
   m_TagString: Untagged
@@ -265,6 +266,36 @@ MonoBehaviour:
   syncInterval: 0.1
   clientAuthority: 0
   animator: {fileID: 6834629529071060142}
+--- !u!114 &-4564715765322642669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4053286044562665193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -615780600
+      Data2: 1132396401
+      Data3: -1258311286
+      Data4: -1043482154
+    Path: event:/SoundStudents/SFX/Weapons/Gravity Gun
+  Event: 
+  PlayEvent: 1
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &4281076717628945015
 GameObject:
   m_ObjectHideFlags: 0
