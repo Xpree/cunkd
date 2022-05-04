@@ -18,7 +18,7 @@ public class NetworkItem : NetworkBehaviour
 
     public Transform OwnerInteractAimTransform => Util.GetPlayerInteractAimTransform(this.Owner);
 
-    public Ray AimRay => this.OwnerInteractAimTransform.ForwardRay();
+    public Ray AimRay => this.transform.ForwardRay();
 
     public T GetOwnerComponent<T>()
     {
@@ -173,9 +173,9 @@ public class NetworkItem : NetworkBehaviour
     }
 
 
-    public Vector3 ProjectileHitscanPoint(float maxDistance)
+    public Vector3 InteractAimPoint(float maxDistance)
     {
-        var aimRay = this.AimRay;
+        var aimRay = this.OwnerInteractAimTransform.ForwardRay();
 
         var settings = GameServer.Instance.Settings;
 

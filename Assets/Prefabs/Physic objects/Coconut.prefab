@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: 2669256157162491320}
   - component: {fileID: 2811403817185381882}
   - component: {fileID: 9153501990334155846}
-  - component: {fileID: 486697859782823556}
+  - component: {fileID: -5581919266446084565}
   m_Layer: 6
   m_Name: Coconut
   m_TagString: Untagged
@@ -2416,7 +2416,7 @@ MonoBehaviour:
   breakChance: 70
   coconutTopHalf: {fileID: 742040715351281123, guid: 05069b327d6b071419e15889ecd177fa, type: 3}
   coconutBottomHalf: {fileID: 6025989945593155366, guid: 00e9145b3a3d58540b9909e6aac7828f, type: 3}
---- !u!114 &486697859782823556
+--- !u!114 &-5581919266446084565
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: -5138233859024549668}
   - component: {fileID: 6425443226267374546}
   - component: {fileID: 1946039990663318392}
+  - component: {fileID: 8482657027597070269}
   m_Layer: 6
   m_Name: FlatTv
   m_TagString: Untagged
@@ -237,6 +238,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.16015825, y: 1.1899586, z: 2.1077101}
   m_Center: {x: 0.023574531, y: 0.018362045, z: -0.001152873}
+--- !u!114 &8482657027597070269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5769685091094781207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a286c8ebcd065d49924dba120716966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  target: {fileID: 0}
+  pullingCollider: {fileID: 6425443226267374546}
+  body: {fileID: -9078684999050906523}
 --- !u!1001 &5967173325578651687
 PrefabInstance:
   m_ObjectHideFlags: 0

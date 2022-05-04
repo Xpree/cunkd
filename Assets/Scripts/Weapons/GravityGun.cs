@@ -28,13 +28,15 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
     float ChargeRate => _settings.GravityGun.ChargeRate;
     float MaxRange => _settings.GravityGun.MaxRange;
 
+    NetworkItem item;
+    NetworkTimer chargeBegan;
+    GameObject targetObject;
 
-    bool _charging;
-    NetworkTimer _chargeBegan;
 
-    bool _pulling;
-    NetworkIdentity _localAttract;
-
+    void Awake()
+    {
+        item = GetComponent<NetworkItem>();
+    }
 
     private void Start()
     {
@@ -44,250 +46,136 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         }
     }
 
-    public Vector3 GetAnchorPosition(float offset)
+    void IWeapon.PrimaryAttack(bool isPressed)
     {
-        return AnchorPoint.position + AnchorPoint.forward * offset;
-    }
-
-    System.Collections.IEnumerator PullObject(Rigidbody body)
-    {
-        var grabTargetCollider = body.GetComponent<Collider>();
-        var attractOffset = grabTargetCollider.bounds.extents.magnitude;
-        body.AddTorque(Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque));
-        var grabStart = NetworkTimer.Now;
-        for(; ;)
+        charging = isPressed;
+        if (isPressed)
         {
-            if (!_pulling)
-            {
-                yield break;
-            }
-
-            var timeToAnchor = (float)(GrabTime - grabStart.Elapsed);
-            if(timeToAnchor <= 0)
-                break;
-
-            body.velocity = (GetAnchorPosition(attractOffset) - body.position) / timeToAnchor;
-            yield return new WaitForFixedUpdate();
-        }
-
-        grabTargetCollider.enabled = false;
-        body.isKinematic = true;
-        //animator.SetTrigger("Hold");
-        body.velocity = Vector3.zero;
-        body.angularVelocity = Vector3.zero;
-        while (_pulling)
-        {
-            body.position = GetAnchorPosition(attractOffset);
-            yield return new WaitForFixedUpdate();
-        }
-    }
-
-
-    [TargetRpc]
-    void TargetRpcBeginAttract(NetworkIdentity body)
-    {
-        if (_pulling)
-        {
-            Util.SetClientPhysicsAuthority(body, true);
-            _localAttract = body;
-            StartCoroutine(PullObject(body.GetComponent<Rigidbody>()));
-            animator.SetTrigger("Attract");
-
+            chargeBegan = NetworkTimer.Now;
+            return;
         }
         else
         {
-            CmdStopAttract(body.GetComponent<NetworkIdentity>(), body.transform.position, AnchorPoint.transform.forward, 0);
-        }
-    }
-
-    [Command]
-    void CmdAttract(NetworkIdentity identity)
-    {
-        if (identity == null)
-            return;
-
-        if(_localAttract != null)
-        {
-            GameServer.PurgeOwnedObjects(this.connectionToClient);
-            if(this.connectionToClient != null)
+            var target = targetObject;
+            var progress = GetChargeProgress();
+            if(target != null && target.GetComponent<Pullable>().IsFixed)
             {
-                Debug.LogError("Client tried to attract multiple objects.");
-                this.connectionToClient.Disconnect();
+                var aimPoint = item.InteractAimPoint(24);
+                var aimDirection = (aimPoint - target.transform.position).normalized;
+                justStop();
+                CmdPush(target, aimDirection, progress);
+                return;
             }
-            Debug.LogError("Tried to attract multiple objects.");
-            return;
-        }
+            justStop();
+            var pushedObject = item.ProjectileHitscanIdentity(MaxRange);
 
-        if (this.connectionToClient != null && identity.connectionToClient != null)
-            return;
-
-        var rb = identity.GetComponent<Rigidbody>();
-        if (rb == null)
-        {
-            return;
-        }
-
-        _localAttract = identity;
-        if (this.connectionToClient != null)
-        {
-            identity.AssignClientAuthority(this.connectionToClient);
-            Util.SetClientPhysicsAuthority(identity, true);
-            TargetRpcBeginAttract(identity);
-        }
-        else // Server owned object
-        {
-            StartCoroutine(PullObject(rb));
+            if(pushedObject == null)
+            {
+                return;
+            }
+            CmdPush(pushedObject.gameObject, this.transform.forward, progress);
         }
         
     }
 
-    [Command]
-    void CmdStopAttract(NetworkIdentity identity, Vector3 position, Vector3 direction, float chargeProgress)
-    {
-        //animator.SetTrigger("StopAttract");
-        if (identity == null)
-            return;
-
-        identity.RemoveClientAuthority();
-        Util.SetClientPhysicsAuthority(identity, false);
-        var rb = identity.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.position = position;
-            if(rb.isKinematic)
-            {
-                rb.velocity = Vector3.zero;
-                rb.angularVelocity = Vector3.zero;
-                rb.isKinematic = false;
-            }
-
-            if (chargeProgress > 0)
-            {
-                float pushForce = Mathf.Lerp(MinPushForce, MaxPushForce, Mathf.Clamp01(chargeProgress));
-                rb.AddForce(direction * pushForce, this.PushForceMode);
-                animator.SetTrigger("Fire");
-            }
-        }
-
-        _localAttract = null;
-    }
-
-    void StopPulling(bool push)
-    {
-        _pulling = false;
-        if (_localAttract != null)
-        {
-            _localAttract.transform.parent = null;
-            var rb = _localAttract.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                //animator.SetTrigger("StopHold");
-                rb.isKinematic = false;
-            }
-            var collider = _localAttract.GetComponent<Collider>();
-            if (collider != null)
-                collider.enabled = true;
-
-            Util.SetClientPhysicsAuthority(_localAttract, false);
-
-            float chargeProgress = 0f;
-            if(push && _charging)
-            {
-                chargeProgress = Mathf.Clamp01((float)_chargeBegan.Elapsed);
-                animator.SetTrigger("Fire");
-            }
-            CmdStopAttract(_localAttract, _localAttract.transform.position, AnchorPoint.transform.forward, chargeProgress);
-            _localAttract = null;
-            animator.SetTrigger("StopAttract");
-        }
-    }
-
     void IWeapon.SecondaryAttack(bool isPressed)
     {
-        StopPulling(false);
+        justStop();
         if (isPressed)
         {
-            AudioHelper.PlayOneShotWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.transform.position, ("Grab Object", 1f), ("Object recived start loading", 1f), ("Shot away object", 0f));
-            var aimTransform = Util.GetOwnerAimTransform(this.GetComponent<NetworkItem>());
-            if (Physics.SphereCast(aimTransform.position, 0.5f, aimTransform.forward, out RaycastHit hitResult, MaxGrabRange, TargetMask))
+            var target = item.ProjectileHitscanComponent<Pullable>(MaxGrabRange);
+            if(target == null)
             {
-                _pulling = true;
-                var networkIdentity = hitResult.collider.GetComponent<NetworkIdentity>();
-                CmdAttract(networkIdentity);
+                return;
             }
+            CmdPull(target);
         }
+    }
+
+    float GetChargeProgress()
+    {
+        return Mathf.Clamp01((float)chargeBegan.Elapsed);
     }
 
     [Command]
-    void CmdPush(NetworkIdentity identity, Vector3 localPosition, Vector3 localDirection, float chargeProgress)
+    void CmdPush(GameObject target, Vector3 aimDirection, float progress)
     {
-        if (identity == null || identity.connectionToClient != null)
+        Vector3 torque = new Vector3(Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque));
+        var body = target.GetComponent<Rigidbody>();
+        float Force = Mathf.Lerp(MinPushForce, MaxPushForce, Mathf.Clamp01(progress));
+        body.AddForce(aimDirection * Force, PushForceMode);
+        body.AddTorque(torque);
+    }
+
+    void StartPulling(Pullable target, NetworkTimer time, Vector3 torque)
+    {
+        if (target == null || target.IsBeingPulled)
         {
             return;
         }
-
-        var rb = identity.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            if (chargeProgress > 0)
-            {
-                float pushForce = Mathf.Lerp(MinPushForce, MaxPushForce, Mathf.Clamp01(chargeProgress));
-
-                var direction = rb.transform.TransformDirection(localDirection);
-                var position = rb.transform.TransformPoint(localPosition);
-                
-                rb.AddForceAtPosition(direction * pushForce, position, this.PushForceMode);
-            }
-        }
-
-
+        target.GetComponent<Rigidbody>().AddTorque(torque);
+        target.StartPulling(AnchorPoint.gameObject, 0, time);
+        targetObject = target.gameObject;
     }
 
-    void IWeapon.PrimaryAttack(bool isPressed)
+    void StopPulling()
     {
-        if (isPressed)
+        if (targetObject == null)
         {
-            _charging = true;
-            _chargeBegan = NetworkTimer.Now;
+            return;
         }
-        else if (_charging)
-        {                        
-            AudioHelper.PlayOneShotWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.transform.position, ("Grab Object", 1f), ("Object recived start loading", 1f), ("Shot away object", 1f));
-            
-            var rb = _localAttract?.GetComponent<Rigidbody>();
-            if (rb != null && rb.isKinematic)
-            {
-                StopPulling(true);
-            }
-            else if (Physics.SphereCast(AnchorPoint.position, 0.5f, AnchorPoint.forward, out RaycastHit hitResult, MaxRange, TargetMask))
-            {
-                var networkIdentity = hitResult.collider.GetComponent<NetworkIdentity>();
-
-                if (networkIdentity != null)
-                {
-                    if (_localAttract == networkIdentity)
-                    {
-                        StopPulling(true);
-                    }
-                    else
-                    {
-                        var t = networkIdentity.transform;
-                        var localPosition = t.InverseTransformPoint(hitResult.point);
-                        var localDirection = t.InverseTransformDirection(AnchorPoint.forward);                        
-                        CmdPush(networkIdentity, localPosition, localDirection, Mathf.Clamp01((float)_chargeBegan.Elapsed));
-                    }
-                }
-            }
-            StopCharging();
-        }
+        targetObject.GetComponent<Pullable>().StopPulling();
     }
 
-    void StopCharging()
+    [Command]
+    void CmdPull(Pullable target)
     {
-        _charging = false;
+        Vector3 torque = new Vector3(Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque));
+        var time = NetworkTimer.FromNow(GrabTime);
+        if (this.isServerOnly)
+        {
+            StartPulling(target, time, torque);
+        }
+        RpcPull(target, time, torque);
+    } 
+
+    [ClientRpc]
+    void RpcPull(Pullable target, NetworkTimer endTime, Vector3 torque)
+    {
+        StartPulling(target, endTime, torque);
     }
 
-    float? IWeapon.ChargeProgress => _charging ? Mathf.Clamp01((float)_chargeBegan.Elapsed) : null;
+    [Command]
+    void CmdStopPulling()
+    {
+        if (isServerOnly)
+        {
+            StopPulling();
+        }
+        RpcStopPulling();
+    }
+
+    [ClientRpc(includeOwner = false)]
+    void RpcStopPulling()
+    {
+        StopPulling();
+    }
+
+    void justStop()
+    {
+        StopPulling();
+        CmdStopPulling();
+    }
+    
+    void OnDisable()
+    {
+        StopPulling();
+    }
+
+
+
+    bool charging;
+    float? IWeapon.ChargeProgress => charging ? GetChargeProgress() : null;
 
     #region IEquipable
     bool holstered = false;
@@ -314,8 +202,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
 
     void IEquipable.OnHolstered()
     {
-        StopCharging();
-        StopPulling(false);
+        StopPulling();
         StartCoroutine(TestAnimation());
     }
 
@@ -341,8 +228,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
 
     void IEquipable.OnDropped()
     {
-        StopCharging();
-        StopPulling(false);
+        StopPulling();
         this.transform.parent = null;
         if (holstered)
         {

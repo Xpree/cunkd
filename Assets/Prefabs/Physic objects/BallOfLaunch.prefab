@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 9077691601482770709}
   - component: {fileID: -5138233859024549668}
   - component: {fileID: 8628808010557528897}
+  - component: {fileID: -2925792762439551475}
   m_Layer: 6
   m_Name: BallOfLaunch
   m_TagString: Untagged
@@ -222,3 +223,20 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-2925792762439551475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5769685091094781207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a286c8ebcd065d49924dba120716966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  target: {fileID: 0}
+  pullingCollider: {fileID: 8628808010557528897}
+  body: {fileID: -9078684999050906523}
