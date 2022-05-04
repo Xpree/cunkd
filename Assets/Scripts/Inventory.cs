@@ -289,6 +289,10 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
 
         go.GetComponent<IEquipable>()?.OnPickedUp(holstered);
         EventBus.Trigger<bool>(nameof(EventItemPickedUp), go, holstered);
+        if (isLocalPlayer)
+        {            
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SoundStudents/SFX/Weapons/Pickup");
+        }
         if (holstered && isLocalPlayer && Settings.autoEquipOnPickup)
         {
             Equip(slot);

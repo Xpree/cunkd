@@ -202,25 +202,12 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         }
     }
 
-    public static void PlayOneShotWithParameters(string fmodEvent, Vector3 position, params (string name, float value)[] parameters)
-    {
-        FMOD.Studio.EventInstance instance = FMODUnity.RuntimeManager.CreateInstance(fmodEvent);
-
-        foreach (var (name, value) in parameters)
-        {
-            instance.setParameterByName(name, value);
-        }
-
-        instance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(position));
-        instance.start();
-        instance.release();
-    }
-
     void IWeapon.SecondaryAttack(bool isPressed)
     {
         StopPulling(false);
         if (isPressed)
         {
+            AudioHelper.PlayOneShotWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.transform.position, ("Grab Object", 1f), ("Object recived start loading", 1f), ("Shot away object", 0f));
             var aimTransform = Util.GetOwnerAimTransform(this.GetComponent<NetworkItem>());
             if (Physics.SphereCast(aimTransform.position, 0.5f, aimTransform.forward, out RaycastHit hitResult, MaxGrabRange, TargetMask))
             {
@@ -265,7 +252,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         }
         else if (_charging)
         {                        
-            PlayOneShotWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.transform.position, ("Grab Object", 1f), ("Object recived start loading", 1f), ("Shot away object", 1f));
+            AudioHelper.PlayOneShotWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.transform.position, ("Grab Object", 1f), ("Object recived start loading", 1f), ("Shot away object", 1f));
             
             var rb = _localAttract?.GetComponent<Rigidbody>();
             if (rb != null && rb.isKinematic)

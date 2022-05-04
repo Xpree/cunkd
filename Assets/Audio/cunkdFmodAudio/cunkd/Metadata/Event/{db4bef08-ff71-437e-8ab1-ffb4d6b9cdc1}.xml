@@ -550,7 +550,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{45be8106-d473-4a11-bc19-29f877bd24e8}">
 		<property name="volume">
-			<value>-13.5</value>
+			<value>-10</value>
 		</property>
 		<property name="name">
 			<value>Loading to Shot away</value>
