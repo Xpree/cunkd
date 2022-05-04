@@ -56,6 +56,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         }
         else
         {
+            AudioHelper.PlayOneShotWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.transform.position, ("Grab Object", 1f), ("Object recived start loading", 1f), ("Shot away object", 1f));
             var target = targetObject;
             var progress = GetChargeProgress();
             if(target != null && target.GetComponent<Pullable>().IsFixed)
@@ -88,6 +89,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             {
                 return;
             }
+            AudioHelper.PlayOneShotWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.transform.position, ("Grab Object", 1f), ("Object recived start loading", 1f), ("Shot away object", 0f));
             CmdPull(target);
         }
     }
