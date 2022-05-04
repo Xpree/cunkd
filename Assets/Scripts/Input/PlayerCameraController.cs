@@ -90,4 +90,6 @@ public class PlayerCameraController : MonoBehaviour
     {
         playerCamera.fieldOfView = normalfov;
     }
+
+    public bool IsCameraActive => playerCamera.enabled;
 }
