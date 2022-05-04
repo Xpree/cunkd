@@ -30,16 +30,17 @@ public class Spectator : NetworkBehaviour
         FindObjectOfType<SpectatorUI>()?.DisableSpectatorUI();
     }
 
-    public void NextCamera()
+    void SelectNextCamera()
     {
-        if(currentCamera != null)
+
+        if (currentCamera != null)
         {
             currentCamera.DeactivateCamera();
         }
 
- 
-        var playerCameras = FindObjectsOfType<PlayerCameraController>();        
-        if(currentCamera == null)
+
+        var playerCameras = FindObjectsOfType<PlayerCameraController>();
+        if (currentCamera == null)
         {
             if (playerCameras.Length > 0 && playerCameras[0] != null)
             {
@@ -77,5 +78,19 @@ public class Spectator : NetworkBehaviour
 
         if (currentCamera == null)
             mainCamera.enabled = true;
+    }
+
+    public void NextCamera()
+    {
+        SelectNextCamera();
+        var ui = FindObjectOfType<SpectatorUI>();
+
+        if(ui != null)
+        {
+            if (currentCamera != null)
+                ui.SetSpectating(currentCamera.playerTransform.gameObject);
+            else
+                ui.SetSpectating(null);
+        }
     }
 }
