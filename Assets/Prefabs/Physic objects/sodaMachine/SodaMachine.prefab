@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 9077691601482770709}
   - component: {fileID: -5138233859024549668}
   - component: {fileID: 6176766251267088134}
+  - component: {fileID: 2180701465708459818}
   m_Layer: 6
   m_Name: SodaMachine
   m_TagString: Untagged
@@ -223,6 +224,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.4831828, y: 2.6796355, z: 1.2960606}
   m_Center: {x: 0.000000059604645, y: -0.00000023841858, z: -0.03602767}
+--- !u!114 &2180701465708459818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5769685091094781207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a286c8ebcd065d49924dba120716966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  target: {fileID: 0}
+  pullingCollider: {fileID: 6176766251267088134}
+  body: {fileID: -9078684999050906523}
 --- !u!1001 &7697479893144422503
 PrefabInstance:
   m_ObjectHideFlags: 0

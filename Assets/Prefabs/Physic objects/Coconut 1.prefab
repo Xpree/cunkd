@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 2811403817185381882}
   - component: {fileID: 8741374254473128439}
   - component: {fileID: 6903113166752818647}
+  - component: {fileID: -881767069393504475}
   m_Layer: 6
   m_Name: Coconut 1
   m_TagString: Untagged
@@ -2411,3 +2412,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  displayName: 
+  interactCollider: {fileID: 0}
+--- !u!114 &-881767069393504475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5769685091094781207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a286c8ebcd065d49924dba120716966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  target: {fileID: 0}
+  pullingCollider: {fileID: 8741374254473128439}
+  body: {fileID: -9078684999050906523}
