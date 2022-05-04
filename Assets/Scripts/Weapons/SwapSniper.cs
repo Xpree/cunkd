@@ -17,9 +17,12 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     [SerializeField] LayerMask TargetMask = ~0;
 
     NetworkCooldown _cooldownTimer;
+
+    NetworkItem _item;
     
     void Awake()
     {
+        _item = GetComponent<NetworkItem>();
         _cooldownTimer = GetComponent<NetworkCooldown>();
         _cooldownTimer.CooldownDuration = cooldown;
     }
@@ -67,21 +70,46 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
 
     }
 
+    System.Collections.IEnumerator DelaySwap(NetworkIdentity target)
+    {
+        if (target == null)
+            yield break;
+        
+        yield return new WaitForSeconds(0.5f);
+        ZoomOff();
+        CmdPerformSwap(target);
+    }
+
     void IWeapon.PrimaryAttack(bool isPressed)
     {
         if(isPressed)
         {
             if(_cooldownTimer.Use(this.cooldown))
             {
-                CmdPerformSwap(DidHitObject());
+                StartCoroutine(DelaySwap(DidHitObject()));
             }
         }
     }
-
     void IWeapon.SecondaryAttack(bool isPressed)
     {
-
+        if (isPressed)
+        {
+            ZoomToggle();
+        }
     }
+    void ZoomToggle()
+    {
+        var camera = _item.Owner.GetComponentInChildren<PlayerCameraController>();
+        camera.ToggleZoom();
+    }
+
+    void ZoomOff()
+    {
+        var camera = _item.Owner.GetComponentInChildren<PlayerCameraController>();
+        camera.ZoomOff();
+    }
+
+    
 
     float? IWeapon.ChargeProgress => null;
 
@@ -93,6 +121,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
 
     void IEquipable.OnHolstered()
     {
+        ZoomOff();
         // TODO Animation then set holstered
         holstered = true;
         transform.localScale = Vector3.zero;
@@ -117,6 +146,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
 
     void IEquipable.OnDropped()
     {
+        ZoomOff();
         this.transform.parent = null;
         if (holstered)
         {

@@ -9,6 +9,8 @@ public class PlayerCameraController : MonoBehaviour
     public Transform playerTransform;
     public Transform cameraTransform;
     public Camera playerCamera;
+    public float zoomfov;
+    public float normalfov;
 
     Camera mainCamera;
     float pitch = 0.0f;
@@ -71,5 +73,21 @@ public class PlayerCameraController : MonoBehaviour
         EventBus.Trigger(nameof(EventPlayerCameraDeactivated), playerTransform.gameObject);
     }
 
-    public bool IsCameraActive => playerCamera.enabled;
+    public void ToggleZoom()
+    {
+        if(playerCamera.fieldOfView != zoomfov)
+        {
+            playerCamera.fieldOfView = zoomfov;
+        }
+
+        else
+        {
+            playerCamera.fieldOfView = normalfov;
+        }
+    }
+
+    public void ZoomOff()
+    {
+        playerCamera.fieldOfView = normalfov;
+    }
 }
