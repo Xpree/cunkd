@@ -191,13 +191,18 @@ public class NetworkItem : NetworkBehaviour
 
     public NetworkIdentity ProjectileHitscanIdentity(float maxDistance)
     {
+        return ProjectileHitscanComponent<NetworkIdentity>(maxDistance);
+    }
+
+    public T ProjectileHitscanComponent<T>(float maxDistance)where T:class
+    {
         var aimRay = this.AimRay;
 
         var settings = GameServer.Instance.Settings;
 
         if (Physics.SphereCast(aimRay, settings.SmallSphereCastRadius, out RaycastHit hit, maxDistance, settings.ProtectileTargetLayers, QueryTriggerInteraction.Ignore))
         {
-            return hit.collider.GetComponent<NetworkIdentity>();
+            return hit.collider.GetComponent<T>();
         }
         else
         {
