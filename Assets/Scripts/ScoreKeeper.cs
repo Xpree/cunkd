@@ -43,7 +43,7 @@ public class ScoreKeeper : NetworkBehaviour
 
         if (sc.Dead == false)
         {
-            int index = Random.Range(0, spawnPositions.Length);
+            int index = Random.Range(1, spawnPositions.Length);
             var spawn = spawnPositions[index];
             GameServer.PurgeOwnedObjects(player.gameObject);
             player.TargetRespawn(spawn.position, spawn.rotation);

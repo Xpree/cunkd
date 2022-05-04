@@ -102,12 +102,19 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
     [Command]
     void CmdPush(GameObject target, Vector3 aimDirection, float progress)
     {
+        justStop();
         Vector3 torque = new Vector3(Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque));
         var body = target.GetComponent<Rigidbody>();
         float Force = Mathf.Lerp(MinPushForce, MaxPushForce, Mathf.Clamp01(progress));
         body.AddForce(aimDirection * Force, PushForceMode);
         body.AddTorque(torque);
     }
+
+    //[ClientRpc]
+    //void RpcPush()
+    //{
+
+    //}
 
     void StartPulling(Pullable target, NetworkTimer time, Vector3 torque)
     {
