@@ -2,12 +2,15 @@ using UnityEngine;
 using Mirror;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using System;
 
 public class PlayerCameraController : MonoBehaviour
 {
     public Transform playerTransform;
     public Transform cameraTransform;
     public Camera playerCamera;
+    public float zoomfov;
+    public float normalfov;
 
     Camera mainCamera;   
     float pitch = 0.0f;
@@ -61,5 +64,23 @@ public class PlayerCameraController : MonoBehaviour
         EnableCamera(playerCamera, false);
         OnCameraDeactivated?.Invoke();
         Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void ToggleZoom()
+    {
+        if(playerCamera.fieldOfView != zoomfov)
+        {
+            playerCamera.fieldOfView = zoomfov;
+        }
+
+        else
+        {
+            playerCamera.fieldOfView = normalfov;
+        }
+    }
+
+    public void ZoomOff()
+    {
+        playerCamera.fieldOfView = normalfov;
     }
 }

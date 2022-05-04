@@ -727,6 +727,8 @@ MonoBehaviour:
   playerTransform: {fileID: 4822224316094678}
   cameraTransform: {fileID: 701204573964932763}
   playerCamera: {fileID: 6314228708957030162}
+  zoomfov: 20
+  normalfov: 60
   OnCameraActivated:
     m_PersistentCalls:
       m_Calls:
