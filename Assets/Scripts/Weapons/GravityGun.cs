@@ -207,6 +207,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         StopPulling(false);
         if (isPressed)
         {
+            AudioHelper.PlayOneShotWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.transform.position, ("Grab Object", 1f), ("Object recived start loading", 1f), ("Shot away object", 0f));
             var aimTransform = Util.GetOwnerAimTransform(this.GetComponent<NetworkItem>());
             if (Physics.SphereCast(aimTransform.position, 0.5f, aimTransform.forward, out RaycastHit hitResult, MaxGrabRange, TargetMask))
             {
