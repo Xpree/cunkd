@@ -35,6 +35,11 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
         }
     }
 
+    void OnDisable()
+    {
+        ZoomOff();
+    }
+    
     public NetworkIdentity DidHitObject()
     {
         var aimTransform = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
@@ -105,7 +110,18 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
 
     void ZoomOff()
     {
+        if(_item.Owner == null)
+        {
+            return;
+        }
+
         var camera = _item.Owner.GetComponentInChildren<PlayerCameraController>();
+        
+        if(camera == null)
+        {
+            return;
+        }
+
         camera.ZoomOff();
     }
 
