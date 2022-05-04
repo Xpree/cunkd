@@ -63,7 +63,7 @@ public class PlayerGUI : MonoBehaviour
         if (obs && obs.IsEquipmentSpawner && obs.spawnedItem)
         {
             interactButton.enabled = true;
-            intreractableInfoText.text = "Pick up ";// + obs.spawnedItem.GetComponent<NetworkItem>().DisplayName;
+            intreractableInfoText.text = "Pick up " + obs.spawnedItem.GetComponent<NetworkItem>().displayName;
         }
         else
         {
@@ -77,7 +77,7 @@ public class PlayerGUI : MonoBehaviour
         if (obs != null)
         {
             interactButton.enabled = true;
-            intreractableInfoText.text = "Pick up ";// + obs.DisplayName;
+            intreractableInfoText.text = "Pick up " + obs.displayName;
         }
         else
         {

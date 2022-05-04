@@ -11686,7 +11686,6 @@ MonoBehaviour:
   spawnTime: 10
   spawnAtStart: 0
   objectType: 0
-  interactionCollider: {fileID: 887336503090294536}
   spawnedItem: {fileID: 0}
 --- !u!33 &6936921933949048769
 MeshFilter:

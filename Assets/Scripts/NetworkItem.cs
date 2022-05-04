@@ -7,20 +7,101 @@ using Unity.VisualScripting;
 /// </summary>
 public class NetworkItem : NetworkBehaviour
 {
+    public string displayName;
+    public Collider interactCollider;
+
     GameObject owner;
+
+    public bool IsSpawned { get; private set; }
 
     public GameObject Owner => owner;
 
-    public Transform OwnerInteractAimTransform => Util.GetPlayerInteractAimTransform(this.Owner);    
+    public Transform OwnerInteractAimTransform => Util.GetPlayerInteractAimTransform(this.Owner);
+
+    public Ray AimRay => this.OwnerInteractAimTransform.ForwardRay();
+
+    public T GetOwnerComponent<T>()
+    {
+        if (owner == null || owner.activeSelf == false)
+        {
+            return default(T);
+        }
+        return owner.GetComponent<T>();
+    }
+
+
+    // Called by all clients
+    public void OnSpawned(Transform anchor)
+    {
+        transform.parent = anchor;
+        transform.localRotation = Quaternion.identity;
+        transform.localPosition = this.transform.position - interactCollider.transform.position;
+        transform.localPosition += Vector3.up * interactCollider.bounds.extents.y;
+        interactCollider.enabled = true;
+        IsSpawned = true;
+    }
+
+
+    private void OnEnable()
+    {        
+        if(interactCollider == null)
+        {
+            Debug.LogError("Missing interact collider on " + this.name);
+            return;
+        }
+        
+        EventBus.Register(new EventHook(nameof(EventPlayerInteract), interactCollider.gameObject), new System.Action<NetworkIdentity>(OnInteract));
+        EventBus.Register(new EventHook(nameof(EventPlayerInteractHoverStart), interactCollider.gameObject), new System.Action<NetworkIdentity>(OnInteractHoverStart));
+        EventBus.Register(new EventHook(nameof(EventPlayerInteractHoverStop), interactCollider.gameObject), new System.Action<NetworkIdentity>(OnInteractHoverStop));
+
+    }
+
+    private void OnDisable()
+    {
+        EventBus.Unregister(new EventHook(nameof(EventPlayerInteract), interactCollider.gameObject), new System.Action<NetworkIdentity>(OnInteract));
+        EventBus.Unregister(new EventHook(nameof(EventPlayerInteractHoverStart), interactCollider.gameObject), new System.Action<NetworkIdentity>(OnInteractHoverStart));
+        EventBus.Unregister(new EventHook(nameof(EventPlayerInteractHoverStop), interactCollider.gameObject), new System.Action<NetworkIdentity>(OnInteractHoverStop));
+    }
+
+    void OnInteractHoverStart(NetworkIdentity player)
+    {
+        FindObjectOfType<PlayerGUI>()?.interactiveItemButton(this);
+    }
+
+    void OnInteractHoverStop(NetworkIdentity player)
+    {
+        FindObjectOfType<PlayerGUI>()?.interactiveItemButton(null);
+    }
+
+    public void OnInteract(NetworkIdentity player)
+    {
+        var itemOwner = player.GetComponent<INetworkItemOwner>();
+        if (itemOwner == null || itemOwner.CanPickup(this) == false)
+        {
+            Debug.Log("TODO: Can't pick up feedback.");
+            return;
+        }
+        
+        Debug.Log("Picking up " + displayName);
+        CmdTryPickup(player);
+    }
+
 
     void OnChangedOwner(GameObject actor)
     {
+        IsSpawned = false;
+        
+        this.transform.parent = null;
         owner = actor;
         if (owner != null)
         {
+            interactCollider.enabled = false;
             owner.GetComponent<INetworkItemOwner>()?.OnPickedUp(this);
         }
-            
+        else
+        {
+            interactCollider.enabled = true;
+        }            
     }
 
     [ClientRpc]
@@ -89,7 +170,41 @@ public class NetworkItem : NetworkBehaviour
             return;
         
         Pickup(actor);
-    }    
+    }
+
+
+    public Vector3 ProjectileHitscanPoint(float maxDistance)
+    {
+        var aimRay = this.AimRay;
+
+        var settings = GameServer.Instance.Settings;
+
+        if (Physics.SphereCast(aimRay, settings.SmallSphereCastRadius, out RaycastHit hit, maxDistance, settings.ProtectileTargetLayers, QueryTriggerInteraction.Ignore))
+        {
+            return hit.point;
+        }
+        else
+        {
+            return aimRay.GetPoint(maxDistance);
+        }
+    }
+
+    public NetworkIdentity ProjectileHitscanIdentity(float maxDistance)
+    {
+        var aimRay = this.AimRay;
+
+        var settings = GameServer.Instance.Settings;
+
+        if (Physics.SphereCast(aimRay, settings.SmallSphereCastRadius, out RaycastHit hit, maxDistance, settings.ProtectileTargetLayers, QueryTriggerInteraction.Ignore))
+        {
+            return hit.collider.GetComponent<NetworkIdentity>();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
 }
 
 public interface INetworkItemOwner

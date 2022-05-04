@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using Unity.VisualScripting;
+using UnityEngine.InputSystem;
 
 public class Interact : NetworkBehaviour
 {
@@ -52,6 +53,7 @@ public class Interact : NetworkBehaviour
     {
         if (interactAimObject != null)
         {
+            Debug.Log("Interact");
             EventBus.Trigger(nameof(EventPlayerInteract), interactAimObject, this.netIdentity);
             return true;
         }
@@ -83,6 +85,7 @@ public class Interact : NetworkBehaviour
             EventBus.Trigger(nameof(EventPlayerInteractHoverStart), interactAimObject, this.netIdentity);
         }
     }
+   
 
     private void FixedUpdate()
     {
@@ -99,18 +102,15 @@ public class Interact : NetworkBehaviour
             }
 
 
-            if (gameInputs.Interact.triggered)
-                TriggerInteract();
         }
     }
 
-    /*
-    // TODO: Remove this
-    private void OnGUI()
+    public void OnInteract(InputAction.CallbackContext ctx)
     {
-        if (!isLocalPlayer)
-            return;        
-        GUI.Box(new Rect(Screen.width * 0.5f - 1, Screen.height * 0.5f - 1, 2, 2), GUIContent.none);
+        if (ctx.performed)
+        {
+            TriggerInteract();
+        }
     }
-    */
+    
 }
