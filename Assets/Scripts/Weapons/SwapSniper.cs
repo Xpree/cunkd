@@ -75,7 +75,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
         if (target == null)
             yield break;
         
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.05f);
         ZoomOff();
         CmdPerformSwap(target);
     }
