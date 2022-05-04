@@ -56,9 +56,17 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         }
         else
         {
-            CmdStopPulling();
+            var target = targetObject;
             var progress = GetChargeProgress();
-
+            if(target != null || target.GetComponent<Pullable>().IsFixed)
+            {
+                var aimPoint = item.InteractAimPoint(24);
+                var aimDirection = (aimPoint - target.transform.position).normalized;
+                CmdStopPulling();
+                CmdPush(target, aimDirection, progress);
+                return;
+            }
+            CmdStopPulling();
             var pushedObject = item.ProjectileHitscanIdentity(MaxRange);
 
             if(pushedObject == null)
@@ -92,16 +100,20 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
     [Command]
     void CmdPush(GameObject target, Vector3 aimDirection, float progress)
     {
+        Vector3 torque = new Vector3(Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque));
+        var body = target.GetComponent<Rigidbody>();
         float Force = Mathf.Lerp(MinPushForce, MaxPushForce, Mathf.Clamp01(progress));
-        target.GetComponent<Rigidbody>().AddForce(aimDirection * Force, PushForceMode);
+        body.AddForce(aimDirection * Force, PushForceMode);
+        body.AddTorque(torque);
     }
 
-    void StartPulling(Pullable target, NetworkTimer time)
+    void StartPulling(Pullable target, NetworkTimer time, Vector3 torque)
     {
         if (target == null || target.IsBeingPulled)
         {
             return;
         }
+        target.GetComponent<Rigidbody>().AddTorque(torque);
         target.StartPulling(AnchorPoint.gameObject, 0, time);
         targetObject = target.gameObject;
     }
@@ -118,18 +130,19 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
     [Command]
     void CmdPull(Pullable target)
     {
+        Vector3 torque = new Vector3(Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque));
         var time = NetworkTimer.FromNow(GrabTime);
         if (this.isServerOnly)
         {
-            StartPulling(target, time);
+            StartPulling(target, time, torque);
         }
-        RpcPull(target, time);
+        RpcPull(target, time, torque);
     } 
 
     [ClientRpc]
-    void RpcPull(Pullable target, NetworkTimer endTime)
+    void RpcPull(Pullable target, NetworkTimer endTime, Vector3 torque)
     {
-        StartPulling(target, endTime);
+        StartPulling(target, endTime, torque);
     }
 
     [Command]
