@@ -56,6 +56,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         }
         else
         {
+            AudioHelper.PlayOneShotWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.transform.position, ("Grab Object", 1f), ("Object recived start loading", 1f), ("Shot away object", 1f));
             var target = targetObject;
             var progress = GetChargeProgress();
             if(target != null && target.GetComponent<Pullable>().IsFixed)
@@ -88,6 +89,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             {
                 return;
             }
+            AudioHelper.PlayOneShotWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.transform.position, ("Grab Object", 1f), ("Object recived start loading", 1f), ("Shot away object", 0f));
             CmdPull(target);
         }
     }
@@ -100,12 +102,19 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
     [Command]
     void CmdPush(GameObject target, Vector3 aimDirection, float progress)
     {
+        justStop();
         Vector3 torque = new Vector3(Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque));
         var body = target.GetComponent<Rigidbody>();
         float Force = Mathf.Lerp(MinPushForce, MaxPushForce, Mathf.Clamp01(progress));
         body.AddForce(aimDirection * Force, PushForceMode);
         body.AddTorque(torque);
     }
+
+    //[ClientRpc]
+    //void RpcPush()
+    //{
+
+    //}
 
     void StartPulling(Pullable target, NetworkTimer time, Vector3 torque)
     {
