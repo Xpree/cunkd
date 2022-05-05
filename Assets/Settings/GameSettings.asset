@@ -51,7 +51,11 @@ MonoBehaviour:
   SwapSniper:
     Cooldown: 1
     Range: 200
+  Movable:
+    serializedVersion: 2
+    m_Bits: 64
   ProtectileTargetLayers:
     serializedVersion: 2
     m_Bits: 448
-  SmallSphereCastRadius: 0.25
+  SmallSphereCastRadius: 0.5
+  AutodespawnTimer: 30

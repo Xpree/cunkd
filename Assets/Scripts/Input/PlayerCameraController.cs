@@ -45,6 +45,7 @@ public class PlayerCameraController : MonoBehaviour
 
         pitch -= yMovement;
         pitch = Mathf.Clamp(pitch, -89.9f, 89.9f);
+        cameraTransform.localRotation = Quaternion.Euler(pitch, 0, 0);
         playerTransform.Rotate(Vector3.up * xMovement);
     }
 
@@ -66,7 +67,7 @@ public class PlayerCameraController : MonoBehaviour
         EnableCamera(playerCamera, true);
         OnCameraActivated?.Invoke();
         Cursor.lockState = CursorLockMode.Locked;
-
+        playerCamera.fieldOfView = currentFieldOfView;
         EventBus.Trigger(nameof(EventPlayerCameraActivated), playerTransform.gameObject);
     }
 
@@ -83,11 +84,13 @@ public class PlayerCameraController : MonoBehaviour
     public void ToggleZoom()
     {
         zoomed = !zoomed;
+        playerCamera.fieldOfView = currentFieldOfView;
     }
 
     public void ZoomOff()
     {
         zoomed = false;
+        playerCamera.fieldOfView = currentFieldOfView;
     }
 
     public bool IsCameraActive => playerCamera.enabled;
@@ -113,6 +116,7 @@ public class PlayerCameraController : MonoBehaviour
         return sample;
     }
 
+    /*
     private void Update()
     {
         var shake = FetchCameraShake();
@@ -122,7 +126,7 @@ public class PlayerCameraController : MonoBehaviour
         rotationEuler.x = Mathf.Clamp(rotationEuler.x, -89.9f, 89.9f);
         cameraTransform.localRotation = Quaternion.Euler(rotationEuler);
         cameraTransform.localPosition = cameraPosition + shake.Position;
-    }
+    }*/
     
     public void AddShake(CameraShake shaker)
     {
