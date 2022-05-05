@@ -18,7 +18,7 @@ public class CoconutBreak : NetworkBehaviour
 
     void BreakCheck()
     {
-        //print("breakcheck. current velocity: " + rb.velocity.magnitude);
+        print("breakcheck. current velocity: " + rb.velocity.magnitude);
         int breakVal = Random.Range(0, 100);
         if (breakVelocity < rb.velocity.magnitude)
         {
@@ -44,6 +44,7 @@ public class CoconutBreak : NetworkBehaviour
         NetworkServer.Destroy(gameObject);
     }
 
+    [ServerCallback]
     private void OnCollisionEnter(Collision collision)
     {
         BreakCheck();
