@@ -98,5 +98,8 @@ public class GameSettings : ScriptableObject
     public LayerMask ProtectileTargetLayers;
     public float SmallSphereCastRadius = 0.25f;
     public float AutodespawnTimer = 30.0f;
+
+    public float GlobalKnockbackMultiplier = 2.0f;
+    public float GlobalKnockbackRamp = 1.0f;
 }
 

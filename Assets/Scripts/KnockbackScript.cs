@@ -20,7 +20,9 @@ public class KnockbackScript : NetworkBehaviour
             if (collision.contactCount == 0)
                 return;
 
-            Vector3 knockbackforce = collision.relativeVelocity * (KnockbackStrength * (1 + (float)GameServer.startTime.Elapsed / 100));
+            var settings = GameServer.Instance.Settings;
+
+            Vector3 knockbackforce = collision.relativeVelocity * (KnockbackStrength * (1 + (float)GameServer.startTime.Elapsed * settings.GlobalKnockbackRamp / 100));
 
             ContactPoint contact = collision.GetContact(0);
 
@@ -28,7 +30,7 @@ public class KnockbackScript : NetworkBehaviour
             horizontalNormal.y = 0;
             horizontalNormal = horizontalNormal.normalized;
 
-            Vector3 impulse = (horizontalNormal) * knockbackforce.magnitude;
+            Vector3 impulse = (horizontalNormal) * knockbackforce.magnitude * GameServer.Instance.Settings.GlobalKnockbackMultiplier;
             var player = rb.GetComponent<PlayerMovement>();
             if (player != null)
                 player.TargetAddforce(impulse, ForceMode.Impulse);
