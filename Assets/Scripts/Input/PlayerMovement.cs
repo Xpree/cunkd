@@ -4,6 +4,7 @@ using Mirror;
 using Unity.VisualScripting;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(NetworkTransform))]
 public class PlayerMovement : NetworkBehaviour
 {
     [SerializeField] GameSettings _settings;
@@ -39,6 +40,17 @@ public class PlayerMovement : NetworkBehaviour
     // TODO: Make rotation relative movement
     //public Quaternion _lastPlatformRotation = Quaternion.identity;
 
+    public NetworkTransform _networkTransform;
+
+    private void Awake()
+    {
+        _networkTransform = GetComponent<NetworkTransform>();
+        _localAnimator = GetComponent<Animator>();
+        _rigidBody = GetComponent<Rigidbody>();
+        _rigidBody.useGravity = false;
+        _rigidBody.isKinematic = false;
+    }
+    
     private void Start()
     {
         if(isLocalPlayer)
@@ -53,6 +65,7 @@ public class PlayerMovement : NetworkBehaviour
 
     void ResetState()
     {
+        _networkTransform.Reset();
         _rigidBody.velocity = Vector3.zero;
         _isGrounded = false;
         _groundNormal = Vector3.up;
@@ -73,14 +86,6 @@ public class PlayerMovement : NetworkBehaviour
 
     public bool HasMovementInput => _movementInput.sqrMagnitude > 0;
     public bool HasGroundFriction => (_isGrounded || (HasCoyoteTime && HasMovementInput == false)) && _rigidBody.velocity.y < _settings.CharacterMovement.MaxSpeed * 0.5f;
-
-    private void Awake()
-    {
-        _localAnimator = GetComponent<Animator>();        
-        _rigidBody = GetComponent<Rigidbody>();
-        _rigidBody.useGravity = false;
-        _rigidBody.isKinematic = false;
-    }
 
     public Vector3 HorizontalVelocity
     {
@@ -309,32 +314,28 @@ public class PlayerMovement : NetworkBehaviour
         transform.position = position;
         transform.rotation = rotation;
         ResetState();
+        _networkTransform.CmdTeleport(position, rotation);
     }
 
 
-    [TargetRpc]
-    public void TargetTeleport(Vector3 position)
+    void OnTeleport(Vector3 position)
     {
         transform.position = position;
         ResetState();
-        CmdTeleportComplete();
     }
 
-    [Command]
-    void CmdTeleportComplete()
+    [ClientRpc]
+    void RpcTeleport(Vector3 position)
     {
-        Util.SetClientPhysicsAuthority(GetComponent<NetworkIdentity>(), true);
+        if(this.isClientOnly)
+            OnTeleport(position);
     }
-
 
     [Server]
     public void Teleport(Vector3 position)
     {
-        Util.SetClientPhysicsAuthority(GetComponent<NetworkIdentity>(), false);
-        transform.position = position;
-        ResetState();
-        if(this.connectionToClient != null)
-            TargetTeleport(position);
+        OnTeleport(position);
+        RpcTeleport(position);
     }
 
     private void OnTriggerStay(Collider other)
