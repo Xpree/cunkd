@@ -86,7 +86,7 @@ public class Pullable : NetworkBehaviour
             
             body.transform.parent = target.transform;
             body.velocity = Vector3.zero;
-            body.angularVelocity = Vector3.zero;     
+            body.angularVelocity = Vector3.zero;
         }
         //else
         //{
