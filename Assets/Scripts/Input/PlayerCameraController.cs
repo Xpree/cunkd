@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using UnityEngine.Events;
@@ -10,18 +11,25 @@ public class PlayerCameraController : MonoBehaviour
     public Transform cameraTransform;
     public Camera playerCamera;
     public float zoomfov;
-    public float normalfov;
-
+    
     Camera mainCamera;
     float pitch = 0.0f;
 
     public UnityEvent OnCameraActivated;
     public UnityEvent OnCameraDeactivated;
 
+    public Vector3 cameraPosition;
+
+    public List<CameraShake> activeShakers = new();
+    public bool zoomed = false;
+    public float currentFieldOfView => zoomed ? zoomfov : Settings.cameraFov;
+
     void Awake()
     {
         playerCamera.enabled = false;
         cameraTransform = playerCamera.transform;
+
+        cameraPosition = cameraTransform.localPosition;
     }
 
     public void OnCameraInput(InputAction.CallbackContext ctx)
@@ -36,8 +44,7 @@ public class PlayerCameraController : MonoBehaviour
         float yMovement = delta.y * Settings.mouseSensitivityPitch * Time.deltaTime;
 
         pitch -= yMovement;
-        pitch = Mathf.Clamp(pitch, -90.0f, 90.0f);
-        cameraTransform.localRotation = Quaternion.Euler(pitch, 0.0f, 0.0f);
+        pitch = Mathf.Clamp(pitch, -89.9f, 89.9f);
         playerTransform.Rotate(Vector3.up * xMovement);
     }
 
@@ -75,21 +82,51 @@ public class PlayerCameraController : MonoBehaviour
 
     public void ToggleZoom()
     {
-        if(playerCamera.fieldOfView != zoomfov)
-        {
-            playerCamera.fieldOfView = zoomfov;
-        }
-
-        else
-        {
-            playerCamera.fieldOfView = normalfov;
-        }
+        zoomed = !zoomed;
     }
 
     public void ZoomOff()
     {
-        playerCamera.fieldOfView = normalfov;
+        zoomed = false;
     }
 
     public bool IsCameraActive => playerCamera.enabled;
+
+    ShakeSample FetchCameraShake()
+    {
+        ShakeSample sample = new();
+
+        for (int i = activeShakers.Count - 1; i >= 0; --i)
+        {
+            var shaker = activeShakers[i];
+            if (!shaker.IsActive)
+            {
+                activeShakers.RemoveAt(i);
+                continue;
+            }
+            var shake = shaker.Sample();
+            sample.Position += shake.Position;
+            sample.Rotation *= shake.Rotation;
+            sample.FOV += shake.FOV;
+        }
+        
+        return sample;
+    }
+
+    private void Update()
+    {
+        var shake = FetchCameraShake();
+        playerCamera.fieldOfView = Mathf.Max(currentFieldOfView + shake.FOV, zoomfov * 0.5f);
+        var rotationEuler = shake.Rotation.eulerAngles;
+        rotationEuler.x += pitch;
+        rotationEuler.x = Mathf.Clamp(rotationEuler.x, -89.9f, 89.9f);
+        cameraTransform.localRotation = Quaternion.Euler(rotationEuler);
+        cameraTransform.localPosition = cameraPosition + shake.Position;
+    }
+    
+    public void AddShake(CameraShake shaker)
+    {
+        activeShakers.Add(shaker);
+    }
+
 }
