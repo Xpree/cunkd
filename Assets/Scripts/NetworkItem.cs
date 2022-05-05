@@ -82,7 +82,6 @@ public class NetworkItem : NetworkBehaviour
             return;
         }
         
-        Debug.Log("Picking up " + displayName);
         CmdTryPickup(player);
     }
 

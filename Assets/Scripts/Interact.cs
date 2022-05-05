@@ -53,7 +53,6 @@ public class Interact : NetworkBehaviour
     {
         if (interactAimObject != null)
         {
-            Debug.Log("Interact");
             EventBus.Trigger(nameof(EventPlayerInteract), interactAimObject, this.netIdentity);
             return true;
         }
