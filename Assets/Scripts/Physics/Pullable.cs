@@ -41,7 +41,10 @@ public class Pullable : NetworkBehaviour
         {
             Util.SetPhysicsSynchronized(this.netIdentity, true);
             body.isKinematic = false;
-            pullingCollider.enabled = true;
+            foreach (Collider c in GetComponents<Collider>())
+            {
+                c.enabled = true;
+            }
             this.transform.parent = null;
         }
         else
@@ -52,19 +55,23 @@ public class Pullable : NetworkBehaviour
 
     void SetFixed()
     {
-        if(pullingCollider.enabled)
+        body.position = Vector3.Lerp(body.position, TargetPosition, 0.5f);
+        if (pullingCollider.enabled)
         {
-            pullingCollider.enabled = false;
+            foreach (Collider c in GetComponents<Collider>())
+            {
+                c.enabled = false;
+            }
             body.isKinematic = true;
-            body.position = TargetPosition;
+            
             body.transform.parent = target.transform;
             body.velocity = Vector3.zero;
             body.angularVelocity = Vector3.zero;            
         }
-        else
-        {
-            body.transform.localPosition = Vector3.zero;
-        }
+        //else
+        //{
+        //    body.transform.localPosition = Vector3.zero;
+        //}
     }
 
 
