@@ -94,7 +94,7 @@ public class GameSettings : ScriptableObject
 
     public SwapSniperSettings SwapSniper = new();
 
-
+    public LayerMask Movable;
     public LayerMask ProtectileTargetLayers;
     public float SmallSphereCastRadius = 0.25f;
     public float AutodespawnTimer = 30.0f;

@@ -12,14 +12,25 @@ public class Pullable : NetworkBehaviour
     public Rigidbody body;       
     bool pulling = false;
 
-    float pullOffset = 0;
+    public float pullOffset;
     NetworkTimer fixedTimer;
 
-    public Vector3 TargetPosition => target.transform.position + pullOffset * target.transform.forward;
+    public Vector3 TargetPosition => target.transform.position + pullOffset * target.transform.forward - offsetPosition;
+    public Vector3 offsetPosition;
     public bool IsFixed => pullingCollider.enabled == false;
 
     public bool IsBeingPulled => pulling && target != null && target.activeSelf;
 
+
+    private void Start()
+    {
+        var bounds = pullingCollider.bounds;
+        foreach (Collider c in GetComponents<Collider>())
+        {
+            bounds.Encapsulate(c.bounds);
+        }
+        pullOffset = bounds.extents.magnitude;
+    }
 
     private void OnValidate()
     {
@@ -55,30 +66,45 @@ public class Pullable : NetworkBehaviour
 
     void SetFixed()
     {
-        body.position = Vector3.Lerp(body.position, TargetPosition, 0.5f);
         if (pullingCollider.enabled)
         {
             foreach (Collider c in GetComponents<Collider>())
             {
                 c.enabled = false;
             }
+            if (Physics.Raycast(target.transform.position, target.transform.forward, out RaycastHit hit, pullOffset, GameServer.Instance.Settings.Movable))
+            {
+                if (hit.collider.gameObject == this.gameObject)
+                {
+                    offsetPosition = hit.point - target.transform.position;
+                    this.transform.localPosition = -offsetPosition;
+                }
+                return;
+            }
+
             body.isKinematic = true;
             
             body.transform.parent = target.transform;
             body.velocity = Vector3.zero;
-            body.angularVelocity = Vector3.zero;            
+            body.angularVelocity = Vector3.zero;     
         }
         //else
         //{
         //    body.transform.localPosition = Vector3.zero;
         //}
+        //body.position = Vector3.Lerp(body.position, TargetPosition, 0.5f);
+        
+        
+        //body.position = Vector3.Lerp(body.position, TargetPosition, 0.5f);
     }
 
 
-    public void StartPulling(GameObject destination, float offset, NetworkTimer timeToFixed)
+
+
+    public void StartPulling(GameObject destination, NetworkTimer timeToFixed)
     {
         target = destination;
-        pullOffset = offset;
+        offsetPosition = Vector3.zero;
         fixedTimer = timeToFixed;
         SetPulling(true);
     }

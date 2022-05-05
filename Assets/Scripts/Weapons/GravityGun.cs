@@ -110,7 +110,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             return;
         }
         target.GetComponent<Rigidbody>().AddTorque(torque);
-        target.StartPulling(AnchorPoint.gameObject, 0, time);
+        target.StartPulling(AnchorPoint.gameObject, time);
         targetObject = target.gameObject;
     }
 
