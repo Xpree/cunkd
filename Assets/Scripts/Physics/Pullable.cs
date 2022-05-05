@@ -15,7 +15,7 @@ public class Pullable : NetworkBehaviour
     public float pullOffset;
     NetworkTimer fixedTimer;
 
-    public Vector3 TargetPosition => target.transform.position + pullOffset * target.transform.forward - offsetPosition;
+    public Vector3 TargetPosition => target.transform.position + pullOffset * target.transform.forward;
     public Vector3 offsetPosition;
     public bool IsFixed => pullingCollider.enabled == false;
 
@@ -95,7 +95,7 @@ public class Pullable : NetworkBehaviour
         //body.position = Vector3.Lerp(body.position, TargetPosition, 0.5f);
         
         
-        //body.position = Vector3.Lerp(body.position, TargetPosition, 0.5f);
+        body.position = Vector3.Lerp(body.position, TargetPosition, 0.5f);
     }
 
 
