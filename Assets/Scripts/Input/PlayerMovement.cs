@@ -159,7 +159,7 @@ public class PlayerMovement : NetworkBehaviour
 
         float acceleration = maxSpeedScaling;
 
-        if (_isGrounded || HasStrongAirControl)
+        if ((_isGrounded || HasStrongAirControl) && _preventGrounded.Elapsed > 0)
         {
             acceleration *= _settings.CharacterMovement.GroundAcceleration;
         }
