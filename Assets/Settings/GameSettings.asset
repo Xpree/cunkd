@@ -59,3 +59,5 @@ MonoBehaviour:
     m_Bits: 448
   SmallSphereCastRadius: 0.5
   AutodespawnTimer: 30
+  GlobalKnockbackMultiplier: 1
+  GlobalKnockbackRamp: 1
