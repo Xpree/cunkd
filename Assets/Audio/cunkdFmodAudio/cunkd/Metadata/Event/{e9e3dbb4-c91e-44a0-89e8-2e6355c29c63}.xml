@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{e9e3dbb4-c91e-44a0-89e8-2e6355c29c63}">
+		<property name="color">
+			<value>Red</value>
+		</property>
 		<property name="name">
 			<value>LauncherRelease</value>
 		</property>
@@ -46,6 +49,9 @@
 		</relationship>
 	</object>
 	<object class="MixerInput" id="{120bfa1f-f4b3-4544-85e7-d269f8b92e3f}">
+		<property name="color">
+			<value>Red</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{b5abdf0d-43d1-46dc-bc21-c2f045ac0ba3}</destination>
 		</relationship>

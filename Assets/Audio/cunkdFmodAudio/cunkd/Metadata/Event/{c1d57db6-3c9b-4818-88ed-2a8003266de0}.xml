@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{c1d57db6-3c9b-4818-88ed-2a8003266de0}">
+		<property name="color">
+			<value>Green Light 1</value>
+		</property>
 		<property name="name">
 			<value>Sketch1</value>
 		</property>
@@ -46,6 +49,9 @@
 		</relationship>
 	</object>
 	<object class="MixerInput" id="{c151d115-93cc-4e73-911c-aea66706be95}">
+		<property name="color">
+			<value>Green Light 1</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{10a5b733-0cb6-4766-b929-3c6b9abdc0af}</destination>
 		</relationship>

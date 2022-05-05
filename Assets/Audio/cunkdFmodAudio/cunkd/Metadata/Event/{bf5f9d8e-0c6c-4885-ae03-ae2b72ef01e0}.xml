@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{bf5f9d8e-0c6c-4885-ae03-ae2b72ef01e0}">
+		<property name="color">
+			<value>Red</value>
+		</property>
 		<property name="name">
 			<value>LauncherChargeBuildUp</value>
 		</property>
@@ -46,6 +49,9 @@
 		</relationship>
 	</object>
 	<object class="MixerInput" id="{f32a7750-c4ce-40a1-92c6-f825968eb979}">
+		<property name="color">
+			<value>Red</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{2f51e737-98a1-49d2-b978-7ccd676802a6}</destination>
 		</relationship>

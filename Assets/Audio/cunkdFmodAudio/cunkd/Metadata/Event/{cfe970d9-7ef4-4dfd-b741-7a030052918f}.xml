@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{cfe970d9-7ef4-4dfd-b741-7a030052918f}">
+		<property name="color">
+			<value>Red</value>
+		</property>
 		<property name="name">
 			<value>WindAmbience</value>
 		</property>
@@ -46,6 +49,9 @@
 		</relationship>
 	</object>
 	<object class="MixerInput" id="{87018a2f-e0fd-4fa2-b64b-dee4ebdb6745}">
+		<property name="color">
+			<value>Red</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{bea9d43d-047e-4c7f-873d-ff834b4cc2e6}</destination>
 		</relationship>
