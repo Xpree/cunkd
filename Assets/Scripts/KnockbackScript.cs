@@ -30,7 +30,7 @@ public class KnockbackScript : NetworkBehaviour
             horizontalNormal.y = 0;
             horizontalNormal = horizontalNormal.normalized;
 
-            Vector3 impulse = (horizontalNormal) * knockbackforce.magnitude * GameServer.Instance.Settings.GlobalKnockbackMultiplier;
+            Vector3 impulse = (horizontalNormal + Vector3.up * settings.GlobalKnockupMultiplier) * knockbackforce.magnitude * settings.GlobalKnockbackMultiplier;
             var player = rb.GetComponent<PlayerMovement>();
             if (player != null)
                 player.TargetAddforce(impulse, ForceMode.Impulse);

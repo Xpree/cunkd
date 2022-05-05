@@ -101,5 +101,6 @@ public class GameSettings : ScriptableObject
 
     public float GlobalKnockbackMultiplier = 2.0f;
     public float GlobalKnockbackRamp = 1.0f;
+    public float GlobalKnockupMultiplier = 1.0f;
 }
 

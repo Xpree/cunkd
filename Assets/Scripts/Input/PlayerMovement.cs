@@ -42,8 +42,6 @@ public class PlayerMovement : NetworkBehaviour
 
     public NetworkTransform _networkTransform;
 
-    public NetworkTimer _preventGrounded;
-
     private void Awake()
     {
         _networkTransform = GetComponent<NetworkTransform>();
@@ -84,7 +82,7 @@ public class PlayerMovement : NetworkBehaviour
     public bool HasStrongAirControl => NetworkTime.time - _lastJump <= _settings.CharacterMovement.StrongAirControlTime;
     public bool HasCoyoteTime => (NetworkTime.time - _lastGrounded <= _settings.CharacterMovement.CoyoteTime && _lastGrounded - _lastJump >= _settings.CharacterMovement.CoyoteTime);
 
-    public bool HasGroundContact => (_isGrounded || HasCoyoteTime) && _preventGrounded.Elapsed > 0;
+    public bool HasGroundContact => (_isGrounded || HasCoyoteTime);
 
     public bool HasMovementInput => _movementInput.sqrMagnitude > 0;
     public bool HasGroundFriction => (_isGrounded || (HasCoyoteTime && HasMovementInput == false)) && _rigidBody.velocity.y < _settings.CharacterMovement.MaxSpeed * 0.5f;
@@ -159,7 +157,7 @@ public class PlayerMovement : NetworkBehaviour
 
         float acceleration = maxSpeedScaling;
 
-        if ((_isGrounded || HasStrongAirControl) && _preventGrounded.Elapsed > 0)
+        if (_isGrounded || HasStrongAirControl)
         {
             acceleration *= _settings.CharacterMovement.GroundAcceleration;
         }
@@ -306,7 +304,6 @@ public class PlayerMovement : NetworkBehaviour
     [TargetRpc]
     public void TargetAddforce(Vector3 force, ForceMode mode)
     {
-        _preventGrounded = NetworkTimer.FromNow(0.2);
         _rigidBody.AddForce(force, mode);
         _isGrounded = false;
     }
