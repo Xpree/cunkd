@@ -25,7 +25,7 @@ public class IceGadgetTrap : NetworkBehaviour
         if(other.tag == "Player")
         {
             other.gameObject.GetComponent<PlayerMovement>().maxFrictionScaling = friction;
-            other.gameObject.GetComponent<PlayerMovement>().maxSpeedScaling = 0f;
+            other.gameObject.GetComponent<PlayerMovement>().maxSpeedScaling = 0.01f;
         }
     }
 
