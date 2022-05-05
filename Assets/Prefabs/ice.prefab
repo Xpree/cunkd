@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 5282732480021366983}
   - component: {fileID: 2724936476370816807}
   - component: {fileID: 8991103743797243864}
-  - component: {fileID: 8147042812735035959}
   - component: {fileID: 4358818917715119118}
   - component: {fileID: 6857380976019984218}
+  - component: {fileID: 8265828988120475800}
   m_Layer: 0
   m_Name: ice
   m_TagString: Untagged
@@ -87,20 +87,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &8147042812735035959
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2446264302813279794}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 7
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4358818917715119118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,6 +119,19 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   _settings: {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}
+--- !u!65 &8265828988120475800
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2446264302813279794}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 11.986706, y: 3.9691265, z: 12.054373}
+  m_Center: {x: -0.28720665, y: 0.057353377, z: -0.34786797}
 --- !u!1 &4271524594716317015
 GameObject:
   m_ObjectHideFlags: 0
