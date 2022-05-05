@@ -20,7 +20,7 @@ public class KnockbackScript : NetworkBehaviour
             if (collision.contactCount == 0)
                 return;
 
-            Vector3 knockbackforce = collision.relativeVelocity * KnockbackStrength;
+            Vector3 knockbackforce = collision.relativeVelocity * (KnockbackStrength * (1 + (float)GameServer.startTime.Elapsed / 100));
 
             ContactPoint contact = collision.GetContact(0);
 
