@@ -72,7 +72,8 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
         Util.Teleport(target.gameObject, Swapper);
         Util.Teleport(owner.gameObject, Swappee);
         animator.SetTrigger("Fire");
-
+        FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Gadgets/Teleporter", target.gameObject);
+        FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Gadgets/Teleporter", owner.gameObject);
     }
 
     System.Collections.IEnumerator DelaySwap(NetworkIdentity target)
