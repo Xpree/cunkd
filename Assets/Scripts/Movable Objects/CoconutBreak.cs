@@ -11,6 +11,7 @@ public class CoconutBreak : NetworkBehaviour
     [SerializeField] GameObject coconutBottomHalf;
     Rigidbody rb;
 
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();

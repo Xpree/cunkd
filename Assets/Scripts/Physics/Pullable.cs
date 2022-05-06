@@ -74,12 +74,21 @@ public class Pullable : NetworkBehaviour
         pullOffset = offset;
         fixedTimer = timeToFixed;
         SetPulling(true);
+
+        Renderer rend = GetComponent<Renderer>();
+        if (rend)
+        {
+            Color col = rend.material.color;
+            rend.material.color = col * new Color(1, 1, 1, 0.5f);
+        }
+        print("hejhej");
     }
 
     public void StopPulling()
     {
         target = null;
         SetPulling(false);
+
     }
 
     void FixedUpdate()
