@@ -76,7 +76,7 @@ public class ScoreKeeper : NetworkBehaviour
         {
             RespawnPlayer(player);
         }
-        else
+        else if(other.gameObject.GetComponent<NetworkIdentity>() != null)
         {
             NetworkServer.Destroy(other.gameObject);
         }
