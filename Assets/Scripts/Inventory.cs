@@ -9,8 +9,6 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
     [SerializeField] public Transform primaryWeaponAnchor;
     [SerializeField] public Transform secondaryWeaponAnchor;
     [SerializeField] public Transform gadgetAnchor;
-    [SerializeField] public LayerMask interactLayerMask = ~0;
-    [SerializeField] public float interactMaxDistance = 2.0f;
 
     [Header("Diagnostics")]
     [SyncVar] public GameObject syncedFirstWeapon;
@@ -22,6 +20,10 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
     public GameObject localSecondWeapon;
     public GameObject localGadget;
     public ItemSlot localEquipped = ItemSlot.PrimaryWeapon;
+
+    public bool inHolsterAnimation = false;
+
+    public ItemSlot equippingTo = ItemSlot.PrimaryWeapon;
 
     public GameObject firstWeapon
     {
@@ -210,8 +212,14 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
     #region Equip
     System.Collections.IEnumerator DoEquip(ItemSlot slot)
     {
+        while (inHolsterAnimation)
+        {
+            yield return null;
+        }
+
         if (equipped != slot)
         {
+            inHolsterAnimation = true;
             var item = GetItem(equipped);
             if (item != null)
             {
@@ -237,6 +245,7 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
             {
                 EventBus.Trigger(nameof(EventItemUnholstered), item);
             }
+            inHolsterAnimation = false;
         }
 
     }
@@ -258,9 +267,12 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
 
     public void Equip(ItemSlot slot)
     {
-        StartCoroutine(DoEquip(slot));
         if (this.netIdentity.HasControl())
         {
+            if (slot == equippingTo)
+                return;
+            equippingTo = slot;
+            StartCoroutine(DoEquip(slot));
             CmdEquip(slot);
         }
     }
@@ -303,38 +315,11 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
     {
         if (!isLocalPlayer)
             return;
-        // castRay();
+        
         HandleInput();
         FindObjectOfType<PlayerGUI>().updateGUI(this);
     }
 
-    public void castRay()
-    {
-        var transform = Util.GetPlayerInteractAimTransform(this.gameObject);
-        if (transform == null)
-            return;
-
-        PlayerGUI gui = FindObjectOfType<PlayerGUI>();
-        ObjectSpawner obs = null;
-        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, interactMaxDistance, interactLayerMask))
-        {
-            obs = hit.transform.GetComponent<ObjectSpawner>();
-        }
-        gui.interactiveButton(obs);
-    }
-
-    public void Interact()
-    {
-        var transform = Util.GetPlayerInteractAimTransform(this.gameObject);
-        if (transform == null)
-            return;
-
-        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, interactMaxDistance, this.interactLayerMask))
-        {
-            EventBus.Trigger(nameof(EventPlayerInteract), hit.collider.gameObject, this.netIdentity);
-            hit.transform.GetComponent<IInteractable>()?.Interact(this.netIdentity);
-        }
-    }
 
     public void UseActiveEquipment(bool primaryAttack, bool wasPressed)
     {
@@ -425,22 +410,11 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
             UseActiveEquipment(true, wasPressed);
         }
 
-        //if (gameInputs.SecondaryAttack.IsPressed())
-        //{
-        //    var wasPressed = gameInputs.SecondaryAttack.IsPressed();
-        //    UseActiveEquipment(false, wasPressed);
-        //}
-
         if (gameInputs.SecondaryAttack.WasPressedThisFrame() || gameInputs.SecondaryAttack.WasReleasedThisFrame())
         {
             var wasPressed = gameInputs.SecondaryAttack.WasPressedThisFrame();
             UseActiveEquipment(false, wasPressed);
         }
-
-        //if (gameInputs.Interact.triggered)
-        //{
-        //    Interact();
-        //}
     }
 
 
@@ -517,14 +491,6 @@ public enum ItemSlot
     PrimaryWeapon,
     SecondaryWeapon,
     Gadget
-}
-
-public interface IInteractable
-{
-    /// <summary>
-    /// Invoked on successful interact raycast by Inventory. Identity is the player
-    /// </summary>
-    void Interact(NetworkIdentity identity);
 }
 
 // Callback functions from Inventory component

@@ -27,50 +27,50 @@ public class PlayerGUI : MonoBehaviour
 
 
     //[Client]
-    private void Update()
-    {
-        //castRay();
-        //updateGUI(inventory);
-    }
+    //private void Update()
+    //{
+    //    //castRay();
+    //    //updateGUI(inventory);
+    //}
 
-    public void castRay()
-    {
-        var transform = Util.GetPlayerInteractAimTransform(inventory.gameObject);
-        if (transform == null)
-            return;
+    //public void castRay()
+    //{
+    //    var transform = Util.GetPlayerInteractAimTransform(inventory.gameObject);
+    //    if (transform == null)
+    //        return;
 
-        ObjectSpawner obs = null;
-        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, inventory.interactMaxDistance, inventory.interactLayerMask))
-        {
-            obs = hit.transform.GetComponent<ObjectSpawner>();
-            if (obs && obs.IsEquipmentSpawner && obs.spawnedItem)
-            {
-                interactiveButton(obs);
-            }
-            else
-            {
-                interactiveButton(null);
-            }
-        }
-        else
-        {
-            interactiveButton(null);
-        }
-    }
+    //    ObjectSpawner obs = null;
+    //    if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, inventory.interactMaxDistance, inventory.interactLayerMask))
+    //    {
+    //        obs = hit.transform.GetComponent<ObjectSpawner>();
+    //        if (obs && obs.IsEquipmentSpawner && obs.spawnedItem)
+    //        {
+    //            interactiveButton(obs);
+    //        }
+    //        else
+    //        {
+    //            interactiveButton(null);
+    //        }
+    //    }
+    //    else
+    //    {
+    //        interactiveButton(null);
+    //    }
+    //}
 
-    public void interactiveButton(ObjectSpawner obs)
-    {
-        if (obs && obs.IsEquipmentSpawner && obs.spawnedItem)
-        {
-            interactButton.enabled = true;
-            intreractableInfoText.text = "Pick up " + obs.spawnedItem.GetComponent<NetworkItem>().displayName;
-        }
-        else
-        {
-            interactButton.enabled = false;
-            intreractableInfoText.text = "";
-        }
-    }
+    //public void interactiveButton(ObjectSpawner obs)
+    //{
+    //    if (obs && obs.IsEquipmentSpawner && obs.spawnedItem)
+    //    {
+    //        interactButton.enabled = true;
+    //        intreractableInfoText.text = "Pick up " + obs.spawnedItem.GetComponent<NetworkItem>().displayName;
+    //    }
+    //    else
+    //    {
+    //        interactButton.enabled = false;
+    //        intreractableInfoText.text = "";
+    //    }
+    //}
 
     public void interactiveItemButton(NetworkItem obs)
     {
