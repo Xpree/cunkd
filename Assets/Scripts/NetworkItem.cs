@@ -209,6 +209,22 @@ public class NetworkItem : NetworkBehaviour
         }
     }
 
+    public T ProjectileHitscanOwner<T>(float maxDistance) where T : class
+    {
+        var aimRay = this.OwnerInteractAimTransform.ForwardRay();
+
+        var settings = GameServer.Instance.Settings;
+
+        if (Physics.SphereCast(aimRay, settings.SmallSphereCastRadius, out RaycastHit hit, maxDistance, settings.ProtectileTargetLayers, QueryTriggerInteraction.Ignore))
+        {
+            return hit.collider.GetComponent<T>();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
 }
 
 public interface INetworkItemOwner

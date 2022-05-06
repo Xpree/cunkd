@@ -76,7 +76,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         justStop();
         if (isPressed)
         {
-            var target = item.ProjectileHitscanComponent<Pullable>(MaxGrabRange);
+            var target = item.ProjectileHitscanOwner<Pullable>(MaxGrabRange);
             if(target == null)
             {
                 return;
