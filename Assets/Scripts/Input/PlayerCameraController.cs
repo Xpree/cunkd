@@ -4,6 +4,7 @@ using Mirror;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using Unity.VisualScripting;
+using System;
 
 public class PlayerCameraController : MonoBehaviour
 {
@@ -19,17 +20,45 @@ public class PlayerCameraController : MonoBehaviour
     public UnityEvent OnCameraDeactivated;
 
     public Vector3 cameraPosition;
+    public GameObject shakeCollider;
 
     public List<CameraShake> activeShakers = new();
     public bool zoomed = false;
     public float currentFieldOfView => zoomed ? zoomfov : Settings.cameraFov;
 
+    [HideInInspector]
+    public NetworkIdentity playerIdentity;
+
     void Awake()
     {
         playerCamera.enabled = false;
         cameraTransform = playerCamera.transform;
-
         cameraPosition = cameraTransform.localPosition;
+    }
+
+    private void Start()
+    {
+        playerIdentity = playerTransform.GetComponent<NetworkIdentity>();
+    }
+
+    private void OnEnable()
+    {
+        if(shakeCollider != null)
+        {
+            EventBus.Register(new EventHook(nameof(EventCameraShake), shakeCollider), new Action<CameraShakeSource>(OnCameraShake));
+        }
+    }
+    private void OnDisable()
+    {
+        if (shakeCollider != null)
+        {
+            EventBus.Unregister(new EventHook(nameof(EventCameraShake), shakeCollider), new Action<CameraShakeSource>(OnCameraShake));
+        }
+    }
+
+    private void OnCameraShake(CameraShakeSource source)
+    {
+        this.AddShake(source);
     }
 
     public void OnCameraInput(InputAction.CallbackContext ctx)
@@ -45,8 +74,8 @@ public class PlayerCameraController : MonoBehaviour
 
         pitch -= yMovement;
         pitch = Mathf.Clamp(pitch, -89.9f, 89.9f);
-        cameraTransform.localRotation = Quaternion.Euler(pitch, 0, 0);
         playerTransform.Rotate(Vector3.up * xMovement);
+        UpdateCamera(FetchCameraShake());
     }
 
     static void EnableCamera(Camera camera, bool enable)
@@ -77,7 +106,6 @@ public class PlayerCameraController : MonoBehaviour
         EnableCamera(playerCamera, false);
         OnCameraDeactivated?.Invoke();
         Cursor.lockState = CursorLockMode.None;
-
         EventBus.Trigger(nameof(EventPlayerCameraDeactivated), playerTransform.gameObject);
     }
 
@@ -98,6 +126,7 @@ public class PlayerCameraController : MonoBehaviour
     ShakeSample FetchCameraShake()
     {
         ShakeSample sample = new();
+        sample.Rotation = Quaternion.identity;
 
         for (int i = activeShakers.Count - 1; i >= 0; --i)
         {
@@ -110,27 +139,36 @@ public class PlayerCameraController : MonoBehaviour
             var shake = shaker.Sample();
             sample.Position += shake.Position;
             sample.Rotation *= shake.Rotation;
-            sample.FOV += shake.FOV;
+            sample.FieldOfView += shake.FieldOfView;
         }
         
         return sample;
     }
 
-    /*
-    private void Update()
+    const float MaximumFOV = 100.0f;
+
+    void UpdateCamera(ShakeSample shake)
     {
-        var shake = FetchCameraShake();
-        playerCamera.fieldOfView = Mathf.Max(currentFieldOfView + shake.FOV, zoomfov * 0.5f);
+        playerCamera.fieldOfView = Mathf.Clamp(currentFieldOfView + shake.FieldOfView, zoomfov * 0.5f, MaximumFOV);
         var rotationEuler = shake.Rotation.eulerAngles;
         rotationEuler.x += pitch;
         rotationEuler.x = Mathf.Clamp(rotationEuler.x, -89.9f, 89.9f);
         cameraTransform.localRotation = Quaternion.Euler(rotationEuler);
         cameraTransform.localPosition = cameraPosition + shake.Position;
-    }*/
-    
-    public void AddShake(CameraShake shaker)
+    }
+
+    private void Update()
     {
-        activeShakers.Add(shaker);
+        var shake = FetchCameraShake();
+        if (playerIdentity.HasControl())
+        {
+            UpdateCamera(shake);
+        }
+    }
+    
+    public void AddShake(CameraShakeSource source)
+    {
+        activeShakers.Add(source.cameraShake);
     }
 
 }

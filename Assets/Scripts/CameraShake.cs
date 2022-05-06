@@ -1,11 +1,11 @@
 using UnityEngine;
 
 [System.Serializable]
-public class CameraShake
+public class CameraShake : System.ICloneable
 {
     public Oscillation3 PositionOscillator;
     public Oscillation3 RotationOscillator;
-    public Oscilliation FoVOscillator;
+    public Oscilliation FieldOfViewOscillator;
 
     public float Duration;
     public bool RandomTimeOffset = true;
@@ -17,14 +17,28 @@ public class CameraShake
 
     public bool IsActive => activationTimer.IsSet && activationTimer.Elapsed < Duration;
 
+    public object Clone()
+    {
+        CameraShake clone = new CameraShake();
+        
+        clone.PositionOscillator = PositionOscillator;
+        clone.RotationOscillator = RotationOscillator;
+        clone.FieldOfViewOscillator = FieldOfViewOscillator;
+        clone.Duration = Duration;
+        clone.RandomTimeOffset = RandomTimeOffset;
+        clone.activationTimer = activationTimer;
+        
+        return clone;
+    }
+
     public void Initialize(NetworkTimer timer)
     {
         activationTimer = timer;
         if(RandomTimeOffset)
         {
-            PositionOscillator.RandomizeTimeOffset(Duration);
-            RotationOscillator.RandomizeTimeOffset(Duration);
-            FoVOscillator.RandomizeTimeOffset(Duration);
+            PositionOscillator.RandomizeTimeOffset();
+            RotationOscillator.RandomizeTimeOffset();
+            FieldOfViewOscillator.RandomizeTimeOffset();
         }
     }
 
@@ -37,12 +51,17 @@ public class CameraShake
             {
                 Position = PositionOscillator.SampleVector3(time),
                 Rotation = RotationOscillator.SampleQuaternion(time),
-                FOV = FoVOscillator.Sample(time)
+                FieldOfView = FieldOfViewOscillator.Sample(time)
             };
         }
         else
         {
-            return new ShakeSample();
+            return new ShakeSample()
+            {
+                Position = Vector3.zero,
+                Rotation = Quaternion.identity,
+                FieldOfView = 0
+            };
         }
     }
 }
@@ -52,7 +71,13 @@ public struct ShakeSample
 {
     public Vector3 Position;
     public Quaternion Rotation;
-    public float FOV;
+    public float FieldOfView;
+
+
+    public override string ToString()
+    {
+        return $"Position: {Position}, Rotation: {Rotation.eulerAngles}, FieldOfView: {FieldOfView}";
+    }
 }
 
 [System.Serializable]
@@ -63,14 +88,14 @@ public struct Oscilliation
     public float timeOffset;
 
 
-    public void RandomizeTimeOffset(float duration)
+    public void RandomizeTimeOffset()
     {
-        timeOffset = Random.Range(0, duration);
+        timeOffset = Random.Range(-Mathf.PI, Mathf.PI);
     }
 
     public float Sample(float time)
     {
-        return amplitude * Mathf.Sin(frequency * time);
+        return amplitude * Mathf.Sin(frequency * (time + timeOffset));
     }
 }
 
@@ -81,11 +106,11 @@ public struct Oscillation3
     public Oscilliation y;
     public Oscilliation z;
 
-    public void RandomizeTimeOffset(float duration)
+    public void RandomizeTimeOffset()
     {
-        x.RandomizeTimeOffset(duration);
-        y.RandomizeTimeOffset(duration);
-        z.RandomizeTimeOffset(duration);
+        x.RandomizeTimeOffset();
+        y.RandomizeTimeOffset();
+        z.RandomizeTimeOffset();
     }
 
     public Vector3 SampleVector3(float time)

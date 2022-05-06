@@ -321,10 +321,6 @@ MonoBehaviour:
   primaryWeaponAnchor: {fileID: 1657341516358545143}
   secondaryWeaponAnchor: {fileID: 4523456069473542299}
   gadgetAnchor: {fileID: 1257494558084947193}
-  interactLayerMask:
-    serializedVersion: 2
-    m_Bits: 9
-  interactMaxDistance: 2
   syncedFirstWeapon: {fileID: 0}
   syncedSecondWeapon: {fileID: 0}
   syncedGadget: {fileID: 0}
@@ -333,6 +329,8 @@ MonoBehaviour:
   localSecondWeapon: {fileID: 0}
   localGadget: {fileID: 0}
   localEquipped: 0
+  inHolsterAnimation: 0
+  equippingTo: 0
 --- !u!114 &6250309759976022356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -363,6 +361,7 @@ MonoBehaviour:
   _lastPlatform: {fileID: 0}
   _lastPlatformPosition: {x: 0, y: 0, z: 0}
   body: {fileID: 3881293703505891589}
+  _networkTransform: {fileID: 0}
 --- !u!114 &3215403447819689262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -658,6 +657,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a50143d5815e9b6488799bb9ae2609c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1613647816713525675
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8561356184037240225}
+  - component: {fileID: 438674179385806510}
+  m_Layer: 10
+  m_Name: Shakeable Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8561356184037240225
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613647816713525675}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 701204573964932763}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &438674179385806510
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613647816713525675}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1941306923591932345
 GameObject:
   m_ObjectHideFlags: 0
@@ -691,6 +736,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 116390312577866738}
+  - {fileID: 8561356184037240225}
+  - {fileID: 6894575555462808061}
   m_Father: {fileID: 4822224316094678}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -786,7 +833,6 @@ MonoBehaviour:
   cameraTransform: {fileID: 701204573964932763}
   playerCamera: {fileID: 6314228708957030162}
   zoomfov: 20
-  normalfov: 60
   OnCameraActivated:
     m_PersistentCalls:
       m_Calls:
@@ -841,6 +887,11 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  cameraPosition: {x: 0, y: 0, z: 0}
+  shakeCollider: {fileID: 1613647816713525675}
+  activeShakers: []
+  zoomed: 0
+  playerIdentity: {fileID: 0}
 --- !u!114 &8750241718133853473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1112,6 +1163,87 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &5399947919685786214
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6894575555462808061}
+  - component: {fileID: 363287601314802379}
+  m_Layer: 8
+  m_Name: ShakeTest Source
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6894575555462808061
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5399947919685786214}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 701204573964932763}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &363287601314802379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5399947919685786214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beaeb932467650841a360160d6c47551, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraShake:
+    PositionOscillator:
+      x:
+        frequency: 50
+        amplitude: 0.05
+        timeOffset: 0
+      y:
+        frequency: 0
+        amplitude: 0
+        timeOffset: 0
+      z:
+        frequency: 50
+        amplitude: 0.05
+        timeOffset: 0
+    RotationOscillator:
+      x:
+        frequency: 0
+        amplitude: 0
+        timeOffset: 0
+      y:
+        frequency: 0
+        amplitude: 0
+        timeOffset: 0
+      z:
+        frequency: 50
+        amplitude: 1
+        timeOffset: 0
+    FieldOfViewOscillator:
+      frequency: 50
+      amplitude: 1
+      timeOffset: 0
+    Duration: 0.25
+    RandomTimeOffset: 1
+    activationTimer:
+      TickTime: 312.4769981076006
+  ActivationRange: 2
+  testingKey: 35
 --- !u!1 &6339725607921687347
 GameObject:
   m_ObjectHideFlags: 0

@@ -61,3 +61,7 @@ MonoBehaviour:
   AutodespawnTimer: 30
   GlobalKnockbackMultiplier: 1
   GlobalKnockbackRamp: 1
+  GlobalKnockupMultiplier: 1
+  ShakeableLayer:
+    serializedVersion: 2
+    m_Bits: 1024
