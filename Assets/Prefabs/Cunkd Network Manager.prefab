@@ -242,8 +242,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameStatsPrefab: {fileID: 6240791917843974184, guid: f9383c3f027f33c4bb28cf39ee2903e8, type: 3}
   NetworkScene:
-  - Assets/Scenes/Volcano.unity
   - Assets/Scenes/TestLevel.unity
+  - Assets/Scenes/Volcano.unity
   SelectedScene: 0
   PlayerPrefab: {fileID: -3495160569371258674, guid: 21daf89214c6ee443ad6875b73083c60, type: 3}
   SpectatorPrefab: {fileID: 5913961851486027645, guid: 000bbbd4b9996da4ba774b6e8ac46268, type: 3}
