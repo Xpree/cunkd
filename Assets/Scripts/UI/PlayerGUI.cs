@@ -90,12 +90,12 @@ public class PlayerGUI : MonoBehaviour
     {
         if (item != null)
         {
-            icon.enabled = true;
+            icon.gameObject.SetActive(true);
             //icon.texture = AssetPreview.GetAssetPreview(item.gameObject);
         }
         else
         {
-            icon.enabled = false;
+            icon.gameObject.SetActive(false);
         }
     }
 
