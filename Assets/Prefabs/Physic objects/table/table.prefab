@@ -111,6 +111,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   KnockbackStrength: 0.2
+  onOff: 0
 --- !u!54 &-9078684999050906523
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -297,6 +298,8 @@ MonoBehaviour:
   target: {fileID: 0}
   pullingCollider: {fileID: 3798880617159449510}
   body: {fileID: -9078684999050906523}
+  pullOffset: 0
+  offsetPosition: {x: 0, y: 0, z: 0}
 --- !u!1001 &2469105779340391515
 PrefabInstance:
   m_ObjectHideFlags: 0

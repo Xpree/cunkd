@@ -7,6 +7,7 @@ using Mirror;
 public class Pullable : NetworkBehaviour
 {
     public GameObject target;
+    float offTime;
 
     public Collider pullingCollider;
     public Rigidbody body;       
@@ -24,6 +25,7 @@ public class Pullable : NetworkBehaviour
 
     private void Start()
     {
+        this.gameObject.GetComponent<KnockbackScript>().onOff = false;
         var bounds = pullingCollider.bounds;
         foreach (Collider c in GetComponents<Collider>())
         {
@@ -87,6 +89,12 @@ public class Pullable : NetworkBehaviour
             body.transform.parent = target.transform;
             body.velocity = Vector3.zero;
             body.angularVelocity = Vector3.zero;
+
+            Color color = this.GetComponent<Renderer>().material.color;
+            color.a = 0.5f;
+            this.gameObject.GetComponent<Renderer>().material.color = color;
+            this.gameObject.GetComponent<KnockbackScript>().onOff = true;
+            offTime = 5f;
         }
         //else
         //{
@@ -117,6 +125,12 @@ public class Pullable : NetworkBehaviour
 
     void FixedUpdate()
     {
+        if (!pulling && offTime <= 0)
+        {
+            this.gameObject.GetComponent<KnockbackScript>().onOff = false;
+        }
+        if(offTime >= 0 && !pulling)
+            offTime = offTime - 1 * Time.deltaTime;
         if (!pulling)
             return;
         

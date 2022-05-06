@@ -8,7 +8,6 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
 {
     [SerializeField] NetworkAnimator animator;
 
-
     [SerializeField] GameSettings _settings;
 
     [SerializeField] Transform AnchorPoint;
