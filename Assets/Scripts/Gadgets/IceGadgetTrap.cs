@@ -23,11 +23,11 @@ public class IceGadgetTrap : NetworkBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if(other.tag == "Player")
-        {
-            other.gameObject.GetComponent<PlayerMovement>().maxFrictionScaling = friction;
-            other.gameObject.GetComponent<PlayerMovement>().maxSpeedScaling = 0f;
-        }
+        //if(other.tag == "Player")
+        //{
+        //    other.gameObject.GetComponent<PlayerMovement>().maxFrictionScaling = friction;
+        //    other.gameObject.GetComponent<PlayerMovement>().maxSpeedScaling = 0f;
+        //}
     }
 
     void FixedUpdate()
@@ -36,10 +36,10 @@ public class IceGadgetTrap : NetworkBehaviour
         {
             if (NetworkServer.active)
             {
-                for (int i = 0; i < 4; i++)
-                {
-                    Destroy(iceMachine.iceMat[i]);
-                }
+                //for (int i = 0; i < 4; i++)
+                //{
+                //    Destroy(iceMachine.iceMat[i]);
+                //}
                 NetworkServer.Destroy(this.gameObject);
             }
             return;

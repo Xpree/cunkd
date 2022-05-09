@@ -17,6 +17,10 @@ public class SpreadMat : MonoBehaviour
     [SerializeField] bool spawnMarkers =false;
     [SerializeField] float radius;
     [SerializeField] private LayerMask layermask;
+    [SerializeField] bool addCollider;
+
+    [SerializeField] float rayLength;
+
 
     List<GameObject> frozenObjects;
 
@@ -34,6 +38,10 @@ public class SpreadMat : MonoBehaviour
         iceMat = new GameObject[4];
         frozenObjects = new List<GameObject>();
 
+        raysLeft();
+        raysRight();
+        raysUp();
+        raysDown();
 
 
         //raysLeft();
@@ -46,18 +54,25 @@ public class SpreadMat : MonoBehaviour
 
     void raysLeft()
     {
+        first = true;
         //points = new List<Vector3>();
         points = new Vector3[rays * rays];
         lastHit = true;
-        lastY = 0;
+        lastY = transform.position.y + affectedHeight;
         shots = 0;
         reportedPoints = 0;
         i = 0;
-
         meshName = "leftMesh";
+
+
         Vector3 pos = transform.position;
         Vector3 pos1 = transform.position;
-        pos1.y = transform.position.y + affectedHeight;
+        pos1.y = transform.position.y + affectedHeight ;
+
+        //Vector3 pos = currentGo.transform.position;
+        //Vector3 pos1 = currentGo.transform.position;
+        //Vector3 pos1 = new Vector3(Mathf.Round(currentGo.transform.position.x), Mathf.Round(currentGo.transform.position.y), Mathf.Round(currentGo.transform.position.z));
+        //pos1.y = pos1.y + affectedHeight;
 
         for (int x = 0; x < rays; x++)
         {
@@ -70,9 +85,10 @@ public class SpreadMat : MonoBehaviour
     }
     void raysRight()
     {
+        first = true;
         points = new Vector3[rays * rays];
         lastHit = true;
-        lastY = 0;
+        lastY = transform.position.y + affectedHeight;
         shots = 0;
         reportedPoints = 0;
         i = 0;
@@ -94,9 +110,10 @@ public class SpreadMat : MonoBehaviour
 
     void raysUp()
     {
+        first = true;
         points = new Vector3[rays * rays];
         lastHit = true;
-        lastY = 0;
+        lastY = transform.position.y + affectedHeight;
         shots = 0;
         reportedPoints = 0;
         i = 0;
@@ -118,9 +135,10 @@ public class SpreadMat : MonoBehaviour
 
     void raysDown()
     {
+        first = true;
         points = new Vector3[rays * rays];
         lastHit = true;
-        lastY = 0;
+        lastY = transform.position.y + affectedHeight;
         shots = 0;
         reportedPoints = 0;
         i = 0;
@@ -145,21 +163,47 @@ public class SpreadMat : MonoBehaviour
     float lastY =0;
     int shots = 0;
     GameObject parent;
+
+    bool first = true;
     void ShootRay(Vector3 origin, int index)
     {
         shots++;
         RaycastHit hit;
         Ray ray = new Ray(origin, Vector3.down);
 
-        if (Physics.Raycast(ray, out hit, affectedHeight + overhang, layermask))
+        if (Physics.Raycast(ray, out hit, rayLength, layermask))
         {
-            if (!parent)
+            bool volcano = hit.transform.gameObject.name == "Volcano Original";
+
+            if (first)
             {
-                parent = hit.transform.gameObject;
+                lastY = hit.point.y;
+                first = false;
             }
-            points[index] = hit.point;
-            lastHit = true;
-            lastY = hit.point.y;
+            if (Mathf.Abs(lastY - hit.point.y) < overhang || volcano)
+            {
+                points[index] = hit.point;
+                lastHit = true;
+                lastY = hit.point.y;
+                if (volcano)
+                {
+                    first = true;
+                }
+            }
+            else
+            if (lastHit)
+            {
+                Vector3 p = origin;
+                p.y = lastY - (overhang + Random.Range(-overhangVariance, overhangVariance));
+                //p.y -= (overhang + Random.Range(-overhangVariance, overhangVariance));
+
+                //lastY = p.y;
+                points[index] = p;
+                lastHit = false;
+
+            }
+
+
         }
 
         else//icetap
@@ -167,10 +211,10 @@ public class SpreadMat : MonoBehaviour
             if (lastHit)
             {
                 Vector3 p = origin;
-                //p.y = lastY + ( + overhang + Random.Range(-overhangVariance, overhangVariance));
-                p.y -= (affectedHeight + overhang + Random.Range(-overhangVariance, overhangVariance));
+                p.y = lastY - (overhang + Random.Range(-overhangVariance, overhangVariance));
+                //p.y -= (overhang + Random.Range(-overhangVariance, overhangVariance));
 
-                lastY = p.y;
+                //lastY = p.y;
                 points[index] = p;
 
             }
@@ -248,15 +292,20 @@ public class SpreadMat : MonoBehaviour
         GameObject go = Instantiate(ice, Vector3.zero, Quaternion.identity);
         go.name = meshName;
         go.GetComponent<MeshFilter>().mesh = mesh;
-        MeshCollider col = go.AddComponent<MeshCollider>();
+
+        if (addCollider)
+        {
+            MeshCollider col = go.AddComponent<MeshCollider>();
+            col.sharedMesh = mesh;
+        }
         //col.enabled = false;
-        col.sharedMesh = mesh;
         go.transform.position += new Vector3(0, iceThickness, 0);
         //iceMat.transform.SetParent(parent.transform);
         go.transform.localScale = new Vector3(1, 1, 1);
-        iceMat[meshIndex++] = go;
+        //iceMat[meshIndex++] = go;
     }
 
+    [SerializeField] float pointMaxDistance;
     int i = 0;
     void AddTriangle(Vector3Int tri)
     {
@@ -272,6 +321,20 @@ public class SpreadMat : MonoBehaviour
                 return;
             }
         }
+
+        //if (pointMaxDistance < (points[tri.x] - points[tri.y]).magnitude)
+        //{
+        //    return;
+        //}
+        //if (pointMaxDistance < (points[tri.x] - points[tri.z]).magnitude)
+        //{
+        //    return;
+        //}
+        //if (pointMaxDistance < (points[tri.y] - points[tri.z]).magnitude)
+        //{
+        //    return;
+        //}
+
         newTriangles[i++] = tri.x;
         newTriangles[i++] = tri.y;
         newTriangles[i++] = tri.z;
@@ -286,7 +349,6 @@ public class SpreadMat : MonoBehaviour
         foreach (var meshF in originalMeshes)
         {
 
-            print("heeej");
             GameObject frozenMesh = Instantiate(ice, meshF.transform.position, Quaternion.identity);
             frozenMesh.name = meshF.transform.name + " frozen mesh";
             frozenMesh.GetComponent<MeshFilter>().mesh = meshF.mesh;
@@ -321,17 +383,29 @@ public class SpreadMat : MonoBehaviour
         //}
     }
 
-    void FreezeObject(GameObject go)
-    {
-        raysLeft();
-        raysRight();
-        raysUp();
-        raysDown();
-    }
+    GameObject currentGo;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        FreezeObject(other.gameObject);
-        frozenObjects.Add(other.gameObject);
-    }
+    //void FreezeObject(GameObject go)
+    //{
+    //    if (go)
+    //    {
+    //        print("Freezing " + go.name);
+    //        currentGo = go;
+    //        raysLeft();
+    //        //raysRight();
+    //        //raysUp();
+    //        //raysDown();
+    //    }
+    //}
+
+    //bool onlyOnce = true;
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (onlyOnce)
+    //    {
+    //        FreezeObject(other.gameObject);
+    //        onlyOnce = false;
+    //    }
+    //    //frozenObjects.Add(other.gameObject);
+    //}
 }

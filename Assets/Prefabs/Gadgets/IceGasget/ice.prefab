@@ -15,7 +15,9 @@ GameObject:
   - component: {fileID: 4358818917715119118}
   - component: {fileID: 6857380976019984218}
   - component: {fileID: -3479211034812066366}
-  m_Layer: 0
+  - component: {fileID: -7078671378356709072}
+  - component: {fileID: -2718237664940374107}
+  m_Layer: 2
   m_Name: ice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -154,14 +156,77 @@ MonoBehaviour:
   affectedHeight: 7
   overhang: 1
   overhangVariance: 0.9
-  edgeSprinkling: 1.5
+  edgeSprinkling: 0
   spawnMarkers: 0
-  radius: 7
+  radius: 6
   layermask:
     serializedVersion: 2
-    m_Bits: 759
+    m_Bits: 627
+  addCollider: 0
+  rayLength: 5
   iceMat:
   - {fileID: 0}
+  pointMaxDistance: 0
+--- !u!114 &-7078671378356709072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2446264302813279794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06a3e983cec71be4f801634a9426e55e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  marker: {fileID: 1107885292156322567, guid: 9a3a75548e9a8ee44a1b9d3173a555c9, type: 3}
+  ice: {fileID: 1107885292156322567, guid: 9a3a75548e9a8ee44a1b9d3173a555c9, type: 3}
+  precision: 0.1
+  iceThickness: 0.05
+  affectedHeight: 3
+  overhang: 2.5
+  overhangVariance: 0.9
+  edgeSprinkling: 0
+  spawnMarkers: 0
+  radius: 6
+  layermask:
+    serializedVersion: 2
+    m_Bits: 577
+  addCollider: 0
+  rayLength: 5
+  iceMat:
+  - {fileID: 0}
+  pointMaxDistance: 0
+--- !u!114 &-2718237664940374107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2446264302813279794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06a3e983cec71be4f801634a9426e55e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  marker: {fileID: 1107885292156322567, guid: 9a3a75548e9a8ee44a1b9d3173a555c9, type: 3}
+  ice: {fileID: 1107885292156322567, guid: 9a3a75548e9a8ee44a1b9d3173a555c9, type: 3}
+  precision: 0.1
+  iceThickness: 0.05
+  affectedHeight: 10
+  overhang: 1
+  overhangVariance: 0.5
+  edgeSprinkling: 1.5
+  spawnMarkers: 0
+  radius: 6
+  layermask:
+    serializedVersion: 2
+    m_Bits: 128
+  addCollider: 0
+  rayLength: 50
+  iceMat:
+  - {fileID: 0}
+  pointMaxDistance: 8
 --- !u!1 &4271524594716317015
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,7 +238,7 @@ GameObject:
   - component: {fileID: 4569931244276446106}
   - component: {fileID: 597099579926068500}
   - component: {fileID: 7443504971726883205}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: IceVFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -281,7 +346,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 470722229983449570}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: IceEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
