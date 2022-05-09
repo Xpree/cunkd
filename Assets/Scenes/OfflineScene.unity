@@ -396,6 +396,10 @@ PrefabInstance:
       propertyPath: EventReference.Guid.Data4
       value: 1083057794
       objectReference: {fileID: 0}
+    - target: {fileID: 1863993568, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8980317232237182240, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
       propertyPath: spawnPrefabs.Array.size
       value: 31
