@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.04356823, g: 0.04413361, b: 0.059573006, a: 1}
+  m_IndirectSpecularColor: {r: 0.043550275, g: 0.044142697, b: 0.059545882, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -376,6 +376,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1863993567, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+      propertyPath: EventReference.Path
+      value: event:/SoundStudents/Music/Level 1 Theme
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863993567, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: 1048134225
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863993567, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1264763775
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863993567, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: 1783585690
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863993567, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: 1083057794
+      objectReference: {fileID: 0}
     - target: {fileID: 8980317232237182240, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
       propertyPath: spawnPrefabs.Array.size
       value: 31
