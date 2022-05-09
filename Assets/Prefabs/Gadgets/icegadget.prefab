@@ -181,11 +181,11 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   IceGadgetTrap: {fileID: 2446264302813279794, guid: c2c388c1241f93945949e7fcb97524de, type: 3}
-  Charges: 3
+  Charges: 100
   isPassive: 0
   TargetMask:
     serializedVersion: 2
-    m_Bits: 448
+    m_Bits: 449
 --- !u!114 &2852530366991114646
 MonoBehaviour:
   m_ObjectHideFlags: 0

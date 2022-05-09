@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8147042812735035959}
   - component: {fileID: 4358818917715119118}
   - component: {fileID: 6857380976019984218}
+  - component: {fileID: -3479211034812066366}
   m_Layer: 0
   m_Name: ice
   m_TagString: Untagged
@@ -52,7 +53,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2446264302813279794}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -96,9 +97,9 @@ CapsuleCollider:
   m_GameObject: {fileID: 2446264302813279794}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 7
-  m_Height: 2
+  m_Height: 25
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4358818917715119118
@@ -133,6 +134,34 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   _settings: {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}
+  iceMachine: {fileID: -3479211034812066366}
+--- !u!114 &-3479211034812066366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2446264302813279794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06a3e983cec71be4f801634a9426e55e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  marker: {fileID: 1107885292156322567, guid: 9a3a75548e9a8ee44a1b9d3173a555c9, type: 3}
+  newShape: {fileID: 1107885292156322567, guid: 9a3a75548e9a8ee44a1b9d3173a555c9, type: 3}
+  precision: 0.1
+  iceThickness: 0.05
+  affectedHeight: 7
+  overhang: 1
+  overhangVariance: 0.9
+  edgeSprinkling: 1.5
+  spawnMarkers: 0
+  radius: 7
+  layermask:
+    serializedVersion: 2
+    m_Bits: 759
+  iceMat:
+  - {fileID: 0}
 --- !u!1 &4271524594716317015
 GameObject:
   m_ObjectHideFlags: 0

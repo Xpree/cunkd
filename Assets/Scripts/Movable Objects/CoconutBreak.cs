@@ -19,7 +19,7 @@ public class CoconutBreak : NetworkBehaviour
 
     void BreakCheck()
     {
-        print("breakcheck. current velocity: " + rb.velocity.magnitude);
+        //print("breakcheck. current velocity: " + rb.velocity.magnitude);
         int breakVal = Random.Range(0, 100);
         if (breakVelocity < rb.velocity.magnitude)
         {

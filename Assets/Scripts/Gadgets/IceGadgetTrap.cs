@@ -9,6 +9,7 @@ public class IceGadgetTrap : NetworkBehaviour
     [SyncVar] NetworkTimer _endTime;
     public float friction => _settings.IceGadget.Friction;
 
+    [SerializeField] SpreadMat iceMachine;
 
     public override void OnStartServer()
     {
@@ -35,6 +36,10 @@ public class IceGadgetTrap : NetworkBehaviour
         {
             if (NetworkServer.active)
             {
+                for (int i = 0; i < 4; i++)
+                {
+                    Destroy(iceMachine.iceMat[i]);
+                }
                 NetworkServer.Destroy(this.gameObject);
             }
             return;
