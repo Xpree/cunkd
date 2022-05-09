@@ -95,6 +95,8 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
     {
         animator.SetTrigger("Fire");
         justStop();
+        target.gameObject.GetComponent<KnockbackScript>().onOff = true;
+        target.GetComponent<Pullable>().offTime = 5f;
         Vector3 torque = new Vector3(Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque));
         var body = target.GetComponent<Rigidbody>();
         float Force = Mathf.Lerp(MinPushForce, MaxPushForce, Mathf.Clamp01(progress));

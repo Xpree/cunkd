@@ -7,7 +7,7 @@ using Mirror;
 public class Pullable : NetworkBehaviour
 {
     public GameObject target;
-    float offTime;
+    public float offTime;
 
     public Collider pullingCollider;
     public Rigidbody body;       
@@ -111,6 +111,8 @@ public class Pullable : NetworkBehaviour
 
     public void StartPulling(GameObject destination, NetworkTimer timeToFixed)
     {
+        this.gameObject.GetComponent<KnockbackScript>().onOff = true;
+        offTime = 5f;
         target = destination;
         offsetPosition = Vector3.zero;
         fixedTimer = timeToFixed;
