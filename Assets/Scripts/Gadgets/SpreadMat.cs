@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.ProBuilder;
 
 public class SpreadMat : MonoBehaviour
 {
     Vector3[] points;
     [SerializeField] GameObject marker;
-    [SerializeField] GameObject newShape;
+    [SerializeField] GameObject ice;
     [SerializeField] float precision;
     [SerializeField] float iceThickness;
     [SerializeField] float affectedHeight;
@@ -16,6 +17,8 @@ public class SpreadMat : MonoBehaviour
     [SerializeField] bool spawnMarkers =false;
     [SerializeField] float radius;
     [SerializeField] private LayerMask layermask;
+
+    List<GameObject> frozenObjects;
 
 
 
@@ -29,11 +32,14 @@ public class SpreadMat : MonoBehaviour
     {
         rays = (int)(radius / precision);
         iceMat = new GameObject[4];
+        frozenObjects = new List<GameObject>();
 
-        raysLeft();
-        raysRight();
-        raysUp();
-        raysDown();
+
+
+        //raysLeft();
+        //raysRight();
+        //raysUp();
+        //raysDown();
     }
 
     string meshName = "";
@@ -239,7 +245,7 @@ public class SpreadMat : MonoBehaviour
         mesh.triangles = newTriangles;
         mesh.RecalculateNormals();
 
-        GameObject go = Instantiate(newShape, Vector3.zero, Quaternion.identity);
+        GameObject go = Instantiate(ice, Vector3.zero, Quaternion.identity);
         go.name = meshName;
         go.GetComponent<MeshFilter>().mesh = mesh;
         MeshCollider col = go.AddComponent<MeshCollider>();
@@ -269,5 +275,63 @@ public class SpreadMat : MonoBehaviour
         newTriangles[i++] = tri.x;
         newTriangles[i++] = tri.y;
         newTriangles[i++] = tri.z;
+    }
+
+    void CopyMesh(GameObject go)
+    {
+        MeshFilter[] originalMeshes = go.GetComponentsInChildren<MeshFilter>();
+        ProBuilderMesh[] originalPBMeshes = go.GetComponentsInChildren<ProBuilderMesh>();
+        MeshRenderer ba;
+
+        foreach (var meshF in originalMeshes)
+        {
+
+            print("heeej");
+            GameObject frozenMesh = Instantiate(ice, meshF.transform.position, Quaternion.identity);
+            frozenMesh.name = meshF.transform.name + " frozen mesh";
+            frozenMesh.GetComponent<MeshFilter>().mesh = meshF.mesh;
+
+
+            frozenMesh.transform.position = meshF.transform.position;
+            frozenMesh.transform.rotation = meshF.transform.rotation;
+            frozenMesh.transform.localScale = meshF.transform.localScale;
+            //frozenMesh.transform.localScale = go.transform.localScale;
+        }
+
+        //foreach (var item in originalPBMeshes)
+        //{
+        //    Mesh mesh = new Mesh();
+        //    mesh.Clear();
+        //    Vertex
+        //    mesh.vertices = item.GetVertices().GetValue(0);
+        //}
+
+        //if (originalMesh)
+        //{
+        //    GameObject frozenMesh = Instantiate(ice, go.transform.position, Quaternion.identity);
+        //    frozenMesh.name = go.name + " frozen mesh";
+        //    frozenMesh.GetComponent<MeshFilter>().mesh = originalMesh;
+
+        //    //MeshCollider col = frozenMesh.AddComponent<MeshCollider>();
+        //    //col.enabled = false;
+        //    //col.sharedMesh = originalMesh;
+        //    //iceMat.transform.SetParent(parent.transform);
+        //    frozenMesh.transform.localScale = go.transform.localScale;
+        //    //frozenMesh.transform.SetParent(go.transform);
+        //}
+    }
+
+    void FreezeObject(GameObject go)
+    {
+        raysLeft();
+        raysRight();
+        raysUp();
+        raysDown();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        FreezeObject(other.gameObject);
+        frozenObjects.Add(other.gameObject);
     }
 }
