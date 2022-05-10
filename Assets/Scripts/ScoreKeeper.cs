@@ -13,12 +13,13 @@ public class ScoreKeeper : NetworkBehaviour
     public List<ScoreCard> alivePlayers = new();
 
     [HideInInspector] public bool gameOver = false;
-    [HideInInspector] public ScoreCard winner;
+    [HideInInspector] public ScoreCard winner;       
 
     public override void OnStartServer()
     {
         base.OnStartServer();
         spawnPositions = startPositions.GetComponentsInChildren<Transform>();
+        FindObjectOfType<AdaptiveMusic>().scoreKeeper = this;        
     }
 
 

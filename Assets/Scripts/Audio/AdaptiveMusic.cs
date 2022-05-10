@@ -3,22 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class AdaptiveMusic : MonoBehaviour
+public class AdaptiveMusic : NetworkBehaviour
 {    
     NetworkManager networkManager;
 
-    public float maxPlayersLeft = 8;
-    public float minPlayersLeft = 2;
-
-    // Start is called before the first frame update
-    void Start()
+    [HideInInspector]
+    public ScoreKeeper scoreKeeper;
+    
+    private float playersLeft;
+        
+    public override void OnStartServer()
     {
-        networkManager = FindObjectOfType<NetworkManager>();
+        networkManager = FindObjectOfType<NetworkManager>();        
     }
-
-    // Update is called once per frame
+        
     void Update()
-    {
-        //Debug.Log(networkManager.numPlayers);
-    }
+    {             
+        if (scoreKeeper != null)
+        {            
+            if (scoreKeeper.alivePlayers.Count >= 8)
+            {
+                playersLeft = 8;
+            }
+            else if (scoreKeeper.alivePlayers.Count <= 2)
+            {
+                playersLeft = 2;
+            }
+            else
+            {
+                playersLeft = scoreKeeper.alivePlayers.Count;
+            }            
+
+            GetComponent<FMODUnity.StudioEventEmitter>().SetParameter("Players Left", playersLeft);
+        }        
+    }    
 }
