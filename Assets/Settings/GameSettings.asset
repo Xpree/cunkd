@@ -36,12 +36,12 @@ MonoBehaviour:
     ChargeRate: 1
     MaxRange: 30
   BlackHoleGun:
-    Cooldown: 10
+    Cooldown: 40
     Range: 35
   BlackHole:
-    Range: 40
+    Range: 30
     Duration: 5
-    Intensity: 600
+    Intensity: 500
   IceGadget:
     Duration: 30
     Friction: -0.5
@@ -50,7 +50,7 @@ MonoBehaviour:
     Charges: 1
   SwapSniper:
     Cooldown: 3
-    Range: 200
+    Range: 400
   Movable:
     serializedVersion: 2
     m_Bits: 64
