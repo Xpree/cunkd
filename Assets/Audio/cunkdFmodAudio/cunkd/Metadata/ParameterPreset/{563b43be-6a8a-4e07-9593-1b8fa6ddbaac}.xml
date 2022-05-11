@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{563b43be-6a8a-4e07-9593-1b8fa6ddbaac}">
+		<property name="name">
+			<value>WalkingOnIcyFloorTrap</value>
+		</property>
+		<relationship name="folder">
+			<destination>{f3175451-52e8-4193-903b-a4fc7e20a798}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{cfe8b368-9356-4491-8724-04619d5d3b5b}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{cfe8b368-9356-4491-8724-04619d5d3b5b}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
