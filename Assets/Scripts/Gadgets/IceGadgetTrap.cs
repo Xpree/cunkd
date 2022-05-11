@@ -27,14 +27,14 @@ public class IceGadgetTrap : NetworkBehaviour
         player.GetComponent<PlayerMovement>().maxSpeedScaling = 0f;
     }
 
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    if (other.tag == "Player")
-    //    {
-    //        other.gameObject.GetComponent<PlayerMovement>().maxFrictionScaling = friction;
-    //        other.gameObject.GetComponent<PlayerMovement>().maxSpeedScaling = 0f;
-    //    }
-    //}
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            other.gameObject.GetComponent<PlayerMovement>().maxFrictionScaling = friction;
+            other.gameObject.GetComponent<PlayerMovement>().maxSpeedScaling = 0f;
+        }
+    }
 
     [Client]
     void destroyIce()
@@ -46,21 +46,5 @@ public class IceGadgetTrap : NetworkBehaviour
         }
     }
 
-    void FixedUpdate()
-    {
-        if (_endTime.HasTicked)
-        {
-            if (NetworkServer.active)
-            {
-                //destroyIce();
-                //iceMachine.unFreezeObjects();
-                //foreach (var item in iceMachine.iceMat)
-                //{
-                //    Destroy(item);
-                //}
-                //NetworkServer.Destroy(this.gameObject);
-            }
-            return;
-        }
-    }
+
 }

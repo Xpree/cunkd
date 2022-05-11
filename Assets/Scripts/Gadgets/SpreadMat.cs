@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using UnityEngine.VFX;
 
 public class SpreadMat : NetworkBehaviour
 {
@@ -17,6 +18,7 @@ public class SpreadMat : NetworkBehaviour
     [SerializeField] bool addCollider;
     [SerializeField] float rayLength;
 
+    [SerializeField] VisualEffect vfx;
     Vector3[] points;
     int[] newTriangles;
 
@@ -41,8 +43,11 @@ public class SpreadMat : NetworkBehaviour
 
         _endTime = NetworkTimer.FromNow(_settings.IceGadget.Duration);
         _destroyTime = NetworkTimer.FromNow(_settings.IceGadget.Duration + 1);
+
     }
 
+
+    [SerializeField]VisualEffect ve;
 
     private void Awake()
     {
@@ -69,6 +74,7 @@ public class SpreadMat : NetworkBehaviour
         {
             Destroy(item);
         }
+        Slipcollider.enabled = false;
     }
 
     [Client]
@@ -187,7 +193,13 @@ public class SpreadMat : NetworkBehaviour
         go.GetComponent<MeshFilter>().mesh = mesh;
         go.transform.position += new Vector3(0, iceThickness, 0);
         //go.transform.localScale = new Vector3(1, 1, 1);
-        
+        if (snow)
+        {
+            VisualEffect ve = go.GetComponentInChildren<VisualEffect>();
+            ve.enabled = true;
+            ve.transform.position = snowPosition;
+            snow = false;
+        }
         //NetworkServer.Spawn(go);
 
         //if (addCollider)
@@ -269,14 +281,18 @@ public class SpreadMat : NetworkBehaviour
         }
     }
 
+    bool snow = false;
+    Vector3 snowPosition = new Vector3();
     public void setCollision(Collider other)
     {
         GameObject go = other.gameObject;
         //this is to make ice on trees
         if (onlyIceLayermask == (onlyIceLayermask | (1 << go.layer)) && !icedObjects.Contains(go))
         {
-            //MakeIce(go.transform.parent.position + new Vector3(0, 7, 0), 2, 3.4f, 0.9f, onlyIceLayermask);
-            //icedObjects.Add(go);
+            snow = true;
+            snowPosition = go.transform.parent.position + Vector3.up * 6;
+            MakeIce(go.transform.parent.position + new Vector3(0, 7, 0), 2, 3.4f, 0.9f, onlyIceLayermask);
+            icedObjects.Add(go);
         }
         else
         if (IceAndFreezeLayermask == (IceAndFreezeLayermask | (1 << go.layer)) && !frozenObjects.Contains(go))
