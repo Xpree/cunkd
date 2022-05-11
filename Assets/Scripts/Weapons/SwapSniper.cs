@@ -43,7 +43,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     public NetworkIdentity DidHitObject()
     {
         var aimTransform = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
-        if (Physics.Raycast(aimTransform.position, aimTransform.forward, out RaycastHit hitResult, range, TargetMask))
+        if (Physics.SphereCast(aimTransform.position, 0.5f, aimTransform.forward, out RaycastHit hitResult, range, TargetMask))
         {            
             return hitResult.rigidbody?.GetComponent<NetworkIdentity>();
         }
