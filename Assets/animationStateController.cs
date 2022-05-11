@@ -27,27 +27,30 @@ public class animationStateController : NetworkBehaviour
         {
             if(UnityEngine.InputSystem.Keyboard.current[Key.W].isPressed)
             {
-                Debug.Log("Should run");
                 animator.SetBool("run", true);
             }
             else if(UnityEngine.InputSystem.Keyboard.current[Key.S].isPressed)
             {
-                Debug.Log("Should run");
                 animator.SetBool("run", true);
             }
             else if(UnityEngine.InputSystem.Keyboard.current[Key.D].isPressed)
             {
-                Debug.Log("Should run");
                 animator.SetBool("run", true);
             }
             else if(UnityEngine.InputSystem.Keyboard.current[Key.A].isPressed)
             {
-                Debug.Log("Should run");
                 animator.SetBool("run", true);
             }
             else
             {
                 animator.SetBool("run", false);
+            }
+            if(UnityEngine.InputSystem.Keyboard.current[Key.Space].isPressed)
+            {
+                animator.SetBool("jump", true);
+            }
+            else{
+                animator.SetBool("jump", false);
             }
         }
 

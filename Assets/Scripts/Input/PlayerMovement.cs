@@ -212,7 +212,6 @@ public class PlayerMovement : NetworkBehaviour
         if(trigger)
         {
             EventBus.Trigger(nameof(EventPlayerLanded), this.gameObject);
-            _localAnimator.SetTrigger("land");
         }
     }
 
