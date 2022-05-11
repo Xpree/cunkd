@@ -9,10 +9,10 @@ public class IceSlipperyCollisionDetection : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        //if (igt && other.tag == "Player")
-        //{
-        //    igt.makePlayerSlip(other.gameObject);
-        //}
+        if (igt && other.tag == "Player")
+        {
+            igt.makePlayerSlip(other.gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
