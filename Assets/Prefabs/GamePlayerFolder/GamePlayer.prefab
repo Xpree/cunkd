@@ -514,16 +514,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  Move:
-    m_Name: Move
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 1006e053-0459-4a2f-9b0f-2288dc8a478f
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  _movementInput: {x: 0, y: 0}
 --- !u!1 &598865172076735772
 GameObject:
   m_ObjectHideFlags: 0
