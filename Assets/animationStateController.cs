@@ -6,17 +6,6 @@ using Mirror;
 public class animationStateController : NetworkBehaviour
 {
     Animator animator;
-
-    int isIdleHash;
-    int isRunHash;
-
-    public InputAction Move;
-    PlayerInput input;
-    PlayerControls Controls;
-    public Vector2 _movementInput = Vector2.zero;
-    public bool HasMovementInput => _movementInput.sqrMagnitude > 0;
-
-    // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
