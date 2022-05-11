@@ -43,7 +43,7 @@ MonoBehaviour:
     Duration: 5
     Intensity: 200
   IceGadget:
-    Duration: 30
+    Duration: 5
     Friction: -0.5
     MaxRange: 20
     Cooldown: 0
@@ -55,3 +55,4 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 448
   SmallSphereCastRadius: 0.25
+  AutodespawnTimer: 30

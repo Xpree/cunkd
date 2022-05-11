@@ -75,7 +75,7 @@ public class GameSettings : ScriptableObject
     [Serializable]
     public class IceGadgetSettings
     {
-        public float Duration = 30f;
+        public float Duration = 5f;
         public float Friction = -0.5f;
 
         public float MaxRange = 20f;

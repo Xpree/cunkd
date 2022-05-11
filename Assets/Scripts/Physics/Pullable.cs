@@ -81,7 +81,6 @@ public class Pullable : NetworkBehaviour
             Color col = rend.material.color;
             rend.material.color = col * new Color(1, 1, 1, 0.5f);
         }
-        print("hejhej");
     }
 
     public void StopPulling()

@@ -1,171 +1,130 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.ProBuilder;
+using Mirror;
 
-public class SpreadMat : MonoBehaviour
+public class SpreadMat : NetworkBehaviour
 {
-    Vector3[] points;
     [SerializeField] GameObject marker;
     [SerializeField] GameObject ice;
+    [SerializeField] private LayerMask IceAndFreezeLayermask;
+    [SerializeField] private LayerMask onlyIceLayermask;
     [SerializeField] float precision;
     [SerializeField] float iceThickness;
     [SerializeField] float affectedHeight;
-    [SerializeField] float overhang;
     [SerializeField] float overhangVariance;
     [SerializeField] float edgeSprinkling;
-    [SerializeField] bool spawnMarkers =false;
     [SerializeField] float radius;
-    [SerializeField] private LayerMask layermask;
     [SerializeField] bool addCollider;
-
     [SerializeField] float rayLength;
 
+    Vector3[] points;
+    int[] newTriangles;
 
     List<GameObject> frozenObjects;
+    List<GameObject> icedObjects;
+    public List<GameObject> iceMat;
 
-
-
+    [SerializeField] CapsuleCollider Icecollider;
+    [SerializeField] CapsuleCollider Slipcollider;
     int rays;
-    public GameObject[] iceMat;
-
-    enum directions { left, right, up, down }
-
-
-    private void Start()
-    {
-        rays = (int)(radius / precision);
-        iceMat = new GameObject[4];
-        frozenObjects = new List<GameObject>();
-
-        raysLeft();
-        raysRight();
-        raysUp();
-        raysDown();
-
-
-        //raysLeft();
-        //raysRight();
-        //raysUp();
-        //raysDown();
-    }
-
     string meshName = "";
 
-    void raysLeft()
+    [SerializeField] GameSettings _settings;
+    [SyncVar] NetworkTimer _endTime;
+    [SyncVar] NetworkTimer _destroyTime;
+    public override void OnStartServer()
     {
-        first = true;
-        //points = new List<Vector3>();
-        points = new Vector3[rays * rays];
-        lastHit = true;
-        lastY = transform.position.y + affectedHeight;
-        shots = 0;
-        reportedPoints = 0;
-        i = 0;
-        meshName = "leftMesh";
-
-
-        Vector3 pos = transform.position;
-        Vector3 pos1 = transform.position;
-        pos1.y = transform.position.y + affectedHeight ;
-
-        //Vector3 pos = currentGo.transform.position;
-        //Vector3 pos1 = currentGo.transform.position;
-        //Vector3 pos1 = new Vector3(Mathf.Round(currentGo.transform.position.x), Mathf.Round(currentGo.transform.position.y), Mathf.Round(currentGo.transform.position.z));
-        //pos1.y = pos1.y + affectedHeight;
-
-        for (int x = 0; x < rays; x++)
+        if (_settings == null)
         {
-            for (int z = 0; z < rays; z++)
-            {
-                pos = pos1 + new Vector3(-x, 0, z) * precision;
-                ShootRay(pos, x + z * rays);
-            }
+            Debug.LogError("Missing GameSettings reference on " + name);
         }
+
+        _endTime = NetworkTimer.FromNow(_settings.IceGadget.Duration);
+        _destroyTime = NetworkTimer.FromNow(_settings.IceGadget.Duration + 1);
     }
-    void raysRight()
+
+
+    private void Awake()
     {
-        first = true;
-        points = new Vector3[rays * rays];
-        lastHit = true;
-        lastY = transform.position.y + affectedHeight;
-        shots = 0;
-        reportedPoints = 0;
-        i = 0;
+        Icecollider.radius = radius - 0.5f;
+        Slipcollider.radius = radius - 0.5f;
+        rays = (int)(radius / precision);
+        iceMat = new List<GameObject>();
+        frozenObjects = new List<GameObject>();
+        icedObjects = new List<GameObject>();
+        MakeIce(transform.position + new Vector3(0, affectedHeight, 0), rayLength, radius, overhangVariance,IceAndFreezeLayermask);
+        Invoke("DisableCollider", 0.1f);
+        //print("has authority: " + GetComponent<NetworkIdentity>().connectionToClient);
+    }
 
-        meshName = "rightMesh";
-        Vector3 pos = transform.position;
-        Vector3 pos1 = transform.position;
-        pos1.y = transform.position.y + affectedHeight;
+    void DisableCollider()
+    {
+        Icecollider.enabled = false;
+    }
 
-        for (int x = 0; x < rays; x++)
+    void destroyIce()
+    {
+        unFreezeObjects();
+        foreach (var item in iceMat)
         {
-            for (int z = 0; z < rays; z++)
-            {
-                pos = pos1 + new Vector3(x, 0, -z) * precision;
-                ShootRay(pos, x + z * rays);
-            }
+            Destroy(item);
         }
     }
 
-    void raysUp()
+    [Client]
+    void FixedUpdate()
     {
-        first = true;
-        points = new Vector3[rays * rays];
-        lastHit = true;
-        lastY = transform.position.y + affectedHeight;
-        shots = 0;
-        reportedPoints = 0;
-        i = 0;
-
-        meshName = "upMesh";
-        Vector3 pos = transform.position;
-        Vector3 pos1 = transform.position;
-        pos1.y = transform.position.y + affectedHeight;
-
-        for (int z = 0; z < rays; z++)
+        if (_endTime.HasTicked && 0 < iceMat.Count)
         {
+            destroyIce();
+        }
+        if (_destroyTime.HasTicked)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
+    [Client]
+    //Makes 4 Ice Meshes Iteratevly from origin outward
+    void MakeIce(Vector3 origin, float rayLength, float radius, float overHangVariance, LayerMask layermask)
+    {
+        rays = (int)(radius / precision);
+
+        int xDirection =1;
+        int zDirection =1;
+        Vector3 pos;
+
+        for (int i = 0; i < 4; i++)
+        {
+            shots = 0;
+            triangleIndex = 0;
+            meshName = "FrozenMesh "+ i;
+            points = new Vector3[rays * rays];
+
+            if (i == 1)
+                xDirection = -1;
+            if (i == 2)
+                zDirection = -1;
+            if (i == 3)
+                xDirection = 1;
+
             for (int x = 0; x < rays; x++)
             {
-                pos = pos1 + new Vector3(x, 0, z) * precision;
-                ShootRay(pos, z + x * rays);
-            }
+                for (int z = 0; z < rays; z++)
+                {
+                    if (i == 0 || i == 2)
+                        pos = origin + new Vector3(z * zDirection, 0, x * xDirection) * precision;
+                    else 
+                        pos = origin + new Vector3(x * xDirection, 0, z * zDirection) * precision;
+                     ShootRays(pos, rayLength, radius, overhangVariance, x + z * rays, layermask);
+                }
+            }   
         }
     }
-
-    void raysDown()
-    {
-        first = true;
-        points = new Vector3[rays * rays];
-        lastHit = true;
-        lastY = transform.position.y + affectedHeight;
-        shots = 0;
-        reportedPoints = 0;
-        i = 0;
-
-        meshName = "downMesh";
-        Vector3 pos = transform.position;
-        Vector3 pos1 = transform.position;
-        pos1.y = transform.position.y + affectedHeight;
-
-        for (int z = 0; z < rays; z++)
-        {
-            for (int x = 0; x < rays; x++)
-            {
-                pos = pos1 + new Vector3(-x, 0, -z) * precision;
-                ShootRay(pos, z + x * rays);
-            }
-        }
-    }
-
 
     bool lastHit = true;
-    float lastY =0;
     int shots = 0;
-    GameObject parent;
-
-    bool first = true;
-    void ShootRay(Vector3 origin, int index)
+    void ShootRays(Vector3 origin, float rayLength, float radius, float overHangVariance, int index, LayerMask layermask)
     {
         shots++;
         RaycastHit hit;
@@ -173,94 +132,26 @@ public class SpreadMat : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, rayLength, layermask))
         {
-            bool volcano = hit.transform.gameObject.name == "Volcano Original";
-
-            if (first)
-            {
-                lastY = hit.point.y;
-                first = false;
-            }
-            if (Mathf.Abs(lastY - hit.point.y) < overhang || volcano)
-            {
-                points[index] = hit.point;
-                lastHit = true;
-                lastY = hit.point.y;
-                if (volcano)
-                {
-                    first = true;
-                }
-            }
-            else
-            if (lastHit)
-            {
-                Vector3 p = origin;
-                p.y = lastY - (overhang + Random.Range(-overhangVariance, overhangVariance));
-                //p.y -= (overhang + Random.Range(-overhangVariance, overhangVariance));
-
-                //lastY = p.y;
-                points[index] = p;
-                lastHit = false;
-
-            }
-
-
+            points[index] = hit.point;
+            lastHit = true;
         }
-
         else//icetap
         {
             if (lastHit)
             {
                 Vector3 p = origin;
-                p.y = lastY - (overhang + Random.Range(-overhangVariance, overhangVariance));
-                //p.y -= (overhang + Random.Range(-overhangVariance, overhangVariance));
-
-                //lastY = p.y;
+                p.y -= (rayLength + Random.Range(-overHangVariance, overHangVariance));
                 points[index] = p;
-
             }
             lastHit = false;
         }
 
-        if (spawnMarkers)
-        {
-            SpawnMarker(points[index]);
-        }
-
         if (shots == rays * rays)
-        {
             makeMesh();
-        }
     }
 
-    int seekerNumber = 0;
-    void SpawnMarker(Vector3 startPos)
-    {
-        GameObject go = Instantiate(marker, startPos, Quaternion.identity);
-        go.transform.SetParent(this.transform);
-        go.name = "marker number " + seekerNumber;
-        go.transform.localScale = new Vector3(0.01f, 1, 0.01f);
-        //go.SetActive(false);
-    }
-
-    int reportedPoints = 0;
-    public void ReportPosition(Vector3 pos)
-    {
-        reportedPoints++;
-
-        if (reportedPoints == rays * rays)
-        {
-            makeMesh();
-        }
-    }
-
-    int[] newTriangles;
-
-    int meshIndex =0;
     void makeMesh()
     {
-
-        print("making mesh: " + meshName);
-
         Mesh mesh = new Mesh();
 
         Vector3[] vertices = points;
@@ -289,27 +180,36 @@ public class SpreadMat : MonoBehaviour
         mesh.triangles = newTriangles;
         mesh.RecalculateNormals();
 
+        //MakeIceOnClient(mesh);
+        //GameObject go = Instantiate(ice, transform.position, Quaternion.identity);
         GameObject go = Instantiate(ice, Vector3.zero, Quaternion.identity);
         go.name = meshName;
         go.GetComponent<MeshFilter>().mesh = mesh;
-
-        if (addCollider)
-        {
-            MeshCollider col = go.AddComponent<MeshCollider>();
-            col.sharedMesh = mesh;
-        }
-        //col.enabled = false;
         go.transform.position += new Vector3(0, iceThickness, 0);
-        //iceMat.transform.SetParent(parent.transform);
-        go.transform.localScale = new Vector3(1, 1, 1);
-        //iceMat[meshIndex++] = go;
+        //go.transform.localScale = new Vector3(1, 1, 1);
+        
+        //NetworkServer.Spawn(go);
+
+        //if (addCollider)
+        //{
+        //    MeshCollider col = go.AddComponent<MeshCollider>();
+        //    col.enabled = false;
+        //    col.sharedMesh = mesh;
+        //}
+        iceMat.Add(go);
+    }
+
+    void MakeIceOnClient(Mesh mesh)
+    {
+        GameObject go = Instantiate(ice, transform.position, Quaternion.identity);
+        go.name = meshName;
+        go.GetComponent<MeshFilter>().mesh = mesh;
     }
 
     [SerializeField] float pointMaxDistance;
-    int i = 0;
+    int triangleIndex = 0;
     void AddTriangle(Vector3Int tri)
     {
-
         Vector3 mid = transform.position;
 
         for (int i = 0; i < 3; i++)
@@ -317,95 +217,87 @@ public class SpreadMat : MonoBehaviour
             Vector3 other = points[tri[i]];
             other.y = transform.position.y;
             if (Random.Range(radius-edgeSprinkling, radius) < (other - mid).magnitude)
-            {
                 return;
+        }
+
+        if (pointMaxDistance < (points[tri.x] - points[tri.y]).magnitude)
+            return;
+        if (pointMaxDistance < (points[tri.x] - points[tri.z]).magnitude)
+            return;
+        if (pointMaxDistance < (points[tri.y] - points[tri.z]).magnitude)
+            return;
+
+        newTriangles[triangleIndex++] = tri.x;
+        newTriangles[triangleIndex++] = tri.y;
+        newTriangles[triangleIndex++] = tri.z;
+    }
+
+    void FreezeObject(GameObject go)
+    {
+        //print("Freezing " + go.name);
+        if (go.GetComponent<Rigidbody>())
+        {
+            go.GetComponent<Rigidbody>().isKinematic = true;
+        }
+        if (go.GetComponentInParent<Rigidbody>())
+        {
+            go.GetComponentInParent<Rigidbody>().isKinematic = true;
+        }
+        if (go.GetComponent<Pullable>())
+        {
+            go.layer = LayerMask.NameToLayer("Default");
+        }
+        frozenObjects.Add(go);
+    }
+
+    public void unFreezeObjects()
+    {
+        foreach (var go in frozenObjects)
+        {
+            if (go.GetComponent<Rigidbody>())
+            {
+                go.GetComponent<Rigidbody>().isKinematic = false;
+            }
+            if (go.GetComponentInParent<Rigidbody>())
+            {
+                go.GetComponentInParent<Rigidbody>().isKinematic = false;
+            }
+            if (go.GetComponent<Pullable>())
+            {
+                go.layer = LayerMask.NameToLayer("Movable");
             }
         }
-
-        //if (pointMaxDistance < (points[tri.x] - points[tri.y]).magnitude)
-        //{
-        //    return;
-        //}
-        //if (pointMaxDistance < (points[tri.x] - points[tri.z]).magnitude)
-        //{
-        //    return;
-        //}
-        //if (pointMaxDistance < (points[tri.y] - points[tri.z]).magnitude)
-        //{
-        //    return;
-        //}
-
-        newTriangles[i++] = tri.x;
-        newTriangles[i++] = tri.y;
-        newTriangles[i++] = tri.z;
     }
 
-    void CopyMesh(GameObject go)
+    public void setCollision(Collider other)
     {
-        MeshFilter[] originalMeshes = go.GetComponentsInChildren<MeshFilter>();
-        ProBuilderMesh[] originalPBMeshes = go.GetComponentsInChildren<ProBuilderMesh>();
-        MeshRenderer ba;
-
-        foreach (var meshF in originalMeshes)
+        GameObject go = other.gameObject;
+        //this is to make ice on trees
+        if (onlyIceLayermask == (onlyIceLayermask | (1 << go.layer)) && !icedObjects.Contains(go))
         {
-
-            GameObject frozenMesh = Instantiate(ice, meshF.transform.position, Quaternion.identity);
-            frozenMesh.name = meshF.transform.name + " frozen mesh";
-            frozenMesh.GetComponent<MeshFilter>().mesh = meshF.mesh;
-
-
-            frozenMesh.transform.position = meshF.transform.position;
-            frozenMesh.transform.rotation = meshF.transform.rotation;
-            frozenMesh.transform.localScale = meshF.transform.localScale;
-            //frozenMesh.transform.localScale = go.transform.localScale;
+            //MakeIce(go.transform.parent.position + new Vector3(0, 7, 0), 2, 3.4f, 0.9f, onlyIceLayermask);
+            //icedObjects.Add(go);
         }
-
-        //foreach (var item in originalPBMeshes)
-        //{
-        //    Mesh mesh = new Mesh();
-        //    mesh.Clear();
-        //    Vertex
-        //    mesh.vertices = item.GetVertices().GetValue(0);
-        //}
-
-        //if (originalMesh)
-        //{
-        //    GameObject frozenMesh = Instantiate(ice, go.transform.position, Quaternion.identity);
-        //    frozenMesh.name = go.name + " frozen mesh";
-        //    frozenMesh.GetComponent<MeshFilter>().mesh = originalMesh;
-
-        //    //MeshCollider col = frozenMesh.AddComponent<MeshCollider>();
-        //    //col.enabled = false;
-        //    //col.sharedMesh = originalMesh;
-        //    //iceMat.transform.SetParent(parent.transform);
-        //    frozenMesh.transform.localScale = go.transform.localScale;
-        //    //frozenMesh.transform.SetParent(go.transform);
-        //}
+        else
+        if (IceAndFreezeLayermask == (IceAndFreezeLayermask | (1 << go.layer)) && !frozenObjects.Contains(go))
+        {
+            FreezeObject(go);
+        }
     }
 
-    GameObject currentGo;
-
-    //void FreezeObject(GameObject go)
-    //{
-    //    if (go)
-    //    {
-    //        print("Freezing " + go.name);
-    //        currentGo = go;
-    //        raysLeft();
-    //        //raysRight();
-    //        //raysUp();
-    //        //raysDown();
-    //    }
-    //}
-
-    //bool onlyOnce = true;
     //private void OnTriggerEnter(Collider other)
     //{
-    //    if (onlyOnce)
+    //    GameObject go = other.gameObject;
+    //    //this is to make ice on trees
+    //    if (onlyIceLayermask == (onlyIceLayermask | (1 << go.layer)) && !icedObjects.Contains(go))
     //    {
-    //        FreezeObject(other.gameObject);
-    //        onlyOnce = false;
+    //        MakeIce(go.transform.parent.position + new Vector3(0, 7, 0), 2, 3.4f, 0.9f, onlyIceLayermask);
+    //        icedObjects.Add(go);
     //    }
-    //    //frozenObjects.Add(other.gameObject);
+    //    else
+    //    if (IceAndFreezeLayermask == (IceAndFreezeLayermask | (1 << go.layer)) && !frozenObjects.Contains(go))
+    //    {
+    //        FreezeObject(go);
+    //    }
     //}
 }

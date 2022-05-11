@@ -21,13 +21,29 @@ public class IceGadgetTrap : NetworkBehaviour
         _endTime = NetworkTimer.FromNow(_settings.IceGadget.Duration);
     }
 
-    private void OnTriggerStay(Collider other)
+    public void makePlayerSlip(GameObject player)
     {
-        //if(other.tag == "Player")
-        //{
-        //    other.gameObject.GetComponent<PlayerMovement>().maxFrictionScaling = friction;
-        //    other.gameObject.GetComponent<PlayerMovement>().maxSpeedScaling = 0f;
-        //}
+        player.GetComponent<PlayerMovement>().maxFrictionScaling = friction;
+        player.GetComponent<PlayerMovement>().maxSpeedScaling = 0f;
+    }
+
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    if (other.tag == "Player")
+    //    {
+    //        other.gameObject.GetComponent<PlayerMovement>().maxFrictionScaling = friction;
+    //        other.gameObject.GetComponent<PlayerMovement>().maxSpeedScaling = 0f;
+    //    }
+    //}
+
+    [Client]
+    void destroyIce()
+    {
+        iceMachine.unFreezeObjects();
+        foreach (var item in iceMachine.iceMat)
+        {
+            Destroy(item);
+        }
     }
 
     void FixedUpdate()
@@ -36,11 +52,13 @@ public class IceGadgetTrap : NetworkBehaviour
         {
             if (NetworkServer.active)
             {
-                //for (int i = 0; i < 4; i++)
+                //destroyIce();
+                //iceMachine.unFreezeObjects();
+                //foreach (var item in iceMachine.iceMat)
                 //{
-                //    Destroy(iceMachine.iceMat[i]);
+                //    Destroy(item);
                 //}
-                NetworkServer.Destroy(this.gameObject);
+                //NetworkServer.Destroy(this.gameObject);
             }
             return;
         }
