@@ -37,11 +37,11 @@ MonoBehaviour:
     MaxRange: 30
   BlackHoleGun:
     Cooldown: 10
-    Range: 20
+    Range: 35
   BlackHole:
-    Range: 20
+    Range: 40
     Duration: 5
-    Intensity: 200
+    Intensity: 600
   IceGadget:
     Duration: 30
     Friction: -0.5
