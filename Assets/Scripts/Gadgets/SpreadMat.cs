@@ -44,7 +44,7 @@ public class SpreadMat : NetworkBehaviour
     }
 
 
-    [SerializeField]VisualEffect ve;
+    //[SerializeField]VisualEffect ve;
 
     private void Awake()
     {

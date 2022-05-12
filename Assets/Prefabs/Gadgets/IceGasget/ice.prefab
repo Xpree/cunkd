@@ -15,7 +15,8 @@ GameObject:
   - component: {fileID: 6857380976019984218}
   - component: {fileID: -7078671378356709072}
   - component: {fileID: 144764394666633892}
-  - component: {fileID: 1882933733281111931}
+  - component: {fileID: 1057843826110155520}
+  - component: {fileID: -6943772447012652167}
   m_Layer: 2
   m_Name: ice
   m_TagString: Untagged
@@ -162,7 +163,6 @@ MonoBehaviour:
   slipcollider: {fileID: 4737001501714560844}
   trapCollider: {fileID: 2730107349048242755}
   _settings: {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}
-  ve: {fileID: 0}
   pointMaxDistance: 4
 --- !u!54 &144764394666633892
 Rigidbody:
@@ -180,7 +180,41 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 1
---- !u!114 &1882933733281111931
+--- !u!114 &1057843826110155520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2446264302813279794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  clientAuthority: 0
+  sendInterval: 0.05
+  syncPosition: 1
+  syncRotation: 1
+  syncScale: 0
+  interpolatePosition: 1
+  interpolateRotation: 1
+  interpolateScale: 0
+  bufferTimeMultiplier: 1
+  bufferSizeLimit: 64
+  catchupThreshold: 4
+  catchupMultiplier: 0.1
+  onlySyncOnChange: 1
+  bufferResetMultiplier: 5
+  positionSensitivity: 0.01
+  rotationSensitivity: 0.01
+  scaleSensitivity: 0.01
+  showGizmos: 0
+  showOverlay: 0
+  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+--- !u!114 &-6943772447012652167
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -198,7 +232,7 @@ MonoBehaviour:
   clientAuthority: 0
   syncVelocity: 1
   clearVelocity: 0
-  velocitySensitivity: 0.1
+  velocitySensitivity: 0.01
   syncAngularVelocity: 1
   clearAngularVelocity: 0
   angularVelocitySensitivity: 0.1
@@ -360,7 +394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fc39af9290cd2745afa4cd32d61bc3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  igt: {fileID: 6857380976019984218}
+  igt: {fileID: 0}
   sm: {fileID: -7078671378356709072}
 --- !u!135 &8482049043202217851
 SphereCollider:
@@ -550,7 +584,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   igt: {fileID: 6857380976019984218}
-  sm: {fileID: -7078671378356709072}
+  sm: {fileID: 0}
 --- !u!135 &4737001501714560844
 SphereCollider:
   m_ObjectHideFlags: 0
