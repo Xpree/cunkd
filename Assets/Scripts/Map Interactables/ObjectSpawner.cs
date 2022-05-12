@@ -25,6 +25,8 @@ public class ObjectSpawner : NetworkBehaviour
 
     private void OnEnable()
     {
+        if (!IsEquipmentSpawner)
+            gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
         GetComponent<Collider>().enabled = !IsEquipmentSpawner;
         GetComponent<MeshRenderer>().enabled = IsEquipmentSpawner;
     }
