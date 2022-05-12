@@ -59,8 +59,8 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             var target = targetObject;
             if (target == null || target.GetComponent<Pullable>().IsFixed == false)
                 target = item.ProjectileHitscanIdentity(MaxRange)?.gameObject;
-            
-            if(target != null && target.GetComponent<GameClient>() == null)
+
+            if (target != null && target.GetComponent<GameClient>() == null)
             {
                 var progress = GetChargeProgress();
                 justStop();
@@ -95,13 +95,16 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
     {
         animator.SetTrigger("Fire");
         justStop();
-        target.gameObject.GetComponent<KnockbackScript>().onOff = true;
-        target.GetComponent<Pullable>().offTime = 5f;
-        Vector3 torque = new Vector3(Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque));
-        var body = target.GetComponent<Rigidbody>();
-        float Force = Mathf.Lerp(MinPushForce, MaxPushForce, Mathf.Clamp01(progress));
-        body.AddForce(aimDirection * Force, PushForceMode);
-        body.AddTorque(torque);
+        if (target.gameObject.GetComponent<KnockbackScript>())
+        {
+            target.gameObject.GetComponent<KnockbackScript>().onOff = true;
+            target.GetComponent<Pullable>().offTime = 5f;
+            Vector3 torque = new Vector3(Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque));
+            var body = target.GetComponent<Rigidbody>();
+            float Force = Mathf.Lerp(MinPushForce, MaxPushForce, Mathf.Clamp01(progress));
+            body.AddForce(aimDirection * Force, PushForceMode);
+            body.AddTorque(torque);
+        }
     }
 
     void StartPulling(Pullable target, NetworkTimer time, Vector3 torque)
