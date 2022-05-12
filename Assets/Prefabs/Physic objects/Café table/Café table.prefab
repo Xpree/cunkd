@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 5460640871559304397}
   - component: {fileID: -2170061945944688353}
   - component: {fileID: -7820705241106138584}
+  - component: {fileID: 5530513938262344379}
   m_Layer: 6
   m_Name: "Caf\xE9 table"
   m_TagString: Untagged
@@ -2564,5 +2565,24 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   target: {fileID: 0}
+  offTime: 0
   pullingCollider: {fileID: 1310785233301735626}
   body: {fileID: 5460640871559304397}
+  pullOffset: 0
+  offsetPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &5530513938262344379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1310785233301735629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85ffbedb87ca51c449a4383e4a5c899b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  KnockbackStrength: 0
+  onOff: 0

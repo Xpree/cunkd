@@ -39,7 +39,7 @@ public class BouncePad : NetworkBehaviour
     {
         Rigidbody rb = other.GetComponent<Rigidbody>();
 
-        if (isReady)
+        if (isReady && rb)
         {
             {
                 LaunchObject(rb);

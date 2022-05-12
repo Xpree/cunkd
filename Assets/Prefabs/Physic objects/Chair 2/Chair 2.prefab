@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: -2234755512356820787}
   - component: {fileID: 5681704493695781571}
   - component: {fileID: 546237052195333999}
+  - component: {fileID: 5846103837003915652}
   m_Layer: 6
   m_Name: Chair 2
   m_TagString: Untagged
@@ -5797,8 +5798,11 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   target: {fileID: 0}
+  offTime: 0
   pullingCollider: {fileID: 1750806831394448900}
   body: {fileID: 5702511380636116947}
+  pullOffset: 0
+  offsetPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &5681704493695781571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5855,3 +5859,19 @@ MonoBehaviour:
   syncAngularVelocity: 1
   clearAngularVelocity: 0
   angularVelocitySensitivity: 0.1
+--- !u!114 &5846103837003915652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1750806831394448901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85ffbedb87ca51c449a4383e4a5c899b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  KnockbackStrength: 0
+  onOff: 0

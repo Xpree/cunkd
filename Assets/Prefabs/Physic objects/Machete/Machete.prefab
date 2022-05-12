@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: -6056906961707018877}
   - component: {fileID: 557580597740512396}
   - component: {fileID: 4559254086856323575}
+  - component: {fileID: -28449818420832918}
   m_Layer: 6
   m_Name: Machete
   m_TagString: Untagged
@@ -1408,8 +1409,11 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   target: {fileID: 0}
+  offTime: 0
   pullingCollider: {fileID: 6276756849759045292}
   body: {fileID: -7113071095614235456}
+  pullOffset: 0
+  offsetPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &557580597740512396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1466,3 +1470,19 @@ MonoBehaviour:
   showGizmos: 0
   showOverlay: 0
   overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+--- !u!114 &-28449818420832918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6276756849759045293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85ffbedb87ca51c449a4383e4a5c899b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  KnockbackStrength: 0
+  onOff: 0

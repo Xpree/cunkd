@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 3893153404752666177}
   - component: {fileID: 6355316294543839225}
   - component: {fileID: -8661143022870301099}
+  - component: {fileID: 377449403870963057}
   m_Layer: 6
   m_Name: Coconut Top Half
   m_TagString: Untagged
@@ -9025,6 +9026,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   KnockbackStrength: 0.2
+  onOff: 0
 --- !u!114 &6355316294543839225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9040,8 +9042,11 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   target: {fileID: 0}
+  offTime: 0
   pullingCollider: {fileID: 5583852904179596372}
   body: {fileID: 2053087181428122433}
+  pullOffset: 0
+  offsetPosition: {x: 0, y: 0, z: 0}
 --- !u!64 &-8661143022870301099
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -9056,3 +9061,19 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &377449403870963057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 742040715351281123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85ffbedb87ca51c449a4383e4a5c899b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  KnockbackStrength: 0
+  onOff: 0

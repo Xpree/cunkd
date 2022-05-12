@@ -270,17 +270,20 @@ public class SpreadMat : NetworkBehaviour
     {
         foreach (var go in frozenObjects)
         {
-            if (go.GetComponent<Rigidbody>())
+            if (go)
             {
-                go.GetComponent<Rigidbody>().isKinematic = false;
-            }
-            if (go.GetComponentInParent<Rigidbody>())
-            {
-                go.GetComponentInParent<Rigidbody>().isKinematic = false;
-            }
-            if (go.GetComponent<Pullable>())
-            {
-                go.layer = LayerMask.NameToLayer("Movable");
+                if (go.GetComponent<Rigidbody>())
+                {
+                    go.GetComponent<Rigidbody>().isKinematic = false;
+                }
+                if (go.GetComponentInParent<Rigidbody>())
+                {
+                    go.GetComponentInParent<Rigidbody>().isKinematic = false;
+                }
+                if (go.GetComponent<Pullable>())
+                {
+                    go.layer = LayerMask.NameToLayer("Movable");
+                }
             }
         }
     }
