@@ -46,5 +46,26 @@ public class IceGadgetTrap : NetworkBehaviour
         }
     }
 
+    //bool triggered = false;
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (!triggered)
+    //    {
+    //        iceMachine.Trigger();
+    //        triggered = true;
+    //    }
+    //}
 
+    bool triggered = false;
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!triggered && collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+
+            GetComponent<Rigidbody>().isKinematic = true;
+            iceMachine.Trigger();
+            triggered = true;
+        }
+
+    }
 }

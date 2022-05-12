@@ -43,11 +43,11 @@ MonoBehaviour:
     Duration: 5
     Intensity: 200
   IceGadget:
-    Duration: 5
+    Duration: 10
     Friction: -0.5
     MaxRange: 20
-    Cooldown: 0
-    Charges: 1
+    Cooldown: 11
+    Charges: 3
   SwapSniper:
     Cooldown: 1
     Range: 200

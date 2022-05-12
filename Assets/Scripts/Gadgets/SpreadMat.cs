@@ -26,8 +26,9 @@ public class SpreadMat : NetworkBehaviour
     List<GameObject> icedObjects;
     public List<GameObject> iceMat;
 
-    [SerializeField] CapsuleCollider Icecollider;
-    [SerializeField] CapsuleCollider Slipcollider;
+    [SerializeField] SphereCollider Icecollider;
+    [SerializeField] SphereCollider slipcollider;
+    [SerializeField] SphereCollider trapCollider;
     int rays;
     string meshName = "";
 
@@ -40,10 +41,6 @@ public class SpreadMat : NetworkBehaviour
         {
             Debug.LogError("Missing GameSettings reference on " + name);
         }
-
-        _endTime = NetworkTimer.FromNow(_settings.IceGadget.Duration);
-        _destroyTime = NetworkTimer.FromNow(_settings.IceGadget.Duration + 1);
-
     }
 
 
@@ -51,15 +48,22 @@ public class SpreadMat : NetworkBehaviour
 
     private void Awake()
     {
-        Icecollider.radius = radius - 0.5f;
-        Slipcollider.radius = radius - 0.5f;
+        slipcollider.radius = radius - 0.5f;
         rays = (int)(radius / precision);
         iceMat = new List<GameObject>();
         frozenObjects = new List<GameObject>();
         icedObjects = new List<GameObject>();
-        MakeIce(transform.position + new Vector3(0, affectedHeight, 0), rayLength, radius, overhangVariance,IceAndFreezeLayermask);
+    }
+    public void Trigger()
+    {
+        Icecollider.enabled = true;
+        slipcollider.enabled = true;
+        _endTime = NetworkTimer.FromNow(_settings.IceGadget.Duration);
+        _destroyTime = NetworkTimer.FromNow(_settings.IceGadget.Duration + 1);
+        Icecollider.isTrigger = true;
+        Icecollider.radius = radius - 0.5f;
+        MakeIce(transform.position + new Vector3(0, affectedHeight- trapCollider.radius, 0), rayLength, radius, overhangVariance,IceAndFreezeLayermask);
         Invoke("DisableCollider", 0.1f);
-        //print("has authority: " + GetComponent<NetworkIdentity>().connectionToClient);
     }
 
     void DisableCollider()
@@ -74,7 +78,7 @@ public class SpreadMat : NetworkBehaviour
         {
             Destroy(item);
         }
-        Slipcollider.enabled = false;
+        slipcollider.enabled = false;
     }
 
     [Client]
@@ -295,7 +299,7 @@ public class SpreadMat : NetworkBehaviour
             icedObjects.Add(go);
         }
         else
-        if (IceAndFreezeLayermask == (IceAndFreezeLayermask | (1 << go.layer)) && !frozenObjects.Contains(go))
+        if (IceAndFreezeLayermask == (IceAndFreezeLayermask | (1 << go.layer)) && !frozenObjects.Contains(go) && other.gameObject.tag != "DoNotFreeze")
         {
             FreezeObject(go);
         }
