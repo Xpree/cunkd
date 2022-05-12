@@ -50,6 +50,7 @@ public static class Util
         return identity.hasAuthority || (NetworkServer.active && identity.connectionToClient == null);
     }
 
+    [Server]
     public static void Teleport(GameObject go, Vector3 position)
     {
         if (go == null)
@@ -59,12 +60,15 @@ public static class Util
 
         var player = go.GetComponent<PlayerMovement>();
         if (player != null)
-        {
+        {            
             player.Teleport(position);
         }
         else
         {
-            go.transform.position = position;
+            var networkTransform = go.GetComponent<NetworkTransform>();
+            networkTransform.RpcTeleport(position);
+            networkTransform.Reset();
+            go.transform.position = position;            
         }
     }
 

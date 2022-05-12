@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{d64d1200-c72e-4a9c-b45a-608ccc6bafc0}">
+		<property name="color">
+			<value>Magenta</value>
+		</property>
 		<property name="name">
 			<value>QuakeJump</value>
 		</property>
@@ -46,6 +49,9 @@
 		</relationship>
 	</object>
 	<object class="MixerInput" id="{1b38eb02-7312-4e19-8f05-642f4cba576c}">
+		<property name="color">
+			<value>Magenta</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{7f15ba64-9fff-414e-ba04-918c7673cf22}</destination>
 		</relationship>

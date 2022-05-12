@@ -55,7 +55,6 @@ public class GameClient : NetworkBehaviour
         _loaded = true;
 
         _inputs.gameObject.SetActive(true);
-        _inputs.SetPlayerMode();
         _inputs.PreventInput();
         CameraController.ActivateCamera();
     }
@@ -75,6 +74,7 @@ public class GameClient : NetworkBehaviour
             yield return null;
         }
 
+        _inputs.SetPlayerMode();
         _inputs.EnableInput();
     }
 

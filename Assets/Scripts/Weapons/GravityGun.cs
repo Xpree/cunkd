@@ -8,7 +8,6 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
 {
     [SerializeField] NetworkAnimator animator;
 
-
     [SerializeField] GameSettings _settings;
 
     [SerializeField] Transform AnchorPoint;
@@ -61,7 +60,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             if (target == null || target.GetComponent<Pullable>().IsFixed == false)
                 target = item.ProjectileHitscanIdentity(MaxRange)?.gameObject;
             
-            if(target != null)
+            if(target != null && target.GetComponent<GameClient>() == null)
             {
                 var progress = GetChargeProgress();
                 justStop();
@@ -76,12 +75,12 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         justStop();
         if (isPressed)
         {
-            var target = item.ProjectileHitscanComponent<Pullable>(MaxGrabRange);
+            var target = item.ProjectileHitscanOwner<Pullable>(MaxGrabRange);
             if(target == null)
             {
                 return;
             }
-            AudioHelper.PlayOneShotWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.transform.position, ("Grab Object", 1f), ("Object recived start loading", 1f), ("Shot away object", 0f));
+            //AudioHelper.PlayOneShotAttachedWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.AnchorPoint.gameObject, ("Grab Object", 1f), ("Object recived start loading", 1f), ("Shot away object", 0f));
             CmdPull(target);
         }
     }
@@ -94,19 +93,16 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
     [Command]
     void CmdPush(GameObject target, Vector3 aimDirection, float progress)
     {
+        animator.SetTrigger("Fire");
         justStop();
+        target.gameObject.GetComponent<KnockbackScript>().onOff = true;
+        target.GetComponent<Pullable>().offTime = 5f;
         Vector3 torque = new Vector3(Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque));
         var body = target.GetComponent<Rigidbody>();
         float Force = Mathf.Lerp(MinPushForce, MaxPushForce, Mathf.Clamp01(progress));
         body.AddForce(aimDirection * Force, PushForceMode);
         body.AddTorque(torque);
     }
-
-    //[ClientRpc]
-    //void RpcPush()
-    //{
-
-    //}
 
     void StartPulling(Pullable target, NetworkTimer time, Vector3 torque)
     {
@@ -115,7 +111,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             return;
         }
         target.GetComponent<Rigidbody>().AddTorque(torque);
-        target.StartPulling(AnchorPoint.gameObject, 0, time);
+        target.StartPulling(AnchorPoint.gameObject, time);
         targetObject = target.gameObject;
     }
 
@@ -126,11 +122,13 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             return;
         }
         targetObject.GetComponent<Pullable>().StopPulling();
+        targetObject = null;
     }
 
     [Command]
     void CmdPull(Pullable target)
     {
+        animator.SetTrigger("Attract");
         Vector3 torque = new Vector3(Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque));
         var time = NetworkTimer.FromNow(GrabTime);
         if (this.isServerOnly)
@@ -144,6 +142,15 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
     void RpcPull(Pullable target, NetworkTimer endTime, Vector3 torque)
     {
         StartPulling(target, endTime, torque);
+    }
+
+    [Command]
+    void CmdStopAttract()
+    {
+        if (targetObject != null)
+        {
+            animator.SetTrigger("StopAttract");
+        }
     }
 
     [Command]
@@ -164,6 +171,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
 
     void justStop()
     {
+        CmdStopAttract();
         StopPulling();
         CmdStopPulling();
     }

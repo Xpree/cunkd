@@ -17,6 +17,8 @@ public class GameServer : MonoBehaviour
 
     [SerializeField] GameStats GameStatsPrefab;
 
+    public static NetworkTimer startTime;
+
     /// <summary>
     /// The list of maps available
     /// </summary>
@@ -79,6 +81,7 @@ public class GameServer : MonoBehaviour
 
     public static void BeginGame()
     {
+        startTime = NetworkTimer.Now;
         var self = CunkdNetManager.Instance.Game;
         CunkdNetManager.Instance.ServerChangeScene(self.NetworkScene[self.SelectedScene]);
     }

@@ -75,6 +75,12 @@ public class GlobalInput : MonoBehaviour
         AudioSettings.Singleton.MasterVolumeLevel(Settings.volume);
         GUILayout.EndHorizontal();
 
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Camera field of view:");
+        Settings.cameraFov = GUILayout.HorizontalSlider(Settings.cameraFov, 60, 90);
+        GUILayout.EndHorizontal();
+
         GUILayout.BeginHorizontal();
         GUILayout.Label("Mute:");
         var previouslyMuted = Settings.muted;

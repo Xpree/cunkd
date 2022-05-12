@@ -14,6 +14,13 @@ public static class Settings
         set { PlayerPrefs.SetFloat("Volume", value); }        
     }
 
+
+    public static float cameraFov
+    {
+        get { return Mathf.Clamp(PlayerPrefs.GetFloat("CameraFov", 60.0f), 60.0f, 90.0f); }
+        set { PlayerPrefs.SetFloat("CameraFov", value); }
+    }
+
     public static bool windowedFullscreenMode
     {
         get { return PlayerPrefs.GetInt("WindowedFullscreenMode", 1) != 0; }

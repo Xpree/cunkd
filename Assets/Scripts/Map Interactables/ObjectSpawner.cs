@@ -1,6 +1,7 @@
 using Mirror;
 using UnityEngine;
 using Unity.VisualScripting;
+using UnityEngine.VFX;
 
 public class ObjectSpawner : NetworkBehaviour
 {
@@ -10,6 +11,7 @@ public class ObjectSpawner : NetworkBehaviour
     [SerializeField] bool spawnAtStart;
     enum ObjectType { Weapon, Gadget, Object };
     [SerializeField] ObjectType objectType;
+    [SerializeField] NetworkAnimator effect;
 
     [Header("Diagnostics")]
     [SyncVar(hook = nameof(OnSpawnedItemChanged))] public GameObject spawnedItem;
@@ -51,11 +53,14 @@ public class ObjectSpawner : NetworkBehaviour
     void CheckSpawnedItem()
     {
         if (spawnedItem == null)
+        {
             return;
+        }
         var item = spawnedItem.GetComponent<NetworkItem>();
         if (item != null && item.IsSpawned == false)
         {
             // Reset Item
+            effect.SetTrigger("startReady");
             spawnedItem = null;
             nextSpawnTime = NetworkTimer.FromNow(spawnTime);
         }
@@ -94,10 +99,13 @@ public class ObjectSpawner : NetworkBehaviour
             if (item != null)
                 OnSpawnedItem(item);
         }
+        else
+            effect.SetTrigger("stopReady");
     }
 
     void OnSpawnedItem(NetworkItem item)
     {
+        effect.SetTrigger("startReady");
         var anchor = GetSpawnAnchor();
         item.OnSpawned(anchor);
     }

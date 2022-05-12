@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{890903f6-2384-42a6-aaca-36eb14a95e7e}">
+		<property name="color">
+			<value>Green Light 1</value>
+		</property>
 		<property name="name">
 			<value>Chill_kor_exempel</value>
 		</property>
@@ -46,6 +49,9 @@
 		</relationship>
 	</object>
 	<object class="MixerInput" id="{d9024539-b036-41fb-b1f5-d4f0697461ed}">
+		<property name="color">
+			<value>Green Light 1</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{38ff141e-2f8a-4af1-b107-c9b2c283ce4c}</destination>
 		</relationship>

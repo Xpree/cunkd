@@ -376,6 +376,46 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1863993567, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+      propertyPath: Params.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863993567, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+      propertyPath: EventReference.Path
+      value: event:/SoundStudents/Music/Level 1 Theme
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863993567, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: 1048134225
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863993567, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1264763775
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863993567, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: 1783585690
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863993567, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: 1083057794
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863993567, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+      propertyPath: Params.Array.data[0].Name
+      value: Players Left
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863993567, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+      propertyPath: Params.Array.data[0].Value
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1786408663118704467, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+      propertyPath: sceneId
+      value: 328011504
+      objectReference: {fileID: 0}
     - target: {fileID: 8980317232237182240, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
       propertyPath: spawnPrefabs.Array.size
       value: 32

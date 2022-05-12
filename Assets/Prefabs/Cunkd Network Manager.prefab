@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1863993569}
-  - component: {fileID: 1863993568}
+  - component: {fileID: 6949516154282938971}
   - component: {fileID: 1863993567}
   - component: {fileID: 1740952794}
+  - component: {fileID: 1786408663118704467}
   m_Layer: 0
   m_Name: MusicPlayer
   m_TagString: Untagged
@@ -34,7 +35,7 @@ Transform:
   m_Father: {fileID: 8980317232237182241}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1863993568
+--- !u!114 &6949516154282938971
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,27 +44,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1863993566}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Script: {fileID: 11500000, guid: d67d8184562998f40b6e1ddd0e84caa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: -806784807
-      Data2: 1308458740
-      Data3: 58343863
-      Data4: -1886301696
-    Path: event:/PlaceholderAudio/Ambience/FPS_Microgame/WindAmbience
-  Event: 
-  PlayEvent: 1
-  StopEvent: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
+  syncMode: 0
+  syncInterval: 0.1
+  scoreKeeper: {fileID: 0}
 --- !u!114 &1863993567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,6 +92,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14fea7085e992264ea646db969e5a78a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1786408663118704467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863993566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  visible: 0
+  m_AssetId: ec35c5f9c9220b840ac7059c46d9178f
+  hasSpawned: 0
 --- !u!1 &3952021894089368970
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,8 +245,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameStatsPrefab: {fileID: 6240791917843974184, guid: f9383c3f027f33c4bb28cf39ee2903e8, type: 3}
   NetworkScene:
-  - Assets/Scenes/Volcano.unity
   - Assets/Scenes/TestLevel.unity
+  - Assets/Scenes/Volcano.unity
   SelectedScene: 0
   PlayerPrefab: {fileID: -3495160569371258674, guid: 21daf89214c6ee443ad6875b73083c60, type: 3}
   SpectatorPrefab: {fileID: 5913961851486027645, guid: 000bbbd4b9996da4ba774b6e8ac46268, type: 3}

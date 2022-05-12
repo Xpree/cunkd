@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{0c056723-3904-47ab-8b5f-5b84833a9f54}">
+		<property name="name">
+			<value>StandbyHum</value>
+		</property>
+		<relationship name="folder">
+			<destination>{f3175451-52e8-4193-903b-a4fc7e20a798}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{ad2baadc-d9d7-4825-bc05-29763416305b}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{ad2baadc-d9d7-4825-bc05-29763416305b}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

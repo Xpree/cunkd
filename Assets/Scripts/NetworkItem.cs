@@ -49,7 +49,7 @@ public class NetworkItem : NetworkBehaviour
             Debug.LogError("Missing interact collider on " + this.name);
             return;
         }
-        
+
         EventBus.Register(new EventHook(nameof(EventPlayerInteract), interactCollider.gameObject), new System.Action<NetworkIdentity>(OnInteract));
         EventBus.Register(new EventHook(nameof(EventPlayerInteractHoverStart), interactCollider.gameObject), new System.Action<NetworkIdentity>(OnInteractHoverStart));
         EventBus.Register(new EventHook(nameof(EventPlayerInteractHoverStop), interactCollider.gameObject), new System.Action<NetworkIdentity>(OnInteractHoverStop));
@@ -82,7 +82,6 @@ public class NetworkItem : NetworkBehaviour
             return;
         }
         
-        Debug.Log("Picking up " + displayName);
         CmdTryPickup(player);
     }
 
@@ -197,6 +196,22 @@ public class NetworkItem : NetworkBehaviour
     public T ProjectileHitscanComponent<T>(float maxDistance)where T:class
     {
         var aimRay = this.AimRay;
+
+        var settings = GameServer.Instance.Settings;
+
+        if (Physics.SphereCast(aimRay, settings.SmallSphereCastRadius, out RaycastHit hit, maxDistance, settings.ProtectileTargetLayers, QueryTriggerInteraction.Ignore))
+        {
+            return hit.collider.GetComponent<T>();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public T ProjectileHitscanOwner<T>(float maxDistance) where T : class
+    {
+        var aimRay = this.OwnerInteractAimTransform.ForwardRay();
 
         var settings = GameServer.Instance.Settings;
 

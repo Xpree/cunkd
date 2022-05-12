@@ -58,3 +58,10 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0
+    functionName: StopSound
+    data: 
+    objectReferenceParameter: {fileID: 11500000, guid: 3fbd3cf144f47094da9b8e6819ee513d, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

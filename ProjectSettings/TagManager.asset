@@ -6,8 +6,6 @@ TagManager:
   tags:
   - CinemachineTarget
   - Platform
-  - Tree
-  - DoNotFreeze
   layers:
   - Default
   - TransparentFX
@@ -19,7 +17,7 @@ TagManager:
   - Ground
   - Player
   - Interactable
-  - NotGround
+  - Shakeable
   - 
   - 
   - 

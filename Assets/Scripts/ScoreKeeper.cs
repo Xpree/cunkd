@@ -13,12 +13,13 @@ public class ScoreKeeper : NetworkBehaviour
     public List<ScoreCard> alivePlayers = new();
 
     [HideInInspector] public bool gameOver = false;
-    [HideInInspector] public ScoreCard winner;
+    [HideInInspector] public ScoreCard winner;       
 
     public override void OnStartServer()
     {
         base.OnStartServer();
         spawnPositions = startPositions.GetComponentsInChildren<Transform>();
+        FindObjectOfType<AdaptiveMusic>().scoreKeeper = this;        
     }
 
 
@@ -69,14 +70,14 @@ public class ScoreKeeper : NetworkBehaviour
     }
 
     [ServerCallback]
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         PlayerMovement player = other.gameObject.GetComponent<PlayerMovement>();
         if (player)
         {
             RespawnPlayer(player);
         }
-        else
+        else if(other.gameObject.GetComponent<NetworkIdentity>() != null)
         {
             NetworkServer.Destroy(other.gameObject);
         }

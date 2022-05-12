@@ -7,19 +7,32 @@ using Mirror;
 public class Pullable : NetworkBehaviour
 {
     public GameObject target;
+    public float offTime;
 
     public Collider pullingCollider;
     public Rigidbody body;       
     bool pulling = false;
 
-    float pullOffset = 0;
+    public float pullOffset;
     NetworkTimer fixedTimer;
 
     public Vector3 TargetPosition => target.transform.position + pullOffset * target.transform.forward;
+    public Vector3 offsetPosition;
     public bool IsFixed => pullingCollider.enabled == false;
 
     public bool IsBeingPulled => pulling && target != null && target.activeSelf;
 
+
+    private void Start()
+    {
+        this.gameObject.GetComponent<KnockbackScript>().onOff = false;
+        var bounds = pullingCollider.bounds;
+        foreach (Collider c in GetComponents<Collider>())
+        {
+            bounds.Encapsulate(c.bounds);
+        }
+        pullOffset = bounds.extents.magnitude;
+    }
 
     private void OnValidate()
     {
@@ -41,7 +54,10 @@ public class Pullable : NetworkBehaviour
         {
             Util.SetPhysicsSynchronized(this.netIdentity, true);
             body.isKinematic = false;
-            pullingCollider.enabled = true;
+            foreach (Collider c in GetComponents<Collider>())
+            {
+                c.enabled = true;
+            }
             this.transform.parent = null;
         }
         else
@@ -52,26 +68,53 @@ public class Pullable : NetworkBehaviour
 
     void SetFixed()
     {
-        if(pullingCollider.enabled)
+        if (pullingCollider.enabled)
         {
-            pullingCollider.enabled = false;
+            foreach (Collider c in GetComponents<Collider>())
+            {
+                c.enabled = false;
+            }
+            if (Physics.Raycast(target.transform.position, target.transform.forward, out RaycastHit hit, pullOffset, GameServer.Instance.Settings.Movable))
+            {
+                if (hit.collider.gameObject == this.gameObject)
+                {
+                    offsetPosition = hit.point - target.transform.position;
+                    this.transform.localPosition = -offsetPosition;
+                }
+                return;
+            }
+
             body.isKinematic = true;
-            body.position = TargetPosition;
+            
             body.transform.parent = target.transform;
             body.velocity = Vector3.zero;
-            body.angularVelocity = Vector3.zero;            
+            body.angularVelocity = Vector3.zero;
+
+            Color color = this.GetComponent<Renderer>().material.color;
+            color.a = 0.5f;
+            this.gameObject.GetComponent<Renderer>().material.color = color;
+            this.gameObject.GetComponent<KnockbackScript>().onOff = true;
+            offTime = 5f;
         }
-        else
-        {
-            body.transform.localPosition = Vector3.zero;
-        }
+        //else
+        //{
+        //    body.transform.localPosition = Vector3.zero;
+        //}
+        //body.position = Vector3.Lerp(body.position, TargetPosition, 0.5f);
+        
+        
+        body.position = Vector3.Lerp(body.position, TargetPosition, 0.5f);
     }
 
 
-    public void StartPulling(GameObject destination, float offset, NetworkTimer timeToFixed)
+
+
+    public void StartPulling(GameObject destination, NetworkTimer timeToFixed)
     {
+        this.gameObject.GetComponent<KnockbackScript>().onOff = true;
+        offTime = 5f;
         target = destination;
-        pullOffset = offset;
+        offsetPosition = Vector3.zero;
         fixedTimer = timeToFixed;
         SetPulling(true);
 
@@ -92,6 +135,12 @@ public class Pullable : NetworkBehaviour
 
     void FixedUpdate()
     {
+        if (!pulling && offTime <= 0)
+        {
+            this.gameObject.GetComponent<KnockbackScript>().onOff = false;
+        }
+        if(offTime >= 0 && !pulling)
+            offTime = offTime - 1 * Time.deltaTime;
         if (!pulling)
             return;
         

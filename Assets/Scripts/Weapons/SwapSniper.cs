@@ -9,7 +9,7 @@ using UnityEngine.VFX;
 public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
 {
     [SerializeField] NetworkAnimator animator;
-
+    public GameObject scopeCanvas;
     [SerializeField] GameSettings _settings;
     float cooldown => _settings.SwapSniper.Cooldown;
     float range => _settings.SwapSniper.Range;
@@ -19,7 +19,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     NetworkCooldown _cooldownTimer;
 
     NetworkItem _item;
-    
+    public bool zoomed;
     void Awake()
     {
         _item = GetComponent<NetworkItem>();
@@ -29,6 +29,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
 
     private void Start()
     {
+        zoomed = false;
         if (_settings == null)
         {
             Debug.LogError("Missing GameSettings reference on " + name);
@@ -43,7 +44,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     public NetworkIdentity DidHitObject()
     {
         var aimTransform = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
-        if (Physics.Raycast(aimTransform.position, aimTransform.forward, out RaycastHit hitResult, range, TargetMask))
+        if (Physics.SphereCast(aimTransform.position, 0.5f, aimTransform.forward, out RaycastHit hitResult, range, TargetMask))
         {            
             return hitResult.rigidbody?.GetComponent<NetworkIdentity>();
         }
@@ -72,7 +73,8 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
         Util.Teleport(target.gameObject, Swapper);
         Util.Teleport(owner.gameObject, Swappee);
         animator.SetTrigger("Fire");
-
+        FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Gadgets/Teleporter", target.gameObject);
+        FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Gadgets/Teleporter", owner.gameObject);
     }
 
     System.Collections.IEnumerator DelaySwap(NetworkIdentity target)
@@ -104,24 +106,35 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     }
     void ZoomToggle()
     {
+        if (zoomed == false)
+        {
+            scopeCanvas.SetActive(true);
+            zoomed = true;
+        }
+        else if (zoomed == true)
+        {
+            scopeCanvas.SetActive(false);
+            zoomed = false;
+        }
+        
         var camera = _item.Owner.GetComponentInChildren<PlayerCameraController>();
         camera.ToggleZoom();
     }
 
     void ZoomOff()
     {
+        scopeCanvas.SetActive(false);
+        zoomed = false;
         if(_item.Owner == null)
         {
             return;
         }
 
         var camera = _item.Owner.GetComponentInChildren<PlayerCameraController>();
-        
         if(camera == null)
         {
             return;
         }
-
         camera.ZoomOff();
     }
 

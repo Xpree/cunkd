@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="EffectPreset" id="{b9d37391-c7f9-4bea-b069-cd655d1e557d}">
+		<property name="name">
+			<value>Effect Chain</value>
+		</property>
+		<relationship name="folder">
+			<destination>{b5ad0d28-ebac-4481-bc85-ea69b2977a1f}</destination>
+		</relationship>
+		<relationship name="effect">
+			<destination>{029512d5-4a54-48c6-88ac-75ee166b1238}</destination>
+		</relationship>
+	</object>
+	<object class="EffectChain" id="{029512d5-4a54-48c6-88ac-75ee166b1238}">
+		<relationship name="effects">
+			<destination>{58d01fbc-6442-4e29-a53b-d772c318415f}</destination>
+		</relationship>
+	</object>
+	<object class="SFXReverbEffect" id="{58d01fbc-6442-4e29-a53b-d772c318415f}">
+		<property name="wetLevel">
+			<value>-3</value>
+		</property>
+	</object>
+</objects>
