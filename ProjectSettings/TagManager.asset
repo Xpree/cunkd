@@ -6,11 +6,13 @@ TagManager:
   tags:
   - CinemachineTarget
   - Platform
+  - DoNotFreeze
+  - Tree
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - NotGround
   - Water
   - UI
   - Movable

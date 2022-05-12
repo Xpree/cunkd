@@ -24,7 +24,7 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
     void Awake()
     {
         _cooldownTimer = GetComponent<NetworkCooldown>();
-        _cooldownTimer.CooldownDuration = Cooldown;
+        _cooldownTimer.CooldownDuration = _settings.IceGadget.Cooldown;
     }
 
     public override void OnStartServer()
@@ -38,7 +38,7 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
     }
 
     [Command]
-    void SpawnIceGadget(Vector3 target)
+    void SpawnIceGadget()
     {
         //if(_cooldownTimer.ServerUseCharge())
         //{
@@ -64,7 +64,7 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
 
         //if (isPressed == false || _cooldownTimer.UseCharge() == false)
         //    return;
-        if (_cooldownTimer.ServerUse(this.Cooldown))
+        if (_cooldownTimer.ServerUse(_settings.IceGadget.Cooldown))
         {
             Transform aimTransform = GetComponent<NetworkItem>().OwnerInteractAimTransform;
             if (aimTransform == null)
@@ -73,10 +73,10 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
                 return;
             }
 
-            if (Util.RaycastPoint(aimTransform, 100.0f, TargetMask, out Vector3 point))
-            {
-            }
-            SpawnIceGadget(aimTransform.position);
+            //if (Util.RaycastPoint(aimTransform, 100.0f, TargetMask, out Vector3 point))
+            //{
+            //}
+            SpawnIceGadget();
 
         }
     }

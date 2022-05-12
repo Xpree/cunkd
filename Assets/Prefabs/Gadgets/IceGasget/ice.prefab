@@ -143,10 +143,10 @@ MonoBehaviour:
   ice: {fileID: 1107885292156322567, guid: 9a3a75548e9a8ee44a1b9d3173a555c9, type: 3}
   IceAndFreezeLayermask:
     serializedVersion: 2
-    m_Bits: 193
+    m_Bits: 192
   onlyIceLayermask:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 8
   precision: 0.1
   iceThickness: 0.05
   affectedHeight: 3
@@ -387,7 +387,7 @@ GameObject:
   - component: {fileID: 9198670721873224393}
   - component: {fileID: 6239049229134615708}
   - component: {fileID: 2730107349048242755}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Mesh
   m_TagString: DoNotFreeze
   m_Icon: {fileID: 0}
