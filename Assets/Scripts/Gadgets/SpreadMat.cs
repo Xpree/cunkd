@@ -235,6 +235,12 @@ public class SpreadMat : NetworkBehaviour
             if (Random.Range(radius-edgeSprinkling, radius) < (other - mid).magnitude)
                 return;
         }
+        if (points[tri.x] == Vector3.zero)
+            return;
+        if (points[tri.y] == Vector3.zero)
+            return;
+        if (points[tri.z] == Vector3.zero)
+            return;
 
         if (pointMaxDistance < (points[tri.x] - points[tri.y]).magnitude)
             return;
