@@ -70,7 +70,10 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
     {
         if (isPressed)
         {
-            animator.SetBool("Swing", true);
+            animator.SetBool("swingNew", true);
+        }
+        else{
+            animator.SetBool("swingNew", false);
         }
     }
 

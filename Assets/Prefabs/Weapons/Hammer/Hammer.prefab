@@ -299,8 +299,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  Netanimator: {fileID: 0}
-  animator: {fileID: 0}
+  Netanimator: {fileID: 7946163913266512066}
+  animator: {fileID: 5309527546514703037}
   Head: {fileID: 7618931280888435499}
   _settings: {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}
   TargetMask:
