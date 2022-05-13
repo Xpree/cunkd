@@ -40,6 +40,7 @@ public class IceGadgetTrap : NetworkBehaviour
 
     public void makePlayerSlip(GameObject player)
     {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SoundStudents/SFX/Gadgets/WalkingOnIcyFloor2D");
         player.GetComponent<PlayerMovement>().maxFrictionScaling = friction;
         player.GetComponent<PlayerMovement>().maxSpeedScaling = 0f;
     }
