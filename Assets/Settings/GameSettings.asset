@@ -36,7 +36,7 @@ MonoBehaviour:
     ChargeRate: 1
     MaxRange: 30
   BlackHoleGun:
-    Cooldown: 40
+    Cooldown: 25
     Range: 35
   BlackHole:
     Range: 30
@@ -46,10 +46,10 @@ MonoBehaviour:
     Duration: 10
     Friction: -0.5
     MaxRange: 20
-    Cooldown: 11
-    Charges: 3
+    Cooldown: 2
+    Charges: 5
   SwapSniper:
-    Cooldown: 3
+    Cooldown: 6
     Range: 400
   Movable:
     serializedVersion: 2
@@ -65,3 +65,7 @@ MonoBehaviour:
   ShakeableLayer:
     serializedVersion: 2
     m_Bits: 1024
+  Hammer:
+    Cooldown: 1
+    Radius: 7
+    Force: 400
