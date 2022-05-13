@@ -36,7 +36,6 @@
 			<destination>{1da197e0-104b-4892-88d1-481f1ccb489b}</destination>
 			<destination>{38e2d571-be91-4c53-9dd0-812d32bdd1ae}</destination>
 			<destination>{b9bc6247-fa7e-4e93-9509-f79880b4b088}</destination>
-			<destination>{5d24e31f-46bc-4aa3-a83e-66b3f4d99a4a}</destination>
 		</relationship>
 		<relationship name="timeline">
 			<destination>{ef011009-35dc-434a-a5b7-d1b20071b542}</destination>
@@ -112,22 +111,11 @@
 			<destination>{3c02e85d-ffac-457d-a6d5-e32c27b7a9cb}</destination>
 		</relationship>
 	</object>
-	<object class="GroupTrack" id="{5d24e31f-46bc-4aa3-a83e-66b3f4d99a4a}">
-		<relationship name="modules">
-			<destination>{973c25ad-5d44-439a-8151-b735bfee77df}</destination>
-			<destination>{7b3c5329-f649-40ab-9555-99b6c78278a8}</destination>
-			<destination>{6e75fcbb-ede2-4e75-8a3c-fce4064f370d}</destination>
-		</relationship>
-		<relationship name="mixerGroup">
-			<destination>{40292d5b-d44c-49ff-9517-a4a4cdd03698}</destination>
-		</relationship>
-	</object>
 	<object class="Timeline" id="{ef011009-35dc-434a-a5b7-d1b20071b542}">
 		<relationship name="modules">
 			<destination>{b1d4ead7-0603-4652-aea5-0f21504e04d2}</destination>
 			<destination>{fe58c242-7010-46fc-a169-91750b52d96d}</destination>
 			<destination>{45189744-3d5a-44fd-b2db-e9c645ceda2a}</destination>
-			<destination>{973c25ad-5d44-439a-8151-b735bfee77df}</destination>
 		</relationship>
 		<relationship name="markers">
 			<destination>{074da493-a007-400b-bde9-f7551beb6a5a}</destination>
@@ -135,11 +123,9 @@
 			<destination>{d3ccaaa2-1cbf-406b-af2f-e270f48f26d4}</destination>
 			<destination>{8119eaca-0b43-4074-943c-3632df43d0bb}</destination>
 			<destination>{c66ec43c-2abd-4822-8fb7-a1ae268231e5}</destination>
-			<destination>{9357d678-3f22-4a87-9330-4e1ce3cd1570}</destination>
 			<destination>{bec7111a-6c7a-4eca-89d7-2d0a1bd1e5f9}</destination>
 			<destination>{6b39a427-c92a-4122-bc0a-9f6a356ffe2a}</destination>
 			<destination>{1cd410c3-e036-4a41-a66e-6c4d7984b7ff}</destination>
-			<destination>{5c200d9f-a7a0-4ee6-8663-1f2bc887072d}</destination>
 		</relationship>
 	</object>
 	<object class="ParameterProxy" id="{65516fe4-f82a-4053-8d4c-8fcef66ec9f4}">
@@ -300,49 +286,6 @@
 			<destination>{40b0ef45-270e-4a49-b4d2-1ac4985d6644}</destination>
 		</relationship>
 	</object>
-	<object class="MultiSound" id="{973c25ad-5d44-439a-8151-b735bfee77df}">
-		<property name="start">
-			<value>32</value>
-		</property>
-		<property name="length">
-			<value>4</value>
-		</property>
-		<relationship name="sounds">
-			<destination>{70871ac1-5418-47bf-8335-615ad43e2bd3}</destination>
-			<destination>{7e76cb2b-c26a-4e18-a13e-6eb60ad2db51}</destination>
-			<destination>{3672e6ea-aba6-4de0-bf27-b4d7d0b77f08}</destination>
-		</relationship>
-	</object>
-	<object class="TransitionSourceSound" id="{7b3c5329-f649-40ab-9555-99b6c78278a8}">
-		<property name="length">
-			<value>0</value>
-		</property>
-	</object>
-	<object class="TransitionDestinationSound" id="{6e75fcbb-ede2-4e75-8a3c-fce4064f370d}">
-		<property name="start">
-			<value>0.5</value>
-		</property>
-		<property name="length">
-			<value>0</value>
-		</property>
-	</object>
-	<object class="EventMixerGroup" id="{40292d5b-d44c-49ff-9517-a4a4cdd03698}">
-		<property name="volume">
-			<value>-9</value>
-		</property>
-		<property name="name">
-			<value>Walking on Icy</value>
-		</property>
-		<relationship name="effectChain">
-			<destination>{51ff59b2-0527-4362-a9a0-110890aa6b7f}</destination>
-		</relationship>
-		<relationship name="panner">
-			<destination>{5a749b31-59ea-42fb-9a37-376b7ac962f2}</destination>
-		</relationship>
-		<relationship name="output">
-			<destination>{40b0ef45-270e-4a49-b4d2-1ac4985d6644}</destination>
-		</relationship>
-	</object>
 	<object class="TempoMarker" id="{074da493-a007-400b-bde9-f7551beb6a5a}">
 		<property name="position">
 			<value>0.20000000000000001</value>
@@ -401,24 +344,10 @@
 	</object>
 	<object class="NamedMarker" id="{c66ec43c-2abd-4822-8fb7-a1ae268231e5}">
 		<property name="position">
-			<value>27</value>
+			<value>27.5</value>
 		</property>
 		<property name="name">
 			<value>Shot</value>
-		</property>
-		<relationship name="timeline">
-			<destination>{ef011009-35dc-434a-a5b7-d1b20071b542}</destination>
-		</relationship>
-		<relationship name="markerTrack">
-			<destination>{7fe8bfa2-4562-44a3-803c-96b790eea1a5}</destination>
-		</relationship>
-	</object>
-	<object class="NamedMarker" id="{9357d678-3f22-4a87-9330-4e1ce3cd1570}">
-		<property name="position">
-			<value>32</value>
-		</property>
-		<property name="name">
-			<value>Walking on Icy Floor Trap</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{ef011009-35dc-434a-a5b7-d1b20071b542}</destination>
@@ -449,7 +378,7 @@
 	</object>
 	<object class="TransitionMarker" id="{6b39a427-c92a-4122-bc0a-9f6a356ffe2a}">
 		<property name="position">
-			<value>27.254359526372443</value>
+			<value>26.5</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{ef011009-35dc-434a-a5b7-d1b20071b542}</destination>
@@ -481,23 +410,6 @@
 			<destination>{af560c50-f0ea-44bb-beca-cd4d96fc30d4}</destination>
 		</relationship>
 	</object>
-	<object class="TransitionMarker" id="{5c200d9f-a7a0-4ee6-8663-1f2bc887072d}">
-		<property name="position">
-			<value>27</value>
-		</property>
-		<relationship name="timeline">
-			<destination>{ef011009-35dc-434a-a5b7-d1b20071b542}</destination>
-		</relationship>
-		<relationship name="markerTrack">
-			<destination>{a6f539c6-fe98-46d5-8108-3af8fdeb4a01}</destination>
-		</relationship>
-		<relationship name="destination">
-			<destination>{9357d678-3f22-4a87-9330-4e1ce3cd1570}</destination>
-		</relationship>
-		<relationship name="triggerConditions">
-			<destination>{fc24b4a8-e774-49b7-8a85-fb377154cdf7}</destination>
-		</relationship>
-	</object>
 	<object class="MixerBusEffectChain" id="{2e9e480b-ff77-4e20-9eed-a1ac341698dc}">
 		<relationship name="effects">
 			<destination>{c34bcabf-b966-4858-866c-af68d525ef0c}</destination>
@@ -527,28 +439,6 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{24610bf1-0c1f-4610-9303-35749bf6040e}" />
-	<object class="SingleSound" id="{70871ac1-5418-47bf-8335-615ad43e2bd3}">
-		<relationship name="audioFile">
-			<destination>{463f74ce-e9b5-434a-a09e-47aeda5e53f1}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{7e76cb2b-c26a-4e18-a13e-6eb60ad2db51}">
-		<relationship name="audioFile">
-			<destination>{67768e69-8431-459b-bf31-2a05b970474b}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{3672e6ea-aba6-4de0-bf27-b4d7d0b77f08}">
-		<relationship name="audioFile">
-			<destination>{6f3cfb2c-c629-4c24-ba14-1230ac2d3e13}</destination>
-		</relationship>
-	</object>
-	<object class="MixerBusEffectChain" id="{51ff59b2-0527-4362-a9a0-110890aa6b7f}">
-		<relationship name="effects">
-			<destination>{5422233a-9f5b-4501-b714-031b8c10e889}</destination>
-			<destination>{1cafea9d-fa9c-400c-8e48-0d2938c4c457}</destination>
-		</relationship>
-	</object>
-	<object class="MixerBusPanner" id="{5a749b31-59ea-42fb-9a37-376b7ac962f2}" />
 	<object class="ParameterCondition" id="{9cd0aa97-e502-45ad-8ee5-1eab664bb09d}">
 		<property name="minimum">
 			<value>1</value>
@@ -571,8 +461,6 @@
 			<destination>{ab73cdf0-a070-4d61-b551-188b07bc9992}</destination>
 			<destination>{431661a1-4559-44dc-adbb-93d9c0815839}</destination>
 			<destination>{37c9d15a-ebe6-4fc8-ba6d-c3c77d20f9e8}</destination>
-			<destination>{7b3c5329-f649-40ab-9555-99b6c78278a8}</destination>
-			<destination>{6e75fcbb-ede2-4e75-8a3c-fce4064f370d}</destination>
 			<destination>{40e75c08-eb61-47b1-b792-8a2149d2ff1a}</destination>
 			<destination>{35066cf4-413f-467e-9520-4aa410f8284f}</destination>
 		</relationship>
@@ -586,17 +474,6 @@
 		</property>
 		<relationship name="parameter">
 			<destination>{ad2baadc-d9d7-4825-bc05-29763416305b}</destination>
-		</relationship>
-	</object>
-	<object class="ParameterCondition" id="{fc24b4a8-e774-49b7-8a85-fb377154cdf7}">
-		<property name="minimum">
-			<value>1</value>
-		</property>
-		<property name="maximum">
-			<value>1</value>
-		</property>
-		<relationship name="parameter">
-			<destination>{cfe8b368-9356-4491-8724-04619d5d3b5b}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{c34bcabf-b966-4858-866c-af68d525ef0c}" />
@@ -623,15 +500,6 @@
 		</property>
 		<property name="wetLevel">
 			<value>-8</value>
-		</property>
-	</object>
-	<object class="MixerBusFader" id="{5422233a-9f5b-4501-b714-031b8c10e889}" />
-	<object class="SFXReverbEffect" id="{1cafea9d-fa9c-400c-8e48-0d2938c4c457}">
-		<property name="decayTime">
-			<value>3100</value>
-		</property>
-		<property name="wetLevel">
-			<value>-5.5</value>
 		</property>
 	</object>
 </objects>

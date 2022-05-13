@@ -61,7 +61,9 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
         if (isPressed == false)
             return;
 
-            SpawnIceGadget();
+        AudioHelper.PlayOneShotWithParameters("event:/SoundStudents/SFX/Gadgets/Icy Floor Trap", this.transform.position, ("Shot", 1f), ("StandbyHum", 1f));
+
+        SpawnIceGadget();
     }
 
     void IGadget.SecondaryUse(bool isPressed)
