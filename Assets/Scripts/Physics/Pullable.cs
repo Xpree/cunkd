@@ -90,9 +90,9 @@ public class Pullable : NetworkBehaviour
             body.velocity = Vector3.zero;
             body.angularVelocity = Vector3.zero;
 
-            Color color = this.GetComponent<Renderer>().material.color;
-            color.a = 0.5f;
-            this.gameObject.GetComponent<Renderer>().material.color = color;
+            //Color color = this.GetComponent<Renderer>().material.color;
+            //color.a = 0.5f;
+            //this.gameObject.GetComponent<Renderer>().material.color = color;
             this.gameObject.GetComponent<KnockbackScript>().onOff = true;
             offTime = 5f;
         }
