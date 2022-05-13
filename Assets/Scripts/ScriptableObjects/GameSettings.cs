@@ -105,5 +105,15 @@ public class GameSettings : ScriptableObject
 
 
     public LayerMask ShakeableLayer;
+
+    public HammerSettings Hammer = new();
+
+    [Serializable]
+    public class HammerSettings
+    {
+        public float Cooldown = 1f;
+        public float Radius = 7f;
+        public float Force = 400f;
+    }
 }
 
