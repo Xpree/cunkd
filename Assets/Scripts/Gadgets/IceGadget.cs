@@ -42,6 +42,8 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
     {
         if (_cooldownTimer.ServerUse(_settings.IceGadget.Cooldown))
         {
+            AudioHelper.PlayOneShotWithParameters("event:/SoundStudents/SFX/Gadgets/Icy Floor Trap", this.transform.position, ("Shot", 1f), ("StandbyHum", 1f));
+
             var go = Instantiate(IceGadgetTrap, transform.position + transform.forward *3, Quaternion.identity);
             go.GetComponent<Rigidbody>().AddForce(transform.forward * throwForce *100);
             go.GetComponent<Rigidbody>().AddTorque(new Vector3(0, 10000, 0), ForceMode.Force);
@@ -60,9 +62,7 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
     {
         if (isPressed == false)
             return;
-
-        AudioHelper.PlayOneShotWithParameters("event:/SoundStudents/SFX/Gadgets/Icy Floor Trap", this.transform.position, ("Shot", 1f), ("StandbyHum", 1f));
-
+               
         SpawnIceGadget();
     }
 

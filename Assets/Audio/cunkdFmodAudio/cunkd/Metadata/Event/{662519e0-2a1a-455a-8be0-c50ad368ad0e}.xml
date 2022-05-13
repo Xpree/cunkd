@@ -247,7 +247,7 @@
 	</object>
 	<object class="SingleSound" id="{45189744-3d5a-44fd-b2db-e9c645ceda2a}">
 		<property name="start">
-			<value>27</value>
+			<value>28</value>
 		</property>
 		<property name="length">
 			<value>4</value>
@@ -271,7 +271,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{3c02e85d-ffac-457d-a6d5-e32c27b7a9cb}">
 		<property name="volume">
-			<value>-10</value>
+			<value>-3</value>
 		</property>
 		<property name="name">
 			<value>Skott</value>
@@ -344,7 +344,7 @@
 	</object>
 	<object class="NamedMarker" id="{c66ec43c-2abd-4822-8fb7-a1ae268231e5}">
 		<property name="position">
-			<value>27.5</value>
+			<value>28</value>
 		</property>
 		<property name="name">
 			<value>Shot</value>
