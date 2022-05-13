@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
+
 public class IceGadgetTrap : NetworkBehaviour
 {
     [SerializeField] GameSettings _settings;
     [SyncVar] NetworkTimer _endTime;
+
+    [SyncVar(hook = nameof(OnTriggered))] bool triggeredSync = false;
+    [SyncVar(hook = nameof(OnPosition))] Vector3 positionSync;
     public float friction => _settings.IceGadget.Friction;
 
     [SerializeField] SpreadMat iceMachine;
@@ -21,31 +25,55 @@ public class IceGadgetTrap : NetworkBehaviour
         _endTime = NetworkTimer.FromNow(_settings.IceGadget.Duration);
     }
 
+    void OnPosition(Vector3 previous, Vector3 current)
+    {
+        transform.position = current;
+        triggered = false;
+    }
+
+    [Client]
+    public void OnTriggered(bool previous, bool current)
+    {
+        transform.position = positionSync;
+        triggered = false;
+    }
+
     public void makePlayerSlip(GameObject player)
     {
         player.GetComponent<PlayerMovement>().maxFrictionScaling = friction;
         player.GetComponent<PlayerMovement>().maxSpeedScaling = 0f;
     }
 
-    [Client]
-    void destroyIce()
+    private void Update()
     {
-        iceMachine.unFreezeObjects();
-        foreach (var item in iceMachine.iceMat)
+        if (!triggered)
         {
-            Destroy(item);
+            iceMachine.Trigger();
+            triggered = true;
         }
     }
 
-    bool triggered = false;
+    //[Client]
+    //void destroyIce()
+    //{
+    //    iceMachine.unFreezeObjects();
+    //    foreach (var item in iceMachine.iceMat)
+    //    {
+    //        Destroy(item);
+    //    }
+    //}
+
+    bool triggered = true;
+    [Server]
     private void OnCollisionEnter(Collision collision)
     {
-        if (!triggered && collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        if (!triggeredSync && triggered && collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
-
+            positionSync = transform.position;
             GetComponent<Rigidbody>().isKinematic = true;
-            iceMachine.Trigger();
-            triggered = true;
+            //iceMachine.Trigger();
+            //triggeredSync = true;
+            //triggered = true;
         }
 
     }
