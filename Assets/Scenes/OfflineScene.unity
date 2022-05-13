@@ -408,13 +408,13 @@ PrefabInstance:
       propertyPath: Params.Array.data[0].Value
       value: 8
       objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1786408663118704467, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
       propertyPath: sceneId
       value: 328011504
+      objectReference: {fileID: 0}
+    - target: {fileID: 1786408663118704467, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+      propertyPath: serverOnly
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8980317232237182240, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
       propertyPath: spawnPrefabs.Array.size
