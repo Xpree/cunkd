@@ -43,9 +43,6 @@ public class SpreadMat : NetworkBehaviour
         }
     }
 
-
-    [SerializeField]VisualEffect ve;
-
     private void Awake()
     {
         slipcollider.radius = radius - 0.5f;

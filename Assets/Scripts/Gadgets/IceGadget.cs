@@ -40,20 +40,19 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
     [Command]
     void SpawnIceGadget()
     {
-        //if(_cooldownTimer.ServerUseCharge())
-        //{
-        //var go = Instantiate(IceGadgetTrap, target, Quaternion.identity);
-        var go = Instantiate(IceGadgetTrap, transform.position + transform.forward *3, Quaternion.identity);
-        go.GetComponent<Rigidbody>().AddForce(transform.forward * throwForce *100);
-        go.GetComponent<Rigidbody>().AddTorque(new Vector3(0, 10000, 0), ForceMode.Force);
-        NetworkServer.Spawn(go);
+        if (_cooldownTimer.ServerUse(_settings.IceGadget.Cooldown))
+        {
+            var go = Instantiate(IceGadgetTrap, transform.position + transform.forward *3, Quaternion.identity);
+            go.GetComponent<Rigidbody>().AddForce(transform.forward * throwForce *100);
+            go.GetComponent<Rigidbody>().AddTorque(new Vector3(0, 10000, 0), ForceMode.Force);
+            NetworkServer.Spawn(go);
 
 
             if(_cooldownTimer.Charges == 0)
             {
                 NetworkServer.Destroy(this.gameObject);
             }
-        //}
+        }
     }
 
 
@@ -62,23 +61,7 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
         if (isPressed == false)
             return;
 
-        //if (isPressed == false || _cooldownTimer.UseCharge() == false)
-        //    return;
-        if (_cooldownTimer.ServerUse(_settings.IceGadget.Cooldown))
-        {
-            Transform aimTransform = GetComponent<NetworkItem>().OwnerInteractAimTransform;
-            if (aimTransform == null)
-            {
-                Debug.LogError("Aim transform missing.");
-                return;
-            }
-
-            //if (Util.RaycastPoint(aimTransform, 100.0f, TargetMask, out Vector3 point))
-            //{
-            //}
             SpawnIceGadget();
-
-        }
     }
 
     void IGadget.SecondaryUse(bool isPressed)
