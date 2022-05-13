@@ -8,7 +8,8 @@ using UnityEngine.VFX;
 [RequireComponent(typeof(NetworkCooldown))]
 public class Hammer : NetworkBehaviour, IWeapon, IEquipable
 {
-    [SerializeField] NetworkAnimator animator;
+    [SerializeField] NetworkAnimator Netanimator;
+    [SerializeField] Animator animator;
 
     [SerializeField] GameObject Head;
 
@@ -25,6 +26,7 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
 
     void Awake()
     {
+        animator = gameObject.GetComponent<Animator>();
         _cooldownTimer = GetComponent<NetworkCooldown>();
         _cooldownTimer.CooldownDuration = Cooldown;
     }
@@ -68,7 +70,7 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
     {
         if (isPressed)
         {
-            //animator.
+            animator.SetBool("Swing", true);
         }
     }
 

@@ -104,12 +104,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3572554408522740278}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.168, z: 0}
-  m_LocalScale: {x: 4, y: 0.4, z: 6}
+  m_LocalPosition: {x: 0, y: 1.944, z: 0}
+  m_LocalScale: {x: 0.39999998, y: 0.4, z: 0.59999996}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3907279605425373757}
-  m_RootOrder: 0
+  m_Father: {fileID: 3678308957761631315}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4275033145095091168
 MeshFilter:
@@ -197,6 +197,7 @@ Transform:
   m_Children:
   - {fileID: 5494559259887932130}
   - {fileID: 3907279605425373757}
+  - {fileID: 7786000322854281114}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -262,7 +263,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  clientAuthority: 0
+  clientAuthority: 1
   animator: {fileID: 5309527546514703037}
 --- !u!95 &5309527546514703037
 Animator:
@@ -298,7 +299,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  animator: {fileID: 7946163913266512066}
+  Netanimator: {fileID: 0}
+  animator: {fileID: 0}
   Head: {fileID: 7618931280888435499}
   _settings: {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}
   TargetMask:
@@ -413,11 +415,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8055227424731418862}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.776, z: 0}
   m_LocalScale: {x: 0.099999994, y: 1, z: 0.099999994}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7786000322854281114}
+  m_Children: []
   m_Father: {fileID: 3678308957761631315}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
