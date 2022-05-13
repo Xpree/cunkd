@@ -11,6 +11,7 @@ public class PlayerCameraController : MonoBehaviour
     public Transform playerTransform;
     public Transform cameraTransform;
     public Camera playerCamera;
+    public Camera SecondCamera;
     public float zoomfov;
     
     Camera mainCamera;
@@ -97,6 +98,7 @@ public class PlayerCameraController : MonoBehaviour
         OnCameraActivated?.Invoke();
         Cursor.lockState = CursorLockMode.Locked;
         playerCamera.fieldOfView = currentFieldOfView;
+        SecondCamera.fieldOfView = currentFieldOfView;
         EventBus.Trigger(nameof(EventPlayerCameraActivated), playerTransform.gameObject);
     }
 
@@ -113,12 +115,14 @@ public class PlayerCameraController : MonoBehaviour
     {
         zoomed = !zoomed;
         playerCamera.fieldOfView = currentFieldOfView;
+        SecondCamera.fieldOfView = currentFieldOfView;
     }
 
     public void ZoomOff()
     {
         zoomed = false;
         playerCamera.fieldOfView = currentFieldOfView;
+        SecondCamera.fieldOfView = currentFieldOfView;
     }
 
     public bool IsCameraActive => playerCamera.enabled;
@@ -150,6 +154,7 @@ public class PlayerCameraController : MonoBehaviour
     void UpdateCamera(ShakeSample shake)
     {
         playerCamera.fieldOfView = Mathf.Clamp(currentFieldOfView + shake.FieldOfView, zoomfov * 0.5f, MaximumFOV);
+        SecondCamera.fieldOfView = Mathf.Clamp(currentFieldOfView + shake.FieldOfView, zoomfov * 0.5f, MaximumFOV);
         var rotationEuler = shake.Rotation.eulerAngles;
         rotationEuler.x += pitch;
         rotationEuler.x = Mathf.Clamp(rotationEuler.x, -89.9f, 89.9f);

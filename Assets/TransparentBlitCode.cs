@@ -10,7 +10,7 @@ public class TransparentBlitCode : MonoBehaviour
     public Material blitMaterial;
     public string rendererTextureName = "_SecondaryCamera_";
 
-    void Start()
+    void Start()//on update, set screen height and width on render texture, with event?
     {
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         Debug.Assert(mainCamera);
