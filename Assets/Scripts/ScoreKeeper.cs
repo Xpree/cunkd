@@ -22,6 +22,11 @@ public class ScoreKeeper : NetworkBehaviour
         FindObjectOfType<AdaptiveMusic>().scoreKeeper = this;        
     }
 
+    public void setPlayerSpawnPositions(GameObject positions)
+    {
+        spawnPositions = positions.GetComponentsInChildren<Transform>();
+    }
+
 
     [Server]
     public void addPlayer(ScoreCard sc)
@@ -70,7 +75,7 @@ public class ScoreKeeper : NetworkBehaviour
     }
 
     [ServerCallback]
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         PlayerMovement player = other.gameObject.GetComponent<PlayerMovement>();
         if (player)
