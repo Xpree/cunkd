@@ -7,8 +7,11 @@ public class LevelEventController : NetworkBehaviour
     [SerializeField] LevelEvents events;
     [SerializeField] GameObject water;
     [SerializeField] Collider deathFloor;
+    [Header("Each Index in the following array represents the corresponding event")]
     [SerializeField] GameObject[] playerSpawnPositions;
+    [Header("Each Index in the following array represents the corresponding event")]
     [SerializeField] GameObject[] setActiveOnEvent;
+    [Header("Each Index in the following array represents the corresponding event")]
     [SerializeField] GameObject[] setInactiveOnEvent;
     int eventIndex = 0;
 
