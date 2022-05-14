@@ -22,9 +22,11 @@ public class PlayerMovement : NetworkBehaviour
     public double _lastGrounded = 0;
     public double _lastJump = 0;
 
+    public float bonusSpeed;
+
     public float maxSpeedScaling = 1f;
     public float maxFrictionScaling = 1f;
-    public float currentMaxSpeed => _settings.CharacterMovement.MaxSpeed * maxSpeedScaling;
+    public float currentMaxSpeed => (_settings.CharacterMovement.MaxSpeed + bonusSpeed) * maxSpeedScaling;
     public float currentMaxFriction => _settings.CharacterMovement.FrictionAcceleration * maxFrictionScaling;
 
     public Vector2 _movementInput = Vector2.zero;
@@ -310,6 +312,7 @@ public class PlayerMovement : NetworkBehaviour
     [TargetRpc]
     public void TargetRespawn(Vector3 position, Quaternion rotation)
     {
+        bonusSpeed = 0;
         transform.position = position;
         transform.rotation = rotation;
         ResetState();

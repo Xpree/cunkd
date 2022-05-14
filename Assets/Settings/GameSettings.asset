@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CharacterMovement:
     TerminalVelocity: 1000
-    MaxSpeed: 9
+    MaxSpeed: 10
     JumpHeight: 2
     CoyoteTime: 1
     StrongAirControlTime: 0.1
