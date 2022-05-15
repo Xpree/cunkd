@@ -66,6 +66,7 @@ public class SpreadMat : NetworkBehaviour
     void DisableCollider()
     {
         Icecollider.enabled = false;
+        trapCollider.enabled = false;
     }
 
     void destroyIce()
