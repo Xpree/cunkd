@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{0c520a63-803e-4ba3-beae-c23361d6a1cb}">
+		<property name="name">
+			<value>Gasar</value>
+		</property>
+		<relationship name="folder">
+			<destination>{f3175451-52e8-4193-903b-a4fc7e20a798}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{0c2d2e36-fbda-4786-89c7-f66b3a3bf462}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{0c2d2e36-fbda-4786-89c7-f66b3a3bf462}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

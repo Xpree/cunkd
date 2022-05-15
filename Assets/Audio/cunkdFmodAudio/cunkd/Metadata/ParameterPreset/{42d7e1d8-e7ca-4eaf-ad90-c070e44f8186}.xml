@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{42d7e1d8-e7ca-4eaf-ad90-c070e44f8186}">
+		<property name="name">
+			<value>Jetpack flyger tomgång</value>
+		</property>
+		<relationship name="folder">
+			<destination>{f3175451-52e8-4193-903b-a4fc7e20a798}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{90c19ace-97ff-41a2-97c7-b1ed9ecce9a0}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{90c19ace-97ff-41a2-97c7-b1ed9ecce9a0}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
