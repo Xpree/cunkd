@@ -9,8 +9,7 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
 
     [SerializeField] bool isPassive;
     [SerializeField] LayerMask TargetMask = ~0;
-
-    [SerializeField] float throwForce;
+    float throwForce;
 
     [SerializeField] GameSettings _settings;
     NetworkCooldown _cooldownTimer;
@@ -25,6 +24,7 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
     {
         _cooldownTimer = GetComponent<NetworkCooldown>();
         _cooldownTimer.CooldownDuration = _settings.IceGadget.Cooldown;
+        throwForce = _settings.IceGadget.ThrowForce;
     }
 
     public override void OnStartServer()
@@ -45,7 +45,7 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
             AudioHelper.PlayOneShotWithParameters("event:/SoundStudents/SFX/Gadgets/Icy Floor Trap", this.transform.position, ("Shot", 1f), ("StandbyHum", 1f));
 
             var go = Instantiate(IceGadgetTrap, transform.position + transform.forward *3, Quaternion.identity);
-            go.GetComponent<Rigidbody>().AddForce(transform.forward * throwForce *100);
+            go.GetComponent<Rigidbody>().AddForce(transform.forward * throwForce *10);
             go.GetComponent<Rigidbody>().AddTorque(new Vector3(0, 10000, 0), ForceMode.Force);
             NetworkServer.Spawn(go);
 

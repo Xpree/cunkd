@@ -78,7 +78,7 @@ public class GameSettings : ScriptableObject
         public float Duration = 5f;
         public float Friction = -0.5f;
 
-        public float MaxRange = 20f;
+        public float ThrowForce = 20f;
         public float Cooldown = 0f;
         public int Charges = 1;
     }

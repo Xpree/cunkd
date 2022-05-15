@@ -20,9 +20,10 @@ public class VolcanoErupter : NetworkBehaviour
         nextSpawn = NetworkTime.time + spawnInterval;
     }
 
+    [Server]
     public void Erupt(double duration, GameObject[] objectsToSpawn, float spawnInterval, int maxSpawns)
     {
-        print("Volcano erupting");
+        //print("Volcano erupting");
         forceCollider.enabled = true;
         this.duration = duration;
         this.objectsToSpawn = objectsToSpawn;
@@ -37,13 +38,14 @@ public class VolcanoErupter : NetworkBehaviour
     double duration = 0;
     float spawnedRocks = 0;
 
+    [Server]
     private void Update()
     {
         if (NetworkTime.time <= duration)
         {
             if (spawnedRocks++ <= maxSpawns && NetworkTime.time <= nextSpawn)
             {
-                Instantiate(objectsToSpawn[Random.Range(0, objectsToSpawn.Length)], positions[Random.Range(1, positions.Length)].position, Quaternion.identity);
+                NetworkServer.Spawn(Instantiate(objectsToSpawn[Random.Range(0, objectsToSpawn.Length)], positions[Random.Range(1, positions.Length)].position, Quaternion.identity));
                 nextSpawn += spawnInterval;
             }
         }

@@ -18,7 +18,6 @@ GameObject:
   - component: {fileID: 8707225733911101602}
   - component: {fileID: -5317501803358034788}
   - component: {fileID: 5474054966940475784}
-  - component: {fileID: 1007977266166762550}
   m_Layer: 6
   m_Name: Rock
   m_TagString: Untagged
@@ -56,7 +55,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   KnockbackStrength: 0.2
-  onOff: 0
+  onOff: 1
 --- !u!54 &-9078684999050906523
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -161,7 +160,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   target: {fileID: 0}
-  offTime: 0
+  offTime: -0.02
   pullingCollider: {fileID: 5474054966940475784}
   body: {fileID: -9078684999050906523}
   pullOffset: 0
@@ -985,12 +984,4 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
---- !u!33 &1007977266166762550
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5769685091094781207}
   m_Mesh: {fileID: 0}
