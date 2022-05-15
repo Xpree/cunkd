@@ -43,7 +43,7 @@ public class VolcanoErupter : NetworkBehaviour
     {
         if (NetworkTime.time <= duration)
         {
-            if (spawnedRocks++ <= maxSpawns && NetworkTime.time <= nextSpawn)
+            if (spawnedRocks++ <= maxSpawns && nextSpawn <= NetworkTime.time)
             {
                 NetworkServer.Spawn(Instantiate(objectsToSpawn[Random.Range(0, objectsToSpawn.Length)], positions[Random.Range(1, positions.Length)].position, Quaternion.identity));
                 nextSpawn += spawnInterval;
