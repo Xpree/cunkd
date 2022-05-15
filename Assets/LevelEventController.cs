@@ -4,6 +4,7 @@ using Mirror;
 public class LevelEventController : NetworkBehaviour
 {
     [SerializeField] ScoreKeeper scoreKeeper;
+    [SerializeField] VolcanoErupter volcanoEruptor;
     [SerializeField] LevelEvents events;
     [SerializeField] GameObject water;
     [SerializeField] Collider deathFloor;
@@ -30,6 +31,7 @@ public class LevelEventController : NetworkBehaviour
         lerpVal = 0;
 
         scoreKeeper.setPlayerSpawnPositions(playerSpawnPositions[eventIndex]);
+        volcanoEruptor.Erupt(levelEvent.eruptionDuration, levelEvent.objectsToSpawn, levelEvent.rockSpawnInterval, levelEvent.maxSpawns);
 
         eventIndex++;
     }

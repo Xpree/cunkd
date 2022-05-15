@@ -8,13 +8,17 @@ public class LevelEvents : ScriptableObject
     [Serializable]
     public class VolcanoLevelEvent
     {
-        public float startTime;
+        [Header("Event times:")]
+        [SerializeField] public float startTime;
         [SerializeField] public float runTime;
+        [Header("Water Rising:")]
         [SerializeField] public Vector3 waterPosition;
-        [SerializeField] public GameObject[] enableOnEvent;
-        [SerializeField] public GameObject[] disableOnEvent;
-        [SerializeField] public Rigidbody[] disableKinenmaticOnEvent;
         [HideInInspector] public bool triggered = false;
+        [Header("Volcano Eruption:")]
+        [SerializeField] public float eruptionDuration;
+        [SerializeField] public float rockSpawnInterval;
+        [SerializeField] public int maxSpawns;
+        [SerializeField] public GameObject[] objectsToSpawn;
 
     }
     [SerializeField]
