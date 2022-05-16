@@ -60,7 +60,12 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
             Rigidbody rb = nearby.GetComponent<Rigidbody>();
             if(rb != null)
             {
+                FMODUnity.RuntimeManager.PlayOneShot("event:/SoundStudents/SFX/Gadgets/Hammer/Hammer Hit");
                 rb.AddExplosionForce(Force, Head.transform.position, Radius);
+            }
+            else
+            {
+                FMODUnity.RuntimeManager.PlayOneShot("event:/SoundStudents/SFX/Gadgets/Hammer/Hammer Miss");
             }
         }
     }
@@ -70,7 +75,7 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
     {
         if (isPressed)
         {
-            animator.SetBool("swingNew", true);
+            animator.SetBool("swingNew", true);            
         }
         else{
             animator.SetBool("swingNew", false);
