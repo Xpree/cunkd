@@ -63,7 +63,7 @@ public class LevelEventController : NetworkBehaviour
             {
                 lerpVal = (float)(NetworkTime.time - currentEvent.startTime) / currentEvent.runTime;
                 water.transform.position = Vector3.Lerp(lastWaterPos, currentEvent.waterPosition, lerpVal);
-                deathFloor.transform.position = water.transform.position + new Vector3(0, yDiff, 0);
+                deathFloor.transform.position =  new Vector3(deathFloor.transform.position.x, water.transform.position.y + yDiff, deathFloor.transform.position.z);
             }
             if (1 < lerpVal)
             {

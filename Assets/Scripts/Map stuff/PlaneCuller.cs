@@ -9,8 +9,8 @@ public class PlaneCuller : MonoBehaviour
 
     private void Start()
     {
-        meshRenderers = FindObjectOfType<ScoreKeeper>().gameObject.GetComponentsInChildren<MeshRenderer>();
-        edgePlanes = new Plane[9];
+        meshRenderers = FindObjectOfType<ScoreKeeper>().gameObject.transform.GetChild(0).GetComponentsInChildren<MeshRenderer>();
+        edgePlanes = new Plane[meshRenderers.Length];
         for (int i = 0; i < edgePlanes.Length; i++)
         {
             edgePlanes[i].SetNormalAndPosition(meshRenderers[i].transform.up, meshRenderers[i].transform.position);

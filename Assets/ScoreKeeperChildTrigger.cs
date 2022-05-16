@@ -14,6 +14,6 @@ public class ScoreKeeperChildTrigger : MonoBehaviour
     [ServerCallback]
     private void OnTriggerEnter(Collider other)
     {
-        scoreKeeper.RemoteTrigger(other);
+        //scoreKeeper.RemoteTrigger(other);
     }
 }

@@ -7,6 +7,7 @@ public class ScoreKeeper : NetworkBehaviour
 {
     [SerializeField] int startLives;
     [SerializeField] GameObject startPositions;
+    [SerializeField] LayerMask destroyOnCollision;
 
     Transform[] spawnPositions;
 
@@ -74,19 +75,19 @@ public class ScoreKeeper : NetworkBehaviour
         }
     }
 
-    [ServerCallback]
-    public void RemoteTrigger(Collider other)
-    {
-        PlayerMovement player = other.gameObject.GetComponent<PlayerMovement>();
-        if (player)
-        {
-            RespawnPlayer(player);
-        }
-        else if (other.gameObject.GetComponent<NetworkIdentity>() != null)
-        {
-            NetworkServer.Destroy(other.gameObject);
-        }
-    }
+    //[ServerCallback]
+    //public void RemoteTrigger(Collider other)
+    //{
+    //    PlayerMovement player = other.gameObject.GetComponent<PlayerMovement>();
+    //    if (player)
+    //    {
+    //        RespawnPlayer(player);
+    //    }
+    //    else if (other.gameObject.GetComponent<NetworkIdentity>() != null)
+    //    {
+    //        NetworkServer.Destroy(other.gameObject);
+    //    }
+    //}
 
     [ServerCallback]
     private void OnTriggerEnter(Collider other)
@@ -96,7 +97,7 @@ public class ScoreKeeper : NetworkBehaviour
         {
             RespawnPlayer(player);
         }
-        else if(other.gameObject.GetComponent<NetworkIdentity>() != null)
+        else if(other.gameObject.GetComponent<NetworkIdentity>() != null && destroyOnCollision == (destroyOnCollision | (1 << other.gameObject.layer)))
         {
             NetworkServer.Destroy(other.gameObject);
         }
