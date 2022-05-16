@@ -65,7 +65,7 @@ public class JetPack : NetworkBehaviour, IGadget, IEquipable
     private void FixedUpdate()
     {
         if (timeToFly)
-        {
+        {            
             fly();
         }
         else
@@ -76,7 +76,7 @@ public class JetPack : NetworkBehaviour, IGadget, IEquipable
 
     [TargetRpc]
     void RpcFlyLikeSatan()
-    {
+    {        
         //print("Look mom I'm flying!");
         force = Mathf.Min(force += acceleration, maxForce);
         PlayerMovement pm = GetComponentInParent<PlayerMovement>();
@@ -85,6 +85,8 @@ public class JetPack : NetworkBehaviour, IGadget, IEquipable
 
     void IGadget.PrimaryUse(bool isPressed)
     {
+        //AudioHelper.PlayOneShotAttachedWithParameters("event:/SoundStudents/SFX/Gadgets/Jetpack", this.gameObject, ("Gasar", 1f), ("Bränsle", 0f),
+        //                                     ("Ta på jetpack", 1f), ("Jetpack flyger tomgång", 1f), ("Jetpack stängs av", 0f));
         force = 0;
         timeToFly = isPressed;
     }
