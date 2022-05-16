@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LevelEvents
   m_EditorClassIdentifier: 
   VolcanoLevelEvents:
-  - startTime: 5
+  - startTime: 20
     runTime: 15
     waterPosition: {x: -31, y: 4, z: -29.7}
     triggered: 1

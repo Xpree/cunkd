@@ -7,7 +7,7 @@ public class LevelEventController : NetworkBehaviour
     [SerializeField] VolcanoErupter volcanoEruptor;
     [SerializeField] LevelEvents events;
     [SerializeField] GameObject water;
-    [SerializeField] Collider deathFloor;
+    [SerializeField] GameObject deathFloor;
     [Header("Each Index in the following array represents the corresponding event")]
     [SerializeField] GameObject[] playerSpawnPositions;
     [Header("Each Index in the following array represents the corresponding event")]
@@ -17,10 +17,11 @@ public class LevelEventController : NetworkBehaviour
     int eventIndex = 0;
 
     Vector3 lastWaterPos;
+    float yDiff;
     public override void OnStartServer()
     {
         lastWaterPos = water.transform.position;
-        //_endTime = NetworkTimer.FromNow(_settings.IceGadget.Duration);
+        yDiff = Mathf.Abs(deathFloor.transform.position.y - water.transform.position.y);
     }
 
     void triggerEvent(LevelEvents.VolcanoLevelEvent levelEvent)
@@ -59,7 +60,7 @@ public class LevelEventController : NetworkBehaviour
             {
                 lerpVal = (float)(NetworkTime.time - currentEvent.startTime) / currentEvent.runTime;
                 water.transform.position = Vector3.Lerp(lastWaterPos, currentEvent.waterPosition, lerpVal);
-                deathFloor.transform.position = water.transform.position - new Vector3(0, 10, 0);
+                deathFloor.transform.position = water.transform.position + new Vector3(0, yDiff, 0);
             }
             if (1 < lerpVal)
             {
