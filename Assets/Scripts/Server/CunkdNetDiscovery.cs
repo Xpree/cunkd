@@ -21,6 +21,9 @@ public struct CunkdServerResponse : NetworkMessage
     public long serverId;
 
     public string name;
+
+    public int currentPlayers;
+    public int maxPlayers;
 }
 
 [DisallowMultipleComponent]
@@ -75,6 +78,8 @@ public class CunkdNetDiscovery : NetworkDiscoveryBase<ServerRequest, CunkdServer
                 serverId = ServerId,
                 uri = transport.ServerUri(),
                 name = Settings.playerName,
+                currentPlayers = NetworkManager.singleton.numPlayers,
+                maxPlayers = NetworkManager.singleton.maxConnections
             };
         }
         catch (NotImplementedException)

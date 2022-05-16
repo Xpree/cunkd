@@ -4,7 +4,6 @@ using Mirror;
 
 public class GlobalInput : MonoBehaviour
 {
-
     string senseYawInput;
     string sensePitchInput;
     private void Start()
@@ -12,7 +11,8 @@ public class GlobalInput : MonoBehaviour
         sensePitchInput = Settings.mouseSensitivityPitch.ToString();
         senseYawInput = Settings.mouseSensitivityYaw.ToString();
 
-        FMODUnity.RuntimeManager.MuteAllEvents(Settings.muted);
+        AudioSettings.Singleton.SetMuted(Settings.muted);
+        AudioSettings.Singleton.MasterVolumeLevel(Settings.volume);
     }
 
     void Update()
@@ -86,7 +86,7 @@ public class GlobalInput : MonoBehaviour
         var previouslyMuted = Settings.muted;
         Settings.muted = GUILayout.Toggle(Settings.muted, GUIContent.none);
         if(previouslyMuted != Settings.muted)
-            AudioSettings.Singleton.SetMuted(Settings.muted);            
+            AudioSettings.Singleton.SetMuted(Settings.muted);
         GUILayout.EndHorizontal();
 
         if (!Application.isEditor)
@@ -116,10 +116,24 @@ public class GlobalInput : MonoBehaviour
                 GameServer.EndGame();
         }
     }
-
+    
     Rect settingsWindowRect = new Rect(20, 200, 300, 50);
+    bool showSettings = false;
+
+    public void ShowSettings()
+    {
+        showSettings = true;
+    }
+
+    public void HideSettings()
+    {
+        showSettings = false;
+    }
     private void OnGUI()
     {
+       if (!showSettings)
+            return;
+
        if (Cursor.lockState == CursorLockMode.None)
        {
             settingsWindowRect.x = Screen.width * 0.5f - settingsWindowRect.width * 0.5f;

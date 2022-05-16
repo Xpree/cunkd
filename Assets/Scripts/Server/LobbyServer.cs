@@ -192,6 +192,7 @@ public class LobbyServer : MonoBehaviour
         }
     }
 
+
     [Serializable]
     class LobbyPlayerList
     {

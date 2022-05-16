@@ -381,6 +381,15 @@ MonoBehaviour:
   - {fileID: 5769685091094781207, guid: c7250d078a582df4daab0f5e6d555ff7, type: 3}
   - {fileID: 5769685091094781207, guid: b3cba333c864eee41bf43d427e3a2905, type: 3}
   - {fileID: 5769685091094781207, guid: 1bbb1a77dfa5935438ffb419f9b8abee, type: 3}
+  - {fileID: 5769685091094781207, guid: a17651c488fd40e46890f840a00c8c01, type: 3}
+  - {fileID: 5769685091094781207, guid: e6c0956cf826b7d46b064d396089788e, type: 3}
+  - {fileID: 5769685091094781207, guid: 64597a62e586c0041bc0c99e5736bad7, type: 3}
+  - {fileID: 5769685091094781207, guid: a02a22478216b624690d573692d4dd52, type: 3}
+  - {fileID: 5769685091094781207, guid: b1792a18d4098cf4ebb99711a814697d, type: 3}
+  - {fileID: 4053286044562665193, guid: 8573119cac507224cb8da0aee99e10ca, type: 3}
+  - {fileID: 5769685091094781207, guid: 73e87fa0b74db3e43abcac15e5e7b743, type: 3}
+  - {fileID: 742040715351281123, guid: 57fc03dab1a3fe247a1db25d27210417, type: 3}
+  - {fileID: 6025989945593155366, guid: 68bb7044431ce894f9c89b418e7a6316, type: 3}
   AutoHostAndPlay: 
   eventBusPrefab: {fileID: 986233276051036102, guid: c106a5e9819020144938491f82a2a1f8, type: 3}
 --- !u!114 &8980317232237182243
@@ -425,7 +434,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   secretHandshake: 7422583655217390078
-  serverBroadcastListenPort: 47777
+  serverBroadcastListenPort: 47778
   enableActiveDiscovery: 1
   ActiveDiscoveryInterval: 3
   transport: {fileID: 0}
@@ -457,6 +466,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   networkDiscovery: {fileID: 872259632418353241}
+  onServersUpdated:
+    m_PersistentCalls:
+      m_Calls: []
+  generateFakeServers: 0
 --- !u!114 &2609295999292189575
 MonoBehaviour:
   m_ObjectHideFlags: 0
