@@ -90,9 +90,16 @@ public class Pullable : NetworkBehaviour
             body.velocity = Vector3.zero;
             body.angularVelocity = Vector3.zero;
 
-            //Color color = this.GetComponent<Renderer>().material.color;
-            //color.a = 0.5f;
-            //this.gameObject.GetComponent<Renderer>().material.color = color;
+            this.gameObject.layer = LayerMask.NameToLayer("Held");//puts objects into the held layer so the secondary camera will render them and make them transparent. this is changed back in the gravity gun script
+            foreach (Transform child in transform)
+            {
+                child.gameObject.layer = LayerMask.NameToLayer("Held");
+                foreach(Transform childrensChild in child.transform)
+                {
+                    childrensChild.gameObject.layer = LayerMask.NameToLayer("Held");
+                }
+            }
+
             this.gameObject.GetComponent<KnockbackScript>().onOff = true;
             offTime = 5f;
         }
@@ -118,12 +125,12 @@ public class Pullable : NetworkBehaviour
         fixedTimer = timeToFixed;
         SetPulling(true);
 
-        Renderer rend = GetComponent<Renderer>();
-        if (rend)
-        {
-            Color col = rend.material.color;
-            rend.material.color = col * new Color(1, 1, 1, 0.5f);
-        }
+        //Renderer rend = GetComponent<Renderer>();
+        //if (rend)
+        //{
+        //    Color col = rend.material.color;
+        //    rend.material.color = col * new Color(1, 1, 1, 0.5f);
+        //}
     }
 
     public void StopPulling()
@@ -131,6 +138,15 @@ public class Pullable : NetworkBehaviour
         target = null;
         SetPulling(false);
 
+        this.gameObject.layer = LayerMask.NameToLayer("Movable");
+        foreach (Transform child in transform)
+        {
+            child.gameObject.layer = LayerMask.NameToLayer("Movable");
+            foreach (Transform childrensChild in child.transform)
+            {
+                childrensChild.gameObject.layer = LayerMask.NameToLayer("Movable");
+            }
+        }
     }
 
     void FixedUpdate()
