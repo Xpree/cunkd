@@ -14,6 +14,7 @@ public class VolcanoErupter : NetworkBehaviour
 
     Transform[] positions;
     double nextSpawn = 0;
+    [Server]
     private void Start()
     {
         positions = spawnPositions.GetComponentsInChildren<Transform>();
@@ -54,7 +55,7 @@ public class VolcanoErupter : NetworkBehaviour
             forceCollider.enabled = false;
         }
     }
-
+    [Server]
     private void OnTriggerStay(Collider other)
     {
         Rigidbody rigidbody = other.GetComponent<Rigidbody>();

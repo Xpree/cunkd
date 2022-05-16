@@ -18,12 +18,14 @@ public class LevelEventController : NetworkBehaviour
 
     Vector3 lastWaterPos;
     float yDiff;
+    [Server]
     public override void OnStartServer()
     {
         lastWaterPos = water.transform.position;
         yDiff = Mathf.Abs(deathFloor.transform.position.y - water.transform.position.y);
     }
 
+    [Server]
     void triggerEvent(LevelEvents.VolcanoLevelEvent levelEvent)
     {
         print("triggering event: " +(eventIndex) + " at time: " + NetworkTime.time);
@@ -39,7 +41,8 @@ public class LevelEventController : NetworkBehaviour
     bool runningEvent = false;
     LevelEvents.VolcanoLevelEvent nextEvent = new();
     float lerpVal = 0;
-    //Update is called once per frame
+
+    [Server]
     void Update()
     {
         if (eventIndex < events.VolcanoLevelEvents.Length)

@@ -22,7 +22,7 @@ public class PlayerMovement : NetworkBehaviour
     public double _lastGrounded = 0;
     public double _lastJump = 0;
 
-    public float bonusSpeed;
+    [SyncVar]public float bonusSpeed;
 
     public float maxSpeedScaling = 1f;
     public float maxFrictionScaling = 1f;

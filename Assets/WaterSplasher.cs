@@ -14,7 +14,7 @@ public class WaterSplasher : MonoBehaviour
         if (rb)
         {
 
-            pe.transform.localScale += Vector3.one * Mathf.Log(rb.mass)/5;
+            pe.transform.localScale += Vector3.one * Mathf.Log(rb.mass) / 5;
         }
     }
 }
