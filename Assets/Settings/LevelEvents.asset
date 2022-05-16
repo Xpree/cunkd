@@ -18,7 +18,7 @@ MonoBehaviour:
     waterPosition: {x: -31, y: 4, z: -29.7}
     triggered: 1
     eruptionDuration: 20
-    rockSpawnInterval: 0.1
+    rockSpawnInterval: 0.2
     maxSpawns: 1000
     objectsToSpawn:
     - {fileID: 5769685091094781207, guid: 1ac4a80e813fd644aa87ee816470dbfc, type: 3}
@@ -30,7 +30,7 @@ MonoBehaviour:
     waterPosition: {x: -31, y: 26.9, z: -29.7}
     triggered: 1
     eruptionDuration: 20
-    rockSpawnInterval: 0.1
+    rockSpawnInterval: 0.2
     maxSpawns: 300
     objectsToSpawn:
     - {fileID: 5769685091094781207, guid: 1ac4a80e813fd644aa87ee816470dbfc, type: 3}
@@ -42,7 +42,7 @@ MonoBehaviour:
     waterPosition: {x: -31, y: 52.2, z: -29.7}
     triggered: 1
     eruptionDuration: 20
-    rockSpawnInterval: 0.1
+    rockSpawnInterval: 0.2
     maxSpawns: 300
     objectsToSpawn:
     - {fileID: 5769685091094781207, guid: 1ac4a80e813fd644aa87ee816470dbfc, type: 3}
