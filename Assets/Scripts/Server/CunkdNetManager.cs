@@ -38,6 +38,8 @@ public class CunkdNetManager : NetworkManager
 
     public static CunkdNetManager Instance => NetworkManager.singleton as CunkdNetManager;
 
+    public System.Uri ServerUri => this.transport.ServerUri();
+
 
     [SerializeField] NetworkEventBus eventBusPrefab;
 

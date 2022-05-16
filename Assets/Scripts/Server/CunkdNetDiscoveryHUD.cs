@@ -31,7 +31,6 @@ public class CunkdNetDiscoveryHUD : MonoBehaviour
 
     public void OnDiscoveredServer(CunkdServerResponse info)
     {
-        Debug.Log("OnDiscoveredServer");
         // Note that you can check the versioning to decide if you can connect to the server or not using this method
         discoveredServers[info.serverId] = info;
         onServersUpdated.Invoke();
@@ -49,7 +48,29 @@ public class CunkdNetDiscoveryHUD : MonoBehaviour
     {
         networkDiscovery.StopDiscovery();
         discoveredServers.Clear();
-        NetworkManager.singleton.StartHost();
+        try
+        {
+            NetworkManager.singleton.StartHost();
+
+
+        }
+        catch(System.Net.Sockets.SocketException se)
+        {
+            if(se.SocketErrorCode == System.Net.Sockets.SocketError.AddressAlreadyInUse)
+            {
+                UIErrorDialog.ShowError("Host endpoint already in use: " + CunkdNetManager.Instance.ServerUri);
+            }
+            else
+            {
+                UIErrorDialog.ShowError(se.Message);
+            }
+            return;
+        }
+        catch (Exception e)
+        {
+            UIErrorDialog.ShowError(e.Message);
+            return;
+        }
         networkDiscovery.AdvertiseServer();
     }
 
