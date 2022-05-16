@@ -111,6 +111,7 @@ GameObject:
   - component: {fileID: 2814553266126730253}
   - component: {fileID: 3394851736147119102}
   - component: {fileID: -4332141563132474689}
+  - component: {fileID: 6291283800082655643}
   m_Layer: 8
   m_Name: GamePlayer
   m_TagString: Player
@@ -353,6 +354,7 @@ MonoBehaviour:
   _performJump: 0
   _lastGrounded: 0
   _lastJump: 0
+  bonusSpeed: 0
   maxSpeedScaling: 1
   maxFrictionScaling: 1
   _movementInput: {x: 0, y: 0}
@@ -514,6 +516,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+--- !u!114 &6291283800082655643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1480027675339556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95c5738430acfc14f8be6b878e249643, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderDistance: 200
 --- !u!1 &598865172076735772
 GameObject:
   m_ObjectHideFlags: 0
@@ -770,7 +785,7 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
-  m_FOVAxisMode: 0
+  m_FOVAxisMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
   m_FocalLength: 50
@@ -781,7 +796,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 250
   field of view: 60
   orthographic: 0
   orthographic size: 5
