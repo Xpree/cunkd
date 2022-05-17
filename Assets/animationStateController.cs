@@ -34,6 +34,13 @@ public class animationStateController : NetworkBehaviour
             {
                 animator.SetBool("run", false);
             }
+            if(UnityEngine.InputSystem.Keyboard.current[Key.P].isPressed)
+            {
+                animator.SetBool("dance", true);
+            }
+            else{
+                animator.SetBool("dance", false);
+            }
             if(UnityEngine.InputSystem.Keyboard.current[Key.Space].isPressed)
             {
                 animator.SetBool("jump", true);
