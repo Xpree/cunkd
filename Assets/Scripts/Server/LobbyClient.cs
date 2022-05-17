@@ -16,7 +16,7 @@ public class LobbyClient : NetworkBehaviour
     /// <para>When all players are ready to begin, the game will start. This should not be set directly, CmdChangeReadyState should be called on the client to set it on the server.</para>
     /// </summary>
     [Tooltip("Diagnostic flag indicating whether this player is ready for the game to begin")]
-    [SyncVar]
+    [SyncVar(hook = nameof(OnPlayerReadyChange))]
     public bool ReadyToBegin;
 
     /// <summary>
@@ -26,7 +26,7 @@ public class LobbyClient : NetworkBehaviour
     [SyncVar]
     public int Index;
 
-    [SyncVar]
+    [SyncVar(hook = nameof(OnPlayerNameChange))]
     string _playerName;
 
     public string PlayerName => string.IsNullOrEmpty(_playerName) ? $"Player {Index+1}" : _playerName;
@@ -83,6 +83,28 @@ public class LobbyClient : NetworkBehaviour
         Local = this;
     }
 
+    private void Start()
+    {
+        FindObjectOfType<UILobby>()?.UpdatePlayers();
+    }
+
+    void OnPlayerNameChange(string previous, string current)
+    {
+        FindObjectOfType<UILobby>()?.UpdatePlayers();
+    }
+
+    void OnPlayerReadyChange(bool previus, bool current)
+    {
+        FindObjectOfType<UILobby>()?.UpdatePlayers();
+    }
+    
+    [TargetRpc]
+    public void TargetRpcCurrentMap(string map) 
+    {
+        FindObjectOfType<UILobby>()?.SetMapName(map);
+    }
+
+    /*
     void OnGUI()
     {
         
@@ -137,5 +159,6 @@ public class LobbyClient : NetworkBehaviour
             GUILayout.EndArea();
         }
     }
+    */
 
 }

@@ -22,14 +22,12 @@ public class Spectator : NetworkBehaviour
         inputs.SetSpectatorMode();
         inputs.EnableInput();
         FindObjectOfType<SpectatorUI>()?.EnableSpectatorUI();
-        FindObjectOfType<GlobalInput>().ShowSettings();
     }
 
     public override void OnStopLocalPlayer()
     {
         base.OnStopLocalPlayer();
         FindObjectOfType<SpectatorUI>()?.DisableSpectatorUI();
-        FindObjectOfType<GlobalInput>().HideSettings();
     }
 
     void SelectNextCamera()
