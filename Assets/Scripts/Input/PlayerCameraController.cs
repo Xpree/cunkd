@@ -95,7 +95,7 @@ public class PlayerCameraController : MonoBehaviour
         mainCamera = Camera.main;
         EnableCamera(mainCamera, false);
         EnableCamera(playerCamera, true);
-        EnableCamera(SecondCamera, true);
+        //EnableCamera(SecondCamera, true);
         OnCameraActivated?.Invoke();
         Cursor.lockState = CursorLockMode.Locked;
         playerCamera.fieldOfView = currentFieldOfView;
@@ -107,7 +107,7 @@ public class PlayerCameraController : MonoBehaviour
     {
         EnableCamera(mainCamera, true);
         EnableCamera(playerCamera, false);
-        EnableCamera(SecondCamera, false);
+        //EnableCamera(SecondCamera, false);
         OnCameraDeactivated?.Invoke();
         Cursor.lockState = CursorLockMode.None;
         EventBus.Trigger(nameof(EventPlayerCameraDeactivated), playerTransform.gameObject);
