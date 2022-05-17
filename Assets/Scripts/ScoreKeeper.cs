@@ -86,6 +86,14 @@ public class ScoreKeeper : NetworkBehaviour
         {
             NetworkServer.Destroy(other.gameObject);
         }
+        else
+        {
+            NetworkIdentity obj = other.transform.root.gameObject.GetComponentInChildren<NetworkIdentity>();
+            if (obj && destroyOnCollision == (destroyOnCollision | (1 << obj.gameObject.layer)))
+            {
+                NetworkServer.Destroy(obj.gameObject);
+            }
+        }
     }
 
 
