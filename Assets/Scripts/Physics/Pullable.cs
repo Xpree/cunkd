@@ -138,15 +138,15 @@ public class Pullable : NetworkBehaviour
         target = null;
         SetPulling(false);
 
-        //this.gameObject.layer = LayerMask.NameToLayer("Movable");
-        //foreach (Transform child in transform)
-        //{
-        //    child.gameObject.layer = LayerMask.NameToLayer("Movable");
-        //    foreach (Transform childrensChild in child.transform)
-        //    {
-        //        childrensChild.gameObject.layer = LayerMask.NameToLayer("Movable");
-        //    }
-        //}
+        this.gameObject.layer = LayerMask.NameToLayer("Movable");
+        foreach (Transform child in transform)
+        {
+            child.gameObject.layer = LayerMask.NameToLayer("Movable");
+            foreach (Transform childrensChild in child.transform)
+            {
+                childrensChild.gameObject.layer = LayerMask.NameToLayer("Movable");
+            }
+        }
     }
 
     void FixedUpdate()
