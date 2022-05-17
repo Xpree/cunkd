@@ -53,10 +53,10 @@ public class PlayerMovement : NetworkBehaviour
     
     private void Start()
     {
-        if(isLocalPlayer)
-        {
-            body.SetActive(false);
-        }
+        // if(isLocalPlayer)
+        // {
+        //     body.SetActive(false);
+        // }
         if (_settings == null)
         {
             Debug.LogError("Missing GameSettings reference on " + name);
