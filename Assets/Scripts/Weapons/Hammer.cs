@@ -21,6 +21,8 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
 
     NetworkCooldown _cooldownTimer;
 
+    float offTime = 1.3f;
+
     bool Swung;
     bool HasTicked;
 
@@ -54,15 +56,34 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
     [Command]
     void Smash()
     {
+        var owner = GetComponent<NetworkItem>()?.Owner;
+        if (owner == null)
+            return;
+
+        HasTicked = false;
         Collider[] colliders = Physics.OverlapSphere(Head.transform.position, Radius);
-        foreach(Collider nearby in colliders)
+        foreach (Collider nearby in colliders)
         {
             Rigidbody rb = nearby.GetComponent<Rigidbody>();
-            if(rb != null)
+            if (rb != null)
             {
-                rb.AddExplosionForce(Force, Head.transform.position, Radius);
+                if(rb != owner.GetComponent<Rigidbody>())
+                {
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/SoundStudents/SFX/Gadgets/Hammer/Hammer Hit");
+                    rb.AddExplosionForce(Force, Head.transform.position, Radius);
+                }
+                else
+                {
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/SoundStudents/SFX/Gadgets/Hammer/Hammer Miss");
+                }
+            }
+            else
+            {
+                FMODUnity.RuntimeManager.PlayOneShot("event:/SoundStudents/SFX/Gadgets/Hammer/Hammer Miss");
             }
         }
+        
+        
     }
 
 
@@ -70,26 +91,40 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
     {
         if (isPressed)
         {
-            animator.SetBool("swingNew", true);
-        }
-        else{
-            animator.SetBool("swingNew", false);
-        }
-    }
+            if (_cooldownTimer.Use(this.Cooldown))
+            {
+                Netanimator.SetTrigger("Swing");
+                offTime = 1.3f;
+            }
+            else
+            {
 
-    [ServerCallback]
-    void FixedUpdate()
-    {
-        //if (_cooldownTimer.HasCooldown == false && HasTicked == false)
+            }
+        }
+        //else
         //{
-        //    animator.SetTrigger("Ready");
-        //    HasTicked = true;
+        //    animator.SetBool("swingNew", false);
         //}
     }
 
     void IWeapon.SecondaryAttack(bool isPressed)
     {
 
+    }
+
+    [ServerCallback]
+    void FixedUpdate()
+    {
+        if (offTime >= 0)
+            offTime = offTime - 1 * Time.deltaTime;
+        if (_cooldownTimer.HasCooldown == false && HasTicked == false)
+        {
+            HasTicked = true;
+        }
+        if(offTime <= 0)
+        {
+            animator.SetBool("swingNew", false);
+        }
     }
 
     float? IWeapon.ChargeProgress => null;

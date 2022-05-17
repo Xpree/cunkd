@@ -2,17 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using System;
+using UnityEngine.Events;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(CunkdNetDiscovery))]
 public class CunkdNetDiscoveryHUD : MonoBehaviour
 {
-    readonly Dictionary<long, CunkdServerResponse> discoveredServers = new();
-    Vector2 scrollViewPos = Vector2.zero;
+    public readonly Dictionary<long, CunkdServerResponse> discoveredServers = new();
 
     public CunkdNetDiscovery networkDiscovery;
 
-    bool searching = false;
+    public UnityEvent onServersUpdated;
+    public int generateFakeServers = 0;
+
 
 #if UNITY_EDITOR
     void OnValidate()
@@ -21,97 +24,80 @@ public class CunkdNetDiscoveryHUD : MonoBehaviour
         {
             networkDiscovery = GetComponent<CunkdNetDiscovery>();
             UnityEditor.Events.UnityEventTools.AddPersistentListener(networkDiscovery.OnServerFound, OnDiscoveredServer);
-            UnityEditor.Undo.RecordObjects(new Object[] { this, networkDiscovery }, "Set NetworkDiscovery");
+            UnityEditor.Undo.RecordObjects(new UnityEngine.Object[] { this, networkDiscovery }, "Set NetworkDiscovery");
         }
     }
 #endif
-
-    private IEnumerator StartSearch()
-    {
-        searching = true;
-        discoveredServers.Clear();
-        networkDiscovery.StartDiscovery();
-        yield return new WaitForSeconds(0.5f);
-        searching = false;
-    }
-
-
-
-    void OnGUI()
-    {
-        if (NetworkManager.singleton == null)
-            return;
-
-        if (!NetworkClient.isConnected && !NetworkServer.active && !NetworkClient.active)
-            DrawGUI();
-    }
-
-    void DrawGUI()
-    {
-        GUILayout.BeginArea(new Rect(10, 10, 300, 500));
-        GUILayout.BeginHorizontal();
-
-
-        if (GUILayout.Button("Find Servers"))
-        {
-            if (!searching)
-            {
-                StartCoroutine(StartSearch());
-            }
-        }
-
-        // LAN Host
-        if (GUILayout.Button("Start Host"))
-        {
-            discoveredServers.Clear();
-            NetworkManager.singleton.StartHost();
-            networkDiscovery.AdvertiseServer();
-        }
-
-        // Dedicated server
-        if (GUILayout.Button("Start Server"))
-        {
-            discoveredServers.Clear();
-            NetworkManager.singleton.StartServer();
-            networkDiscovery.AdvertiseServer();
-        }
-
-        GUILayout.EndHorizontal();
-
-        GUILayout.Label("Name:");
-        Settings.playerName = GUILayout.TextField(Settings.playerName);
-
-        // show list of found server
-        if (searching)
-        {
-            GUILayout.Label("Searching ...");
-        }
-        else
-        {
-            GUILayout.Label($"Discovered Servers [{discoveredServers.Count}]:");
-
-        }
-
-        // servers
-        scrollViewPos = GUILayout.BeginScrollView(scrollViewPos);
-
-        foreach (CunkdServerResponse info in discoveredServers.Values)
-            if (GUILayout.Button($"[{info.EndPoint.Address}] {info.name}"))
-                Connect(info);
-
-        GUILayout.EndScrollView();
-        GUILayout.EndArea();
-    }
-
-    void Connect(CunkdServerResponse info)
-    {
-        networkDiscovery.StopDiscovery();
-        NetworkManager.singleton.StartClient(info.uri);
-    }
 
     public void OnDiscoveredServer(CunkdServerResponse info)
     {
         // Note that you can check the versioning to decide if you can connect to the server or not using this method
         discoveredServers[info.serverId] = info;
+        onServersUpdated.Invoke();
     }
+
+    public void StartServer()
+    {
+        discoveredServers.Clear();
+        networkDiscovery.StopDiscovery();
+        NetworkManager.singleton.StartServer();
+        networkDiscovery.AdvertiseServer();
+    }
+
+    public void StartHost()
+    {
+        networkDiscovery.StopDiscovery();
+        discoveredServers.Clear();
+        try
+        {
+            NetworkManager.singleton.StartHost();
+
+
+        }
+        catch(System.Net.Sockets.SocketException se)
+        {
+            if(se.SocketErrorCode == System.Net.Sockets.SocketError.AddressAlreadyInUse)
+            {
+                UIErrorDialog.ShowError("Host endpoint already in use: " + CunkdNetManager.Instance.ServerUri);
+            }
+            else
+            {
+                UIErrorDialog.ShowError(se.Message);
+            }
+            return;
+        }
+        catch (Exception e)
+        {
+            UIErrorDialog.ShowError(e.Message);
+            return;
+        }
+        networkDiscovery.AdvertiseServer();
+    }
+
+    public void JoinHost(Uri uri)
+    {
+        networkDiscovery.StopDiscovery();
+        NetworkManager.singleton.StartClient(uri);
+    }
+
+    public void StopDiscovery()
+    {
+        networkDiscovery.StopDiscovery();
+        discoveredServers.Clear();
+    }
+
+    public void StartDiscovery()
+    {
+        discoveredServers.Clear();
+        if (generateFakeServers > 0)
+        {
+            for (int i = 0; i < generateFakeServers; ++i)
+            {
+                discoveredServers.Add(i, new CunkdServerResponse { name = "Server " + i, serverId = i });
+            }
+            onServersUpdated.Invoke();
+        }        
+        networkDiscovery.StartDiscovery();        
+    }
+
 }

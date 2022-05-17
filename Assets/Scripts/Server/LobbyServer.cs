@@ -156,6 +156,7 @@ public class LobbyServer : MonoBehaviour
             client.Index = _lobbyPlayers.Count;
             _lobbyPlayers.Add(client);
             NetworkServer.AddPlayerForConnection(conn, client.gameObject);
+            client.TargetRpcCurrentMap(GameServer.SelectMapName());
         }
     }
 
@@ -164,7 +165,17 @@ public class LobbyServer : MonoBehaviour
         SpawnOrReplaceClient(conn);
     }
 
+    public void UpdateSelectedMap()
+    {
+        var name = GameServer.SelectMapName();
+        foreach (var client in _lobbyPlayers.clients)
+        {
+            client.TargetRpcCurrentMap(name);
+        }
+    }
 
+
+    /*
     static int selectedMap = 0;
     
     void OnGUI()
@@ -190,7 +201,8 @@ public class LobbyServer : MonoBehaviour
                 
             }
         }
-    }
+    }*/
+
 
     [Serializable]
     class LobbyPlayerList

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{467b3fa1-265f-4165-b4a9-27d0702ca32c}">
+		<property name="assetPath">
+			<value>sätt på jetpack 1.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.75</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{cd3fe371-6de4-4111-9fc9-84e9e4ec1769}</destination>
+		</relationship>
+	</object>
+</objects>

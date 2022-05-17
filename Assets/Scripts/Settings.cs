@@ -46,7 +46,12 @@ public static class Settings
 
     public static string playerName
     {
-        get { return PlayerPrefs.GetString("Name", ""); }
+        get { 
+            string name = PlayerPrefs.GetString("Name", "");
+            if (name.Length > 13)
+                return name.Substring(0, 13);
+            return name;
+        }
         set { PlayerPrefs.SetString("Name", value); }
     }
 

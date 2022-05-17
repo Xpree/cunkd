@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{0fe58845-dd95-48e1-afdf-7bab6c2f1b8e}">
+		<property name="name">
+			<value>Bränsle</value>
+		</property>
+		<relationship name="folder">
+			<destination>{f3175451-52e8-4193-903b-a4fc7e20a798}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{d70612ec-b26a-4c11-915f-7a165ffc115c}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{d70612ec-b26a-4c11-915f-7a165ffc115c}">
+		<property name="maximum">
+			<value>100</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

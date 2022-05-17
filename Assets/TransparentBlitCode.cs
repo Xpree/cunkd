@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TransparentBlitCode : MonoBehaviour
@@ -10,7 +8,9 @@ public class TransparentBlitCode : MonoBehaviour
     public Material blitMaterial;
     public string rendererTextureName = "_SecondaryCamera_";
 
-    void Start()//on update, set screen height and width on render texture, with event?
+    private Vector2 resolution;
+
+    void Start()
     {
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         Debug.Assert(mainCamera);
@@ -20,5 +20,16 @@ public class TransparentBlitCode : MonoBehaviour
         secondaryCamera.targetTexture = renderTexture;
         renderTexture.name = rendererTextureName;
         Shader.SetGlobalTexture(rendererTextureName, renderTexture);
+    }
+
+    private void Update()
+    {
+        if(Screen.width != secondaryCamera.targetTexture.width || Screen.height != secondaryCamera.targetTexture.height)
+        {
+            renderTexture = new RenderTexture(Screen.width, Screen.height, 1, RenderTextureFormat.Default);
+            secondaryCamera.targetTexture = renderTexture;
+            renderTexture.name = rendererTextureName;
+            Shader.SetGlobalTexture(rendererTextureName, renderTexture);
+        }
     }
 }

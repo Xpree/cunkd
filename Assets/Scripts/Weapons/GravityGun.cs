@@ -94,6 +94,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
     void CmdPush(GameObject target, Vector3 aimDirection, float progress)
     {
         animator.SetTrigger("Fire");
+
         justStop();
         if (target.gameObject.GetComponent<KnockbackScript>())
         {
@@ -184,8 +185,6 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         StopPulling();
     }
 
-
-
     bool charging;
     float? IWeapon.ChargeProgress => charging ? GetChargeProgress() : null;
 
@@ -249,6 +248,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         }
 
         PlayerCollider = null;
+
     }
     #endregion
 }
