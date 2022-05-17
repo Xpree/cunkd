@@ -65,18 +65,20 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -1731170888
-      Data2: 1109352051
-      Data3: -1541816684
-      Data4: 1458721361
-    Path: event:/SoundStudents/Music/Exempel_2
+      Data1: 1048134225
+      Data2: 1264763775
+      Data3: 1783585690
+      Data4: 1083057794
+    Path: event:/SoundStudents/Music/Level 1 Theme
   Event: 
   PlayEvent: 1
   StopEvent: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
-  Params: []
+  Params:
+  - Name: Players Left
+    Value: 8
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
@@ -349,7 +351,7 @@ MonoBehaviour:
   onlineScene: Assets/Scenes/LobbyScene.unity
   transport: {fileID: 8980317232237182243}
   networkAddress: localhost
-  maxConnections: 100
+  maxConnections: 8
   authenticator: {fileID: 0}
   playerPrefab: {fileID: 1480027675339556, guid: 21daf89214c6ee443ad6875b73083c60, type: 3}
   autoCreatePlayer: 0

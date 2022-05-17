@@ -118,22 +118,15 @@ public class GlobalInput : MonoBehaviour
     }
     
     Rect settingsWindowRect = new Rect(20, 200, 300, 50);
-    bool showSettings = false;
-
-    public void ShowSettings()
-    {
-        showSettings = true;
-    }
-
-    public void HideSettings()
-    {
-        showSettings = false;
-    }
+    
     private void OnGUI()
     {
-       if (!showSettings)
+       var player = LobbyClient.Local;
+       if (player == null)
             return;
-
+        if (LobbyServer.Instance.IsLobbyActive)
+            return;
+        
        if (Cursor.lockState == CursorLockMode.None)
        {
             settingsWindowRect.x = Screen.width * 0.5f - settingsWindowRect.width * 0.5f;

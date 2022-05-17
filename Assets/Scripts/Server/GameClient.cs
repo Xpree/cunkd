@@ -57,14 +57,12 @@ public class GameClient : NetworkBehaviour
         _inputs.gameObject.SetActive(true);
         _inputs.PreventInput();
         CameraController.ActivateCamera();
-        FindObjectOfType<GlobalInput>().ShowSettings();
     }
 
 
     public override void OnStopLocalPlayer()
     {
         CameraController.DeactivateCamera();
-        FindObjectOfType<GlobalInput>().HideSettings();
     }
 
 
