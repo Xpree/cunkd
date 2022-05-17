@@ -12,7 +12,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - NotGround
+  - Extra Ice
   - Water
   - UI
   - Movable
