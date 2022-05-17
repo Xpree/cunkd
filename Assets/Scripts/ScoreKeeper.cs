@@ -74,20 +74,6 @@ public class ScoreKeeper : NetworkBehaviour
         }
     }
 
-    //[ServerCallback]
-    //public void RemoteTrigger(Collider other)
-    //{
-    //    PlayerMovement player = other.gameObject.GetComponent<PlayerMovement>();
-    //    if (player)
-    //    {
-    //        RespawnPlayer(player);
-    //    }
-    //    else if (other.gameObject.GetComponent<NetworkIdentity>() != null)
-    //    {
-    //        NetworkServer.Destroy(other.gameObject);
-    //    }
-    //}
-
     [ServerCallback]
     private void OnTriggerEnter(Collider other)
     {
