@@ -87,15 +87,13 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
     }
 
 
-
-
     void IWeapon.PrimaryAttack(bool isPressed)
     {
         if (isPressed)
         {
             if (_cooldownTimer.Use(this.Cooldown))
             {
-                animator.SetTrigger("Swing");
+                Netanimator.SetTrigger("Swing");
                 offTime = 1.3f;
             }
             else
