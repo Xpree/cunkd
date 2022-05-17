@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TransparentBlitCode : MonoBehaviour
@@ -9,6 +7,8 @@ public class TransparentBlitCode : MonoBehaviour
     Camera secondaryCamera;
     public Material blitMaterial;
     public string rendererTextureName = "_SecondaryCamera_";
+
+    private Vector2 resolution;
 
     void Start()
     {
@@ -22,11 +22,14 @@ public class TransparentBlitCode : MonoBehaviour
         Shader.SetGlobalTexture(rendererTextureName, renderTexture);
     }
 
-    public void OnRectTransformDimensionsChange()
+    private void Update()
     {
-        renderTexture = new RenderTexture(Screen.width, Screen.height, 1, RenderTextureFormat.Default);
-        secondaryCamera.targetTexture = renderTexture;
-        renderTexture.name = rendererTextureName;
-        Shader.SetGlobalTexture(rendererTextureName, renderTexture);
+        if(Screen.width != secondaryCamera.targetTexture.width || Screen.height != secondaryCamera.targetTexture.height)
+        {
+            renderTexture = new RenderTexture(Screen.width, Screen.height, 1, RenderTextureFormat.Default);
+            secondaryCamera.targetTexture = renderTexture;
+            renderTexture.name = rendererTextureName;
+            Shader.SetGlobalTexture(rendererTextureName, renderTexture);
+        }
     }
 }
