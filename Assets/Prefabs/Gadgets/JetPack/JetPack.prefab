@@ -1606,7 +1606,7 @@ MonoBehaviour:
   syncInterval: 0.1
   animator: {fileID: 7385734869885387708}
   isPassive: 0
-  Charges: 10000
+  Charges: 100
   Cooldown: 0.05
   maxForce: 2
   acceleration: 0.05
