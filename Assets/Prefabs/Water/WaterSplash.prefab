@@ -71,6 +71,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8398779446715698251}
     m_Modifications:
+    - target: {fileID: 1973477495300633476, guid: 628b663259b23324f97d8497544e256d, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1973477495300633477, guid: 628b663259b23324f97d8497544e256d, type: 3}
       propertyPath: m_RootOrder
       value: 0
