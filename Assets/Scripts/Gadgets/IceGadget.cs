@@ -46,11 +46,10 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
 
             var go = Instantiate(IceGadgetTrap, transform.position + transform.forward *3, Quaternion.identity);
             go.GetComponent<Rigidbody>().AddForce(transform.forward * throwForce *10);
-            go.GetComponent<Rigidbody>().AddTorque(new Vector3(0, 10000, 0), ForceMode.Force);
+            go.GetComponent<Rigidbody>().AddTorque(new Vector3(0, 100000, 0), ForceMode.Force);
             NetworkServer.Spawn(go);
 
-
-            if(_cooldownTimer.Charges == 0)
+            if (_cooldownTimer.Charges == 0)
             {
                 NetworkServer.Destroy(this.gameObject);
             }

@@ -28,7 +28,8 @@ public class SpreadMat : NetworkBehaviour
 
     [SerializeField] SphereCollider Icecollider;
     [SerializeField] SphereCollider slipcollider;
-    [SerializeField] SphereCollider trapCollider;
+    //[SerializeField] SphereCollider trapCollider;
+    [SerializeField] MeshCollider trapCollider;
     int rays;
     string meshName = "";
 
@@ -59,7 +60,8 @@ public class SpreadMat : NetworkBehaviour
         _destroyTime = NetworkTimer.FromNow(_settings.IceGadget.Duration + 1);
         Icecollider.isTrigger = true;
         Icecollider.radius = radius - 0.5f;
-        MakeIce(transform.position + new Vector3(0, affectedHeight- trapCollider.radius, 0), rayLength, radius, overhangVariance,IceAndFreezeLayermask);
+        //MakeIce(transform.position + new Vector3(0, affectedHeight- trapCollider.radius, 0), rayLength, radius, overhangVariance,IceAndFreezeLayermask);
+        MakeIce(transform.position + new Vector3(0, affectedHeight - 0.05f, 0), rayLength, radius, overhangVariance, IceAndFreezeLayermask);
         Invoke("DisableCollider", 0.1f);
     }
 
