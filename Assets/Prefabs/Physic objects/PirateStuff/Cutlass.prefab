@@ -20,6 +20,8 @@ GameObject:
   - component: {fileID: 8367147706920836694}
   - component: {fileID: 5541469836398627629}
   - component: {fileID: 880476890528133040}
+  - component: {fileID: 5658870342491440448}
+  - component: {fileID: 4877055251630528087}
   m_Layer: 6
   m_Name: Cutlass
   m_TagString: Untagged
@@ -1909,3 +1911,39 @@ MonoBehaviour:
   syncInterval: 0.1
   KnockbackStrength: 0
   onOff: 0
+--- !u!114 &5658870342491440448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2646283704416599159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85ffbedb87ca51c449a4383e4a5c899b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  KnockbackStrength: 0.35
+  onOff: 0
+--- !u!114 &4877055251630528087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2646283704416599159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a286c8ebcd065d49924dba120716966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  target: {fileID: 0}
+  offTime: 0
+  pullingCollider: {fileID: 2646283704416599158}
+  body: {fileID: 7992679451128505882}
+  pullOffset: 0
+  offsetPosition: {x: 0, y: 0, z: 0}
