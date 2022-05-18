@@ -6,7 +6,7 @@ using Mirror;
 
 public class PlayerGUI : MonoBehaviour
 {
-    [SerializeField] Image interactButton;
+    [SerializeField] GameObject interactUI;
     [SerializeField] TextMeshProUGUI intreractableInfoText;
     [SerializeField] TextMeshProUGUI cooldownText;
 
@@ -33,13 +33,12 @@ public class PlayerGUI : MonoBehaviour
     {
         if (obs != null)
         {
-            interactButton.enabled = true;
+            interactUI.SetActive(true);
             intreractableInfoText.text = "Pick up " + obs.displayName;
         }
         else
         {
-            interactButton.enabled = false;
-            intreractableInfoText.text = "";
+            interactUI.SetActive(false);
         }
     }
 
