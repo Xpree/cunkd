@@ -17,6 +17,7 @@ public class UILobby : MonoBehaviour
         var isServer = NetworkServer.active;
         hostUI.SetActive(isServer);
         clientUI.SetActive(!isServer);
+        UpdatePlayers();
     }
 
     public void SetMapName(string name)
