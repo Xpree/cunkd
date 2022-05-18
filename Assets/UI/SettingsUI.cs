@@ -16,6 +16,9 @@ public class SettingsUI : MonoBehaviour
 
     bool invalidSettings = true;
 
+    public GameObject hostUI;
+    public GameObject connectedUI;
+
     private void Awake()
     {
         playerNameInput.onValueChanged.AddListener(SetPlayerName);
@@ -44,6 +47,11 @@ public class SettingsUI : MonoBehaviour
     void OnEnable()
     {
         UpdateSettings();
+
+        bool inGame = !LobbyServer.Instance.IsLobbyActive;
+        connectedUI.SetActive(inGame && Mirror.NetworkClient.active);
+        bool isHost = Mirror.NetworkServer.active;
+        hostUI.SetActive(inGame && isHost);
     }
 
     void OnDisable()
@@ -99,5 +107,15 @@ public class SettingsUI : MonoBehaviour
 
         Settings.muted = value;
         AudioSettings.Singleton.SetMuted(value);
+    }
+
+    public void Disconnect()
+    {
+        CunkdNetManager.Disconnect();
+    }
+
+    public void EndRound()
+    {
+        GameServer.EndGame();
     }
 }

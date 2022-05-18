@@ -80,6 +80,7 @@ public class GameServer : MonoBehaviour
     public static void BeginGame()
     {
         var self = CunkdNetManager.Instance.Game;
+        self._gameStats.RoundStart = default(NetworkTimer);
         CunkdNetManager.Instance.ServerChangeScene(self.NetworkScene[self.SelectedScene]);
     }
 

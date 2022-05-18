@@ -63,19 +63,6 @@ public class UILobby : MonoBehaviour
 
     public void Disconnect()
     {
-        if(NetworkManager.singleton == null)
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
-            return;
-        }
-        
-        if(NetworkServer.active)
-        {
-            NetworkManager.singleton.StopHost();
-        }
-        else
-        {
-            NetworkManager.singleton.StopClient();
-        }
+        CunkdNetManager.Disconnect();
     }
 }
