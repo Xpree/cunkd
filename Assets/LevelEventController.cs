@@ -7,6 +7,7 @@ public class LevelEventController : NetworkBehaviour
     [SerializeField] VolcanoErupter volcanoEruptor;
     [SerializeField] LevelEvents events;
     [SerializeField] GameObject water;
+    [SerializeField] GameObject boat;
     [SerializeField] GameObject deathFloor;
     [Header("Each Index in the following array represents the corresponding event")]
     [SerializeField] GameObject[] playerSpawnPositions;
@@ -63,7 +64,13 @@ public class LevelEventController : NetworkBehaviour
             {
                 lerpVal = (float)(GameStats.RoundTimer.Elapsed - currentEvent.startTime) / currentEvent.runTime;
                 water.transform.position = Vector3.Lerp(lastWaterPos, currentEvent.waterPosition, lerpVal);
+
                 deathFloor.transform.position = new Vector3(deathFloor.transform.position.x, water.transform.position.y + yDiff, deathFloor.transform.position.z);
+
+
+                boat.transform.position = Vector3.Lerp(boat.transform.position, currentEvent.boatPosition, lerpVal / 100);
+                boat.transform.rotation = Quaternion.Lerp(boat.transform.rotation, currentEvent.boatRotation, lerpVal / 100);
+
             }
             if (1 < lerpVal)
             {

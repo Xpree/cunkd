@@ -14,6 +14,10 @@ public class LevelEvents : ScriptableObject
         [Header("Water Rising:")]
         [SerializeField] public Vector3 waterPosition;
         [HideInInspector] public bool triggered = false;
+        [Header("Boat Rising:")]
+        [SerializeField] public Vector3 boatPosition;
+        [Header("Boat Rotation:")]
+        [SerializeField] public Quaternion boatRotation;
         [Header("Volcano Eruption:")]
         [SerializeField] public float eruptionDuration;
         [SerializeField] public float rockSpawnInterval;
