@@ -19,6 +19,8 @@ public class SettingsUI : MonoBehaviour
     public GameObject hostUI;
     public GameObject connectedUI;
 
+    public Button backButton;
+
     private void Awake()
     {
         playerNameInput.onValueChanged.AddListener(SetPlayerName);
@@ -111,11 +113,14 @@ public class SettingsUI : MonoBehaviour
 
     public void Disconnect()
     {
+        backButton.onClick.Invoke();
         CunkdNetManager.Disconnect();
     }
 
     public void EndRound()
     {
+        backButton.onClick.Invoke();
+        GameServer.Stats.ShowEndedByHost();
         GameServer.EndGame();
     }
 }

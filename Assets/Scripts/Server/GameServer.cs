@@ -84,15 +84,27 @@ public class GameServer : MonoBehaviour
         CunkdNetManager.Instance.ServerChangeScene(self.NetworkScene[self.SelectedScene]);
     }
 
+
+    void OnGameEnded()
+    {
+        this.Players.Clear();
+        this.Spectators.Clear();
+        CunkdNetManager.Instance.Lobby.ReturnToLobby();
+    }
+
     public static void EndGame()
     {
         var netManager = CunkdNetManager.Instance;
         var self = netManager.Game;
-
-        self.Players.Clear();
-        self.Spectators.Clear();
         self._gameStats.RoundEnded = NetworkTimer.Now;
-        netManager.Lobby.ReturnToLobby();
+
+        var players = self.Players.ToArray();
+        foreach (var player in players)
+        {
+            TransitionToSpectator(player.gameObject);
+        }
+        
+        self.Invoke("OnGameEnded", self.Settings.EndGameDelay);
     }
 
     public void AddNewPlayer(NetworkConnectionToClient conn)
@@ -150,6 +162,11 @@ public class GameServer : MonoBehaviour
 
     public static void TransitionToSpectator(GameObject player)
     {
+        var netManager = CunkdNetManager.Instance;
+        var self = netManager.Game;
+
+        self.Players.RemoveAll(p => p.gameObject == player);
+
         GameServer.PurgeOwnedObjects(player);
         var conn = player?.GetComponent<NetworkIdentity>()?.connectionToClient;
         if (conn != null)

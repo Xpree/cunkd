@@ -69,7 +69,7 @@ public class ScoreKeeper : NetworkBehaviour
         {
             winner = alivePlayers[0];
             gameOver = true;
-            GameServer.Stats.LastGameWinner = winner.PlayerName;
+            GameServer.Stats.ShowWinner(winner.PlayerName);
             GameServer.EndGame();
         }
     }

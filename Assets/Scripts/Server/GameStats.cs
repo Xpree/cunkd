@@ -34,15 +34,30 @@ public class GameStats : NetworkBehaviour
             Singleton = null;
     }
 
-    void OnGUI()
+    [ClientRpc]
+    void RpcShowWinner(string winner)
     {
-        CunkdNetManager cunkd = NetworkManager.singleton as CunkdNetManager;
-        if (cunkd && cunkd.Lobby.ShowRoomGUI && cunkd.Lobby.IsLobbyActive)
-        {
-            if (string.IsNullOrEmpty(LastGameWinner) == false)
-            {
-                GUILayout.Label($"Last game winner: {LastGameWinner}!");
-            }
-        }
+        FindObjectOfType<UIGameResult>().SetWinner(winner);
     }
+
+    [Server]
+    public void ShowWinner(string winner)
+    {
+        LastGameWinner = winner;
+        RpcShowWinner(winner);
+    }
+
+
+    [ClientRpc]
+    void RpcShowEndedByHost()
+    {
+        FindObjectOfType<UIGameResult>().SetEndedByHost();
+    }
+    
+    [Server]
+    public void ShowEndedByHost()
+    {
+        RpcShowEndedByHost();
+    }
+
 }

@@ -116,5 +116,7 @@ public class GameSettings : ScriptableObject
         public float Radius = 7f;
         public float Force = 400f;
     }
+
+    public float EndGameDelay = 5.0f;
 }
 
