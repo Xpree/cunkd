@@ -22,8 +22,7 @@ public class SceneMusic : MonoBehaviour
         foreach (var music in levelMusic)
         {                       
             if (music.scene == scene.path && scene.name != "LobbyScene")
-            {                
-                Debug.Log(music.scene);
+            {            
                 music.Play();
             }
         }
