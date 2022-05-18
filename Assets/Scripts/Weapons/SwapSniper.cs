@@ -49,10 +49,12 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     {
         beam = Instantiate(EffectSphere, PointOfFire.position, Quaternion.identity);
         beam2 = Instantiate(EffectSphere, PointOfFire.position, Quaternion.identity);
+        beam3 = Instantiate(EffectSphere, PointOfFire.position, Quaternion.identity);
         fix = PointOfFire.position;
         HitDetected = hitposition;
         lerpval = 0;
         lerpval2 = 0;
+        lerpval3 = 0;
     }
 
     [Command]
@@ -73,6 +75,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     // Objects that the beam-effect is bound to
     GameObject beam;
     GameObject beam2;
+    GameObject beam3;
 
     // Casts a spherecast and checks if a "Swappable" target was hit. Calls the swapping-fuction if so. Also instantiates the beam-effect, since that will play regardless of what is hit.
     public NetworkIdentity DidHitObject()
@@ -111,6 +114,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     Vector3 fix;
     float lerpval = 0;
     float lerpval2 = 0;
+    float lerpval3 = 0;
     public float speed = 1;
 
     // Lerps the beam-effect.
@@ -120,8 +124,10 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
         {
             beam.transform.position = Vector3.Lerp(fix, HitDetected, lerpval);
             beam2.transform.position = Vector3.Lerp(fix, HitDetected, lerpval2);
+            beam3.transform.position = Vector3.Lerp(fix, HitDetected, lerpval3);
             lerpval += Time.deltaTime * (speed / (fix - HitDetected).magnitude) * 70;
-            lerpval2 += Time.deltaTime * (speed / (fix - HitDetected).magnitude) * 20;
+            lerpval2 += Time.deltaTime * (speed / (fix - HitDetected).magnitude) * 30;
+            lerpval3 += Time.deltaTime * (speed / (fix - HitDetected).magnitude) * 10;
         }
 
     }
