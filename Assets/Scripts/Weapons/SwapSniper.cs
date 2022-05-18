@@ -15,11 +15,11 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     float range => _settings.SwapSniper.Range;
 
     [SerializeField] LayerMask TargetMask = ~0;
-    
+
     [SerializeField] GameObject EffectSphere;
 
     [SerializeField] Transform PointOfFire;
-    
+
     NetworkCooldown _cooldownTimer;
 
     NetworkItem _item;
@@ -45,11 +45,26 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
         ZoomOff();
     }
 
-    [Command]
-    void cmdFire()
+    void SpawnEffect(Vector3 hitposition)
     {
         beam = Instantiate(EffectSphere, PointOfFire.position, Quaternion.identity);
         beam2 = Instantiate(EffectSphere, PointOfFire.position, Quaternion.identity);
+        fix = PointOfFire.position;
+        HitDetected = hitposition;
+        lerpval = 0;
+        lerpval2 = 0;
+    }
+
+    [Command]
+    void cmdFire(Vector3 hitposition)
+    {
+        rpcFire(hitposition);
+    }
+
+    [ClientRpc(includeOwner = false)]
+    void rpcFire(Vector3 hitposition)
+    {
+        SpawnEffect(hitposition);
     }
 
     // Vector used for calculating trajectory of the beam-effect (purely visual, not actually used for hit-detection)
@@ -63,17 +78,17 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     public NetworkIdentity DidHitObject()
     {
         // Resets this value used for the Lerping-function.
-        lerpval = 0;
-        lerpval2 = 0;
+
 
         // If a "swappable" target was hit:
         var aimTransform = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
         if (Physics.SphereCast(aimTransform.position, 0.1f, aimTransform.forward, out RaycastHit hitResult, range, TargetMask))
         {
-            // Instantiates the beam-effect and sets its target position to where the speherecast hit something.
-            cmdFire();
-            fix = PointOfFire.position;
+            // Instantiates the beam-effect and sets its target position to where the speherecast hit something
+
             HitDetected = hitResult.point;
+            SpawnEffect(HitDetected);
+            cmdFire(HitDetected);
             // Returns the rigidbody that the spherecast hit in order to use it in the actual swapping-function.
             return hitResult.rigidbody?.GetComponent<NetworkIdentity>();
         }
@@ -82,9 +97,11 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
         else
         {
             // Instantiates the beam-object and sets its target position forward (from the cameras perspective) and as far away as the spherecast reaches ("range").
-            cmdFire();
-            fix = PointOfFire.position;
+
+
             HitDetected = aimTransform.forward * range + aimTransform.position;
+            SpawnEffect(HitDetected);
+            cmdFire(HitDetected);
             // Returns null as nothing "swappable" was hit.
             return null;
         }
@@ -106,7 +123,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
             lerpval += Time.deltaTime * (speed / (fix - HitDetected).magnitude) * 70;
             lerpval2 += Time.deltaTime * (speed / (fix - HitDetected).magnitude) * 20;
         }
-        
+
     }
 
     // Performs the swap and sets off particle- and sound effects.
@@ -128,7 +145,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
 
         Util.Teleport(target.gameObject, Swapper);
         Util.Teleport(owner.gameObject, Swappee);
-        animator.SetTrigger("Fire");
+        //animator.SetTrigger("Fire");
         FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Gadgets/Teleporter", target.gameObject);
         FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Gadgets/Teleporter", owner.gameObject);
     }
@@ -138,7 +155,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     {
         if (target == null)
             yield break;
-        
+
         yield return new WaitForSeconds(0.15f);
         ZoomOff();
         CmdPerformSwap(target);
@@ -147,9 +164,9 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     // Upon left-clicking, DidHitObject is called. (Unless the cooldown has not yet reached zero.)
     void IWeapon.PrimaryAttack(bool isPressed)
     {
-        if(isPressed)
+        if (isPressed)
         {
-            if(_cooldownTimer.Use(this.cooldown))
+            if (_cooldownTimer.Use(this.cooldown))
             {
                 StartCoroutine(DelaySwap(DidHitObject()));
             }
@@ -178,7 +195,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
             scopeCanvas.SetActive(false);
             zoomed = false;
         }
-        
+
         var camera = _item.Owner.GetComponentInChildren<PlayerCameraController>();
         camera.ToggleZoom();
     }
@@ -188,20 +205,20 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     {
         scopeCanvas.SetActive(false);
         zoomed = false;
-        if(_item.Owner == null)
+        if (_item.Owner == null)
         {
             return;
         }
 
         var camera = _item.Owner.GetComponentInChildren<PlayerCameraController>();
-        if(camera == null)
+        if (camera == null)
         {
             return;
         }
         camera.ZoomOff();
     }
 
-    
+
 
     float? IWeapon.ChargeProgress => null;
 
