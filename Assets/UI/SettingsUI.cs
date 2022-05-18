@@ -70,7 +70,16 @@ public class SettingsUI : MonoBehaviour
     {
         if (invalidSettings) return;
 
+        if (LobbyClient.Local != null && LobbyServer.Instance.IsLobbyActive == false)
+        {
+            return;
+        }
+        
         Settings.playerName = name;
+        if (LobbyClient.Local != null && LobbyServer.Instance.IsLobbyActive)
+        {
+            LobbyClient.Local.CmdChangePlayerName(Settings.playerName);
+        }
     }
 
     public void SetAutoEquip(bool value)

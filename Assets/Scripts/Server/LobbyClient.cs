@@ -72,6 +72,7 @@ public class LobbyClient : NetworkBehaviour
     public void CmdChangePlayerName(string name)
     {
         _playerName = name;
+        UILobby.Singleton?.UpdatePlayers();
     }
 
     public override void OnStartLocalPlayer()
@@ -79,91 +80,33 @@ public class LobbyClient : NetworkBehaviour
         base.OnStartLocalPlayer();
 
         CmdChangePlayerName(Settings.playerName);
-        this._playerName = Settings.playerName;
         Local = this;
     }
 
     private void Start()
     {
-        FindObjectOfType<UILobby>()?.UpdatePlayers();
+        UILobby.Singleton?.UpdatePlayers();
     }
 
     private void OnDestroy()
     {
-        FindObjectOfType<UILobby>()?.UpdatePlayers();
+        UILobby.Singleton?.UpdatePlayers();
     }
-    
+
     void OnPlayerNameChange(string previous, string current)
     {
-        FindObjectOfType<UILobby>()?.UpdatePlayers();
+        UILobby.Singleton?.UpdatePlayers();
     }
 
     void OnPlayerReadyChange(bool previus, bool current)
     {
-        FindObjectOfType<UILobby>()?.UpdatePlayers();
+        UILobby.Singleton?.UpdatePlayers();
     }
-    
+
     [TargetRpc]
     public void TargetRpcCurrentMap(string map) 
     {
-        FindObjectOfType<UILobby>()?.SetMapName(map);
+        UILobby.Singleton?.SetMapName(map);
     }
-
-    /*
-    void OnGUI()
-    {
-        
-        CunkdNetManager cunkd = NetworkManager.singleton as CunkdNetManager;
-        if (cunkd && cunkd.Lobby.ShowRoomGUI && cunkd.Lobby.IsLobbyActive)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            DrawPlayerReadyState();
-            DrawPlayerReadyButton();
-        }
-    }
-
-    void DrawPlayerReadyState()
-    {
-        GUILayout.BeginArea(new Rect(20f + (Index * 100), 200f, 90f, 130f));
-
-        GUILayout.Label($"[{PlayerName}]");
-
-        if (ReadyToBegin)
-            GUILayout.Label("Ready");
-        else
-            GUILayout.Label("Not Ready");
-
-        if (((isServer && Index > 0) || isServerOnly) && GUILayout.Button("REMOVE"))
-        {
-            // This button only shows on the Host for all players other than the Host
-            // Host and Players can't remove themselves (stop the client instead)
-            // Host can kick a Player this way.
-            GetComponent<NetworkIdentity>().connectionToClient.Disconnect();
-        }
-
-        GUILayout.EndArea();
-    }
-
-    void DrawPlayerReadyButton()
-    {
-        if (NetworkClient.active && isLocalPlayer)
-        {
-            GUILayout.BeginArea(new Rect(20f, 300f, 120f, 20f));
-
-            if (ReadyToBegin)
-            {
-                if (GUILayout.Button("Cancel"))
-                    CmdChangeReadyState(false);
-            }
-            else
-            {
-                if (GUILayout.Button("Ready"))
-                    CmdChangeReadyState(true);
-            }
-
-            GUILayout.EndArea();
-        }
-    }
-    */
 
 }

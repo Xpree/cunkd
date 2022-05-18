@@ -12,6 +12,19 @@ public class UILobby : MonoBehaviour
     [SerializeField] GameObject hostUI;
     [SerializeField] GameObject clientUI;
 
+    public static UILobby Singleton;
+
+    private void Awake()
+    {
+        Singleton = this;
+    }
+
+    private void OnDestroy()
+    {
+        if(Singleton == this)
+            Singleton = null;
+    }
+
     private void Start()
     {
         var isServer = NetworkServer.active;
