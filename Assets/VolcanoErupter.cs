@@ -15,11 +15,15 @@ public class VolcanoErupter : NetworkBehaviour
     Transform[] positions;
     double nextSpawn = 0;
 
+
+
     [Server]
     private void Start()
     {
         positions = spawnPositions.GetComponentsInChildren<Transform>();
-        nextSpawn = NetworkTime.time + spawnInterval;
+        forceCollider.enabled = false;
+        //nextSpawn = NetworkTime.time + spawnInterval;
+        nextSpawn = GameStats.RoundTimer.Elapsed + spawnInterval;
     }
 
     [Server]
@@ -31,8 +35,8 @@ public class VolcanoErupter : NetworkBehaviour
         this.objectsToSpawn = objectsToSpawn;
         this.spawnInterval = spawnInterval;
         this.maxSpawns = maxSpawns;
-        this.duration = NetworkTime.time + duration;
-        nextSpawn = NetworkTime.time + spawnInterval;
+        this.duration = GameStats.RoundTimer.Elapsed + duration;
+        nextSpawn = GameStats.RoundTimer.Elapsed + spawnInterval;
         spawnedRocks = 0;
     }
 
@@ -43,9 +47,9 @@ public class VolcanoErupter : NetworkBehaviour
     [Server]
     private void Update()
     {
-        if (NetworkTime.time <= duration)
+        if (GameStats.RoundTimer.Elapsed <= duration)
         {
-            if (spawnedRocks++ <= maxSpawns && nextSpawn <= NetworkTime.time)
+            if (spawnedRocks++ <= maxSpawns && nextSpawn <= GameStats.RoundTimer.Elapsed)
             {
                 NetworkServer.Spawn(Instantiate(objectsToSpawn[Random.Range(0, objectsToSpawn.Length)], positions[Random.Range(1, positions.Length)].position, Quaternion.identity));
                 nextSpawn += spawnInterval;
@@ -56,7 +60,7 @@ public class VolcanoErupter : NetworkBehaviour
             forceCollider.enabled = false;
         }
     }
-    [Server]
+
     private void OnTriggerStay(Collider other)
     {
         Rigidbody rigidbody = other.GetComponent<Rigidbody>();

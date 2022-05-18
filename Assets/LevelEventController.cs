@@ -28,7 +28,7 @@ public class LevelEventController : NetworkBehaviour
     [Server]
     void triggerEvent(LevelEvents.VolcanoLevelEvent levelEvent)
     {
-        print("triggering event: " +(eventIndex) + " at time: " + NetworkTime.time);
+        print("triggering event: " + (eventIndex) + " at time: " + GameStats.RoundTimer.Elapsed);
         levelEvent.triggered = true;
         runningEvent = true;
         lerpVal = 0;
@@ -49,7 +49,7 @@ public class LevelEventController : NetworkBehaviour
         {
             nextEvent = events.VolcanoLevelEvents[eventIndex];
 
-            if (nextEvent.startTime < NetworkTime.time && !runningEvent)
+            if (nextEvent.startTime < GameStats.RoundTimer.Elapsed && !runningEvent)
             {
                 triggerEvent(events.VolcanoLevelEvents[eventIndex]);
             }
@@ -59,18 +59,18 @@ public class LevelEventController : NetworkBehaviour
         if (0 < eventIndex)
         {
             LevelEvents.VolcanoLevelEvent currentEvent = events.VolcanoLevelEvents[eventIndex - 1];
-            if (currentEvent.startTime < NetworkTime.time)
+            if (currentEvent.startTime < GameStats.RoundTimer.Elapsed)
             {
-                lerpVal = (float)(NetworkTime.time - currentEvent.startTime) / currentEvent.runTime;
+                lerpVal = (float)(GameStats.RoundTimer.Elapsed - currentEvent.startTime) / currentEvent.runTime;
                 water.transform.position = Vector3.Lerp(lastWaterPos, currentEvent.waterPosition, lerpVal);
-                deathFloor.transform.position =  new Vector3(deathFloor.transform.position.x, water.transform.position.y + yDiff, deathFloor.transform.position.z);
+                deathFloor.transform.position = new Vector3(deathFloor.transform.position.x, water.transform.position.y + yDiff, deathFloor.transform.position.z);
             }
             if (1 < lerpVal)
             {
                 if (eventIndex < setActiveOnEvent.Length)
-                    setActiveOnEvent[eventIndex+1].SetActive(true);
+                    setActiveOnEvent[eventIndex + 1].SetActive(true);
                 if (eventIndex < setInactiveOnEvent.Length)
-                    setInactiveOnEvent[eventIndex-1].SetActive(false);
+                    setInactiveOnEvent[eventIndex - 1].SetActive(false);
                 lastWaterPos = currentEvent.waterPosition;
                 runningEvent = false;
             }

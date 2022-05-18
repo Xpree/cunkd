@@ -14,22 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   VolcanoLevelEvents:
   - startTime: 120
-    runTime: 15
+    runTime: 10
     waterPosition: {x: -31, y: 4, z: -29.7}
     triggered: 1
-    eruptionDuration: 20
+    eruptionDuration: 240
     rockSpawnInterval: 0.2
-    maxSpawns: 1000
+    maxSpawns: 300
     objectsToSpawn:
     - {fileID: 5769685091094781207, guid: 1ac4a80e813fd644aa87ee816470dbfc, type: 3}
     - {fileID: 9003045500053303359, guid: 59b3ab85a3fbe8749ba47d2543d571ea, type: 3}
     - {fileID: 1378988124465049898, guid: d93472e4f331f914ca0de699d014102d, type: 3}
     - {fileID: 140994982573622302, guid: a2ecfc71e5b9fc248afed89589fa420f, type: 3}
   - startTime: 240
-    runTime: 15
+    runTime: 10
     waterPosition: {x: -31, y: 26.9, z: -29.7}
     triggered: 1
-    eruptionDuration: 20
+    eruptionDuration: 15
     rockSpawnInterval: 0.2
     maxSpawns: 300
     objectsToSpawn:
@@ -38,10 +38,10 @@ MonoBehaviour:
     - {fileID: 1378988124465049898, guid: d93472e4f331f914ca0de699d014102d, type: 3}
     - {fileID: 140994982573622302, guid: a2ecfc71e5b9fc248afed89589fa420f, type: 3}
   - startTime: 360
-    runTime: 15
+    runTime: 10
     waterPosition: {x: -31, y: 52.2, z: -29.7}
     triggered: 1
-    eruptionDuration: 20
+    eruptionDuration: 15
     rockSpawnInterval: 0.2
     maxSpawns: 300
     objectsToSpawn:
