@@ -59,7 +59,7 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
                 }
                 if(rb != owner.GetComponent<Rigidbody>())
                 {
-                    FMODUnity.RuntimeManager.PlayOneShot("event:/SoundStudents/SFX/Gadgets/Hammer/Hammer Hit");a
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/SoundStudents/SFX/Gadgets/Hammer/Hammer Hit");
                     rb.AddExplosionForce(Force, Head.transform.position, Radius);
                 }
                 else
