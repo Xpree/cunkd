@@ -13,10 +13,14 @@ public class GameStats : NetworkBehaviour
     [SyncVar] public NetworkTimer RoundStart;
     [SyncVar] public NetworkTimer RoundEnded;
 
+    public bool IsRoundActive => RoundStart.TickTime > RoundEnded.TickTime;
+
 
     public static GameStats Singleton;
 
     public static NetworkTimer RoundTimer => Singleton.RoundStart;
+
+    public static bool IsRoundStarted => Singleton.IsRoundActive;
 
     private void Awake()
     {
