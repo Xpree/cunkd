@@ -18,7 +18,7 @@ public class AdaptiveMusic : NetworkBehaviour
     }
         
     void Update()
-    {             
+    {           
         if (scoreKeeper != null)
         {            
             if (scoreKeeper.alivePlayers.Count >= 8)

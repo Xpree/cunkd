@@ -19,7 +19,7 @@ public class ScoreKeeper : NetworkBehaviour
     {
         base.OnStartServer();
         spawnPositions = startPositions.GetComponentsInChildren<Transform>();
-        FindObjectOfType<AdaptiveMusic>().scoreKeeper = this;        
+        //FindObjectOfType<AdaptiveMusic>().scoreKeeper = this;        
     }
 
     public void setPlayerSpawnPositions(GameObject positions)
@@ -89,7 +89,7 @@ public class ScoreKeeper : NetworkBehaviour
         else
         {
             NetworkIdentity obj = other.transform.root.gameObject.GetComponentInChildren<NetworkIdentity>();
-            if (obj && destroyOnCollision == (destroyOnCollision | (1 << obj.gameObject.layer)))
+            if (obj && destroyOnCollision == (destroyOnCollision | (1 << obj.gameObject.layer)) && !obj.gameObject.GetComponent<PlayerMovement>())
             {
                 NetworkServer.Destroy(obj.gameObject);
             }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5166271799606030672}
   - component: {fileID: 4184879029959028344}
   - component: {fileID: 2144924272718887341}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: Marker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 8929334144356359080}
   - component: {fileID: 4587927094511667669}
   - component: {fileID: 4711040805501889247}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Snowflakes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
