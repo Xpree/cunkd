@@ -11,7 +11,7 @@ public class GameStats : NetworkBehaviour
     [SyncVar] public string LastGameWinner;
 
     [SyncVar] public NetworkTimer RoundStart;
-    [SyncVar] public NetworkTimer RoundEnded;
+    [SyncVar(hook = nameof(OnRoundEnded))] public NetworkTimer RoundEnded;
 
     public bool IsRoundActive => RoundStart.TickTime > RoundEnded.TickTime;
 
@@ -21,6 +21,15 @@ public class GameStats : NetworkBehaviour
     public static NetworkTimer RoundTimer => Singleton.RoundStart;
 
     public static bool IsRoundStarted => Singleton.IsRoundActive;
+    public static bool HasRoundEnded => Singleton.RoundEnded.TickTime > Singleton.RoundStart.TickTime;
+
+    void OnRoundEnded(NetworkTimer previous, NetworkTimer current)
+    {
+        if(current.IsSet)
+        {
+            FindObjectOfType<Countdown>()?.StopCountdown();
+        }
+    }
 
     private void Awake()
     {
