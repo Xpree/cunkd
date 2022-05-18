@@ -29,6 +29,8 @@ public class PlayerMovement : NetworkBehaviour
     public float currentMaxSpeed => (_settings.CharacterMovement.MaxSpeed + bonusSpeed) * maxSpeedScaling;
     public float currentMaxFriction => _settings.CharacterMovement.FrictionAcceleration * maxFrictionScaling;
 
+    public float gravityScaling => _settings.CharacterMovement.gravityScaling;
+
     public Vector2 _movementInput = Vector2.zero;
 
     public bool _landed;
@@ -108,7 +110,7 @@ public class PlayerMovement : NetworkBehaviour
 
     void ApplyGravity()
     {
-        _rigidBody.velocity += (_rigidBody.mass * Time.fixedDeltaTime) * Physics.gravity;
+        _rigidBody.velocity += (gravityScaling * Time.fixedDeltaTime) * Physics.gravity;
     }
 
 
@@ -174,7 +176,7 @@ public class PlayerMovement : NetworkBehaviour
 
     public void ApplyJumpForce(float height)
     {
-        Util.SetJumpForce(_rigidBody, height);
+        Util.SetJumpForce(_rigidBody, height, gravityScaling);
     }
 
 

@@ -126,9 +126,9 @@ public static class Util
         }
     }
 
-    public static void SetJumpForce(Rigidbody rb, float height)
+    public static void SetJumpForce(Rigidbody rb, float height, float gravityScaling =1)
     {
-        float jumpForce = Mathf.Sqrt(Mathf.Abs((2.0f * rb.mass * Physics.gravity.y) * height));
+        float jumpForce = Mathf.Sqrt(Mathf.Abs((2.0f * gravityScaling * Physics.gravity.y) * height));
         var vel = rb.velocity;
         if(vel.y < jumpForce)
         {

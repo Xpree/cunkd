@@ -11,7 +11,8 @@ public class GameSettings : ScriptableObject
         public float TerminalVelocity = 1000.0f;
         public float MaxSpeed = 10.0f;
         public float JumpHeight = 2.0f;
-        
+        public float gravityScaling = 2.0f;
+
         [Tooltip("How long a player is consider grounded after not being")]
         public double CoyoteTime = 1.0;
         [Tooltip("How long ground acceleration multiplier applies in air after a jump")]
