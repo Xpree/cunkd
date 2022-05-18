@@ -16,6 +16,7 @@ MonoBehaviour:
     TerminalVelocity: 1000
     MaxSpeed: 10
     JumpHeight: 2
+    gravityScaling: 2
     CoyoteTime: 1
     StrongAirControlTime: 0.1
     GroundAcceleration: 10
@@ -67,5 +68,5 @@ MonoBehaviour:
     m_Bits: 1024
   Hammer:
     Cooldown: 5
-    Radius: 20
-    Force: 2000
+    Radius: 10
+    Force: 1000

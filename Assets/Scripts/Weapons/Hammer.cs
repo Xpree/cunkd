@@ -9,7 +9,6 @@ using UnityEngine.VFX;
 public class Hammer : NetworkBehaviour, IWeapon, IEquipable
 {
     [SerializeField] NetworkAnimator Netanimator;
-    [SerializeField] Animator animator;
 
     [SerializeField] GameObject Head;
 
@@ -17,18 +16,15 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
     float Cooldown => _settings.Hammer.Cooldown;
     float Radius => _settings.Hammer.Radius;
     float Force => _settings.Hammer.Force;
-    [SerializeField] LayerMask TargetMask = ~0;
 
     NetworkCooldown _cooldownTimer;
 
-    float offTime = 1.3f;
 
     bool Swung;
     bool HasTicked;
 
     void Awake()
     {
-        animator = gameObject.GetComponent<Animator>();
         _cooldownTimer = GetComponent<NetworkCooldown>();
         _cooldownTimer.CooldownDuration = Cooldown;
     }
@@ -41,19 +37,8 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
         }
     }
 
-    //[Command]
-    //void CmdSpawnBlackHole(Vector3 target)
-    //{
-    //    if (_cooldownTimer.ServerUse(this.Cooldown))
-    //    {
-    //        animator.SetTrigger("Fire");
-    //        HasTicked = false;
-    //        var go = Instantiate(blackHole, target, Quaternion.identity);
-    //        NetworkServer.Spawn(go);
-    //    }
-    //}
 
-    [Command]
+    [ClientRpc]
     void Smash()
     {
         var owner = GetComponent<NetworkItem>()?.Owner;
@@ -67,6 +52,11 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
             Rigidbody rb = nearby.GetComponent<Rigidbody>();
             if (rb != null)
             {
+                if (rb != owner.GetComponent<Rigidbody>() && rb.CompareTag("Player"))
+                {
+                    Debug.Log("PlayerHit");
+                    rb.AddExplosionForce(Force * 3, Head.transform.position, Radius);
+                }
                 if(rb != owner.GetComponent<Rigidbody>())
                 {
                     FMODUnity.RuntimeManager.PlayOneShot("event:/SoundStudents/SFX/Gadgets/Hammer/Hammer Hit");
@@ -94,17 +84,9 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
             if (_cooldownTimer.Use(this.Cooldown))
             {
                 Netanimator.SetTrigger("Swing");
-                offTime = 1.3f;
-            }
-            else
-            {
-
+                //Swung = true;
             }
         }
-        //else
-        //{
-        //    animator.SetBool("swingNew", false);
-        //}
     }
 
     void IWeapon.SecondaryAttack(bool isPressed)
@@ -115,16 +97,15 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
     [ServerCallback]
     void FixedUpdate()
     {
-        if (offTime >= 0)
-            offTime = offTime - 1 * Time.deltaTime;
         if (_cooldownTimer.HasCooldown == false && HasTicked == false)
         {
             HasTicked = true;
         }
-        if(offTime <= 0)
-        {
-            animator.SetBool("swingNew", false);
-        }
+        //if(Swung == true)
+        //{
+        //    Swung = false;
+        //    Smash();
+        //}
     }
 
     float? IWeapon.ChargeProgress => null;
