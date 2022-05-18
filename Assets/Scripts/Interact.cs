@@ -20,10 +20,12 @@ public class Interact : NetworkBehaviour
     PlayerCameraController playerCameraController;
 
     GameInputs gameInputs;
-
+    PlayerGUI playerGUI;
+    
     private void Start()
     {
         gameInputs = GetComponentInChildren<GameInputs>();
+        playerGUI = GetComponentInChildren<PlayerGUI>(true);
         aimTransform = Util.GetPlayerInteractAimTransform(this.gameObject);
         playerCameraController = GetComponentInChildren<PlayerCameraController>(true);
     }
@@ -46,7 +48,7 @@ public class Interact : NetworkBehaviour
 
     public bool RaycastInteract(out RaycastHit hit)
     {
-        return Physics.Raycast(aimTransform.position, aimTransform.forward, out hit, interactMaxDistance, interactLayerMask);
+        return Physics.Raycast(aimTransform.position, aimTransform.forward, out hit, interactLayerMask);
     }
 
     public bool TriggerInteract()
@@ -71,6 +73,8 @@ public class Interact : NetworkBehaviour
                 EventBus.Trigger(nameof(EventPlayerInteractHoverStop), interactAimObject, this.netIdentity);
             interactAimObject = null;
         }
+
+        playerGUI.SetHovertext(null);
     }
 
     void SetHover(GameObject gameObject)
@@ -82,6 +86,7 @@ public class Interact : NetworkBehaviour
             interactAimObject = gameObject;
             hoveringOnAimObject = true;
             EventBus.Trigger(nameof(EventPlayerInteractHoverStart), interactAimObject, this.netIdentity);
+            
         }
     }
    
@@ -93,7 +98,16 @@ public class Interact : NetworkBehaviour
             if (RaycastInteract(out RaycastHit hit))
             {
                 var target = hit.collider.gameObject;
-                SetHover(target);
+
+                var client = target.GetComponent<GameClient>();
+                if (client != null)
+                {
+                    playerGUI.SetHovertext(client.PlayerName);
+                }
+                else if(hit.distance <= interactMaxDistance)
+                {
+                    SetHover(target);
+                }
             }
             else
             {

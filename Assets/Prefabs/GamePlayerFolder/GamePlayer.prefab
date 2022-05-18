@@ -469,7 +469,7 @@ MonoBehaviour:
   syncInterval: 0.1
   interactLayerMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 2147483647
   interactMaxDistance: 2
   aimTransform: {fileID: 0}
   interactAimObject: {fileID: 0}
@@ -2233,10 +2233,6 @@ PrefabInstance:
     - target: {fileID: 8605209966941128869, guid: 65532250ccc392548bf7ca67419637d7, type: 3}
       propertyPath: m_Name
       value: PlayerUI
-      objectReference: {fileID: 0}
-    - target: {fileID: 8605209966941128869, guid: 65532250ccc392548bf7ca67419637d7, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8605209966941128879, guid: 65532250ccc392548bf7ca67419637d7, type: 3}
       propertyPath: inventory

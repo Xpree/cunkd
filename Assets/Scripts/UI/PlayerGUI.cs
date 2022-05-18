@@ -26,6 +26,8 @@ public class PlayerGUI : MonoBehaviour
     [SerializeField] Inventory inventory;
 
     [SerializeField] UILives localLives;
+
+    [SerializeField] TMPro.TMP_Text hoverText;
     
     public void interactiveItemButton(NetworkItem obs)
     {
@@ -150,6 +152,20 @@ public class PlayerGUI : MonoBehaviour
         if (inventory.ActiveWeapon?.ChargeProgress is float progress)
         {
             GUIDrawProgress(progress);
+        }
+    }
+
+    
+    public void SetHovertext(string text)
+    {
+        if (string.IsNullOrEmpty(text))
+        {
+            this.hoverText.gameObject.SetActive(false);
+        }
+        else
+        {
+            this.hoverText.text = text;
+            this.hoverText.gameObject.SetActive(true);
         }
     }
 }
