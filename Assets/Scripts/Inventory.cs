@@ -317,7 +317,6 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
             return;
         
         HandleInput();
-        FindObjectOfType<PlayerGUI>().updateGUI(this);
     }
 
 
@@ -415,28 +414,6 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
             var wasPressed = gameInputs.SecondaryAttack.WasPressedThisFrame();
             UseActiveEquipment(false, wasPressed);
         }
-    }
-
-
-    static void GUIDrawProgress(float progress)
-    {
-        if (progress > 0.0)
-        {
-            GUI.Box(new Rect(Screen.width * 0.5f - 50, Screen.height * 0.8f - 10, 100.0f * progress, 20.0f), GUIContent.none);
-        }
-    }
-
-    private void OnGUI()
-    {
-        if (!isLocalPlayer)
-            return;
-
-        GUI.Box(new Rect(Screen.width * 0.5f - 1, Screen.height * 0.5f - 1, 2, 2), GUIContent.none);
-
-        if (ActiveWeapon?.ChargeProgress is float progress)
-        {
-            GUIDrawProgress(progress);
-        }    
     }
 
     void INetworkItemOwner.OnDestroyed(NetworkItem item)

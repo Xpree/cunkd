@@ -6,72 +6,27 @@ using Mirror;
 
 public class PlayerGUI : MonoBehaviour
 {
-    [SerializeField] public Image interactButton;
-    [SerializeField] public TextMeshProUGUI intreractableInfoText;
-    [SerializeField] public TextMeshProUGUI cooldownText;
+    [SerializeField] Image interactButton;
+    [SerializeField] TextMeshProUGUI intreractableInfoText;
+    [SerializeField] TextMeshProUGUI cooldownText;
 
-    [SerializeField] public RawImage primaryWeaponIcon;
-    [SerializeField] public RawImage cooldownIconSlot1;
-    [SerializeField] public TextMeshProUGUI chargesSlot1;
+    [SerializeField] RawImage primaryWeaponIcon;
+    [SerializeField] RawImage cooldownIconSlot1;
+    [SerializeField] TextMeshProUGUI chargesSlot1;
 
-    [SerializeField] public RawImage secondaryWeaponIcon;
-    [SerializeField] public RawImage cooldownIconSlot2;
-    [SerializeField] public TextMeshProUGUI chargesSlot2;
+    [SerializeField] RawImage secondaryWeaponIcon;
+    [SerializeField] RawImage cooldownIconSlot2;
+    [SerializeField] TextMeshProUGUI chargesSlot2;
 
-    [SerializeField] public RawImage gadgetIcon;
-    [SerializeField] public RawImage cooldownIconSlot3;
-    [SerializeField] public TextMeshProUGUI chargesSlot3;
+    [SerializeField] RawImage gadgetIcon;
+    [SerializeField] RawImage cooldownIconSlot3;
+    [SerializeField] TextMeshProUGUI chargesSlot3;
 
-    [SerializeField] public RawImage selectedIcon;
-    [SerializeField] public Inventory inventory;
+    [SerializeField] RawImage selectedIcon;
+    [SerializeField] Inventory inventory;
 
-
-    //[Client]
-    //private void Update()
-    //{
-    //    //castRay();
-    //    //updateGUI(inventory);
-    //}
-
-    //public void castRay()
-    //{
-    //    var transform = Util.GetPlayerInteractAimTransform(inventory.gameObject);
-    //    if (transform == null)
-    //        return;
-
-    //    ObjectSpawner obs = null;
-    //    if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, inventory.interactMaxDistance, inventory.interactLayerMask))
-    //    {
-    //        obs = hit.transform.GetComponent<ObjectSpawner>();
-    //        if (obs && obs.IsEquipmentSpawner && obs.spawnedItem)
-    //        {
-    //            interactiveButton(obs);
-    //        }
-    //        else
-    //        {
-    //            interactiveButton(null);
-    //        }
-    //    }
-    //    else
-    //    {
-    //        interactiveButton(null);
-    //    }
-    //}
-
-    //public void interactiveButton(ObjectSpawner obs)
-    //{
-    //    if (obs && obs.IsEquipmentSpawner && obs.spawnedItem)
-    //    {
-    //        interactButton.enabled = true;
-    //        intreractableInfoText.text = "Pick up " + obs.spawnedItem.GetComponent<NetworkItem>().displayName;
-    //    }
-    //    else
-    //    {
-    //        interactButton.enabled = false;
-    //        intreractableInfoText.text = "";
-    //    }
-    //}
-
+    [SerializeField] UILives localLives;
+    
     public void interactiveItemButton(NetworkItem obs)
     {
         if (obs != null)
@@ -157,11 +112,44 @@ public class PlayerGUI : MonoBehaviour
         }
     }
 
-    public void updateGUI(Inventory inventory)
+    void updateGUI()
     {
         selectedIcon.enabled = false;
         updateItem(inventory.GetItemComponent<NetworkItem>(ItemSlot.PrimaryWeapon), primaryWeaponIcon, cooldownIconSlot1, chargesSlot1, inventory.equipped == ItemSlot.PrimaryWeapon);
         updateItem(inventory.GetItemComponent<NetworkItem>(ItemSlot.SecondaryWeapon), secondaryWeaponIcon, cooldownIconSlot2, chargesSlot2, inventory.equipped == ItemSlot.SecondaryWeapon);
         updateItem(inventory.GetItemComponent<NetworkItem>(ItemSlot.Gadget), gadgetIcon, cooldownIconSlot3, chargesSlot3, inventory.equipped == ItemSlot.Gadget);
+    }
+
+    public void SetLocalLives(int lives)
+    {
+        if (lives > 0)
+        {
+            localLives.gameObject.SetActive(true);
+            localLives.SetLives(lives);
+        }
+        else
+        {
+            localLives.gameObject.SetActive(false);
+        }
+    }
+
+    private void Update()
+    {
+        updateGUI();
+    }
+
+    static void GUIDrawProgress(float progress)
+    {
+        if (progress > 0.0)
+        {
+            GUI.Box(new Rect(Screen.width * 0.5f - 50, Screen.height * 0.8f - 10, 100.0f * progress, 20.0f), GUIContent.none);
+        }
+    }
+    private void OnGUI()
+    {
+        if (inventory.ActiveWeapon?.ChargeProgress is float progress)
+        {
+            GUIDrawProgress(progress);
+        }
     }
 }

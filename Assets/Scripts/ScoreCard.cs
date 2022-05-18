@@ -14,6 +14,19 @@ public class ScoreCard : NetworkBehaviour, IComparable<ScoreCard>
 
     public int Index => GetComponent<GameClient>()?.ClientIndex ?? -1;
 
+
+    public PlayerGUI playerGUI;
+
+    void Awake()
+    {
+        playerGUI = GetComponentInChildren<PlayerGUI>(true);
+    }
+
+    void Start()
+    {
+        playerGUI.SetLocalLives(livesLeft);
+    }
+
     public int CompareTo(ScoreCard other)
     {
         if (other.isLocalPlayer)
@@ -31,15 +44,8 @@ public class ScoreCard : NetworkBehaviour, IComparable<ScoreCard>
         FindObjectOfType<ScoreKeeper>()?.InitializeScoreCard(this);
     }
 
-    public override void OnStartLocalPlayer()
-    {
-        base.OnStartLocalPlayer();
-        FindObjectOfType<Scoreboard>()?.SetLocalLives(livesLeft);
-    }
-
     void OnLivesChanged(int previous, int current)
     {
-        if(isLocalPlayer)
-            FindObjectOfType<Scoreboard>()?.SetLocalLives(current);
+        playerGUI.SetLocalLives(current);
     }
 }
