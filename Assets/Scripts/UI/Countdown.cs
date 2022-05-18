@@ -15,4 +15,9 @@ public class Countdown : MonoBehaviour
         if(networkTime.HasTicked == false)
             _animator.Play("Countdown");
     }
+
+    public void StopCountdown()
+    {
+        _animator.Play("Idle");
+    }
 }
