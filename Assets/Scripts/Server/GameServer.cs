@@ -49,7 +49,7 @@ public class GameServer : MonoBehaviour
     [HideInInspector]
     public List<Spectator> Spectators = new();
 
-    public bool HasRoundStarted => RoundStart.HasTicked;
+    public bool HasRoundStarted => GameStats.IsRoundStarted;
 
     GameStats _gameStats;
     public static GameStats Stats => Instance?._gameStats;
