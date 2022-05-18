@@ -5,15 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class SceneMusic : MonoBehaviour
 {
-    public LevelMusic[] levelMusic;
-
-    //public LevelMusic[] levelMusic = { "event:/SoundStudents/Music/TitlePage&Menu", "event:/SoundStudents/Music/TitlePage&Menu", 
-    //                                   "event:/SoundStudents/Music/Level 1 Theme", "event:/SoundStudents/Music/LavaLevel/LavaLevelAdaptive" };
+    public LevelMusic[] levelMusic;       
 
     private void Awake()
     {
-        SceneManager.sceneLoaded += SceneManager_sceneLoaded;
-        //Debug.Log("Hej");
+        SceneManager.sceneLoaded += SceneManager_sceneLoaded;        
     }
 
     private void Start()
@@ -22,12 +18,12 @@ public class SceneMusic : MonoBehaviour
     }
 
     private void SceneManager_sceneLoaded(Scene scene, LoadSceneMode arg1)
-    {
-        Debug.Log(scene.name);
+    {        
         foreach (var music in levelMusic)
-        {
-            if (music.scene == scene.name)
-            {
+        {                       
+            if (music.scene == scene.path && scene.name != "LobbyScene")
+            {                
+                Debug.Log(music.scene);
                 music.Play();
             }
         }
@@ -41,8 +37,13 @@ public class LevelMusic
     public string scene;
     public string music;
 
+    public static FMOD.Studio.EventInstance _music;
+    
     public void Play() 
-    {
-        
+    {        
+        _music.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        _music = FMODUnity.RuntimeManager.CreateInstance(music);
+        _music.start();
+        _music.release();                
     }
 }

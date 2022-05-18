@@ -19,7 +19,7 @@ public class ScoreKeeper : NetworkBehaviour
     {
         base.OnStartServer();
         spawnPositions = startPositions.GetComponentsInChildren<Transform>();
-        FindObjectOfType<AdaptiveMusic>().scoreKeeper = this;        
+        //FindObjectOfType<AdaptiveMusic>().scoreKeeper = this;        
     }
 
 

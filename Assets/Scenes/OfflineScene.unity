@@ -4241,6 +4241,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1740952794, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863993567, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1786408663118704467, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
       propertyPath: sceneId
       value: 328011504
@@ -4293,7 +4301,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cunkd Network Manager
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6949516154282938971, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+    - {fileID: 1786408663118704467, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+    - {fileID: 1863993567, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
+    - {fileID: 1740952794, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ec35c5f9c9220b840ac7059c46d9178f, type: 3}
 --- !u!114 &8980317230789435659 stripped
 MonoBehaviour:
