@@ -55,11 +55,11 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
                 if (rb != owner.GetComponent<Rigidbody>() && rb.CompareTag("Player"))
                 {
                     Debug.Log("PlayerHit");
-                    rb.AddExplosionForce(Force * 3, Head.transform.position, Radius);
+                    rb.AddExplosionForce(Force * 2, Head.transform.position, Radius);
                 }
                 if(rb != owner.GetComponent<Rigidbody>())
                 {
-                    FMODUnity.RuntimeManager.PlayOneShot("event:/SoundStudents/SFX/Gadgets/Hammer/Hammer Hit");
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/SoundStudents/SFX/Gadgets/Hammer/Hammer Hit");a
                     rb.AddExplosionForce(Force, Head.transform.position, Radius);
                 }
                 else
