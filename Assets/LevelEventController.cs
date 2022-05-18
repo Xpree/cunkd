@@ -18,11 +18,15 @@ public class LevelEventController : NetworkBehaviour
     int eventIndex = 0;
 
     Vector3 lastWaterPos;
+    Vector3 lastBoatPos;
+    Quaternion lastBoatRot;
     float yDiff;
     [Server]
     public override void OnStartServer()
     {
+        lastBoatPos = boat.transform.position;
         lastWaterPos = water.transform.position;
+        lastBoatRot = boat.transform.rotation;
         yDiff = Mathf.Abs(deathFloor.transform.position.y - water.transform.position.y);
     }
 
@@ -68,8 +72,8 @@ public class LevelEventController : NetworkBehaviour
                 deathFloor.transform.position = new Vector3(deathFloor.transform.position.x, water.transform.position.y + yDiff, deathFloor.transform.position.z);
 
 
-                boat.transform.position = Vector3.Lerp(boat.transform.position, currentEvent.boatPosition, lerpVal / 100);
-                boat.transform.rotation = Quaternion.Lerp(boat.transform.rotation, currentEvent.boatRotation, lerpVal / 100);
+                boat.transform.position = Vector3.Lerp(lastBoatPos, currentEvent.boatPosition, lerpVal);
+                boat.transform.rotation = Quaternion.Lerp(lastBoatRot, currentEvent.boatRotation, lerpVal);
 
             }
             if (1 < lerpVal)
@@ -79,6 +83,8 @@ public class LevelEventController : NetworkBehaviour
                 if (eventIndex < setInactiveOnEvent.Length)
                     setInactiveOnEvent[eventIndex - 1].SetActive(false);
                 lastWaterPos = currentEvent.waterPosition;
+                lastBoatPos = currentEvent.boatPosition;
+                lastBoatRot = currentEvent.boatRotation;
                 runningEvent = false;
             }
         }
