@@ -221,7 +221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeda7bfbf984f2a4da5ab4b8967b115d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Weight: 1
+  m_Weight: 0
   m_Data:
     m_Root: {fileID: 6000407480227779815}
     m_Mid: {fileID: 2563496968223686218}
@@ -482,6 +482,8 @@ MonoBehaviour:
   localEquipped: 0
   inHolsterAnimation: 0
   equippingTo: 0
+  RightHandIK: {fileID: 1513883445}
+  LeftHandIK: {fileID: 8165789302937026454}
 --- !u!114 &6250309759976022356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -657,7 +659,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfc68a4f851240743a2a0ec3d11bfc84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ik: {fileID: 1513883445}
+  RightHandIK: {fileID: 0}
+  LeftHandIK: {fileID: 0}
 --- !u!1 &598865172076735772
 GameObject:
   m_ObjectHideFlags: 0
@@ -2106,7 +2109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeda7bfbf984f2a4da5ab4b8967b115d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Weight: 1
+  m_Weight: 0
   m_Data:
     m_Root: {fileID: 5790970486054082778}
     m_Mid: {fileID: 7410462539571606811}

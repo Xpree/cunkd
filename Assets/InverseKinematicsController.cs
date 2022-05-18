@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.Animations.Rigging;
 public class InverseKinematicsController : MonoBehaviour
 {
-    [SerializeField] TwoBoneIKConstraint ik;
+    [SerializeField] TwoBoneIKConstraint RightHandIK;
+    [SerializeField] TwoBoneIKConstraint LeftHandIK;
 
 
 

@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using Mirror;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using UnityEngine.Animations.Rigging;
 
 public class Inventory : NetworkBehaviour, INetworkItemOwner
 {
@@ -24,17 +25,25 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
     public bool inHolsterAnimation = false;
 
     public ItemSlot equippingTo = ItemSlot.PrimaryWeapon;
+    [SerializeField] TwoBoneIKConstraint RightHandIK;
+    [SerializeField] TwoBoneIKConstraint LeftHandIK;
 
     public GameObject firstWeapon
     {
         get {
             if (localFirstWeapon != null && localFirstWeapon.activeSelf == false)
+            {
+                LeftHandIK.weight = 0;
+                RightHandIK.weight = 0;
                 return null;
+            }
             return localFirstWeapon; 
         }
         set
         {
             localFirstWeapon = value;
+            LeftHandIK.weight = 1;
+            RightHandIK.weight = 1;
             if (this.isServer)
                 syncedFirstWeapon = value;
         }
