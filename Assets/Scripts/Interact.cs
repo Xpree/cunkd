@@ -102,11 +102,16 @@ public class Interact : NetworkBehaviour
                 var client = target.GetComponent<GameClient>();
                 if (client != null)
                 {
+                    StopHovering();
                     playerGUI.SetHovertext(client.PlayerName);
                 }
                 else if(hit.distance <= interactMaxDistance)
                 {
                     SetHover(target);
+                }
+                else
+                {
+                    StopHovering();
                 }
             }
             else
