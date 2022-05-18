@@ -66,11 +66,10 @@ public class GameClient : NetworkBehaviour
     }
 
 
-    IEnumerator DelayGameStart(double networkTime)
+    IEnumerator DelayGameStart(NetworkTimer networkTime)
     {
-        while (networkTime > NetworkTime.time)
+        while (networkTime.HasTicked == false)
         {
-            //double remaining = networkTime - NetworkTime.time;
             yield return null;
         }
 
@@ -80,10 +79,10 @@ public class GameClient : NetworkBehaviour
 
 
     [TargetRpc]
-    public void TargetGameStart(double networkTime)
+    public void TargetGameStart(NetworkTimer roundStart)
     {
-        FindObjectOfType<Countdown>()?.StartCountdown(networkTime);
-        StartCoroutine(DelayGameStart(networkTime));
+        FindObjectOfType<Countdown>()?.StartCountdown(roundStart);
+        StartCoroutine(DelayGameStart(roundStart));
     }
 
 

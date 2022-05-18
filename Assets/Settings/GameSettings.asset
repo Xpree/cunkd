@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CharacterMovement:
     TerminalVelocity: 1000
-    MaxSpeed: 9
+    MaxSpeed: 10
     JumpHeight: 2
+    gravityScaling: 2
     CoyoteTime: 1
     StrongAirControlTime: 0.1
     GroundAcceleration: 10
@@ -36,7 +37,7 @@ MonoBehaviour:
     ChargeRate: 1
     MaxRange: 30
   BlackHoleGun:
-    Cooldown: 25
+    Cooldown: 15
     Range: 35
   BlackHole:
     Range: 30
@@ -45,12 +46,12 @@ MonoBehaviour:
   IceGadget:
     Duration: 10
     Friction: -0.5
-    MaxRange: 20
-    Cooldown: 2
+    ThrowForce: 100
+    Cooldown: 1
     Charges: 5
   SwapSniper:
-    Cooldown: 6
-    Range: 400
+    Cooldown: 1.02
+    Range: 200
   Movable:
     serializedVersion: 2
     m_Bits: 64
@@ -67,5 +68,6 @@ MonoBehaviour:
     m_Bits: 1024
   Hammer:
     Cooldown: 5
-    Radius: 20
-    Force: 2000
+    Radius: 10
+    Force: 1000
+  EndGameDelay: 5

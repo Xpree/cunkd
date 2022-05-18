@@ -23,6 +23,7 @@ public class GlobalInput : MonoBehaviour
         }
     }
 
+    /*
     static bool TryGUIFloatField(ref string backingString, out float value)
     {
         var result = GUILayout.TextField(backingString);
@@ -134,5 +135,5 @@ public class GlobalInput : MonoBehaviour
 
             settingsWindowRect = GUILayout.Window(0, settingsWindowRect, DoSettingsWindow, "Settings");
        }
-    }
+    }*/
 }

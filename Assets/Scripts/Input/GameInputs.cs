@@ -165,11 +165,13 @@ public class GameInputs : MonoBehaviour
 			if (Cursor.lockState == CursorLockMode.Locked)
 			{
 				Cursor.lockState = CursorLockMode.None;
-				PreventInput();
+                FindObjectOfType<SettingsUI>(true).gameObject.SetActive(true);
+                PreventInput();
 			}
 			else
 			{
 				Cursor.lockState = CursorLockMode.Locked;
+				FindObjectOfType<SettingsUI>(true).gameObject.SetActive(false);
 				EnableInput();
 			}
         }

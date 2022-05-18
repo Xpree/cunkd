@@ -90,13 +90,16 @@ public class Pullable : NetworkBehaviour
             body.velocity = Vector3.zero;
             body.angularVelocity = Vector3.zero;
 
-            this.gameObject.layer = LayerMask.NameToLayer("Held");//puts objects into the held layer so the secondary camera will render them and make them transparent. this is changed back in the gravity gun script
-            foreach (Transform child in transform)
+            if (gameObject.transform.GetComponentsInParent<PlayerMovement>()[0].isLocalPlayer)
             {
-                child.gameObject.layer = LayerMask.NameToLayer("Held");
-                foreach(Transform childrensChild in child.transform)
+                this.gameObject.layer = LayerMask.NameToLayer("Held");//puts objects into the held layer so the secondary camera will render them and make them transparent. this is changed back in the gravity gun script
+                foreach (Transform child in transform)
                 {
-                    childrensChild.gameObject.layer = LayerMask.NameToLayer("Held");
+                    child.gameObject.layer = LayerMask.NameToLayer("Held");
+                    foreach (Transform childrensChild in child.transform)
+                    {
+                        childrensChild.gameObject.layer = LayerMask.NameToLayer("Held");
+                    }
                 }
             }
 
@@ -112,9 +115,6 @@ public class Pullable : NetworkBehaviour
         
         body.position = Vector3.Lerp(body.position, TargetPosition, 0.5f);
     }
-
-
-
 
     public void StartPulling(GameObject destination, NetworkTimer timeToFixed)
     {

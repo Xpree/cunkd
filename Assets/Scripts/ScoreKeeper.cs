@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
@@ -7,6 +6,7 @@ public class ScoreKeeper : NetworkBehaviour
 {
     [SerializeField] int startLives;
     [SerializeField] GameObject startPositions;
+    [SerializeField] LayerMask destroyOnCollision;
 
     Transform[] spawnPositions;
 
@@ -20,6 +20,11 @@ public class ScoreKeeper : NetworkBehaviour
         base.OnStartServer();
         spawnPositions = startPositions.GetComponentsInChildren<Transform>();
         //FindObjectOfType<AdaptiveMusic>().scoreKeeper = this;        
+    }
+
+    public void setPlayerSpawnPositions(GameObject positions)
+    {
+        spawnPositions = positions.GetComponentsInChildren<Transform>();
     }
 
 
@@ -64,22 +69,30 @@ public class ScoreKeeper : NetworkBehaviour
         {
             winner = alivePlayers[0];
             gameOver = true;
-            GameServer.Stats.LastGameWinner = winner.PlayerName;
+            GameServer.Stats.ShowWinner(winner.PlayerName);
             GameServer.EndGame();
         }
     }
 
     [ServerCallback]
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         PlayerMovement player = other.gameObject.GetComponent<PlayerMovement>();
         if (player)
         {
             RespawnPlayer(player);
         }
-        else if(other.gameObject.GetComponent<NetworkIdentity>() != null)
+        else if(other.gameObject.GetComponent<NetworkIdentity>() != null && destroyOnCollision == (destroyOnCollision | (1 << other.gameObject.layer)))
         {
             NetworkServer.Destroy(other.gameObject);
+        }
+        else
+        {
+            NetworkIdentity obj = other.transform.root.gameObject.GetComponentInChildren<NetworkIdentity>();
+            if (obj && destroyOnCollision == (destroyOnCollision | (1 << obj.gameObject.layer)) && !obj.gameObject.GetComponent<PlayerMovement>())
+            {
+                NetworkServer.Destroy(obj.gameObject);
+            }
         }
     }
 

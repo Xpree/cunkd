@@ -10,20 +10,54 @@ public class GameStats : NetworkBehaviour
 {
     [SyncVar] public string LastGameWinner;
 
+    [SyncVar] public NetworkTimer RoundStart;
+    [SyncVar] public NetworkTimer RoundEnded;
+
+    public bool IsRoundActive => RoundStart.TickTime > RoundEnded.TickTime;
+
+
+    public static GameStats Singleton;
+
+    public static NetworkTimer RoundTimer => Singleton.RoundStart;
+
+    public static bool IsRoundStarted => Singleton.IsRoundActive;
+
     private void Awake()
     {
         DontDestroyOnLoad(this);
+        Singleton = this;
     }
 
-    void OnGUI()
+    public void OnDestroy()
     {
-        CunkdNetManager cunkd = NetworkManager.singleton as CunkdNetManager;
-        if (cunkd && cunkd.Lobby.ShowRoomGUI && cunkd.Lobby.IsLobbyActive)
-        {
-            if (string.IsNullOrEmpty(LastGameWinner) == false)
-            {
-                GUILayout.Label($"Last game winner: {LastGameWinner}!");
-            }
-        }
+        if (Singleton == this)
+            Singleton = null;
     }
+
+    [ClientRpc]
+    void RpcShowWinner(string winner)
+    {
+        FindObjectOfType<UIGameResult>().SetWinner(winner);
+    }
+
+    [Server]
+    public void ShowWinner(string winner)
+    {
+        LastGameWinner = winner;
+        RpcShowWinner(winner);
+    }
+
+
+    [ClientRpc]
+    void RpcShowEndedByHost()
+    {
+        FindObjectOfType<UIGameResult>().SetEndedByHost();
+    }
+    
+    [Server]
+    public void ShowEndedByHost()
+    {
+        RpcShowEndedByHost();
+    }
+
 }
