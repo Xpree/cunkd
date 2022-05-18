@@ -88,6 +88,11 @@ public class LobbyClient : NetworkBehaviour
         FindObjectOfType<UILobby>()?.UpdatePlayers();
     }
 
+    private void OnDestroy()
+    {
+        FindObjectOfType<UILobby>()?.UpdatePlayers();
+    }
+    
     void OnPlayerNameChange(string previous, string current)
     {
         FindObjectOfType<UILobby>()?.UpdatePlayers();
