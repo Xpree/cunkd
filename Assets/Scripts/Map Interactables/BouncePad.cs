@@ -22,7 +22,7 @@ public class BouncePad : NetworkBehaviour
     {
         if(Util.HasPhysicsAuthority(rb.gameObject))
         {
-            Util.SetJumpForce(rb, jumpHeight);
+            Util.SetJumpForce(rb, jumpHeight, GameServer.Instance.Settings.CharacterMovement.gravityScaling);
         }
         sphere.SetActive(true);
         nextLaunch = NetworkTime.time + cooldown;
