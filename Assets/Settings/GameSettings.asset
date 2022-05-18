@@ -37,7 +37,7 @@ MonoBehaviour:
     ChargeRate: 1
     MaxRange: 30
   BlackHoleGun:
-    Cooldown: 25
+    Cooldown: 15
     Range: 35
   BlackHole:
     Range: 30
@@ -70,3 +70,4 @@ MonoBehaviour:
     Cooldown: 5
     Radius: 10
     Force: 1000
+  EndGameDelay: 5
