@@ -25,7 +25,7 @@ public class KnockbackScript : NetworkBehaviour
 
                 var settings = GameServer.Instance.Settings;
 
-                Vector3 knockbackforce = collision.relativeVelocity * (KnockbackStrength * (1 + (float)GameServer.startTime.Elapsed * settings.GlobalKnockbackRamp / 100));
+                Vector3 knockbackforce = collision.relativeVelocity * (KnockbackStrength * (1 + (float)GameServer.RoundStart.Elapsed * settings.GlobalKnockbackRamp / 100));
 
                 ContactPoint contact = collision.GetContact(0);
 

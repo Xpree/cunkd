@@ -10,8 +10,9 @@ public class Countdown : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
-    public void StartCountdown(double networkTime)
+    public void StartCountdown(NetworkTimer networkTime)
     {
-        _animator.Play("Countdown");
+        if(networkTime.HasTicked == false)
+            _animator.Play("Countdown");
     }
 }

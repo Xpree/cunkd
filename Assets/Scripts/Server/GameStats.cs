@@ -10,9 +10,24 @@ public class GameStats : NetworkBehaviour
 {
     [SyncVar] public string LastGameWinner;
 
+    [SyncVar] public NetworkTimer RoundStart;
+    [SyncVar] public NetworkTimer RoundEnded;
+
+
+    public static GameStats Singleton;
+
+    public static NetworkTimer RoundTimer => Singleton.RoundStart;
+
     private void Awake()
     {
         DontDestroyOnLoad(this);
+        Singleton = this;
+    }
+
+    public void OnDestroy()
+    {
+        if (Singleton == this)
+            Singleton = null;
     }
 
     void OnGUI()

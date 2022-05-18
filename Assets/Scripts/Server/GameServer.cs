@@ -17,8 +17,6 @@ public class GameServer : MonoBehaviour
 
     [SerializeField] GameStats GameStatsPrefab;
 
-    public static NetworkTimer startTime;
-
     /// <summary>
     /// The list of maps available
     /// </summary>
@@ -40,8 +38,7 @@ public class GameServer : MonoBehaviour
     /// <summary>
     /// The NetworkTime.time when the round starts
     /// </summary>
-    [HideInInspector]
-    public double RoundStart = 0;
+    public static NetworkTimer RoundStart => Stats.RoundStart;
 
     /// <summary>
     /// The list of players in the game.
@@ -52,10 +49,11 @@ public class GameServer : MonoBehaviour
     [HideInInspector]
     public List<Spectator> Spectators = new();
 
-    public bool HasRoundStarted => RoundStart >= DelayStart && RoundStart <= NetworkTime.time;
+    public bool HasRoundStarted => RoundStart.HasTicked;
 
     GameStats _gameStats;
     public static GameStats Stats => Instance?._gameStats;
+
 
     private void Start()
     {
@@ -81,7 +79,6 @@ public class GameServer : MonoBehaviour
 
     public static void BeginGame()
     {
-        startTime = NetworkTimer.Now;
         var self = CunkdNetManager.Instance.Game;
         CunkdNetManager.Instance.ServerChangeScene(self.NetworkScene[self.SelectedScene]);
     }
@@ -93,8 +90,7 @@ public class GameServer : MonoBehaviour
 
         self.Players.Clear();
         self.Spectators.Clear();
-        self.RoundStart = 0;
-
+        self._gameStats.RoundEnded = NetworkTimer.Now;
         netManager.Lobby.ReturnToLobby();
     }
 
@@ -217,7 +213,7 @@ public class GameServer : MonoBehaviour
 
     public void StartRound()
     {
-        RoundStart = NetworkTime.time + this.DelayStart;
+        Stats.RoundStart = NetworkTimer.FromNow(this.DelayStart); ;
         foreach (var client in Players)
         {
             client?.TargetGameStart(RoundStart);
