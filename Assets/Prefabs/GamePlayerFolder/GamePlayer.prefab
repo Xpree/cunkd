@@ -2234,6 +2234,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerUI
       objectReference: {fileID: 0}
+    - target: {fileID: 8605209966941128869, guid: 65532250ccc392548bf7ca67419637d7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8605209966941128879, guid: 65532250ccc392548bf7ca67419637d7, type: 3}
       propertyPath: inventory
       value: 
