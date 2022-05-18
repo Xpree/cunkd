@@ -14,6 +14,7 @@ public class VolcanoErupter : NetworkBehaviour
 
     Transform[] positions;
     double nextSpawn = 0;
+
     [Server]
     private void Start()
     {
