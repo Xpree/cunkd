@@ -68,7 +68,10 @@ public class LevelEventController : NetworkBehaviour
     {
         foreach (var item in setUseGravityAfterEvent[eventIndex].GetComponentsInChildren<Rigidbody>())
         {
-            item.isKinematic = false;
+            if (item.useGravity)
+            {
+                item.isKinematic = false;
+            }
         }
         gravitySet = true;
     }
