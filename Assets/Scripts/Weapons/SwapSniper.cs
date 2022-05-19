@@ -47,6 +47,13 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
 
     void SpawnEffect(Vector3 hitposition)
     {
+        if (beam)
+        {
+            GameObject.Destroy(beam);
+            GameObject.Destroy(beam2);
+            GameObject.Destroy(beam3);
+        }
+
         beam = Instantiate(EffectSphere, PointOfFire.position, Quaternion.identity);
         beam2 = Instantiate(EffectSphere, PointOfFire.position, Quaternion.identity);
         beam3 = Instantiate(EffectSphere, PointOfFire.position, Quaternion.identity);

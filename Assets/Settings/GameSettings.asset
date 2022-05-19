@@ -50,7 +50,7 @@ MonoBehaviour:
     Cooldown: 1
     Charges: 5
   SwapSniper:
-    Cooldown: 4
+    Cooldown: 0.88
     Range: 200
   Movable:
     serializedVersion: 2
