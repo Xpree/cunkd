@@ -9,12 +9,14 @@ public class LevelEventController : NetworkBehaviour
     [SerializeField] GameObject water;
     [SerializeField] GameObject boat;
     [SerializeField] GameObject deathFloor;
-    [Header("Each Index in the following array represents the corresponding event")]
+    [Header("Each Index in the following array represents the corresponding event\n(player spawn points are updated 5 seconds before the event)")]
     [SerializeField] GameObject[] playerSpawnPositions;
     [Header("Each Index in the following array represents the corresponding event")]
-    [SerializeField] GameObject[] setActiveOnEvent;
+    [SerializeField] GameObject[] setActiveAfterEvent;
     [Header("Each Index in the following array represents the corresponding event")]
-    [SerializeField] GameObject[] setInactiveOnEvent;
+    [SerializeField] GameObject[] setInactiveAfterEvent;
+    [Header("Each Index in the following array represents the corresponding event")]
+    [SerializeField] GameObject[] setUseGravityAfterEvent;
     int eventIndex = 0;
 
     Vector3 lastWaterPos;
@@ -30,6 +32,13 @@ public class LevelEventController : NetworkBehaviour
         yDiff = Mathf.Abs(deathFloor.transform.position.y - water.transform.position.y);
     }
 
+    bool spawnPointsSet = false;
+    void setPlayerSpawn()
+    {
+        scoreKeeper.setPlayerSpawnPositions(playerSpawnPositions[eventIndex]);
+        spawnPointsSet = true;
+    }
+
     [Server]
     void triggerEvent(LevelEvents.VolcanoLevelEvent levelEvent)
     {
@@ -38,10 +47,11 @@ public class LevelEventController : NetworkBehaviour
         runningEvent = true;
         lerpVal = 0;
 
-        scoreKeeper.setPlayerSpawnPositions(playerSpawnPositions[eventIndex]);
         volcanoEruptor.Erupt(levelEvent.eruptionDuration, levelEvent.objectsToSpawn, levelEvent.rockSpawnInterval, levelEvent.maxSpawns);
 
         eventIndex++;
+        spawnPointsSet = false;
+        gravitySet = false;
     }
     bool runningEvent = false;
     LevelEvents.VolcanoLevelEvent nextEvent = new();
@@ -53,7 +63,15 @@ public class LevelEventController : NetworkBehaviour
     //    boat.transform.position = pos;
     //    boat.transform.rotation = rot;
     //}
-
+    bool gravitySet = false;
+    void setUseGravity(int eventIndex)
+    {
+        foreach (var item in setUseGravityAfterEvent[eventIndex].GetComponentsInChildren<Rigidbody>())
+        {
+            item.isKinematic = false;
+        }
+        gravitySet = true;
+    }
 
 
     [Server]
@@ -62,6 +80,11 @@ public class LevelEventController : NetworkBehaviour
         if (eventIndex < events.VolcanoLevelEvents.Length)
         {
             nextEvent = events.VolcanoLevelEvents[eventIndex];
+
+            if (nextEvent.startTime - 5 < GameStats.RoundTimer.Elapsed && !spawnPointsSet)
+            {
+                setPlayerSpawn();
+            }
 
             if (nextEvent.startTime < GameStats.RoundTimer.Elapsed && !runningEvent)
             {
@@ -89,10 +112,19 @@ public class LevelEventController : NetworkBehaviour
             }
             if (1 < lerpVal)
             {
-                if (eventIndex < setActiveOnEvent.Length)
-                    setActiveOnEvent[eventIndex + 1].SetActive(true);
-                if (eventIndex < setInactiveOnEvent.Length)
-                    setInactiveOnEvent[eventIndex - 1].SetActive(false);
+               // print("eventIndex: " + (eventIndex - 1) + " setUseGravityAfterEvent.Length: " + setUseGravityAfterEvent.Length);
+                if (eventIndex <= setActiveAfterEvent.Length)
+                {
+                    setActiveAfterEvent[eventIndex - 1].SetActive(true);
+                }
+                if (eventIndex <= setInactiveAfterEvent.Length)
+                {
+                    setInactiveAfterEvent[eventIndex - 1].SetActive(false);
+                }
+                if (!gravitySet && eventIndex <= setUseGravityAfterEvent.Length)
+                {
+                    setUseGravity(eventIndex-1);
+                }
                 lastWaterPos = currentEvent.waterPosition;
                 lastBoatPos = currentEvent.boatPosition;
                 lastBoatRot = currentEvent.boatRotation;
