@@ -2,10 +2,10 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{7a9f4dbf-4f3b-47e1-80cc-d930470cb77c}">
 		<property name="color">
-			<value>Green Light 1</value>
+			<value>Purple</value>
 		</property>
 		<property name="name">
-			<value>Black Hole</value>
+			<value>Black Hole_old</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>

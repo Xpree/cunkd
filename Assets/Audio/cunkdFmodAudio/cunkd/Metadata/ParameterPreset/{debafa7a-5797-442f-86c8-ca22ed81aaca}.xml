@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{debafa7a-5797-442f-86c8-ca22ed81aaca}">
+		<property name="name">
+			<value>Water rising</value>
+		</property>
+		<relationship name="folder">
+			<destination>{f3175451-52e8-4193-903b-a4fc7e20a798}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{7b76071b-f07b-4219-ba4c-7682959cde4a}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{7b76071b-f07b-4219-ba4c-7682959cde4a}">
+		<property name="maximum">
+			<value>100</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

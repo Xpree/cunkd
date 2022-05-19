@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{778f7caa-4553-4ccf-9349-9e87c09a5013}">
+		<property name="assetPath">
+			<value>Black Hole.aif</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>5.1633958333333334</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{cd3fe371-6de4-4111-9fc9-84e9e4ec1769}</destination>
+		</relationship>
+	</object>
+</objects>
