@@ -55,19 +55,19 @@ public static class Settings
         set { PlayerPrefs.SetString("Name", value); }
     }
 
-
-    public static float mouseSensitivityYaw
+    public static float mouseSensitivity
     {
-        get { return Mathf.Max(0.0001f, PlayerPrefs.GetFloat("MouseSensitivityYaw", 25.0f)); }
-        set { PlayerPrefs.SetFloat("MouseSensitivityYaw", value); }
+        get { return Mathf.Max(0.0001f, PlayerPrefs.GetFloat("MouseSensitivity", 1.0f)); }
+        set { PlayerPrefs.SetFloat("MouseSensitivity", value); }
     }
 
-    public static float mouseSensitivityPitch
-    {
-        get { return Mathf.Max(0.0001f, PlayerPrefs.GetFloat("MouseSensitivityPitch", 25.0f)); }
-        set { PlayerPrefs.SetFloat("MouseSensitivityPitch", value); }
-    }
 
+    public static float zoomSensitivity
+    {
+        get { return Mathf.Max(0.0001f, PlayerPrefs.GetFloat("ZoomedSensitivity", 0.5f)); }
+        set { PlayerPrefs.SetFloat("ZoomedSensitivity", value); }
+    }
+    
     public static bool autoEquipOnPickup
     {
         get { return PlayerPrefs.GetInt("AutoEquipOnPickup", 1) != 0; }

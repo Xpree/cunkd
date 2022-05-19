@@ -76,8 +76,10 @@ public class PlayerCameraController : MonoBehaviour
 
     public void MoveCamera(Vector2 delta)
     {
-        float xMovement = delta.x * Settings.mouseSensitivityYaw * Time.deltaTime;
-        float yMovement = delta.y * Settings.mouseSensitivityPitch * Time.deltaTime;
+        float sensitivity = zoomed ? Settings.zoomSensitivity : Settings.mouseSensitivity;
+        
+        float xMovement = delta.x * sensitivity;
+        float yMovement = delta.y * sensitivity;
 
         pitch -= yMovement;
         pitch = Mathf.Clamp(pitch, -89.9f, 89.9f);

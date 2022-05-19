@@ -11,6 +11,7 @@ public class SettingsUI : MonoBehaviour
 
     public Slider fieldOfView;
     public Slider mouseSensitivity;
+    public Slider zoomMouseSensitivity;
     public Slider masterVolume;
     public Toggle muteToggle;
 
@@ -30,6 +31,7 @@ public class SettingsUI : MonoBehaviour
         autoEquipToggle.onValueChanged.AddListener(SetAutoEquip);
         fieldOfView.onValueChanged.AddListener(SetFieldOfView);
         mouseSensitivity.onValueChanged.AddListener(SetMouseSensitivity);
+        zoomMouseSensitivity.onValueChanged.AddListener(SetZoomSensitivity);
         masterVolume.onValueChanged.AddListener(SetMasterVolume);
         muteToggle.onValueChanged.AddListener(SetMuted);
 
@@ -45,7 +47,8 @@ public class SettingsUI : MonoBehaviour
         playerNameInput.text = Settings.playerName;
         autoEquipToggle.isOn = Settings.autoEquipOnPickup;
         fieldOfView.value = Settings.cameraFov;
-        mouseSensitivity.value = Settings.mouseSensitivityPitch;
+        mouseSensitivity.value = Settings.mouseSensitivity;
+        zoomMouseSensitivity.value = Settings.zoomSensitivity;
         masterVolume.value = Settings.volume;
         muteToggle.isOn = Settings.muted;
 
@@ -106,8 +109,14 @@ public class SettingsUI : MonoBehaviour
     {
         if (invalidSettings) return;
 
-        Settings.mouseSensitivityPitch = value;
-        Settings.mouseSensitivityYaw = value;
+        Settings.mouseSensitivity = value;
+    }
+
+    public void SetZoomSensitivity(float value)
+    {
+        if (invalidSettings) return;
+
+        Settings.zoomSensitivity = value;
     }
 
     public void SetMasterVolume(float value)
