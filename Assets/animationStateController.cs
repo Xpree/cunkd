@@ -5,11 +5,8 @@ using UnityEngine.InputSystem;
 using Mirror;
 public class animationStateController : NetworkBehaviour
 {
-    Animator animator;
-    void Start()
-    {
-        animator = GetComponent<Animator>();
-    }
+    
+    [SerializeField] Animator animator;
     void Update()
     {
         if(isLocalPlayer)

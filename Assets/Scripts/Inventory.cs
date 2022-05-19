@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using Mirror;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using UnityEngine.Animations.Rigging;
 
 public class Inventory : NetworkBehaviour, INetworkItemOwner
 {
@@ -25,6 +26,10 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
     public bool inHolsterAnimation = false;
 
     public ItemSlot equippingTo = ItemSlot.PrimaryWeapon;
+
+    public TwoBoneIKConstraint leftHandIK;
+    public TwoBoneIKConstraint rightHandIK;
+
 
 
     
@@ -258,6 +263,14 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
             if (item != null)
             {
                 EventBus.Trigger(nameof(EventItemUnholstered), item);
+                var GripPoints = item.GetComponent<GripPoints>();
+                if(GripPoints != null)
+                {
+                    rightHandIK.data.target.position = GripPoints.right.position;
+                    rightHandIK.data.target.rotation = GripPoints.right.rotation;
+                    leftHandIK.data.target.position = GripPoints.left.position;
+                    leftHandIK.data.target.rotation = GripPoints.left.rotation;
+                }
             }
             inHolsterAnimation = false;
         }
