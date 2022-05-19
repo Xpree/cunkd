@@ -49,10 +49,11 @@ public class ScoreKeeper : NetworkBehaviour
 
         if (sc.Dead == false)
         {
-            int index = Random.Range(1, spawnPositions.Length);
-            var spawn = spawnPositions[index];
-            GameServer.PurgeOwnedObjects(player.gameObject);
-            player.TargetRespawn(spawn.position, spawn.rotation);
+            //int index = Random.Range(1, spawnPositions.Length);
+            //var spawn = spawnPositions[index];
+            //GameServer.PurgeOwnedObjects(player.gameObject);
+            //player.TargetRespawn(spawn.position, spawn.rotation);
+            GameServer.Respawn(player.gameObject);
         }
         else
         {

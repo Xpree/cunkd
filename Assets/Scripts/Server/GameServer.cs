@@ -288,7 +288,9 @@ public class GameServer : MonoBehaviour
         var player = client?.GetComponent<PlayerMovement>();
         if(player != null)
         {
+            PurgeOwnedObjects(client);
             player.TargetRespawn(spawn.position, spawn.rotation);
+            client.GetComponent<Inventory>().Invoke("SpawnPrimaryWeapon", 0.5f);
         }
         else
         {

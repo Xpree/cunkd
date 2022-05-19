@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 
 public class Inventory : NetworkBehaviour, INetworkItemOwner
 {
+    [SerializeField] NetworkItem primaryWeaponPrefab;
     [SerializeField] public Transform primaryWeaponAnchor;
     [SerializeField] public Transform secondaryWeaponAnchor;
     [SerializeField] public Transform gadgetAnchor;
@@ -24,6 +25,9 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
     public bool inHolsterAnimation = false;
 
     public ItemSlot equippingTo = ItemSlot.PrimaryWeapon;
+
+
+    
 
     public GameObject firstWeapon
     {
@@ -141,6 +145,22 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
     private void Awake()
     {
         gameInputs = GetComponentInChildren<GameInputs>(true);
+
+        
+    }
+
+    [Server]
+    public void SpawnPrimaryWeapon()
+    {
+        var primaryWeapon = Instantiate(primaryWeaponPrefab, this.primaryWeaponAnchor.position, primaryWeaponAnchor.rotation);
+        NetworkServer.Spawn(primaryWeapon.gameObject);
+        primaryWeapon.Pickup(this.netIdentity);
+    }
+
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+        SpawnPrimaryWeapon();
     }
 
     public override void OnStartClient()
@@ -428,9 +448,8 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
     {
         if (item.GetComponent<IWeapon>() != null)
         {
-            if (firstWeapon == null || ((secondWeapon != null) && equipped == ItemSlot.PrimaryWeapon))
+            if (firstWeapon == null)
             {
-                // Pick up when first slot is empty or both slots are full and the active slot is the primary weapon
                 DoPickUpItem(item.gameObject, ItemSlot.PrimaryWeapon);
             }
             else
@@ -450,6 +469,8 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
 
     bool INetworkItemOwner.CanPickup(NetworkItem item)
     {
+        return true;
+        /*
         if (item.GetComponent<IWeapon>() != null)
         {
             return firstWeapon == null || secondWeapon == null || equipped == ItemSlot.PrimaryWeapon || equipped == ItemSlot.SecondaryWeapon;
@@ -459,6 +480,7 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
             return gadget == null || equipped == ItemSlot.Gadget;
         }
         return false;
+        */
     }
 }
 
