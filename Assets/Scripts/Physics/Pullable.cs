@@ -52,6 +52,7 @@ public class Pullable : NetworkBehaviour
         
         if (!pulling)
         {
+            SetTransparent(false);
             Util.SetPhysicsSynchronized(this.netIdentity, true);
             body.isKinematic = false;
             foreach (Collider c in GetComponents<Collider>())
@@ -135,7 +136,6 @@ public class Pullable : NetworkBehaviour
     {
         target = null;
         SetPulling(false);
-        SetTransparent(false);        
     }
 
     void FixedUpdate()
