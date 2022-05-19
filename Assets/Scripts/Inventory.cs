@@ -157,12 +157,6 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
         primaryWeapon.Pickup(this.netIdentity);
     }
 
-    public override void OnStartServer()
-    {
-        base.OnStartServer();
-        SpawnPrimaryWeapon();
-    }
-
     public override void OnStartClient()
     {
         base.OnStartClient();

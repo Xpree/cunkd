@@ -130,6 +130,8 @@ public class GameServer : MonoBehaviour
         gamePlayer.LobbyClient = LobbyClient.FromConnection(conn);
         NetworkServer.ReplacePlayerForConnection(conn, gamePlayer.gameObject, true);
         Players.Add(gamePlayer);
+
+        gamePlayer.GetComponent<Inventory>().Invoke("SpawnPrimaryWeapon", 0.2f);
     }
 
     void TryAddPlayer(NetworkConnectionToClient conn)
@@ -290,7 +292,7 @@ public class GameServer : MonoBehaviour
         {
             PurgeOwnedObjects(client);
             player.TargetRespawn(spawn.position, spawn.rotation);
-            client.GetComponent<Inventory>().Invoke("SpawnPrimaryWeapon", 0.5f);
+            client.GetComponent<Inventory>().Invoke("SpawnPrimaryWeapon", 0.2f);
         }
         else
         {
