@@ -73,6 +73,5 @@ public static class Settings
         get { return PlayerPrefs.GetInt("AutoEquipOnPickup", 1) != 0; }
         set { PlayerPrefs.SetInt("AutoEquipOnPickup", value ? 1 : 0); }
     }
-
-
+    
 }
