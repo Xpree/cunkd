@@ -57,6 +57,12 @@ public class PlayerCameraController : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        if(playerCamera.enabled)
+            DeactivateCamera();            
+    }
+
     private void OnCameraShake(CameraShakeSource source)
     {
         this.AddShake(source);
