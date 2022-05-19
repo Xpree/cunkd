@@ -27,7 +27,7 @@ public class IceGadgetTrap : NetworkBehaviour
     {
         FMODUnity.RuntimeManager.PlayOneShot("event:/SoundStudents/SFX/Gadgets/WalkingOnIcyFloor2D");
         player.GetComponent<PlayerMovement>().maxFrictionScaling = friction;
-        player.GetComponent<PlayerMovement>().maxSpeedScaling = 0f;
+        player.GetComponent<PlayerMovement>().maxSpeedScaling = 0.1f;
     }
 
     bool triggered = false;

@@ -47,6 +47,15 @@ public class LevelEventController : NetworkBehaviour
     LevelEvents.VolcanoLevelEvent nextEvent = new();
     float lerpVal = 0;
 
+    //[ClientRpc]
+    //void moveBoat(Vector3 pos, Quaternion rot)
+    //{
+    //    boat.transform.position = pos;
+    //    boat.transform.rotation = rot;
+    //}
+
+
+
     [Server]
     void Update()
     {
@@ -74,6 +83,8 @@ public class LevelEventController : NetworkBehaviour
 
                 boat.transform.position = Vector3.Lerp(lastBoatPos, currentEvent.boatPosition, lerpVal);
                 boat.transform.rotation = Quaternion.Lerp(lastBoatRot, currentEvent.boatRotation, lerpVal);
+
+                //moveBoat(boat.transform.position, boat.transform.rotation);
 
             }
             if (1 < lerpVal)
