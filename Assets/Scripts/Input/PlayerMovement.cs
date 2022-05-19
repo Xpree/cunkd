@@ -22,7 +22,7 @@ public class PlayerMovement : NetworkBehaviour
     public double _lastGrounded = 0;
     public double _lastJump = 0;
 
-    [SyncVar]public float bonusSpeed;
+    [SyncVar] public float bonusSpeed;
 
     public float maxSpeedScaling = 1f;
     public float maxFrictionScaling = 1f;
@@ -65,6 +65,12 @@ public class PlayerMovement : NetworkBehaviour
         {
             Debug.LogError("Missing GameSettings reference on " + name);
         }
+    }
+
+    public override void OnStartLocalPlayer()
+    {
+        base.OnStartLocalPlayer();
+        _rigidBody.isKinematic = true;
     }
 
     void ResetState()
@@ -188,10 +194,11 @@ public class PlayerMovement : NetworkBehaviour
     }
 
     void PerformJump()
-    {
+    {        
         if (!_performJump)
             return;
         _performJump = false;
+        SetKinematicOff();
 
         if (!HasGroundContact)
         {
@@ -285,6 +292,7 @@ public class PlayerMovement : NetworkBehaviour
 
         if (HasMovementInput)
         {
+            SetKinematicOff();
             ApplyAcceleration(_movementInput);
         }        
         // Temp reset
@@ -311,6 +319,22 @@ public class PlayerMovement : NetworkBehaviour
         _isGrounded = false;
     }
 
+    public void SetKinematicOff()
+    {
+        if(_rigidBody.isKinematic)
+        {
+            _rigidBody.isKinematic = false;
+            _rigidBody.velocity = Vector3.zero;
+        }
+    }
+
+    System.Collections.IEnumerator PreventMovement()
+    {
+        _rigidBody.isKinematic = true;
+        yield return new WaitForSeconds(2.0f);
+        SetKinematicOff();
+    }
+
     [TargetRpc]
     public void TargetRespawn(Vector3 position, Quaternion rotation)
     {
@@ -319,6 +343,9 @@ public class PlayerMovement : NetworkBehaviour
         transform.rotation = rotation;
         ResetState();
         _networkTransform.CmdTeleport(position, rotation);
+
+        StopAllCoroutines();
+        StartCoroutine(PreventMovement());
     }
 
 

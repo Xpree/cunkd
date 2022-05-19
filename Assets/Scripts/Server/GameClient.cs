@@ -75,6 +75,7 @@ public class GameClient : NetworkBehaviour
 
         _inputs.SetPlayerMode();
         _inputs.EnableInput();
+        GetComponent<PlayerMovement>().SetKinematicOff();
     }
 
 
