@@ -76,7 +76,7 @@ public class Spectator : NetworkBehaviour
             }
         }
 
-        if (currentCamera == null)
+        if (currentCamera == null && mainCamera != null)
             mainCamera.enabled = true;
     }
 
