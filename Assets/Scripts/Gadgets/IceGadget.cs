@@ -14,12 +14,15 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
     [SerializeField] GameSettings _settings;
     NetworkCooldown _cooldownTimer;
 
+    [SyncVar(hook = nameof(OnPosition))] public Vector3 positionSync;
+
     bool IGadget.isPassive => isPassive;
     int IGadget.Charges => _settings.IceGadget.Charges;
     int IGadget.ChargesLeft => _cooldownTimer.Charges;
 
     [SerializeField] float Cooldown;
-    
+    GameObject trap;
+
     void Awake()
     {
         _cooldownTimer = GetComponent<NetworkCooldown>();
@@ -38,32 +41,61 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
     }
 
     [Command]
-    void SpawnIceGadget()
+    public void sync(Vector3 pos)
     {
-        if (_cooldownTimer.ServerUse(_settings.IceGadget.Cooldown))
-        {
-            AudioHelper.PlayOneShotWithParameters("event:/SoundStudents/SFX/Gadgets/Icy Floor Trap", this.transform.position, ("Shot", 1f), ("StandbyHum", 1f));
-
-            var go = Instantiate(IceGadgetTrap, transform.position + transform.forward *3, Quaternion.identity);
-            go.GetComponent<Rigidbody>().AddForce(transform.forward * throwForce *10);
-            go.GetComponent<Rigidbody>().AddTorque(new Vector3(0, 100000, 0), ForceMode.Force);
-            NetworkServer.Spawn(go);
-
-            if (_cooldownTimer.Charges == 0)
-            {
-                NetworkServer.Destroy(this.gameObject);
-            }
-        }
+        positionSync = pos;
     }
 
+    [Client]
+    void OnPosition(Vector3 previous, Vector3 current)
+    {
+        trap.transform.position = current;
+        trap.GetComponent<Rigidbody>().isKinematic = true;
+        trap.GetComponent<IceGadgetTrap>().iceMachine.Trigger();
+    }
+
+    [Command]
+    void CmdSpawnIceGadget()
+    {
+        RpcSpawnIceGadgetClient();
+    }
+
+    [ClientRpc(includeOwner = false)]
+    void RpcSpawnIceGadgetClient()
+    {
+        InstantiateIceTrap();
+    }
+
+    void InstantiateIceTrap(IceGadget ig = null)
+    {
+        trap = Instantiate(IceGadgetTrap, transform.position + transform.forward * 3, Quaternion.identity);
+        trap.GetComponent<Rigidbody>().AddForce(transform.forward * throwForce * 10);
+        trap.GetComponent<Rigidbody>().AddTorque(new Vector3(0, 100000, 0), ForceMode.Force);
+        trap.GetComponent<IceGadgetTrap>().owner = ig;
+    }
+
+    [Command]
+    void DestroyGadget()
+    {
+        NetworkServer.Destroy(this.gameObject);
+    }
 
     void IGadget.PrimaryUse(bool isPressed)
     {
         if (isPressed == false)
             return;
-               
-        SpawnIceGadget();
+
+        if (_cooldownTimer.Use())
+        {
+            InstantiateIceTrap(this);
+            CmdSpawnIceGadget();
+            if (_cooldownTimer.Charges <= 0)
+            {
+                Invoke("DestroyGadget", _cooldownTimer.CooldownDuration);
+            }
+        }
     }
+
 
     void IGadget.SecondaryUse(bool isPressed)
     {
