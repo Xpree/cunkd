@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{ba4ff16a-853d-40b2-8222-34f2e789bf9d}">
+		<property name="name">
+			<value>Cooldown</value>
+		</property>
+		<relationship name="folder">
+			<destination>{f3175451-52e8-4193-903b-a4fc7e20a798}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{45f0de45-6378-471b-b30a-f6e2ca99952f}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{45f0de45-6378-471b-b30a-f6e2ca99952f}">
+		<property name="parameterType">
+			<value>1</value>
+		</property>
+		<property name="maximum">
+			<value>2</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{30a022a3-bbe7-443a-93c7-8901e6867ee2}">
+		<property name="name">
+			<value>end of rising</value>
+		</property>
+		<relationship name="folder">
+			<destination>{f3175451-52e8-4193-903b-a4fc7e20a798}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{7a0e575b-e549-4d1c-96be-581f5f634504}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{7a0e575b-e549-4d1c-96be-581f5f634504}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

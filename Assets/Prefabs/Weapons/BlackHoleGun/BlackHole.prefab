@@ -293,11 +293,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: 2057260479
-      Data2: 1205948219
-      Data3: 819580032
-      Data4: 2092371015
-    Path: event:/SoundStudents/SFX/Weapons/Black Hole
+      Data1: -338275368
+      Data2: 1134147437
+      Data3: -827947868
+      Data4: -478181645
+    Path: event:/SoundStudents/SFX/Weapons/Black Hole Gun/BlackHole
   Event: 
   PlayEvent: 1
   StopEvent: 2
