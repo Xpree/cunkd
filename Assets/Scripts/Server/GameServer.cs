@@ -282,9 +282,9 @@ public class GameServer : MonoBehaviour
         PurgeOwnedObjects(conn);
     }
 
-    public static void Respawn(GameObject client)
+    public static void Respawn(GameObject client, Transform spawn)
     {
-        var spawn = CunkdNetManager.Instance.GetStartPosition();
+        //var spawn = CunkdNetManager.Instance.GetStartPosition();
         var player = client?.GetComponent<PlayerMovement>();
         if(player != null)
         {
