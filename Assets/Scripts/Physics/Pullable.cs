@@ -123,13 +123,6 @@ public class Pullable : NetworkBehaviour
         offsetPosition = Vector3.zero;
         fixedTimer = timeToFixed;
         SetPulling(true);
-
-        //Renderer rend = GetComponent<Renderer>();
-        //if (rend)
-        //{
-        //    Color col = rend.material.color;
-        //    rend.material.color = col * new Color(1, 1, 1, 0.5f);
-        //}
     }
 
     public void StopPulling()
@@ -145,7 +138,7 @@ public class Pullable : NetworkBehaviour
             this.gameObject.GetComponent<KnockbackScript>().onOff = false;
         }
         if(offTime >= 0 && !pulling)
-            offTime = offTime - 1 * Time.deltaTime;
+            offTime = offTime - Time.fixedDeltaTime;
         if (!pulling)
             return;
         
