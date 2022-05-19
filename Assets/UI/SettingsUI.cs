@@ -10,8 +10,8 @@ public class SettingsUI : MonoBehaviour
     public Toggle autoEquipToggle;
 
     public Slider fieldOfView;
-    public Slider mouseSensitivity;
-    public Slider zoomMouseSensitivity;
+    public TMP_InputField mouseSensitivity;
+    public TMP_InputField zoomMouseSensitivity;
     public Slider masterVolume;
     public Toggle muteToggle;
 
@@ -47,8 +47,8 @@ public class SettingsUI : MonoBehaviour
         playerNameInput.text = Settings.playerName;
         autoEquipToggle.isOn = Settings.autoEquipOnPickup;
         fieldOfView.value = Settings.cameraFov;
-        mouseSensitivity.value = Settings.mouseSensitivity;
-        zoomMouseSensitivity.value = Settings.zoomSensitivity;
+        mouseSensitivity.text = Settings.mouseSensitivity.ToString("F2", System.Globalization.CultureInfo.InvariantCulture);
+        zoomMouseSensitivity.text = Settings.zoomSensitivity.ToString("F2", System.Globalization.CultureInfo.InvariantCulture);
         masterVolume.value = Settings.volume;
         muteToggle.isOn = Settings.muted;
 
@@ -105,18 +105,20 @@ public class SettingsUI : MonoBehaviour
         Settings.cameraFov = value;
     }
 
-    public void SetMouseSensitivity(float value)
+    public void SetMouseSensitivity(string value)
     {
-        if (invalidSettings) return;
+        float v;
+        if (invalidSettings || float.TryParse(value, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out v) == false) return;
 
-        Settings.mouseSensitivity = value;
+        Settings.mouseSensitivity = v;
     }
 
-    public void SetZoomSensitivity(float value)
+    public void SetZoomSensitivity(string value)
     {
-        if (invalidSettings) return;
+        float v;
+        if (invalidSettings || float.TryParse(value, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out v) == false) return;
 
-        Settings.zoomSensitivity = value;
+        Settings.zoomSensitivity = v;
     }
 
     public void SetMasterVolume(float value)

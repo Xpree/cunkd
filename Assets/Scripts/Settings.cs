@@ -57,14 +57,14 @@ public static class Settings
 
     public static float mouseSensitivity
     {
-        get { return Mathf.Max(0.0001f, PlayerPrefs.GetFloat("MouseSensitivity", 1.0f)); }
+        get { return Mathf.Max(0.01f, PlayerPrefs.GetFloat("MouseSensitivity", 1.0f)); }
         set { PlayerPrefs.SetFloat("MouseSensitivity", value); }
     }
 
 
     public static float zoomSensitivity
     {
-        get { return Mathf.Max(0.0001f, PlayerPrefs.GetFloat("ZoomedSensitivity", 0.5f)); }
+        get { return Mathf.Max(0.01f, PlayerPrefs.GetFloat("ZoomedSensitivity", 0.5f)); }
         set { PlayerPrefs.SetFloat("ZoomedSensitivity", value); }
     }
     
