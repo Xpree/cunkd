@@ -21,6 +21,9 @@ public class SettingsUI : MonoBehaviour
 
     public Button backButton;
 
+    public GameObject fullscreenUI;
+    public GameObject windowedUI;
+
     private void Awake()
     {
         playerNameInput.onValueChanged.AddListener(SetPlayerName);
@@ -29,6 +32,9 @@ public class SettingsUI : MonoBehaviour
         mouseSensitivity.onValueChanged.AddListener(SetMouseSensitivity);
         masterVolume.onValueChanged.AddListener(SetMasterVolume);
         muteToggle.onValueChanged.AddListener(SetMuted);
+
+        fullscreenUI.SetActive(Screen.fullScreen);
+        windowedUI.SetActive(!Screen.fullScreen);
     }
 
     void UpdateSettings()
@@ -131,5 +137,15 @@ public class SettingsUI : MonoBehaviour
         backButton.onClick.Invoke();
         GameServer.Stats.ShowEndedByHost();
         GameServer.EndGame();
+    }
+
+    public void ToggleFullScreen()
+    {
+        if(Application.isEditor == false)
+        {
+            fullscreenUI.SetActive(!Screen.fullScreen);
+            windowedUI.SetActive(Screen.fullScreen);
+        }
+        Util.ToggleFullscreen();
     }
 }
