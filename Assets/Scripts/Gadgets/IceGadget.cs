@@ -87,6 +87,7 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
 
         if (_cooldownTimer.Use())
         {
+            AudioHelper.PlayOneShotAttachedWithParameters("event:/SoundStudents/SFX/Gadgets/Icy Floor Trap", this.gameObject, ("Shot", 1f), ("StandbyHum", 1f));
             InstantiateIceTrap(this);
             CmdSpawnIceGadget();
             if (_cooldownTimer.Charges <= 0)
