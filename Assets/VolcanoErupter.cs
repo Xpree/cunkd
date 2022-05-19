@@ -15,15 +15,11 @@ public class VolcanoErupter : NetworkBehaviour
     Transform[] positions;
     double nextSpawn = 0;
 
-
-
     [Server]
     private void Start()
     {
         positions = spawnPositions.GetComponentsInChildren<Transform>();
         forceCollider.enabled = false;
-        //nextSpawn = NetworkTime.time + spawnInterval;
-        nextSpawn = GameStats.RoundTimer.Elapsed + spawnInterval;
     }
 
     [Server]
@@ -41,17 +37,18 @@ public class VolcanoErupter : NetworkBehaviour
     }
 
     int maxSpawns = 0;
-    double duration = 0;
+    double duration = -1;
     float spawnedRocks = 0;
 
     [Server]
     private void Update()
     {
-        if (GameStats.RoundTimer.Elapsed <= duration)
+        if (GameStats.RoundTimer.Elapsed <= duration && spawnedRocks <= maxSpawns)
         {
-            if (spawnedRocks++ <= maxSpawns && nextSpawn <= GameStats.RoundTimer.Elapsed)
+            if (nextSpawn <= GameStats.RoundTimer.Elapsed)
             {
                 NetworkServer.Spawn(Instantiate(objectsToSpawn[Random.Range(0, objectsToSpawn.Length)], positions[Random.Range(1, positions.Length)].position, Quaternion.identity));
+                spawnedRocks++;
                 nextSpawn += spawnInterval;
             }
         }
@@ -61,12 +58,27 @@ public class VolcanoErupter : NetworkBehaviour
         }
     }
 
+    [ClientRpc]
+    void addForceToPlayer(GameObject go)
+    {
+        go.GetComponent<Rigidbody>().AddForce((Vector3.up * force / Mathf.Abs(go.transform.position.y - forcePosition.position.y)), ForceMode.Impulse);
+    }
+
+    [Server]
     private void OnTriggerStay(Collider other)
     {
+
         Rigidbody rigidbody = other.GetComponent<Rigidbody>();
         if (rigidbody)
         {
-            rigidbody.AddForce((Vector3.up * force / Mathf.Abs(other.transform.position.y - forcePosition.position.y)), ForceMode.Impulse);
+            if (rigidbody.gameObject.GetComponent<PlayerMovement>())
+            {
+                addForceToPlayer(other.gameObject);
+            }
+            else
+            {
+                rigidbody.AddForce((Vector3.up * force / Mathf.Abs(other.transform.position.y - forcePosition.position.y)), ForceMode.Impulse);
+            }
         }
     }
 }
