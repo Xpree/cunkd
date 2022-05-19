@@ -11,10 +11,6 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
     [SerializeField] GameSettings _settings;
 
     [SerializeField] Transform AnchorPoint;
-    [SerializeField] LayerMask TargetMask = ~0;
-
-
-    [SerializeField] Collider PlayerCollider;
     [SerializeField] ForceMode PushForceMode = ForceMode.Impulse;
     //grab
     float MaxGrabRange => _settings.GravityGun.MaxGrabRange;
@@ -233,7 +229,6 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         else
             transform.localScale = Vector3.one;
 
-        PlayerCollider = GetComponent<NetworkItem>().Owner.GetComponent<Collider>();
     }
 
 
@@ -246,8 +241,6 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             holstered = false;
             transform.localScale = Vector3.one;
         }
-
-        PlayerCollider = null;
 
     }
     #endregion

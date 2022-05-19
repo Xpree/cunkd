@@ -66,6 +66,16 @@ public class Pullable : NetworkBehaviour
         }
     }
 
+    void SetTransparent(bool enable)
+    {
+        var layer = LayerMask.NameToLayer(enable ? "Held" : "Movable");
+        this.gameObject.layer = layer;
+        foreach (Transform r in GetComponentsInChildren<Transform>(true))
+        {
+            r.gameObject.layer = layer;
+        }
+    }
+
     void SetFixed()
     {
         if (pullingCollider.enabled)
@@ -90,19 +100,7 @@ public class Pullable : NetworkBehaviour
             body.velocity = Vector3.zero;
             body.angularVelocity = Vector3.zero;
 
-            if (gameObject.transform.GetComponentsInParent<PlayerMovement>()[0].isLocalPlayer)
-            {
-                this.gameObject.layer = LayerMask.NameToLayer("Held");//puts objects into the held layer so the secondary camera will render them and make them transparent. this is changed back in the gravity gun script
-                foreach (Transform child in transform)
-                {
-                    child.gameObject.layer = LayerMask.NameToLayer("Held");
-                    foreach (Transform childrensChild in child.transform)
-                    {
-                        childrensChild.gameObject.layer = LayerMask.NameToLayer("Held");
-                    }
-                }
-            }
-
+            SetTransparent(true);
             this.gameObject.GetComponent<KnockbackScript>().onOff = true;
             offTime = 5f;
         }
@@ -137,16 +135,7 @@ public class Pullable : NetworkBehaviour
     {
         target = null;
         SetPulling(false);
-
-        this.gameObject.layer = LayerMask.NameToLayer("Movable");
-        foreach (Transform child in transform)
-        {
-            child.gameObject.layer = LayerMask.NameToLayer("Movable");
-            foreach (Transform childrensChild in child.transform)
-            {
-                childrensChild.gameObject.layer = LayerMask.NameToLayer("Movable");
-            }
-        }
+        SetTransparent(false);        
     }
 
     void FixedUpdate()

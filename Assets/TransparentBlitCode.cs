@@ -5,44 +5,66 @@ public class TransparentBlitCode : NetworkBehaviour
 {
     [SerializeField] Camera mainCamera;
     RenderTexture renderTexture;
-    [SerializeField]Camera secondaryCamera;
+    [SerializeField] Camera secondaryCamera;
     public Material blitMaterial;
     public string rendererTextureName = "_SecondaryCamera_";
 
-    public bool triggered = false;
-    private Vector2 resolution;
 
-
-    [Client]
-    void Start()
+    void Awake()
     {
-        base.OnStartServer();
-        if (!isLocalPlayer)
-        {
-            secondaryCamera.enabled = false;
-            return;
-        }
-        triggered = true;
         Debug.Assert(mainCamera);
-        renderTexture = new RenderTexture(Screen.width, Screen.height, 1, RenderTextureFormat.Default);
         Debug.Assert(secondaryCamera);
+        secondaryCamera.enabled = false;
+    }
+
+    public override void OnStartLocalPlayer()
+    {
+        SetActiveCamera();
+    }
+
+    void OnDestroy()
+    {
+        if (renderTexture != null)
+        {
+            renderTexture.Release();
+        }
+    }
+
+    void CreateTexture()
+    {
+        if (renderTexture != null)
+        {
+            renderTexture.Release();
+        }
+        renderTexture = new RenderTexture(Screen.width, Screen.height, 1, RenderTextureFormat.Default);
         secondaryCamera.targetTexture = renderTexture;
         renderTexture.name = rendererTextureName;
-        Shader.SetGlobalTexture(rendererTextureName, renderTexture);
     }
-    [Client]
+
     private void Update()
     {
-        if (!isLocalPlayer)
-        {
+        if (mainCamera.enabled == false)
             return;
-        }
+        
         if (Screen.width != secondaryCamera.targetTexture.width || Screen.height != secondaryCamera.targetTexture.height)
         {
-            renderTexture = new RenderTexture(Screen.width, Screen.height, 1, RenderTextureFormat.Default);
-            secondaryCamera.targetTexture = renderTexture;
-            renderTexture.name = rendererTextureName;
-            Shader.SetGlobalTexture(rendererTextureName, renderTexture);
+            if(renderTexture != null)
+                CreateTexture();
         }
+    }
+
+    public void SetActiveCamera()
+    {
+        if (renderTexture == null)
+        {
+            CreateTexture();
+        }
+        Shader.SetGlobalTexture(rendererTextureName, renderTexture);
+        secondaryCamera.enabled = true;
+    }
+
+    public void DeactivateCamera()
+    {
+        secondaryCamera.enabled = false;
     }
 }

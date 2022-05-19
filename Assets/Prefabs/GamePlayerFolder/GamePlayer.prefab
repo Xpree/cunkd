@@ -545,13 +545,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0540df09787705f4c9742e267a7f1d48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
   mainCamera: {fileID: 6314228708957030162}
   secondaryCamera: {fileID: 4190220107651868463}
   blitMaterial: {fileID: 2100000, guid: 05bb9d1c855541046bc91edb8313cd23, type: 2}
   rendererTextureName: _CameraOverlay_
-  triggered: 0
 --- !u!114 &6663273738497093058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -966,6 +963,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 3757456631009906531}
+        m_TargetAssemblyTypeName: TransparentBlitCode, Assembly-CSharp
+        m_MethodName: SetActiveCamera
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   OnCameraDeactivated:
     m_PersistentCalls:
       m_Calls:
@@ -997,6 +1006,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3757456631009906531}
+        m_TargetAssemblyTypeName: TransparentBlitCode, Assembly-CSharp
+        m_MethodName: DeactivateCamera
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
