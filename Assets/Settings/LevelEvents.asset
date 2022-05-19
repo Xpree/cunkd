@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LevelEvents
   m_EditorClassIdentifier: 
   VolcanoLevelEvents:
-  - startTime: 120
+  - startTime: 100
     runTime: 15
     waterPosition: {x: -31, y: 4, z: -29.7}
     triggered: 1
@@ -27,7 +27,7 @@ MonoBehaviour:
     - {fileID: 9003045500053303359, guid: 59b3ab85a3fbe8749ba47d2543d571ea, type: 3}
     - {fileID: 1378988124465049898, guid: d93472e4f331f914ca0de699d014102d, type: 3}
     - {fileID: 140994982573622302, guid: a2ecfc71e5b9fc248afed89589fa420f, type: 3}
-  - startTime: 240
+  - startTime: 200
     runTime: 15
     waterPosition: {x: -31, y: 26.9, z: -29.7}
     triggered: 1
@@ -41,7 +41,7 @@ MonoBehaviour:
     - {fileID: 9003045500053303359, guid: 59b3ab85a3fbe8749ba47d2543d571ea, type: 3}
     - {fileID: 1378988124465049898, guid: d93472e4f331f914ca0de699d014102d, type: 3}
     - {fileID: 140994982573622302, guid: a2ecfc71e5b9fc248afed89589fa420f, type: 3}
-  - startTime: 360
+  - startTime: 300
     runTime: 15
     waterPosition: {x: -31, y: 52.2, z: -29.7}
     triggered: 1
