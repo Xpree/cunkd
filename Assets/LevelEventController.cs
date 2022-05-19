@@ -30,6 +30,11 @@ public class LevelEventController : NetworkBehaviour
         lastWaterPos = water.transform.position;
         lastBoatRot = boat.transform.rotation;
         yDiff = Mathf.Abs(deathFloor.transform.position.y - water.transform.position.y);
+
+        foreach (var item in setActiveAfterEvent)
+        {
+            item.SetActive(false);
+        }
     }
 
     bool spawnPointsSet = false;
