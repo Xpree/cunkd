@@ -128,6 +128,13 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
             lerpval += Time.deltaTime * (speed / (fix - HitDetected).magnitude) * 70;
             lerpval2 += Time.deltaTime * (speed / (fix - HitDetected).magnitude) * 30;
             lerpval3 += Time.deltaTime * (speed / (fix - HitDetected).magnitude) * 10;
+
+            if (beam.transform.position == HitDetected && beam2.transform.position == HitDetected && beam3.transform.position == HitDetected)
+            {
+                GameObject.Destroy(beam);
+                GameObject.Destroy(beam2);
+                GameObject.Destroy(beam3);
+            }
         }
 
     }
