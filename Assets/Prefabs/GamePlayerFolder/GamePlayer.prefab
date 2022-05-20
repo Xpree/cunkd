@@ -623,14 +623,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1030195017443714283}
-  m_LocalRotation: {x: 0.4321055, y: 0.52583534, z: 0.6412809, w: 0.35431758}
-  m_LocalPosition: {x: -0.6421001, y: -0.101, z: 0.411}
+  m_LocalRotation: {x: 0.5779654, y: 0.60192394, z: 0.51201075, w: 0.20368762}
+  m_LocalPosition: {x: -0.45, y: -0.098, z: 0.305}
   m_LocalScale: {x: 0.07, y: 0.07, z: 0.07}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3821050329011903394}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: -21.605, y: -4.538, z: 102.164}
+  m_LocalEulerAnglesHint: {x: -22.392, y: 115.134, z: 102.01}
 --- !u!1 &1030505909297228069
 GameObject:
   m_ObjectHideFlags: 0
@@ -1663,7 +1663,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5988882744623928532}
   m_LocalRotation: {x: 0.37833542, y: -0.6550654, z: -0.4254874, w: 0.49670133}
-  m_LocalPosition: {x: -0.15280005, y: -0.028, z: 0.2037999}
+  m_LocalPosition: {x: -0.041, y: -0.028, z: 0.202}
   m_LocalScale: {x: 0.07000001, y: 0.07000001, z: 0.07000001}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2548,22 +2548,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 6227326b873903141998aae230a763a3, type: 3}
   m_PrefabInstance: {fileID: 3990416635257689117}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4104164930357187970
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4296899242189203788}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fff0960ef4ea6e04eac66b4a7fd2189d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_RigLayers:
-  - m_Rig: {fileID: 1717287047458035715}
-    m_Active: 1
-  m_Effectors: []
 --- !u!95 &8204663571986692130
 Animator:
   serializedVersion: 4
@@ -2584,6 +2568,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4104164930357187970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4296899242189203788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fff0960ef4ea6e04eac66b4a7fd2189d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RigLayers:
+  - m_Rig: {fileID: 1717287047458035715}
+    m_Active: 1
+  m_Effectors: []
 --- !u!1 &4390074251459831417 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8391222552659086748, guid: 6227326b873903141998aae230a763a3, type: 3}
