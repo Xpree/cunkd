@@ -41,9 +41,8 @@ public class BouncePad : NetworkBehaviour
 
         if (isReady && rb)
         {
-            {
-                LaunchObject(rb);
-            }
+            FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/BouncePad", this.gameObject);
+            LaunchObject(rb);            
         }
     }
 }
