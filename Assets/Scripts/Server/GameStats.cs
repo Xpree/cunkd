@@ -18,7 +18,7 @@ public class GameStats : NetworkBehaviour
 
     public static GameStats Singleton;
 
-    public static NetworkTimer RoundTimer => Singleton.RoundStart;
+    public static float RoundTimer => Singleton.RoundStart.IsSet ? (float)Singleton.RoundStart.Elapsed : 0;
 
     public static bool IsRoundStarted => Singleton.IsRoundActive;
     public static bool HasRoundEnded => Singleton.RoundEnded.TickTime > Singleton.RoundStart.TickTime;
