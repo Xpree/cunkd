@@ -40,6 +40,9 @@ namespace Mirror
         protected abstract Transform targetComponent { get; }
 
         [Header("Synchronization")]
+        [Tooltip("Set to true to use World coordinates as local coordinates when syncing")]
+        [SyncVar]
+        public bool syncWorldAsLocal;
         [Range(0, 1)] public float sendInterval = 0.050f;
         public bool syncPosition = true;
         public bool syncRotation = true;
@@ -134,6 +137,19 @@ namespace Mirror
         // => internal for testing
         protected virtual NTSnapshot ConstructSnapshot()
         {
+            if(syncWorldAsLocal)
+            {
+                // NetworkTime.localTime for double precision until Unity has it too
+                return new NTSnapshot(
+                    // our local time is what the other end uses as remote time
+                    NetworkTime.localTime,
+                    // the other end fills out local time itself
+                    0,
+                    targetComponent.position,
+                    targetComponent.rotation,
+                    targetComponent.localScale
+                );
+            }
             // NetworkTime.localTime for double precision until Unity has it too
             return new NTSnapshot(
                 // our local time is what the other end uses as remote time

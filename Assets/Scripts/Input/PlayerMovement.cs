@@ -35,21 +35,12 @@ public class PlayerMovement : NetworkBehaviour
 
     public bool _landed;
 
-    public Animator _localAnimator;
-
     public GameObject _platform;
-    public GameObject _lastPlatform;
-    public Vector3 _lastPlatformPosition = Vector3.zero;
-    public GameObject body;
-    // TODO: Make rotation relative movement
-    //public Quaternion _lastPlatformRotation = Quaternion.identity;
-
     public NetworkTransform _networkTransform;
 
     private void Awake()
     {
         _networkTransform = GetComponent<NetworkTransform>();
-        _localAnimator = GetComponent<Animator>();
         _rigidBody = GetComponent<Rigidbody>();
         _rigidBody.useGravity = false;
         _rigidBody.isKinematic = false;
@@ -57,10 +48,6 @@ public class PlayerMovement : NetworkBehaviour
     
     private void Start()
     {
-        // if(isLocalPlayer)
-        // {
-        //     body.SetActive(false);
-        // }
         if (_settings == null)
         {
             Debug.LogError("Missing GameSettings reference on " + name);
@@ -239,50 +226,31 @@ public class PlayerMovement : NetworkBehaviour
         SetLanded(_isGrounded);
     }
 
-    
-    void ApplyPlatformRelativeMovement()
-    {
-        if (_platform == null || !_isGrounded)
-        {
-            _lastPlatform = null;
-            return;
-        }
-
-        if (_lastPlatform != _platform)
-        {
-            _lastPlatform = _platform;
-            _lastPlatformPosition = _platform.transform.position;
-
-            
-            //_lastPlatformRotation = _platform.transform.localRotation;
-            return;
-        }
-
-        Vector3 pos = _platform.transform.position;
-        Vector3 delta = pos - _lastPlatformPosition;
-        _lastPlatformPosition = pos;
-        _rigidBody.MovePosition(_rigidBody.position + delta);
-
-        
-        /*
-        Quaternion rot = _platform.transform.localRotation;
-        Quaternion deltaRot = rot * Quaternion.Inverse(_lastPlatformRotation);
-        Vector3 angles = new Vector3(0, deltaRot.eulerAngles.y, 0);
-        transform.Rotate(angles);
-        _lastPlatformRotation = rot;
-        */
-       
-        _platform = null;
-    }
-
-    
     private void FixedUpdate()
     {
         // NOTE: Runs on all clients
         
-        ApplyPlatformRelativeMovement();
-        
+        //ApplyPlatformRelativeMovement();
+      
         CheckGrounded();
+
+        if(isLocalPlayer)
+        {
+            if (_platform != null)
+            {
+                if (_isGrounded)
+                {
+                    this.transform.parent = _platform.transform;
+                }
+                _platform = null;
+            }
+            else
+            {
+                this.transform.parent = null;
+            }
+        }
+
+
         ApplyGravity();
         PerformJump();
         if (HasGroundFriction)
