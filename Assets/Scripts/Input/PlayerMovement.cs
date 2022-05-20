@@ -38,6 +38,8 @@ public class PlayerMovement : NetworkBehaviour
     public GameObject _platform;
     public NetworkTransform _networkTransform;
 
+    NetworkTimer _preventGroundFriction;
+
     private void Awake()
     {
         _networkTransform = GetComponent<NetworkTransform>();
@@ -82,7 +84,7 @@ public class PlayerMovement : NetworkBehaviour
     public bool HasGroundContact => (_isGrounded || HasCoyoteTime);
 
     public bool HasMovementInput => _movementInput.sqrMagnitude > 0;
-    public bool HasGroundFriction => (_isGrounded || (HasCoyoteTime && HasMovementInput == false)) && _rigidBody.velocity.y < _settings.CharacterMovement.MaxSpeed * 0.5f;
+    public bool HasGroundFriction => (_isGrounded || (HasCoyoteTime && HasMovementInput == false)) && _rigidBody.velocity.y < _settings.CharacterMovement.MaxSpeed * 0.5f && _preventGroundFriction.Elapsed > 0;
 
     public Vector3 HorizontalVelocity
     {
@@ -285,6 +287,7 @@ public class PlayerMovement : NetworkBehaviour
     {
         _rigidBody.AddForce(force, mode);
         _isGrounded = false;
+        _preventGroundFriction = NetworkTimer.FromNow(0.5f);
     }
 
     public void SetKinematicOff()
