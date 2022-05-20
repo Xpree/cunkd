@@ -72,6 +72,12 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
         }
     }
 
+    [Server]
+    void ServerSmash()
+    {
+        Smash();
+    }
+
 
     void IWeapon.PrimaryAttack(bool isPressed)
     {
