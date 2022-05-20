@@ -29,7 +29,7 @@ MonoBehaviour:
     - {fileID: 140994982573622302, guid: a2ecfc71e5b9fc248afed89589fa420f, type: 3}
   - startTime: 120
     runTime: 15
-    waterPosition: {x: -31, y: 27.9, z: -29.7}
+    waterPosition: {x: -31, y: 26.9, z: -29.7}
     triggered: 1
     boatPosition: {x: 8.7, y: 28, z: 59}
     boatRotation: {x: 0, y: -0.7715913, z: 0, w: 0.6361186}
