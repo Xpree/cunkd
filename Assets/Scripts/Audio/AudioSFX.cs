@@ -4,15 +4,8 @@ using UnityEngine;
 
 public class AudioSFX : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    void menuClick()
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
