@@ -156,6 +156,37 @@ CapsuleCollider:
   m_Height: 3
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1370914779514963551
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6591399567216749973}
+  m_Layer: 0
+  m_Name: Right Hand Grip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6591399567216749973
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370914779514963551}
+  m_LocalRotation: {x: -0.00016462799, y: 0.00024777648, z: -0.56898797, w: 0.82234585}
+  m_LocalPosition: {x: 0.617, y: -0.275, z: -0.937}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 427117330482908859}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0.001, y: 0.034, z: -69.359}
 --- !u!1 &1432894352643035017
 GameObject:
   m_ObjectHideFlags: 0
@@ -189,6 +220,8 @@ Transform:
   - {fileID: 4710763002055485413}
   - {fileID: 4710763000642848972}
   - {fileID: 5985581004144997469}
+  - {fileID: 6591399567216749973}
+  - {fileID: 1451484523102098252}
   m_Father: {fileID: 4710763000785292397}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -98, z: 0}
@@ -1519,6 +1552,7 @@ GameObject:
   - component: {fileID: 6110283334507131338}
   - component: {fileID: 4054417618360353291}
   - component: {fileID: 7385734869885387708}
+  - component: {fileID: 6614593740614473397}
   m_Layer: 0
   m_Name: JetPack
   m_TagString: Untagged
@@ -1661,6 +1695,20 @@ MonoBehaviour:
   syncInterval: 0.1
   clientAuthority: 0
   animator: {fileID: 4054417618360353291}
+--- !u!114 &6614593740614473397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4710763000785292386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ade154ebb8ffd88499781c24b9c32ec2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  left: {fileID: 1451484523102098252}
+  right: {fileID: 6591399567216749973}
 --- !u!1 &4710763002055484442
 GameObject:
   m_ObjectHideFlags: 0
@@ -3084,3 +3132,34 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!1 &6553257074107208068
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1451484523102098252}
+  m_Layer: 0
+  m_Name: Left Hand Grip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1451484523102098252
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6553257074107208068}
+  m_LocalRotation: {x: -0.6359701, y: -0.71853185, z: -0.182845, w: -0.21406026}
+  m_LocalPosition: {x: 0.76, y: -0.2552, z: -0.166}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 427117330482908859}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0.545, y: -212.698, z: 82.864}
