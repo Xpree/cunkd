@@ -37,8 +37,7 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
         }
     }
 
-
-    [ClientRpc]
+    
     void Smash()
     {
         var owner = GetComponent<NetworkItem>()?.Owner;
@@ -71,13 +70,6 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
             }            
         }
     }
-
-    [Server]
-    void ServerSmash()
-    {
-        Smash();
-    }
-
 
     void IWeapon.PrimaryAttack(bool isPressed)
     {

@@ -42,8 +42,8 @@ VisualEffect:
   m_GameObject: {fileID: 1196282966328265646}
   m_Enabled: 1
   m_Asset: {fileID: 8926484042661614526, guid: d223803b862575c4e9f1e640f83747e3, type: 3}
-  m_InitialEventName: OnPlay
-  m_InitialEventNameOverriden: 0
+  m_InitialEventName: 
+  m_InitialEventNameOverriden: 1
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
   m_ResourceVersion: 1
@@ -134,13 +134,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1799833152382049458}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.6850002, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.000000030908623, y: -0.7071068, z: -0.7071068, w: 0.000000030908623}
+  m_LocalPosition: {x: -0, y: -3.4846148, z: -0.1307712}
+  m_LocalScale: {x: 7.6923084, y: 7.6923084, z: 7.6923084}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5494559259887932130}
-  m_RootOrder: 1
+  m_Father: {fileID: 4379142210280890390}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &7845480291753229920
 BoxCollider:
@@ -153,8 +153,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 0.5392146, y: 1.3049214, z: 2.3426328}
-  m_Center: {x: -0.02734816, y: 0.022560298, z: 0.9796803}
+  m_Size: {x: 0.5392146, y: 1.3049214, z: 2.3973222}
+  m_Center: {x: -0.027348159, y: 0.022560295, z: 0.95233554}
 --- !u!1 &2455002749025444526
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,7 +184,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4379142210280890390}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: -12.549, y: -90.056, z: -89.948}
 --- !u!1 &2457713329198872239
 GameObject:
@@ -215,7 +215,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7679393172858511098}
-  - {fileID: 9180627487884175191}
   m_Father: {fileID: 3678308957761631315}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -504,7 +503,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4379142210280890390}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: -1.908, y: 151.515, z: 86.706}
 --- !u!1 &7618931280888435499
 GameObject:

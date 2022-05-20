@@ -36,7 +36,7 @@ public class NetworkItem : NetworkBehaviour
         transform.parent = anchor;
         transform.localRotation = Quaternion.identity;
         transform.localPosition = this.transform.position - interactCollider.transform.position;
-        transform.localPosition += Vector3.up * interactCollider.bounds.extents.y;
+        //transform.localPosition += Vector3.up * interactCollider.bounds.extents.y;
         interactCollider.enabled = true;
         IsSpawned = true;
     }
