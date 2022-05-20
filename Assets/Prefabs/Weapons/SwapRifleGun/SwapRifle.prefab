@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1571488511117638196
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5552477633457505712}
+  m_Layer: 0
+  m_Name: Right hand Grip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5552477633457505712
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571488511117638196}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.07, z: -11.21}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8640013922386466418}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2151162104370619477
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,6 +259,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &3433485458859313028
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8978125488005640470}
+  m_Layer: 0
+  m_Name: Left hand Grip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8978125488005640470
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3433485458859313028}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1.44}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8640013922386466418}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3509391183605136892
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,6 +383,7 @@ GameObject:
   - component: {fileID: 6442673011942864655}
   - component: {fileID: 9193244382059747024}
   - component: {fileID: 8053813949442105519}
+  - component: {fileID: 5777625652038700885}
   m_Layer: 0
   m_Name: SwapRifle
   m_TagString: Untagged
@@ -469,6 +532,20 @@ MonoBehaviour:
   Effects:
   - Name: Fire
     VFX: {fileID: 8369641931617526859}
+--- !u!114 &5777625652038700885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4053286044562665193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ade154ebb8ffd88499781c24b9c32ec2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  left: {fileID: 8978125488005640470}
+  right: {fileID: 5552477633457505712}
 --- !u!1 &5683034002247257297
 GameObject:
   m_ObjectHideFlags: 0
@@ -787,6 +864,8 @@ Transform:
   - {fileID: 4544863243754344426}
   - {fileID: 1926217732312123952}
   - {fileID: 5310135917095684084}
+  - {fileID: 5552477633457505712}
+  - {fileID: 8978125488005640470}
   m_Father: {fileID: 3678308957761631315}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

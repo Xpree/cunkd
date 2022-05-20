@@ -155,6 +155,37 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.5392146, y: 0.75796264, z: 0.69024795}
   m_Center: {x: -0.027348164, y: 0.019106232, z: 0.15348774}
+--- !u!1 &2455002749025444526
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1353624672054126198}
+  m_Layer: 0
+  m_Name: Right hand grip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1353624672054126198
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2455002749025444526}
+  m_LocalRotation: {x: 0.44237855, y: -0.55206525, z: -0.55123514, w: 0.44234037}
+  m_LocalPosition: {x: 0.33, y: -3.39, z: 0.86}
+  m_LocalScale: {x: 0.5384616, y: 0.53846157, z: 0.53846157}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4379142210280890390}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: -12.549, y: -90.056, z: -89.948}
 --- !u!1 &2457713329198872239
 GameObject:
   m_ObjectHideFlags: 0
@@ -287,6 +318,7 @@ GameObject:
   - component: {fileID: 5309527546514703037}
   - component: {fileID: -7542362330335650135}
   - component: {fileID: 5639649547052470171}
+  - component: {fileID: 5283010919433488431}
   m_Layer: 0
   m_Name: Hammer
   m_TagString: Untagged
@@ -429,6 +461,51 @@ MonoBehaviour:
   Effects:
   - Name: Smash
     VFX: {fileID: 3316987067655411242}
+--- !u!114 &5283010919433488431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4053286044562665193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ade154ebb8ffd88499781c24b9c32ec2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  left: {fileID: 7722026567244796140}
+  right: {fileID: 1353624672054126198}
+--- !u!1 &5110217677533567606
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7722026567244796140}
+  m_Layer: 0
+  m_Name: Left hand grip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7722026567244796140
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5110217677533567606}
+  m_LocalRotation: {x: -0.66232044, y: -0.70750225, z: -0.18060617, w: -0.16779062}
+  m_LocalPosition: {x: -0.18, y: -2.95, z: 2.44}
+  m_LocalScale: {x: 0.5384616, y: 0.53846157, z: 0.53846157}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4379142210280890390}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: -1.908, y: 151.515, z: 86.706}
 --- !u!1 &7618931280888435499
 GameObject:
   m_ObjectHideFlags: 0
