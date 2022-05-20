@@ -19,6 +19,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     [SerializeField] GameObject EffectSphere;
 
     [SerializeField] Transform PointOfFire;
+    [SerializeField] GameObject sniper;
 
     NetworkCooldown _cooldownTimer;
 
@@ -207,11 +208,13 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     {
         if (zoomed == false)
         {
+            sniper.SetActive(false);
             scopeCanvas.SetActive(true);
             zoomed = true;
         }
         else if (zoomed == true)
         {
+            sniper.SetActive(true);
             scopeCanvas.SetActive(false);
             zoomed = false;
         }

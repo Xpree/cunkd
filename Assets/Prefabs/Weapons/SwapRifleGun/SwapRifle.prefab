@@ -464,6 +464,7 @@ MonoBehaviour:
     m_Bits: 448
   EffectSphere: {fileID: 7587102243636323291, guid: eca299bb61c4d3445aa76d1155724e3c, type: 3}
   PointOfFire: {fileID: 4451355165072156543}
+  sniper: {fileID: 8137255816855233518}
   zoomed: 0
   speed: 13.4
 --- !u!114 &8162454346370928035
