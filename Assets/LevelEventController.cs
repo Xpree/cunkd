@@ -42,7 +42,7 @@ public class LevelEventController : NetworkBehaviour
     [Server]
     void triggerEvent(LevelEvents.VolcanoLevelEvent levelEvent)
     {
-        print("triggering event: " + (eventIndex) + " at time: " + GameStats.RoundTimer.Elapsed);
+        print("triggering event: " + (eventIndex) + " at time: " + GameStats.RoundTimer);
         levelEvent.triggered = true;
         runningEvent = true;
         lerpVal = 0;
@@ -84,12 +84,12 @@ public class LevelEventController : NetworkBehaviour
         {
             nextEvent = events.VolcanoLevelEvents[eventIndex];
 
-            if (nextEvent.startTime - 5 < GameStats.RoundTimer.Elapsed && !spawnPointsSet)
+            if (nextEvent.startTime - 5 < GameStats.RoundTimer && !spawnPointsSet)
             {
                 setPlayerSpawn();
             }
 
-            if (nextEvent.startTime < GameStats.RoundTimer.Elapsed && !runningEvent)
+            if (nextEvent.startTime < GameStats.RoundTimer && !runningEvent)
             {
                 triggerEvent(events.VolcanoLevelEvents[eventIndex]);
             }
@@ -99,9 +99,9 @@ public class LevelEventController : NetworkBehaviour
         if (0 < eventIndex)
         {
             LevelEvents.VolcanoLevelEvent currentEvent = events.VolcanoLevelEvents[eventIndex - 1];
-            if (currentEvent.startTime < GameStats.RoundTimer.Elapsed)
+            if (currentEvent.startTime < GameStats.RoundTimer)
             {
-                lerpVal = (float)(GameStats.RoundTimer.Elapsed - currentEvent.startTime) / currentEvent.runTime;
+                lerpVal = (float)(GameStats.RoundTimer - currentEvent.startTime) / currentEvent.runTime;
                 water.transform.position = Vector3.Lerp(lastWaterPos, currentEvent.waterPosition, lerpVal);
 
                 deathFloor.transform.position = new Vector3(deathFloor.transform.position.x, water.transform.position.y + yDiff, deathFloor.transform.position.z);

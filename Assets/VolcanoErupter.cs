@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
+using Unity.VisualScripting;
 
 public class VolcanoErupter : NetworkBehaviour
 {
@@ -11,7 +12,8 @@ public class VolcanoErupter : NetworkBehaviour
     [SerializeField] GameObject spawnPositions;
     [SerializeField] GameObject[] objectsToSpawn;
     [SerializeField] Collider forceCollider;
-
+    [SerializeField] CameraShakeSource cameraShake;
+    
     Transform[] positions;
     double nextSpawn = 0;
 
@@ -20,6 +22,12 @@ public class VolcanoErupter : NetworkBehaviour
     {
         positions = spawnPositions.GetComponentsInChildren<Transform>();
         forceCollider.enabled = false;
+    }
+
+    [ClientRpc]
+    void RpcCameraShake(NetworkTimer eventTime)
+    {
+        cameraShake.OneShotShake(eventTime);
     }
 
     [Server]
@@ -31,9 +39,10 @@ public class VolcanoErupter : NetworkBehaviour
         this.objectsToSpawn = objectsToSpawn;
         this.spawnInterval = spawnInterval;
         this.maxSpawns = maxSpawns;
-        this.duration = GameStats.RoundTimer.Elapsed + duration;
-        nextSpawn = GameStats.RoundTimer.Elapsed + spawnInterval;
+        this.duration = GameStats.RoundTimer + duration;
+        nextSpawn = GameStats.RoundTimer + spawnInterval;
         spawnedRocks = 0;
+        RpcCameraShake(NetworkTimer.Now);
     }
 
     int maxSpawns = 0;
@@ -43,9 +52,9 @@ public class VolcanoErupter : NetworkBehaviour
     [Server]
     private void Update()
     {
-        if (GameStats.RoundTimer.Elapsed <= duration && spawnedRocks <= maxSpawns)
+        if (GameStats.RoundTimer <= duration && spawnedRocks <= maxSpawns)
         {
-            if (nextSpawn <= GameStats.RoundTimer.Elapsed)
+            if (nextSpawn <= GameStats.RoundTimer)
             {
                 NetworkServer.Spawn(Instantiate(objectsToSpawn[Random.Range(0, objectsToSpawn.Length)], positions[Random.Range(1, positions.Length)].position, Quaternion.identity));
                 spawnedRocks++;
@@ -81,4 +90,16 @@ public class VolcanoErupter : NetworkBehaviour
             }
         }
     }
+}
+
+
+
+
+[UnitTitle("On Volcano Erupt")]
+[UnitCategory("Events\\Level")]
+public class EventVolcanoErupt : GameObjectEventUnit<EmptyEventArgs>
+{
+    public override System.Type MessageListenerType => null;
+
+    protected override string hookName => nameof(EventCameraShake);
 }
