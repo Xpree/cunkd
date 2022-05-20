@@ -6422,7 +6422,7 @@ MonoBehaviour:
     music: event:/SoundStudents/Music/TitlePage&Menu
   - scene: Assets/Scenes/LobbyScene.unity
     music: event:/SoundStudents/Music/TitlePage&Menu
-  - scene: Assets/Scenes/TestLevel.unity
+  - scene: Assets/Scenes/Space Station.unity
     music: event:/SoundStudents/Music/Level 1 Theme
   - scene: Assets/Scenes/Volcano.unity
     music: event:/SoundStudents/Music/LavaLevel/LavaLevelAdaptive
