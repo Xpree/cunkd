@@ -1,5 +1,6 @@
 using UnityEngine;
 using Mirror;
+using TMPro;
 
 public class LevelEventController : NetworkBehaviour
 {
@@ -18,6 +19,13 @@ public class LevelEventController : NetworkBehaviour
     [Header("Each Index in the following array represents the corresponding event")]
     [SerializeField] GameObject[] setUseGravityAfterEvent;
     int eventIndex = 0;
+
+    [SerializeField] TextMeshProUGUI eventText;
+    [SerializeField] TextMeshProUGUI timerText;
+
+    [SyncVar(hook = nameof(syncText))] string eventTextSync;
+    [SyncVar(hook = nameof(syncTimer))] string timerTextSync;
+    [SyncVar(hook = nameof(syncColor))] Color colorTextSync;
 
     Vector3 lastWaterPos;
     Vector3 lastBoatPos;
@@ -38,6 +46,7 @@ public class LevelEventController : NetworkBehaviour
     }
 
     bool spawnPointsSet = false;
+    [Server]
     void setPlayerSpawn()
     {
         scoreKeeper.setPlayerSpawnPositions(playerSpawnPositions[eventIndex]);
@@ -69,6 +78,7 @@ public class LevelEventController : NetworkBehaviour
     //    boat.transform.rotation = rot;
     //}
     bool gravitySet = false;
+    [Server]
     void setUseGravity(int eventIndex)
     {
         foreach (var item in setUseGravityAfterEvent[eventIndex].GetComponentsInChildren<Rigidbody>())
@@ -81,23 +91,33 @@ public class LevelEventController : NetworkBehaviour
         gravitySet = true;
     }
 
+    float nextEventCountdown = 0;
 
     [Server]
     void Update()
     {
+
         if (eventIndex < events.VolcanoLevelEvents.Length)
         {
             nextEvent = events.VolcanoLevelEvents[eventIndex];
+            nextEventCountdown = nextEvent.startTime - (float)GameStats.RoundTimer.Elapsed;
 
-            if (nextEvent.startTime - 5 < GameStats.RoundTimer.Elapsed && !spawnPointsSet)
+            if (nextEventCountdown < 5 && !spawnPointsSet)
             {
                 setPlayerSpawn();
             }
 
-            if (nextEvent.startTime < GameStats.RoundTimer.Elapsed && !runningEvent)
+            if (nextEventCountdown < 0 && !runningEvent)
             {
                 triggerEvent(events.VolcanoLevelEvents[eventIndex]);
             }
+
+            setCountdownText();
+        }
+        else
+        {
+            eventText.text = "";
+            timerText.text = "";
         }
 
 
@@ -138,6 +158,73 @@ public class LevelEventController : NetworkBehaviour
                 lastBoatRot = currentEvent.boatRotation;
                 runningEvent = false;
             }
+
+            
         }
+    }
+
+    [Server]
+    void setCountdownText()
+    {
+        float minutes = Mathf.Floor(nextEventCountdown / 60);
+        float seconds = Mathf.Floor(nextEventCountdown % 60);
+
+        string min = minutes.ToString();
+        string sec = seconds.ToString();
+
+        if (minutes < 10)
+        {
+            min = "0" + minutes.ToString();
+        }
+        if (seconds < 10)
+        {
+            sec = "0" + Mathf.RoundToInt(seconds).ToString();
+        }
+
+        if (minutes < 1 && seconds < 10)
+        {
+            timerText.color = Color.red;
+
+            if (seconds < 6 && nextEventCountdown < seconds + 0.5f)
+            {
+                timerText.color -= new Color(0,0,0,1);
+            }
+        }
+        else
+        {
+            timerText.color = Color.white;
+        }
+
+        if (runningEvent)
+        {
+            eventText.text = "";
+            timerText.text = "";
+        }
+        else
+        {
+            eventText.text = "Next Event: ";
+            timerText.text = min + ":" + sec;
+        }
+
+        colorTextSync = timerText.color;
+        eventTextSync = eventText.text;
+        timerTextSync = timerText.text;
+
+    }
+
+    [Client]
+    void syncText(string previous, string current)
+    {
+        eventText.text  = current;
+    }
+    [Client]
+    void syncTimer(string previous, string current)
+    {
+        timerText.text = current;
+    }
+    [Client]
+    void syncColor(Color previous, Color current)
+    {
+        timerText.color = current;
     }
 }
