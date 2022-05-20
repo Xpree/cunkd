@@ -17,7 +17,6 @@ public class ObjectSpawner : NetworkBehaviour
     [SyncVar(hook = nameof(OnSpawnedItemChanged))] public GameObject spawnedItem;
 
     NetworkTimer nextSpawnTime;
-    
 
     public bool IsEquipmentSpawner => objectToSpawn.GetComponent<NetworkItem>() != null;
 
@@ -62,7 +61,7 @@ public class ObjectSpawner : NetworkBehaviour
         if (item != null && item.IsSpawned == false)
         {
             // Reset Item
-            effect.SetTrigger("startReady");
+            effect.SetTrigger("stopReady");
             spawnedItem = null;
             nextSpawnTime = NetworkTimer.FromNow(spawnTime);
         }
@@ -90,7 +89,10 @@ public class ObjectSpawner : NetworkBehaviour
         spawnedItem = go;
         var item = spawnedItem.GetComponent<NetworkItem>();
         if (item != null)
+        {
+            effect.SetTrigger("startReady");
             OnSpawnedItem(item);
+        }
     }
 
     void OnSpawnedItemChanged(GameObject previous, GameObject current)
@@ -101,13 +103,10 @@ public class ObjectSpawner : NetworkBehaviour
             if (item != null)
                 OnSpawnedItem(item);
         }
-        else
-            effect.SetTrigger("stopReady");
     }
 
     void OnSpawnedItem(NetworkItem item)
-    {
-        effect.SetTrigger("startReady");
+    {        
         var anchor = GetSpawnAnchor();
         item.OnSpawned(anchor);
     }
