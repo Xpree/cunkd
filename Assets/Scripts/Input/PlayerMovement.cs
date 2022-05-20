@@ -285,6 +285,11 @@ public class PlayerMovement : NetworkBehaviour
     [TargetRpc]
     public void TargetAddforce(Vector3 force, ForceMode mode)
     {
+        Debug.Log("Force = " + force.magnitude);
+        if (force.magnitude >= 35f)
+        {
+            FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Cat sound when dying", this.gameObject);
+        }
         _rigidBody.AddForce(force, mode);
         _isGrounded = false;
         _preventGroundFriction = NetworkTimer.FromNow(0.5f);

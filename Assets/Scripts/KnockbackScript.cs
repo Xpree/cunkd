@@ -4,7 +4,7 @@ using UnityEngine;
 using Mirror;
 
 public class KnockbackScript : NetworkBehaviour
-{
+{   
     [SerializeField] private float KnockbackStrength;
     public bool onOff;
 
@@ -37,9 +37,13 @@ public class KnockbackScript : NetworkBehaviour
                 Vector3 impulse = (horizontalNormal + Vector3.up * settings.GlobalKnockupMultiplier) * knockbackforce.magnitude * settings.GlobalKnockbackMultiplier;
                 var player = rb.GetComponent<PlayerMovement>();
                 if (player != null)
+                {                      
                     player.TargetAddforce(impulse, ForceMode.Impulse);
+                }
                 else
+                {                    
                     rb.AddForce(impulse, ForceMode.Impulse);
+                }
             }
         }
         
