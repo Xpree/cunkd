@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8605209965434925907
 RectTransform:
   m_ObjectHideFlags: 0
@@ -190,7 +190,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreScreen: {fileID: 8605209965434925908}
-  localLives: {fileID: 0}
 --- !u!1001 &322400873108597513
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -198,10 +197,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8605209965434925907}
     m_Modifications:
+    - target: {fileID: 147629267635527705, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
+    - target: {fileID: 147629267635527705, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -408591234634720211, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
+    - target: {fileID: 1616747260534440380, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2474281555798938166, guid: fc755042a74b8624abe0719acac16310, type: 3}
       propertyPath: m_Name
       value: ScoreboardItem (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 3003657551052021513, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
+    - target: {fileID: 3003657551052021513, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -408591234634720211, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
     - target: {fileID: 5934890990072101490, guid: fc755042a74b8624abe0719acac16310, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -286,6 +305,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6366210942859365295, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904445850935615609, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc755042a74b8624abe0719acac16310, type: 3}
 --- !u!114 &4322813902162844379 stripped
@@ -311,10 +338,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8605209965434925907}
     m_Modifications:
+    - target: {fileID: 147629267635527705, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
+    - target: {fileID: 147629267635527705, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -408591234634720211, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
+    - target: {fileID: 1616747260534440380, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2474281555798938166, guid: fc755042a74b8624abe0719acac16310, type: 3}
       propertyPath: m_Name
       value: ScoreboardItem (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3003657551052021513, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
+    - target: {fileID: 3003657551052021513, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -408591234634720211, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
     - target: {fileID: 5934890990072101490, guid: fc755042a74b8624abe0719acac16310, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -399,6 +446,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6366210942859365295, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904445850935615609, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc755042a74b8624abe0719acac16310, type: 3}
 --- !u!114 &2967680630727748206 stripped
@@ -424,9 +479,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8605209965434925907}
     m_Modifications:
+    - target: {fileID: 147629267635527705, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
+    - target: {fileID: 147629267635527705, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -408591234634720211, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
     - target: {fileID: 2474281555798938166, guid: fc755042a74b8624abe0719acac16310, type: 3}
       propertyPath: m_Name
       value: ScoreboardItem (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3003657551052021513, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
+    - target: {fileID: 3003657551052021513, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5934890990072101490, guid: fc755042a74b8624abe0719acac16310, type: 3}
       propertyPath: m_Pivot.x
@@ -512,6 +583,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6366210942859365295, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904445850935615609, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc755042a74b8624abe0719acac16310, type: 3}
 --- !u!114 &2987935439432173730 stripped
@@ -537,10 +616,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8605209965434925907}
     m_Modifications:
+    - target: {fileID: 147629267635527705, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
+    - target: {fileID: 147629267635527705, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -408591234634720211, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
+    - target: {fileID: 1616747260534440380, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2474281555798938166, guid: fc755042a74b8624abe0719acac16310, type: 3}
       propertyPath: m_Name
       value: ScoreboardItem
       objectReference: {fileID: 0}
+    - target: {fileID: 3003657551052021513, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
+    - target: {fileID: 3003657551052021513, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -408591234634720211, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
     - target: {fileID: 5934890990072101490, guid: fc755042a74b8624abe0719acac16310, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -625,6 +724,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6366210942859365295, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904445850935615609, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc755042a74b8624abe0719acac16310, type: 3}
 --- !u!114 &721828734831404666 stripped
@@ -650,10 +757,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8605209965434925907}
     m_Modifications:
+    - target: {fileID: 147629267635527705, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
+    - target: {fileID: 147629267635527705, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -408591234634720211, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
+    - target: {fileID: 1616747260534440380, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2474281555798938166, guid: fc755042a74b8624abe0719acac16310, type: 3}
       propertyPath: m_Name
       value: ScoreboardItem (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 3003657551052021513, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
+    - target: {fileID: 3003657551052021513, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -408591234634720211, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
     - target: {fileID: 5934890990072101490, guid: fc755042a74b8624abe0719acac16310, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -738,6 +865,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6366210942859365295, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904445850935615609, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc755042a74b8624abe0719acac16310, type: 3}
 --- !u!224 &445235734321085632 stripped
@@ -763,9 +898,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8605209965434925907}
     m_Modifications:
+    - target: {fileID: 147629267635527705, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
+    - target: {fileID: 147629267635527705, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -408591234634720211, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
     - target: {fileID: 2474281555798938166, guid: fc755042a74b8624abe0719acac16310, type: 3}
       propertyPath: m_Name
       value: ScoreboardItem (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3003657551052021513, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
+    - target: {fileID: 3003657551052021513, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5934890990072101490, guid: fc755042a74b8624abe0719acac16310, type: 3}
       propertyPath: m_Pivot.x
@@ -851,6 +1002,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6366210942859365295, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904445850935615609, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc755042a74b8624abe0719acac16310, type: 3}
 --- !u!224 &646920386827679414 stripped
@@ -876,10 +1035,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8605209965434925907}
     m_Modifications:
+    - target: {fileID: 147629267635527705, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
+    - target: {fileID: 147629267635527705, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -408591234634720211, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
+    - target: {fileID: 1616747260534440380, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2474281555798938166, guid: fc755042a74b8624abe0719acac16310, type: 3}
       propertyPath: m_Name
       value: ScoreboardItem (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 3003657551052021513, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
+    - target: {fileID: 3003657551052021513, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -408591234634720211, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
     - target: {fileID: 5934890990072101490, guid: fc755042a74b8624abe0719acac16310, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -964,6 +1143,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6366210942859365295, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904445850935615609, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc755042a74b8624abe0719acac16310, type: 3}
 --- !u!224 &4193749761890656993 stripped
@@ -989,9 +1176,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8605209965434925907}
     m_Modifications:
+    - target: {fileID: 147629267635527705, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
+    - target: {fileID: 147629267635527705, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -408591234634720211, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
     - target: {fileID: 2474281555798938166, guid: fc755042a74b8624abe0719acac16310, type: 3}
       propertyPath: m_Name
       value: ScoreboardItem (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3003657551052021513, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
+    - target: {fileID: 3003657551052021513, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5934890990072101490, guid: fc755042a74b8624abe0719acac16310, type: 3}
       propertyPath: m_Pivot.x
@@ -1076,6 +1279,14 @@ PrefabInstance:
     - target: {fileID: 5934890990072101490, guid: fc755042a74b8624abe0719acac16310, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6366210942859365295, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904445850935615609, guid: fc755042a74b8624abe0719acac16310, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc755042a74b8624abe0719acac16310, type: 3}
