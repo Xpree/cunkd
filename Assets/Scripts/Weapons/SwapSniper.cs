@@ -226,6 +226,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     // Turns off the zoom, and is used when zoom needs to be turned off without right-clicking.
     void ZoomOff()
     {
+        sniper.SetActive(true);
         scopeCanvas.SetActive(false);
         zoomed = false;
         if (_item.Owner == null)
