@@ -263,18 +263,31 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
             if (item != null)
             {
                 EventBus.Trigger(nameof(EventItemUnholstered), item);
-                var GripPoints = item.GetComponent<GripPoints>();
-                if(GripPoints != null)
-                {
-                    rightHandIK.data.target.position = GripPoints.right.position;
-                    rightHandIK.data.target.rotation = GripPoints.right.rotation;
-                    leftHandIK.data.target.position = GripPoints.left.position;
-                    leftHandIK.data.target.rotation = GripPoints.left.rotation;
-                }
             }
             inHolsterAnimation = false;
         }
 
+    }
+
+    void SetGripPoints()
+    {
+        var gripPoints = GetItemComponent<GripPoints>(equipped);
+        if(gripPoints != null)
+        {
+            rightHandIK.weight = 1;
+            leftHandIK.weight = 1;
+
+
+            rightHandIK.data.target.position = gripPoints.right.position;
+            rightHandIK.data.target.rotation = gripPoints.right.rotation;
+            leftHandIK.data.target.position = gripPoints.left.position;
+            leftHandIK.data.target.rotation = gripPoints.left.rotation;
+        }
+        else
+        {
+            rightHandIK.weight = 0;
+            leftHandIK.weight = 0;
+        }
     }
 
     [ClientRpc(includeOwner = false)]
@@ -340,6 +353,8 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
 
     void Update()
     {
+        SetGripPoints();
+        
         if (!isLocalPlayer)
             return;
         
