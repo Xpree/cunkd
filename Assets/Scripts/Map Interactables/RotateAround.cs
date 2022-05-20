@@ -10,6 +10,6 @@ public class RotateAround : MonoBehaviour
     private void FixedUpdate()
     {
         transform.RotateAround(target, Vector3.up, speed*Time.fixedDeltaTime);
-        transform.localRotation = Quaternion.identity;
+        //transform.localRotation = Quaternion.identity;
     }
 }
