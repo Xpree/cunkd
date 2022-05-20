@@ -54,12 +54,6 @@ public class Pullable : NetworkBehaviour
         {
             SetTransparent(false);
             Util.SetPhysicsSynchronized(this.netIdentity, true);
-            body.isKinematic = false;
-            foreach (Collider c in GetComponents<Collider>())
-            {
-                c.enabled = true;
-            }
-            this.transform.parent = null;
         }
         else
         {
@@ -75,16 +69,31 @@ public class Pullable : NetworkBehaviour
         {
             r.gameObject.layer = layer;
         }
+
+        foreach (Collider c in GetComponents<Collider>())
+        {
+            c.enabled = !enable;
+        }
+        
+        if(enable)
+        {
+            body.isKinematic = true;
+            body.transform.parent = target.transform;
+            body.velocity = Vector3.zero;
+            body.angularVelocity = Vector3.zero;
+        }
+        else
+        {
+            body.isKinematic = false;
+            body.transform.parent = null;
+        }
     }
 
     void SetFixed()
     {
         if (pullingCollider.enabled)
-        {
-            foreach (Collider c in GetComponents<Collider>())
-            {
-                c.enabled = false;
-            }
+        {     
+            /*
             if (Physics.Raycast(target.transform.position, target.transform.forward, out RaycastHit hit, pullOffset, GameServer.Instance.Settings.Movable))
             {
                 if (hit.collider.gameObject == this.gameObject)
@@ -94,13 +103,7 @@ public class Pullable : NetworkBehaviour
                 }
                 return;
             }
-
-            body.isKinematic = true;
-            
-            body.transform.parent = target.transform;
-            body.velocity = Vector3.zero;
-            body.angularVelocity = Vector3.zero;
-
+            */
             SetTransparent(true);
             this.gameObject.GetComponent<KnockbackScript>().onOff = true;
             offTime = 5f;
@@ -112,7 +115,7 @@ public class Pullable : NetworkBehaviour
         //body.position = Vector3.Lerp(body.position, TargetPosition, 0.5f);
         
         
-        body.position = Vector3.Lerp(body.position, TargetPosition, 0.5f);
+        body.position = Vector3.Lerp(body.position, target.transform.position, 0.5f);
     }
 
     public void StartPulling(GameObject destination, NetworkTimer timeToFixed)
@@ -137,6 +140,7 @@ public class Pullable : NetworkBehaviour
         {
             this.gameObject.GetComponent<KnockbackScript>().onOff = false;
         }
+        
         if(offTime >= 0 && !pulling)
             offTime = offTime - Time.fixedDeltaTime;
         if (!pulling)
