@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Scroller : MonoBehaviour
+public class BackgroundScroller : MonoBehaviour
 {
     [SerializeField] private RawImage _img;
     [SerializeField] private float _x, _y;
