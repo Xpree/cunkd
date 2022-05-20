@@ -1,5 +1,6 @@
 using UnityEngine;
 using Mirror;
+using TMPro;
 
 public class LevelEventController : NetworkBehaviour
 {
@@ -19,6 +20,13 @@ public class LevelEventController : NetworkBehaviour
     [SerializeField] GameObject[] setUseGravityAfterEvent;
     int eventIndex = 0;
 
+    [SerializeField] TextMeshProUGUI eventText;
+    [SerializeField] TextMeshProUGUI timerText;
+
+    [SyncVar(hook = nameof(syncText))] string eventTextSync;
+    [SyncVar(hook = nameof(syncTimer))] string timerTextSync;
+    [SyncVar(hook = nameof(syncColor))] Color colorTextSync;
+
     Vector3 lastWaterPos;
     Vector3 lastBoatPos;
     Quaternion lastBoatRot;
@@ -30,9 +38,15 @@ public class LevelEventController : NetworkBehaviour
         lastWaterPos = water.transform.position;
         lastBoatRot = boat.transform.rotation;
         yDiff = Mathf.Abs(deathFloor.transform.position.y - water.transform.position.y);
+
+        foreach (var item in setActiveAfterEvent)
+        {
+            item.SetActive(false);
+        }
     }
 
     bool spawnPointsSet = false;
+    [Server]
     void setPlayerSpawn()
     {
         scoreKeeper.setPlayerSpawnPositions(playerSpawnPositions[eventIndex]);
@@ -64,6 +78,7 @@ public class LevelEventController : NetworkBehaviour
     //    boat.transform.rotation = rot;
     //}
     bool gravitySet = false;
+    [Server]
     void setUseGravity(int eventIndex)
     {
         foreach (var item in setUseGravityAfterEvent[eventIndex].GetComponentsInChildren<Rigidbody>())
@@ -76,23 +91,33 @@ public class LevelEventController : NetworkBehaviour
         gravitySet = true;
     }
 
+    float nextEventCountdown = 0;
 
     [Server]
     void Update()
     {
+
         if (eventIndex < events.VolcanoLevelEvents.Length)
         {
             nextEvent = events.VolcanoLevelEvents[eventIndex];
+            nextEventCountdown = nextEvent.startTime - GameStats.RoundTimer;
 
-            if (nextEvent.startTime - 5 < GameStats.RoundTimer && !spawnPointsSet)
+            if (nextEventCountdown < 5 && !spawnPointsSet)
             {
                 setPlayerSpawn();
             }
 
-            if (nextEvent.startTime < GameStats.RoundTimer && !runningEvent)
+            if (nextEventCountdown < 0 && !runningEvent)
             {
                 triggerEvent(events.VolcanoLevelEvents[eventIndex]);
             }
+
+            setCountdownText();
+        }
+        else
+        {
+            eventText.text = "";
+            timerText.text = "";
         }
 
 
@@ -101,7 +126,7 @@ public class LevelEventController : NetworkBehaviour
             LevelEvents.VolcanoLevelEvent currentEvent = events.VolcanoLevelEvents[eventIndex - 1];
             if (currentEvent.startTime < GameStats.RoundTimer)
             {
-                lerpVal = (float)(GameStats.RoundTimer - currentEvent.startTime) / currentEvent.runTime;
+                lerpVal = (GameStats.RoundTimer - currentEvent.startTime) / currentEvent.runTime;
                 water.transform.position = Vector3.Lerp(lastWaterPos, currentEvent.waterPosition, lerpVal);
 
                 deathFloor.transform.position = new Vector3(deathFloor.transform.position.x, water.transform.position.y + yDiff, deathFloor.transform.position.z);
@@ -115,7 +140,7 @@ public class LevelEventController : NetworkBehaviour
             }
             if (1 < lerpVal)
             {
-               // print("eventIndex: " + (eventIndex - 1) + " setUseGravityAfterEvent.Length: " + setUseGravityAfterEvent.Length);
+                // print("eventIndex: " + (eventIndex - 1) + " setUseGravityAfterEvent.Length: " + setUseGravityAfterEvent.Length);
                 if (eventIndex <= setActiveAfterEvent.Length)
                 {
                     setActiveAfterEvent[eventIndex - 1].SetActive(true);
@@ -126,13 +151,80 @@ public class LevelEventController : NetworkBehaviour
                 }
                 if (!gravitySet && eventIndex <= setUseGravityAfterEvent.Length)
                 {
-                    setUseGravity(eventIndex-1);
+                    setUseGravity(eventIndex - 1);
                 }
                 lastWaterPos = currentEvent.waterPosition;
                 lastBoatPos = currentEvent.boatPosition;
                 lastBoatRot = currentEvent.boatRotation;
                 runningEvent = false;
             }
+
+
         }
+    }
+
+    [Server]
+    void setCountdownText()
+    {
+        float minutes = Mathf.Floor(nextEventCountdown / 60);
+        float seconds = Mathf.Floor(nextEventCountdown % 60);
+
+        string min = minutes.ToString();
+        string sec = seconds.ToString();
+
+        if (minutes < 10)
+        {
+            min = "0" + minutes.ToString();
+        }
+        if (seconds < 10)
+        {
+            sec = "0" + Mathf.RoundToInt(seconds).ToString();
+        }
+
+        if (minutes < 1 && seconds < 10)
+        {
+            timerText.color = Color.red;
+
+            if (seconds < 6 && nextEventCountdown < seconds + 0.5f)
+            {
+                timerText.color -= new Color(0, 0, 0, 1);
+            }
+        }
+        else
+        {
+            timerText.color = Color.white;
+        }
+
+        if (runningEvent)
+        {
+            eventText.text = "";
+            timerText.text = "";
+        }
+        else
+        {
+            eventText.text = "Next Event: ";
+            timerText.text = min + ":" + sec;
+        }
+
+        colorTextSync = timerText.color;
+        eventTextSync = eventText.text;
+        timerTextSync = timerText.text;
+
+    }
+
+    [Client]
+    void syncText(string previous, string current)
+    {
+        eventText.text = current;
+    }
+    [Client]
+    void syncTimer(string previous, string current)
+    {
+        timerText.text = current;
+    }
+    [Client]
+    void syncColor(Color previous, Color current)
+    {
+        timerText.color = current;
     }
 }
