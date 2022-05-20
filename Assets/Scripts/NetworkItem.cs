@@ -65,15 +65,15 @@ public class NetworkItem : NetworkBehaviour
 
     void OnInteractHoverStart(NetworkIdentity player)
     {
-        FindObjectOfType<PlayerGUI>()?.interactiveItemButton(this);
+        player.GetComponentInChildren<PlayerGUI>(true)?.SetInteraction("Pick up " + this.displayName);
     }
 
     void OnInteractHoverStop(NetworkIdentity player)
     {
-        FindObjectOfType<PlayerGUI>()?.interactiveItemButton(null);
+        player.GetComponentInChildren<PlayerGUI>(true)?.HideInteraction();
     }
 
-    public void OnInteract(NetworkIdentity player)
+    void OnInteract(NetworkIdentity player)
     {
         var itemOwner = player.GetComponent<INetworkItemOwner>();
         if (itemOwner == null || itemOwner.CanPickup(this) == false)

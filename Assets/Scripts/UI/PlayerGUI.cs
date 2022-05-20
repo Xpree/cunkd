@@ -29,17 +29,15 @@ public class PlayerGUI : MonoBehaviour
 
     [SerializeField] TMPro.TMP_Text hoverText;
     
-    public void interactiveItemButton(NetworkItem obs)
+    public void SetInteraction(string text)
     {
-        if (obs != null)
-        {
-            interactUI.SetActive(true);
-            intreractableInfoText.text = "Pick up " + obs.displayName;
-        }
-        else
-        {
-            interactUI.SetActive(false);
-        }
+        intreractableInfoText.text = text;
+        interactUI.SetActive(true);
+    }
+
+    public void HideInteraction()
+    {
+        interactUI.SetActive(false);
     }
 
     void setIcon(RawImage icon, NetworkItem item)
