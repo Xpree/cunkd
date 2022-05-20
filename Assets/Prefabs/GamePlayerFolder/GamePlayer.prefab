@@ -337,7 +337,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   clientAuthority: 1
-  animator: {fileID: 7352789811013921164}
+  animator: {fileID: 8204663571986692130}
 --- !u!114 &-7453657956266782716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -418,7 +418,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  animator: {fileID: 7352789811013921164}
+  animator: {fileID: 8204663571986692130}
 --- !u!114 &6291283800082655643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1038,7 +1038,19 @@ MonoBehaviour:
   OnCameraActivated:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4296899242189203788}
+      - m_Target: {fileID: 4390074251459831417}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 846427917659543916}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -1089,7 +1101,19 @@ MonoBehaviour:
   OnCameraDeactivated:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4296899242189203788}
+      - m_Target: {fileID: 4390074251459831417}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 846427917659543916}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -2494,6 +2518,11 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 8ece5f23a4513e745a2c34fc346ca1ca, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6227326b873903141998aae230a763a3, type: 3}
+--- !u!1 &846427917659543916 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4386457097018674545, guid: 6227326b873903141998aae230a763a3, type: 3}
+  m_PrefabInstance: {fileID: 3990416635257689117}
+  m_PrefabAsset: {fileID: 0}
 --- !u!137 &1223380230588337414 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 2853768270042634523, guid: 6227326b873903141998aae230a763a3, type: 3}
@@ -2535,6 +2564,31 @@ MonoBehaviour:
   - m_Rig: {fileID: 1717287047458035715}
     m_Active: 1
   m_Effectors: []
+--- !u!95 &8204663571986692130
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4296899242189203788}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 627e7205a4de6dd46b841c1b74a191b4, type: 3}
+  m_Controller: {fileID: 9100000, guid: 8ece5f23a4513e745a2c34fc346ca1ca, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &4390074251459831417 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -8391222552659086748, guid: 6227326b873903141998aae230a763a3, type: 3}
+  m_PrefabInstance: {fileID: 3990416635257689117}
+  m_PrefabAsset: {fileID: 0}
 --- !u!137 &4877599910388830595 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 8417361359673230750, guid: 6227326b873903141998aae230a763a3, type: 3}
@@ -2548,11 +2602,6 @@ Transform:
 --- !u!4 &7216301547052452632 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6000407479487422213, guid: 6227326b873903141998aae230a763a3, type: 3}
-  m_PrefabInstance: {fileID: 3990416635257689117}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &7352789811013921164 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 6227326b873903141998aae230a763a3, type: 3}
   m_PrefabInstance: {fileID: 3990416635257689117}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &7439214517587625765 stripped
