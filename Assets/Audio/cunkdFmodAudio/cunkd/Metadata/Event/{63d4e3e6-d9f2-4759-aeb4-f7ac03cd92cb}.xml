@@ -5,7 +5,7 @@
 			<value>Green Light 1</value>
 		</property>
 		<property name="name">
-			<value>LavaLevelNormalTempo</value>
+			<value>LavaLevelNormalTempo_old</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>

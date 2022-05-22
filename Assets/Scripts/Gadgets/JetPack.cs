@@ -85,8 +85,10 @@ public class JetPack : NetworkBehaviour, IGadget, IEquipable
 
     void IGadget.PrimaryUse(bool isPressed)
     {
-        //AudioHelper.PlayOneShotAttachedWithParameters("event:/SoundStudents/SFX/Gadgets/Jetpack", this.gameObject, ("Gasar", 1f), ("Bränsle", 0f),
-        //                                     ("Ta på jetpack", 1f), ("Jetpack flyger tomgång", 1f), ("Jetpack stängs av", 0f));
+        //AudioHelper.PlayOneShotAttachedWithParameters("event:/SoundStudents/SFX/Gadgets/Jetpack", this.gameObject, ("Gasar", 1f), ("Brï¿½nsle", 0f),
+        //                                     ("Ta pï¿½ jetpack", 1f), ("Jetpack flyger tomgï¿½ng", 1f), ("Jetpack stï¿½ngs av", 0f));
+        
+        
         force = 0;
         timeToFly = isPressed;
     }

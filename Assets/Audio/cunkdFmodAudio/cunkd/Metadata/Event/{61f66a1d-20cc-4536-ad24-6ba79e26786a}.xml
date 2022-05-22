@@ -5,7 +5,7 @@
 			<value>Green Light 1</value>
 		</property>
 		<property name="name">
-			<value>LavaLevelAdaptive</value>
+			<value>LavaLevelAdaptive_old</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>

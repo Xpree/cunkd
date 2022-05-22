@@ -31,4 +31,12 @@ public static class AudioHelper
         instance.start();
         instance.release();
     }
+
+    /*public static void JetPackFlyingSound(GameObject gameObject)
+    {
+        //[SerializeField]
+        FMOD.Studio.EventInstance jetpackSoundInstance = FMODUnity.RuntimeManager.CreateInstance("event:/SoundStudents/SFX/Gadgets/JetpackAcceleration");
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(jetpackSoundInstance, gameObject.transform, gameObject.GetComponent<Rigidbody>());
+        jetpackSoundInstance.start();
+    }*/
 }
