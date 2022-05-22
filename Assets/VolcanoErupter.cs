@@ -13,7 +13,9 @@ public class VolcanoErupter : NetworkBehaviour
     [SerializeField] GameObject[] objectsToSpawn;
     [SerializeField] Collider forceCollider;
     [SerializeField] CameraShakeSource cameraShake;
-    
+
+    [SerializeField] GameObject EruptEffect;
+
     Transform[] positions;
     double nextSpawn = 0;
 
@@ -25,14 +27,30 @@ public class VolcanoErupter : NetworkBehaviour
     }
 
     [ClientRpc]
+    void RpcEruptEffect(bool onOff)
+    {
+        if (onOff)
+        {
+            EruptEffect.GetComponentInChildren<ParticleSystem>().Play();
+        }
+        //EruptEffect.SetActive(onOff);
+    }
+
+    [ClientRpc]
     void RpcCameraShake(NetworkTimer eventTime)
     {
         cameraShake.OneShotShake(eventTime);
     }
 
     [Server]
-    public void Erupt(double duration, GameObject[] objectsToSpawn, float spawnInterval, int maxSpawns)
+    public void Erupt(float duration, GameObject[] objectsToSpawn, float spawnInterval, int maxSpawns)
     {
+        ParticleSystem ps = EruptEffect.GetComponentInChildren<ParticleSystem>();
+        ps.Stop(); // Cannot set duration whilst Particle System is playing
+
+        var main = ps.main;
+        main.duration = duration;
+        
         //print("Volcano erupting");
         forceCollider.enabled = true;
         this.duration = duration;
@@ -43,6 +61,7 @@ public class VolcanoErupter : NetworkBehaviour
         nextSpawn = GameStats.RoundTimer + spawnInterval;
         spawnedRocks = 0;
         RpcCameraShake(NetworkTimer.Now);
+        RpcEruptEffect(true);
     }
 
     int maxSpawns = 0;
@@ -54,15 +73,21 @@ public class VolcanoErupter : NetworkBehaviour
     {
         if (GameStats.RoundTimer <= duration && spawnedRocks <= maxSpawns)
         {
-            if (nextSpawn <= GameStats.RoundTimer)
+            if (GameStats.RoundTimer <= duration-5)
             {
-                NetworkServer.Spawn(Instantiate(objectsToSpawn[Random.Range(0, objectsToSpawn.Length)], positions[Random.Range(1, positions.Length)].position, Quaternion.identity));
-                spawnedRocks++;
-                nextSpawn += spawnInterval;
+                if (nextSpawn <= GameStats.RoundTimer)
+                {
+                    NetworkServer.Spawn(Instantiate(objectsToSpawn[Random.Range(0, objectsToSpawn.Length)], positions[Random.Range(1, positions.Length)].position, Quaternion.identity));
+                    spawnedRocks++;
+                    //print("rocks: " + spawnedRocks);
+                    nextSpawn += spawnInterval;
+                }
+
             }
         }
         else
         {
+            RpcEruptEffect(false);
             forceCollider.enabled = false;
         }
     }
@@ -70,7 +95,7 @@ public class VolcanoErupter : NetworkBehaviour
     [ClientRpc]
     void addForceToPlayer(GameObject go)
     {
-        go.GetComponent<Rigidbody>().AddForce((Vector3.up * force / Mathf.Abs(go.transform.position.y - forcePosition.position.y)), ForceMode.Impulse);
+        go.GetComponent<Rigidbody>().AddForce((Vector3.up * 2 * force / Mathf.Abs(go.transform.position.y - forcePosition.position.y)), ForceMode.Impulse);
     }
 
     [Server]
@@ -86,7 +111,8 @@ public class VolcanoErupter : NetworkBehaviour
             }
             else
             {
-                rigidbody.AddForce((Vector3.up * force / Mathf.Abs(other.transform.position.y - forcePosition.position.y)), ForceMode.Impulse);
+                rigidbody.AddForce((Vector3.up * force / Mathf.Abs(other.transform.position.y - forcePosition.position.y) 
+                    + (other.transform.position - forcePosition.position)*0.005f), ForceMode.Impulse);
             }
         }
     }
