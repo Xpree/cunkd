@@ -72,6 +72,7 @@ public class UILobby : MonoBehaviour
 
     public void StartGame()
     {
+        LobbyClient.Local.CmdPlayStart();
         GameServer.BeginGame();
     }
 

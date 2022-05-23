@@ -109,4 +109,15 @@ public class LobbyClient : NetworkBehaviour
         UILobby.Singleton?.SetMapName(map);
     }
 
+    [ClientRpc]
+    public void PlayMenuStart()
+    {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SoundStudents/SFX/Environment/MenuStartGame");
+    }
+
+    [Command]
+    public void CmdPlayStart()
+    {
+        PlayMenuStart();
+    }
 }
