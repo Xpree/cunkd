@@ -172,7 +172,7 @@ public class NetworkItem : NetworkBehaviour
     }
 
 
-    public Vector3 InteractAimPoint(float maxDistance)
+    public Vector3 OwnerProjectileHitscan(float maxDistance)
     {
         var aimRay = this.OwnerInteractAimTransform.ForwardRay();
 

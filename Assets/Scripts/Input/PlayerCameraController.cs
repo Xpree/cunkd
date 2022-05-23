@@ -162,7 +162,7 @@ public class PlayerCameraController : MonoBehaviour
         return sample;
     }
 
-    const float MaximumFOV = 100.0f;
+    const float MaximumFOV = 180.0f;
 
     void UpdateCamera(ShakeSample shake)
     {

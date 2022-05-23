@@ -57,7 +57,7 @@ MonoBehaviour:
     m_Bits: 64
   ProtectileTargetLayers:
     serializedVersion: 2
-    m_Bits: 448
+    m_Bits: 449
   SmallSphereCastRadius: 0.5
   AutodespawnTimer: 30
   GlobalKnockbackMultiplier: 1

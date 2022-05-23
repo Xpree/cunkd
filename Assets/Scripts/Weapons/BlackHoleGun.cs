@@ -21,10 +21,14 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
 
     bool HasTicked;
 
+    NetworkItem _item;
+
     void Awake()
     {
         _cooldownTimer = GetComponent<NetworkCooldown>();
         _cooldownTimer.CooldownDuration = Cooldown;
+
+        _item = GetComponent<NetworkItem>();
     }
 
     private void Start()
@@ -55,8 +59,10 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
             {
                 //FMODUnity.RuntimeManager.PlayOneShot("event:/SoundStudents/SFX/Weapons/BlackHoleGun");
                 //FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Weapons/Black Hole", blackHole);
-                var aimTransform = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
-                var target = Util.RaycastPointOrMaxDistance(aimTransform, MaxRange, TargetMask);
+                //var aimTransform = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
+                //var target = Util.RaycastPointOrMaxDistance(aimTransform, MaxRange, _settings.ProtectileTargetLayers);
+
+                var target = _item.OwnerProjectileHitscan(MaxRange);
                 CmdSpawnBlackHole(target);
             }
         }
