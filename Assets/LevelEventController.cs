@@ -31,6 +31,13 @@ public class LevelEventController : NetworkBehaviour
     Vector3 lastBoatPos;
     Quaternion lastBoatRot;
     float yDiff;
+
+    private void Awake()
+    {
+        eventText.gameObject.SetActive(true);
+    }
+
+
     [Server]
     public override void OnStartServer()
     {
