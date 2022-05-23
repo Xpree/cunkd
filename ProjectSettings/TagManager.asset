@@ -8,6 +8,8 @@ TagManager:
   - Platform
   - DoNotFreeze
   - Tree
+  - wood
+  - sand
   layers:
   - Default
   - TransparentFX

@@ -277,6 +277,11 @@ public class PlayerMovement : NetworkBehaviour
             if(isLocalPlayer)
             {
                 animator.SetBool("run", true);
+                if (_isGrounded)
+                {
+                    //FootstepsSound.Footsteps();
+                    //Debug.Log("Footsteps sound");
+                }
             }
         }
         if(isLocalPlayer)
