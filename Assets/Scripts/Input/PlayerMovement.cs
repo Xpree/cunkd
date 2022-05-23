@@ -277,11 +277,6 @@ public class PlayerMovement : NetworkBehaviour
             if(isLocalPlayer)
             {
                 animator.SetBool("run", true);
-                if (_isGrounded)
-                {
-                    //FootstepsSound.Footsteps();
-                    //Debug.Log("Footsteps sound");
-                }
             }
         }
         if(isLocalPlayer)
@@ -393,6 +388,25 @@ public class PlayerMovement : NetworkBehaviour
         if (other.CompareTag("Platform"))
         {
             _platform = other.gameObject;
+        }
+    }
+    
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.GetComponent<Renderer>().material.name == "wood (Instance)")
+        {
+            Debug.Log("walking on wood");
+            FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Step sounds on brigde", this.gameObject);
+        }
+        else if (collision.gameObject.GetComponent<Renderer>().material.name == "BrownGrey (Instance)")
+        {
+            Debug.Log("walking on sand");
+            FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Step sounds on dirt", this.gameObject);
+        }
+        else
+        {
+            Debug.Log("walking on concrete sound");
+            FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Step sounds on concrete", this.gameObject);
         }
     }
 }
