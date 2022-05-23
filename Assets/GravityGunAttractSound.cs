@@ -23,14 +23,17 @@ public class GravityGunAttractSound : MonoBehaviour
 
     public void AttractSound()
     {
+        StopSound();
         //AudioHelper.PlayOneShotAttachedWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.AnchorPoint.gameObject, ("Grab Object", 1f), ("Object recived start loading", 1f), ("Shot away object", 0f));
         PlayOneShotAttachedWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.gameObject, ("Grab Object", 1f), ("Object recived start loading", 1f), ("Shot away object", 0f));
+        Debug.Log("AttractSound");
     }
 
     public void StopSound()
     {
         attractSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        attractSoundInstance.release();        
+        attractSoundInstance.release();
+        Debug.Log("StopSound");
     }
 
     // Start is called before the first frame update
