@@ -71,6 +71,10 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
                 var target = _item.OwnerProjectileHitscan(MaxRange);
                 CmdSpawnBlackHole(target);
             }
+            else
+            {
+                AudioHelper.PlayOneShotAttachedWithParameters("event:/SoundStudents/SFX/Weapons/Black Hole Gun/BlackHoleGunShoot", this.gameObject, ("Cooldown", 1f));
+            }
         }
     }
 
