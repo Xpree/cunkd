@@ -100,6 +100,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
             HitDetected = hitResult.point;
             SpawnEffect(HitDetected);
             cmdFire(HitDetected);
+
             // Returns the rigidbody that the spherecast hit in order to use it in the actual swapping-function.
             return hitResult.rigidbody?.GetComponent<NetworkIdentity>();
         }
@@ -174,7 +175,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     // An artificial delay that makes sure that the swapping does not occur immediately after hit-detection. (This gives time to see the beam-effect.)
     System.Collections.IEnumerator DelaySwap(NetworkIdentity target)
     {
-        if (target == null)
+        if (target == null || target.gameObject.Invulnerabiliy())
             yield break;
 
         yield return new WaitForSeconds(0.15f);

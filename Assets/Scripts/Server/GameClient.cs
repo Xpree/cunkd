@@ -37,6 +37,7 @@ public class GameClient : NetworkBehaviour
         lastCunkd = null;
     }
     
+    [Server]
     public void SetCunkd(float duration)
     {
         if(lastCunkd != null)
@@ -46,12 +47,62 @@ public class GameClient : NetworkBehaviour
         lastCunkd = StartCoroutine(SetCunkdCoroutine(duration));
     }
 
+    [SyncVar(hook = nameof(OnChangeInvul)]
+    public bool IsInvulnerable;
+
+    Coroutine lastInvulnerable;
+
+    void UpdateLayer()
+    {
+        if (IsInvulnerable)
+        {
+            this.gameObject.layer = LayerMask.NameToLayer("InvulnerablePlayer");
+        }
+        else
+        {
+            this.gameObject.layer = LayerMask.NameToLayer("Player");
+        }
+    }
+    
+    void OnChangeInvul(bool previous, bool current)
+    {
+        UpdateLayer();
+    }
+
+    System.Collections.IEnumerator SetInvulnerableCoroutine(float duration)
+    {
+        IsInvulnerable = true;
+        UpdateLayer();
+        var timer = NetworkTimer.FromNow(duration);
+        while (timer.HasTicked == false)
+        {
+            yield return null;
+        }
+        IsInvulnerable = false;
+        UpdateLayer();
+        lastInvulnerable = null;
+    }
+
+    [Server]
+    public void SetInvulnerable(float duration)
+    {
+        if (lastInvulnerable != null)
+        {
+            StopCoroutine(lastInvulnerable);
+        }
+        lastInvulnerable = StartCoroutine(SetInvulnerableCoroutine(duration));
+    }
+
     private void Awake()
     {
         CameraController = GetComponentInChildren<PlayerCameraController>(true);
         _inputs = GetComponentInChildren<GameInputs>(true);
     }
 
+    private void Start()
+    {
+        UpdateLayer();
+    }
 
     [Server]
     public LobbyClient GetLobbyClient()
@@ -97,7 +148,6 @@ public class GameClient : NetworkBehaviour
         {
             yield return null;
         }
-
         _inputs.SetPlayerMode();
         _inputs.EnableInput();
         GetComponent<PlayerMovement>().SetKinematicOff();

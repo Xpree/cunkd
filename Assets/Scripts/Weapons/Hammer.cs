@@ -59,25 +59,25 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
         }
         else
         {
-            //Debug.Log("Miss");                    
             FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Gadgets/Hammer/Hammer Miss", this.gameObject);
         }
+        
         foreach (Collider nearby in colliders)
         {
             Rigidbody rb = nearby.GetComponent<Rigidbody>();
-            if (rb != null)
+            if (rb != null && rb != owner.GetComponent<Rigidbody>())
             {
-                if (rb != owner.GetComponent<Rigidbody>() && rb.CompareTag("Player"))
+                if(rb.CompareTag("Player"))
                 {
-                    //Debug.Log("PlayerHit");                    
-                    
-                    rb.AddExplosionForce(Force * 2, Head.transform.position, Radius);
-                    rb.GetComponent<PlayerMovement>().NoFriction();
-                    FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Cat sound when dying", rb.gameObject);
+                    if(rb.gameObject.Invulnerabiliy() == false)
+                    {
+                        rb.AddExplosionForce(Force * 2, Head.transform.position, Radius);
+                        rb.GetComponent<PlayerMovement>().NoFriction();
+                        FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Cat sound when dying", rb.gameObject);
+                    }
                 }
-                if(rb != owner.GetComponent<Rigidbody>())
+                else
                 {
-                    //Debug.Log("ObjectHit");                    
                     rb.AddExplosionForce(Force, Head.transform.position, Radius);
                 }                
             }            

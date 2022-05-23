@@ -15,7 +15,7 @@ public class KnockbackScript : NetworkBehaviour
         {
             Rigidbody rb = collision.collider.GetComponent<Rigidbody>();
 
-            if (rb != null)
+            if (rb != null && rb.gameObject.Invulnerabiliy() == false)
             {
 
                 //Forces playerobject into non-grounded state, changes back when it lands when it lands

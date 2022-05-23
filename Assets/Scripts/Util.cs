@@ -159,6 +159,17 @@ public static class Util
     {
         return new (transform.position, transform.forward);
     }
+
+
+    public static bool Invulnerabiliy(this GameObject obj)
+    {
+        var gameClient = obj.GetComponent<GameClient>();
+        if (gameClient != null)
+        {
+            return gameClient.IsInvulnerable;
+        }
+        return false;
+    }
 }
 
 /// <summary>

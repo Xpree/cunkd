@@ -40,7 +40,7 @@ public class BlackHole : NetworkBehaviour
         foreach (var collision in collisions)
         {
             var rb = collision.gameObject.GetComponent<Rigidbody>();
-            if (rb != null && Util.HasPhysicsAuthority(collision.gameObject))
+            if (rb != null && Util.HasPhysicsAuthority(collision.gameObject) && collision.gameObject.Invulnerabiliy() == false)
             {
                 var distance = Mathf.Max(Vector3.Distance(rb.transform.position, transform.position), 1.0f);
                 var force = (transform.position - rb.transform.position).normalized / distance * _settings.BlackHole.Intensity;

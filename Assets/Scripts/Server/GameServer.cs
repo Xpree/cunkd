@@ -293,7 +293,9 @@ public class GameServer : MonoBehaviour
             PurgeOwnedObjects(client);
             player.TargetRespawn(spawn.position, spawn.rotation);
             client.GetComponent<Inventory>().Invoke("SpawnPrimaryWeapon", 0.2f);
-            client.GetComponent<GameClient>().IsCunkd = false;
+            var gameClient = client.GetComponent<GameClient>();
+            gameClient.IsCunkd = false;
+            gameClient.SetInvulnerable(5.0f);
         }
         else
         {
