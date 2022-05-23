@@ -20,6 +20,31 @@ public class GameClient : NetworkBehaviour
 
     public PlayerCameraController CameraController;
 
+    [SyncVar]
+    public bool IsCunkd;
+
+    Coroutine lastCunkd;
+        
+    System.Collections.IEnumerator SetCunkdCoroutine(float duration)
+    {
+        IsCunkd = true;
+        var timer = NetworkTimer.FromNow(duration);
+        while(timer.HasTicked == false)
+        {
+            yield return null;
+        }
+        IsCunkd = false;
+        lastCunkd = null;
+    }
+    
+    public void SetCunkd(float duration)
+    {
+        if(lastCunkd != null)
+        {
+            StopCoroutine(lastCunkd);
+        }
+        lastCunkd = StartCoroutine(SetCunkdCoroutine(duration));
+    }
 
     private void Awake()
     {

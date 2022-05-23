@@ -318,6 +318,7 @@ GameObject:
   - component: {fileID: -7542362330335650135}
   - component: {fileID: 5639649547052470171}
   - component: {fileID: 5283010919433488431}
+  - component: {fileID: 1659376873530821104}
   m_Layer: 0
   m_Name: Hammer
   m_TagString: Untagged
@@ -445,6 +446,7 @@ MonoBehaviour:
   Netanimator: {fileID: 7946163913266512066}
   Head: {fileID: 7618931280888435499}
   _settings: {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}
+  _cameraShake: {fileID: 4398318607427196035}
 --- !u!114 &5639649547052470171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -474,6 +476,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   left: {fileID: 7722026567244796140}
   right: {fileID: 1353624672054126198}
+--- !u!114 &1659376873530821104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4053286044562665193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ece2c1b4d6a9864691fa86c71248874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  hammerMaterials:
+  - {fileID: 2100000, guid: f3a0b3644dd331c4fb00be1bef0c2b02, type: 2}
+  - {fileID: 2100000, guid: d97b9afa5f6604f4f92640821a137d51, type: 2}
+  - {fileID: 2100000, guid: 4774fb15ab6182e42825695787db417e, type: 2}
+  hammerRenderer: {fileID: 3262708312759209104}
 --- !u!1 &5110217677533567606
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,6 +526,87 @@ Transform:
   m_Father: {fileID: 4379142210280890390}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: -1.908, y: 151.515, z: 86.706}
+--- !u!1 &6471705138976087222
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6994934894881964585}
+  - component: {fileID: 4398318607427196035}
+  m_Layer: 8
+  m_Name: CameraShake Source
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6994934894881964585
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6471705138976087222}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 9.092307, z: 5.82}
+  m_LocalScale: {x: 7.6923075, y: 7.6923075, z: 7.6923075}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4379142210280890390}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4398318607427196035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6471705138976087222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beaeb932467650841a360160d6c47551, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraShake:
+    PositionOscillator:
+      x:
+        frequency: 50
+        amplitude: 0.05
+        timeOffset: 0
+      y:
+        frequency: 0
+        amplitude: 0
+        timeOffset: 0
+      z:
+        frequency: 50
+        amplitude: 0.05
+        timeOffset: 0
+    RotationOscillator:
+      x:
+        frequency: 0
+        amplitude: 0
+        timeOffset: 0
+      y:
+        frequency: 0
+        amplitude: 0
+        timeOffset: 0
+      z:
+        frequency: 50
+        amplitude: 1
+        timeOffset: 0
+    FieldOfViewOscillator:
+      frequency: 50
+      amplitude: 1
+      timeOffset: 0
+    Duration: 0.25
+    RandomTimeOffset: 1
+    activationTimer:
+      TickTime: 312.4769981076006
+  ActivationRange: 7
+  testingKey: 0
 --- !u!1 &7618931280888435499
 GameObject:
   m_ObjectHideFlags: 0
@@ -740,6 +842,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eca03ec3f7bdebb42b716be1afdd5884, type: 3}
+--- !u!23 &3262708312759209104 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7635826562936255635, guid: eca03ec3f7bdebb42b716be1afdd5884, type: 3}
+  m_PrefabInstance: {fileID: 4273757570772715517}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4379142210280890390 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: eca03ec3f7bdebb42b716be1afdd5884, type: 3}

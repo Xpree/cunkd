@@ -2,11 +2,11 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Mirror;
 using Unity.VisualScripting;
-
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(NetworkTransform))]
 public class PlayerMovement : NetworkBehaviour
 {
+    [SerializeField] Animator animator;
     [SerializeField] GameSettings _settings;
     Rigidbody _rigidBody;
 
@@ -22,11 +22,9 @@ public class PlayerMovement : NetworkBehaviour
     public double _lastGrounded = 0;
     public double _lastJump = 0;
 
-    [SyncVar] public float bonusSpeed;
-
     public float maxSpeedScaling = 1f;
     public float maxFrictionScaling = 1f;
-    public float currentMaxSpeed => (_settings.CharacterMovement.MaxSpeed + bonusSpeed) * maxSpeedScaling;
+    public float currentMaxSpeed => (_settings.CharacterMovement.MaxSpeed + (_client.IsCunkd ? _settings.CunkdSpeedBoost : 0)) * maxSpeedScaling;
     public float currentMaxFriction => _settings.CharacterMovement.FrictionAcceleration * maxFrictionScaling;
 
     public float gravityScaling => _settings.CharacterMovement.gravityScaling;
@@ -40,8 +38,12 @@ public class PlayerMovement : NetworkBehaviour
 
     NetworkTimer _preventGroundFriction;
 
+    GameClient _client;
+
     private void Awake()
     {
+        _client = GetComponent<GameClient>();
+        
         _networkTransform = GetComponent<NetworkTransform>();
         _rigidBody = GetComponent<Rigidbody>();
         _rigidBody.useGravity = false;
@@ -183,7 +185,7 @@ public class PlayerMovement : NetworkBehaviour
     }
 
     void PerformJump()
-    {        
+    {
         if (!_performJump)
             return;
         _performJump = false;
@@ -203,6 +205,10 @@ public class PlayerMovement : NetworkBehaviour
         CmdPerformedJump(_airJumped);
         _lastJump = NetworkTime.time;
         ApplyJumpForce(_settings.CharacterMovement.JumpHeight);
+        if(isLocalPlayer)
+        {
+            animator.SetBool("jump", true);
+        }
     }
 
     void SetLanded(bool value)
@@ -212,6 +218,10 @@ public class PlayerMovement : NetworkBehaviour
         if(trigger)
         {
             EventBus.Trigger(nameof(EventPlayerLanded), this.gameObject);
+            if(isLocalPlayer)
+            {
+                animator.SetBool("jump", false);
+            }
         }
     }
 
@@ -264,7 +274,30 @@ public class PlayerMovement : NetworkBehaviour
         {
             SetKinematicOff();
             ApplyAcceleration(_movementInput);
-        }        
+            if(isLocalPlayer)
+            {
+                animator.SetBool("run", true);
+            }
+        }
+        if(isLocalPlayer)
+        {
+            if(!HasMovementInput)
+            {
+                animator.SetBool("run", false);
+            }
+        }
+        //dance
+        if(isLocalPlayer)
+        {
+            if(UnityEngine.InputSystem.Keyboard.current[Key.P].isPressed)
+            {   
+                animator.SetBool("dance", true);
+            }
+            else{
+                animator.SetBool("dance", false);
+            }
+        }
+        
         // Temp reset
         maxSpeedScaling = 1f;
         maxFrictionScaling = 1f;
@@ -295,6 +328,12 @@ public class PlayerMovement : NetworkBehaviour
         _preventGroundFriction = NetworkTimer.FromNow(0.5f);
     }
 
+    public void NoFriction()
+    {
+        _isGrounded = false;
+        _preventGroundFriction = NetworkTimer.FromNow(0.5f);
+    }
+
     public void SetKinematicOff()
     {
         if(_rigidBody.isKinematic)
@@ -314,7 +353,6 @@ public class PlayerMovement : NetworkBehaviour
     [TargetRpc]
     public void TargetRespawn(Vector3 position, Quaternion rotation)
     {
-        bonusSpeed = 0;
         transform.position = position;
         transform.rotation = rotation;
         ResetState();

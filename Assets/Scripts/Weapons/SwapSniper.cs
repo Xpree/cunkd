@@ -93,7 +93,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
 
         // If a "swappable" target was hit:
         var aimTransform = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
-        if (Physics.SphereCast(aimTransform.position, 0.1f, aimTransform.forward, out RaycastHit hitResult, range, TargetMask))
+        if (Physics.SphereCast(aimTransform.position, 0.1f, aimTransform.forward, out RaycastHit hitResult, range, TargetMask, QueryTriggerInteraction.Ignore))
         {
             // Instantiates the beam-effect and sets its target position to where the speherecast hit something
 

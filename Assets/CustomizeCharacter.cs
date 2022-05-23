@@ -12,6 +12,18 @@ public class CustomizeCharacter : NetworkBehaviour
     [SerializeField] SkinnedMeshRenderer furRenderer;
     // Start is called before the first frame update
 
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        int index = GetComponent<GameClient>().ClientIndex % furMaterials.Length;
+
+        furRenderer.material = furMaterials[index];
+        detailsRenderer.material = detailsMaterials[index];
+    }
+
+    /*
+
     [SyncVar(hook = nameof(setColorOnClients))] int colorIndex;
 
     [Server]
@@ -24,7 +36,6 @@ public class CustomizeCharacter : NetworkBehaviour
         furRenderer.material = furMaterials[colorIndex];
         detailsRenderer.material = detailsMaterials[colorIndex];
     }
-
     [Server]
     public void randomColor()
     {
@@ -32,10 +43,11 @@ public class CustomizeCharacter : NetworkBehaviour
         furRenderer.material = furMaterials[colorIndex];
         detailsRenderer.material = detailsMaterials[colorIndex];
     }
-
+    
     void setColorOnClients(int old, int current)
     {
         furRenderer.material = furMaterials[current];
         detailsRenderer.material = detailsMaterials[current];
     }
+    */
 }

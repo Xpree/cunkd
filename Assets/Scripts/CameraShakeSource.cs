@@ -8,8 +8,15 @@ public class CameraShakeSource : MonoBehaviour
     public float ActivationRange = 2.0f;
     public bool IsShaking => cameraShake.activationTimer.Elapsed < cameraShake.Duration;
 
-
+    public bool PlayOnSpawn = false;
+    
     public Key testingKey = Key.None;
+
+    private void Start()
+    {
+        if (PlayOnSpawn)
+            OneShotShake(NetworkTimer.Now);
+    }
 
     public void OneShotShake(NetworkTimer eventTime)
     {

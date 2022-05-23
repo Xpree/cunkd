@@ -26,7 +26,6 @@ GameObject:
   - component: {fileID: 7789149092601112571}
   - component: {fileID: 2814553266126730253}
   - component: {fileID: 3394851736147119102}
-  - component: {fileID: -4332141563132474689}
   - component: {fileID: 6291283800082655643}
   - component: {fileID: 3757456631009906531}
   - component: {fileID: 6663273738497093058}
@@ -269,6 +268,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  animator: {fileID: 8204663571986692130}
   _settings: {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}
   _isGrounded: 0
   _groundNormal: {x: 0, y: 1, z: 0}
@@ -402,21 +402,6 @@ MonoBehaviour:
     _json: '{"nest":{"source":"Embed","macro":null,"embed":{"variables":{"collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":"PlayerEvents","summary":null,"pan":{"x":79.0,"y":27.0},"zoom":1.0,"elements":[{"coroutine":false,"defaultValues":{"target":null},"position":{"x":-246.0,"y":-106.0},"guid":"ba9cddc4-1dfe-4ead-9a0d-ff2ce12ada90","$version":"A","$type":"EventPlayerJumped","$id":"10"},{"coroutine":false,"defaultValues":{"target":null},"position":{"x":-248.0,"y":9.0},"guid":"45936925-01c1-472f-8094-badb1d203eaa","$version":"A","$type":"EventPlayerAirJumped","$id":"12"},{"chainable":false,"member":{"name":"PlayOneShotAttached","parameterTypes":["System.String","UnityEngine.GameObject"],"targetType":"FMODUnity.RuntimeManager","targetTypeName":"FMODUnity.RuntimeManager","$version":"A"},"defaultValues":{"%path":{"$content":"event:/SoundStudents/SFX/Environment/Jump
       sounds","$type":"System.String"},"%gameObject":null},"position":{"x":102.0,"y":-70.0},"guid":"0e16ef27-f3db-45d7-8052-b3ed0eb67cc5","$version":"A","$type":"Unity.VisualScripting.InvokeMember","$id":"14"},{"defaultValues":{},"position":{"x":-29.0,"y":106.0},"guid":"4f1ef94a-9baa-4303-a9e4-8313d725936f","$version":"A","$type":"Unity.VisualScripting.This","$id":"17"},{"sourceUnit":{"$ref":"10"},"sourceKey":"trigger","destinationUnit":{"$ref":"14"},"destinationKey":"enter","guid":"444fe91e-0f83-49a5-9674-d972ccf76922","$type":"Unity.VisualScripting.ControlConnection"},{"sourceUnit":{"$ref":"12"},"sourceKey":"trigger","destinationUnit":{"$ref":"14"},"destinationKey":"enter","guid":"0e88bab6-d6d8-4f98-94ef-77083b9d391e","$type":"Unity.VisualScripting.ControlConnection"},{"sourceUnit":{"$ref":"17"},"sourceKey":"self","destinationUnit":{"$ref":"14"},"destinationKey":"%gameObject","guid":"9c717e24-7682-4b30-bf5c-01b6fffe947a","$type":"Unity.VisualScripting.ValueConnection"}],"$version":"A"}}}'
     _objectReferences: []
---- !u!114 &-4332141563132474689
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1480027675339556}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 599501685ec24cf49af6802eac42cce4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  animator: {fileID: 8204663571986692130}
 --- !u!114 &6291283800082655643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -463,29 +448,29 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   detailsMaterials:
-  - {fileID: 2100000, guid: f804e7f856ab1f44e9487fc332a5ab6b, type: 2}
-  - {fileID: 2100000, guid: 22a5041b20c067f4ba7f4daad756d701, type: 2}
+  - {fileID: 2100000, guid: 9ab94e0cb1282104a9ccdccdca33d93a, type: 2}
+  - {fileID: 2100000, guid: 8e6c92e27f18d4c43a358e94d811df8e, type: 2}
+  - {fileID: 2100000, guid: 3dd591981cf566642b00387e0671f64a, type: 2}
   - {fileID: 2100000, guid: 382b91810d002c94482eece28cbe6d11, type: 2}
   - {fileID: 2100000, guid: 1e35e45e897192f4faca9a82cd56d908, type: 2}
-  - {fileID: 2100000, guid: 8e6c92e27f18d4c43a358e94d811df8e, type: 2}
+  - {fileID: 2100000, guid: f804e7f856ab1f44e9487fc332a5ab6b, type: 2}
   - {fileID: 2100000, guid: 2a36e40596cc0cb4e93441de2a7b7f3a, type: 2}
-  - {fileID: 2100000, guid: ab3831963bca3d04bb0b4a20ff977a70, type: 2}
-  - {fileID: 2100000, guid: 9ab94e0cb1282104a9ccdccdca33d93a, type: 2}
-  - {fileID: 2100000, guid: bd52f5761e6c3f84f887867af9ebd7fc, type: 2}
   - {fileID: 2100000, guid: 4fb1cc5547a83f74fbb08e54311d7bd7, type: 2}
-  - {fileID: 2100000, guid: 3dd591981cf566642b00387e0671f64a, type: 2}
+  - {fileID: 2100000, guid: 22a5041b20c067f4ba7f4daad756d701, type: 2}
+  - {fileID: 2100000, guid: ab3831963bca3d04bb0b4a20ff977a70, type: 2}
+  - {fileID: 2100000, guid: bd52f5761e6c3f84f887867af9ebd7fc, type: 2}
   furMaterials:
-  - {fileID: 2100000, guid: f9a3cfadf66852f4a875f0a5cd557c2c, type: 2}
-  - {fileID: 2100000, guid: 77d50525bf672794ea8c8830786fa7e8, type: 2}
+  - {fileID: 2100000, guid: 43369ab22b21ce8419a5723e71d34392, type: 2}
+  - {fileID: 2100000, guid: ac70a7ebc7cea564f8c4e0e8f96e13f6, type: 2}
+  - {fileID: 2100000, guid: 8cbd39192ef668948aef357210215fd1, type: 2}
   - {fileID: 2100000, guid: f8d7bd1d730e071438637cab39d43f9e, type: 2}
   - {fileID: 2100000, guid: cd958a7cfafd2c34c8dc3f6cb14f5ec6, type: 2}
-  - {fileID: 2100000, guid: ac70a7ebc7cea564f8c4e0e8f96e13f6, type: 2}
+  - {fileID: 2100000, guid: f9a3cfadf66852f4a875f0a5cd557c2c, type: 2}
   - {fileID: 2100000, guid: 83562a570e1f8b749aa5ea9a84087754, type: 2}
-  - {fileID: 2100000, guid: 6f368a411df70094187c599198c3ad52, type: 2}
-  - {fileID: 2100000, guid: 43369ab22b21ce8419a5723e71d34392, type: 2}
-  - {fileID: 2100000, guid: a81c953f47fadcf478e207afd467d5d2, type: 2}
   - {fileID: 2100000, guid: 119e490fba4513448b5eb02459f963a8, type: 2}
-  - {fileID: 2100000, guid: 8cbd39192ef668948aef357210215fd1, type: 2}
+  - {fileID: 2100000, guid: 77d50525bf672794ea8c8830786fa7e8, type: 2}
+  - {fileID: 2100000, guid: 6f368a411df70094187c599198c3ad52, type: 2}
+  - {fileID: 2100000, guid: a81c953f47fadcf478e207afd467d5d2, type: 2}
   detailsRenderer: {fileID: 4877599910388830595}
   furRenderer: {fileID: 1223380230588337414}
 --- !u!1 &163777201894869649

@@ -16,6 +16,9 @@ public class NetworkItem : NetworkBehaviour
 
     public GameObject Owner => owner;
 
+    public bool IsOwnerLocalPlayer => owner == NetworkClient.localPlayer.gameObject;
+    public bool IsOwnerCunkd => owner != null && owner.GetComponent<GameClient>().IsCunkd;
+
     public Transform OwnerInteractAimTransform => Util.GetPlayerInteractAimTransform(this.Owner);
 
     public Ray AimRay => this.transform.ForwardRay();
@@ -172,7 +175,7 @@ public class NetworkItem : NetworkBehaviour
     }
 
 
-    public Vector3 InteractAimPoint(float maxDistance)
+    public Vector3 OwnerProjectileHitscan(float maxDistance)
     {
         var aimRay = this.OwnerInteractAimTransform.ForwardRay();
 

@@ -19,14 +19,20 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
 
     NetworkCooldown _cooldownTimer;
 
+    [SerializeField] CameraShakeSource _cameraShake;
+
 
     bool Swung;
     bool HasTicked;
+
+    NetworkItem item;
 
     void Awake()
     {
         _cooldownTimer = GetComponent<NetworkCooldown>();
         _cooldownTimer.CooldownDuration = Cooldown;
+
+        item = GetComponent<NetworkItem>();
     }
 
     private void Start()
@@ -45,7 +51,17 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
             return;
 
         HasTicked = false;
-        Collider[] colliders = Physics.OverlapSphere(Head.transform.position, Radius);
+        Collider[] colliders = Physics.OverlapSphere(Head.transform.position, Radius, ~0, QueryTriggerInteraction.Ignore);
+        if(colliders.Length > 0)
+        {
+            FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Gadgets/Hammer/Hammer Hit", this.Head);
+            _cameraShake.OneShotShake(NetworkTimer.Now);
+        }
+        else
+        {
+            //Debug.Log("Miss");                    
+            FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Gadgets/Hammer/Hammer Miss", this.gameObject);
+        }
         foreach (Collider nearby in colliders)
         {
             Rigidbody rb = nearby.GetComponent<Rigidbody>();
@@ -54,19 +70,16 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
                 if (rb != owner.GetComponent<Rigidbody>() && rb.CompareTag("Player"))
                 {
                     //Debug.Log("PlayerHit");                    
-                    FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Gadgets/Hammer/Hammer Hit", this.gameObject);
+                    
                     rb.AddExplosionForce(Force * 2, Head.transform.position, Radius);
+                    rb.GetComponent<PlayerMovement>().NoFriction();
+                    FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Cat sound when dying", rb.gameObject);
                 }
                 if(rb != owner.GetComponent<Rigidbody>())
                 {
                     //Debug.Log("ObjectHit");                    
                     rb.AddExplosionForce(Force, Head.transform.position, Radius);
-                }
-                else
-                {
-                    //Debug.Log("Miss");                    
-                    FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Gadgets/Hammer/Hammer Miss", this.gameObject);
-                }
+                }                
             }            
         }
     }
@@ -75,8 +88,16 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
     {
         if (isPressed)
         {
-            if (_cooldownTimer.Use(this.Cooldown))
+            float cooldown = this.Cooldown;
+            if(item.IsOwnerCunkd)
             {
+                cooldown *= 0.5f;
+            }
+            
+            if (_cooldownTimer.Use(cooldown))
+            {
+                //speeds up animation
+                // Netanimator.animator.speed = 1f;
                 Netanimator.SetTrigger("Swing");
                 //Swung = true;
             }

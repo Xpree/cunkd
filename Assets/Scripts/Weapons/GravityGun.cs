@@ -51,7 +51,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         }
         else
         {
-            AudioHelper.PlayOneShotWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.transform.position, ("Grab Object", 1f), ("Object recived start loading", 1f), ("Shot away object", 1f));
+            //AudioHelper.PlayOneShotWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.transform.position, ("Grab Object", 1f), ("Object recived start loading", 1f), ("Shot away object", 1f));
             var target = targetObject;
             if (target == null || target.GetComponent<Pullable>().IsFixed == false)
                 target = item.ProjectileHitscanIdentity(MaxRange)?.gameObject;
@@ -89,6 +89,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
     [Command]
     void CmdPush(GameObject target, Vector3 aimDirection, float progress)
     {
+        AudioHelper.PlayOneShotWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.transform.position, ("Grab Object", 1f), ("Object recived start loading", 1f), ("Shot away object", 1f));
         animator.SetTrigger("Fire");
 
         justStop();

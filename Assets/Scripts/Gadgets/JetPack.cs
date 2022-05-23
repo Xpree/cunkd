@@ -22,65 +22,83 @@ public class JetPack : NetworkBehaviour, IGadget, IEquipable
     int IGadget.Charges => Charges;
     int IGadget.ChargesLeft => cooldownTimer.Charges;
 
+    NetworkItem item;
 
-    GameInputs gameInputs;
     private void Awake()
     {
         cooldownTimer = GetComponent<NetworkCooldown>();
+        cooldownTimer.CooldownDuration = Cooldown;
+        cooldownTimer.MaxCharges = Charges;
+        
+        item = GetComponent<NetworkItem>();
     }
 
     public override void OnStartServer()
     {
         base.OnStartServer();
-        cooldownTimer.SetCharges(Charges);
-        cooldownTimer.CooldownDuration = Cooldown;
-    }
-
-    [TargetRpc]
-    void TargetTell(string message)
-    {
-        print(message);
+        cooldownTimer.SetCharges(Charges);       
     }
 
     float force = 0;
 
     [Command]
-    void fly()
+    void CmdUseCharge()
     {
         if (cooldownTimer.ServerUse(this.Cooldown))
         {
-            force = Mathf.Min(force += acceleration, maxForce);
-            RpcFlyLikeSatan();
-            animator.SetTrigger("Fly");
             if (cooldownTimer.Charges == 0)
             {
-                TargetTell("out of fuel");
                 NetworkServer.Destroy(this.gameObject);
                 return;
             }
         }
     }
 
-    bool timeToFly = false;
-    private void FixedUpdate()
+    void SetFlying(bool enable)
     {
-        if (timeToFly)
-        {            
-            fly();
+        if(enable)
+        {
+            if (!isFlying)
+            {
+                animator.SetTrigger("Fly");
+            }
         }
         else
         {
-            animator.SetTrigger("StopFly");
+            timeToFly = false;
+            if (isFlying)
+            {
+                animator.SetTrigger("StopFly");
+            }
         }
+        isFlying = enable;
     }
 
-    [TargetRpc]
-    void RpcFlyLikeSatan()
-    {        
-        //print("Look mom I'm flying!");
-        force = Mathf.Min(force += acceleration, maxForce);
-        PlayerMovement pm = GetComponentInParent<PlayerMovement>();
-        pm.ApplyJumpForce(force);
+    bool timeToFly = false;
+    bool isFlying = false;
+
+    private void FixedUpdate()
+    {
+        if (item.IsOwnerLocalPlayer == false)
+            return;
+
+        // Only ran by local player
+        
+        if (timeToFly && cooldownTimer.Charges > 0)
+        {            
+            if(cooldownTimer.Use(this.Cooldown))
+            {
+                CmdUseCharge();
+                force = Mathf.Min(force += acceleration, maxForce);
+                PlayerMovement pm = GetComponentInParent<PlayerMovement>();
+                pm.ApplyJumpForce(force);
+                SetFlying(true);
+            }
+        }
+        else
+        {
+            SetFlying(false);
+        }
     }
 
     void IGadget.PrimaryUse(bool isPressed)
@@ -110,6 +128,9 @@ public class JetPack : NetworkBehaviour, IGadget, IEquipable
         // TODO Animation then set holstered
         holstered = true;
         transform.localScale = Vector3.zero;
+
+        if(item.IsOwnerLocalPlayer)
+            SetFlying(false);
     }
 
     void IEquipable.OnUnholstered()
@@ -131,6 +152,9 @@ public class JetPack : NetworkBehaviour, IGadget, IEquipable
 
     void IEquipable.OnDropped()
     {
+        if (item.IsOwnerLocalPlayer)
+            SetFlying(false);
+
         this.transform.parent = null;
         if (holstered)
         {

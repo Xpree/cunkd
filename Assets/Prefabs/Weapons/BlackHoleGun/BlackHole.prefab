@@ -110,6 +110,88 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &1791652019808427638
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6704807778010971958}
+  - component: {fileID: 8566612693450289439}
+  m_Layer: 8
+  m_Name: CameraShake Source
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6704807778010971958
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791652019808427638}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9042650287692845765}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8566612693450289439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791652019808427638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beaeb932467650841a360160d6c47551, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraShake:
+    PositionOscillator:
+      x:
+        frequency: 50
+        amplitude: 0
+        timeOffset: 0
+      y:
+        frequency: 0
+        amplitude: 0
+        timeOffset: 0
+      z:
+        frequency: 50
+        amplitude: 0
+        timeOffset: 0
+    RotationOscillator:
+      x:
+        frequency: 0
+        amplitude: 0
+        timeOffset: 0
+      y:
+        frequency: 0
+        amplitude: 0
+        timeOffset: 0
+      z:
+        frequency: 50
+        amplitude: 0
+        timeOffset: 0
+    FieldOfViewOscillator:
+      frequency: 3.14
+      amplitude: 50
+      timeOffset: 0
+    Duration: 1
+    RandomTimeOffset: 0
+    activationTimer:
+      TickTime: 312.4769981076006
+  ActivationRange: 20
+  PlayOnSpawn: 0
+  testingKey: 0
 --- !u!1 &6033889869813183962
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,6 +228,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5293028075215108505}
+  - {fileID: 6704807778010971958}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -207,10 +290,10 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6033889869813183962}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 20
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1761250688478877484
 MonoBehaviour:
@@ -244,6 +327,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   _settings: {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}
+  _cameraShake: {fileID: 8566612693450289439}
 --- !u!114 &4568777201997059838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,6 +343,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   clientAuthority: 0
+  syncWorldAsLocal: 0
   sendInterval: 0.05
   syncPosition: 1
   syncRotation: 1
