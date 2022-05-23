@@ -54,7 +54,13 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
         Collider[] colliders = Physics.OverlapSphere(Head.transform.position, Radius, ~0, QueryTriggerInteraction.Ignore);
         if(colliders.Length > 0)
         {
+            FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Gadgets/Hammer/Hammer Hit", this.Head);
             _cameraShake.OneShotShake(NetworkTimer.Now);
+        }
+        else
+        {
+            //Debug.Log("Miss");                    
+            FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Gadgets/Hammer/Hammer Miss", this.gameObject);
         }
         foreach (Collider nearby in colliders)
         {
@@ -64,21 +70,16 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
                 if (rb != owner.GetComponent<Rigidbody>() && rb.CompareTag("Player"))
                 {
                     //Debug.Log("PlayerHit");                    
-                    FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Gadgets/Hammer/Hammer Hit", this.gameObject);
+                    
                     rb.AddExplosionForce(Force * 2, Head.transform.position, Radius);
                     rb.GetComponent<PlayerMovement>().NoFriction();
-                    FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Cat sound when dying", this.gameObject);
+                    FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Cat sound when dying", rb.gameObject);
                 }
                 if(rb != owner.GetComponent<Rigidbody>())
                 {
                     //Debug.Log("ObjectHit");                    
                     rb.AddExplosionForce(Force, Head.transform.position, Radius);
-                }
-                else
-                {
-                    //Debug.Log("Miss");                    
-                    FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Gadgets/Hammer/Hammer Miss", this.gameObject);
-                }
+                }                
             }            
         }
     }
@@ -95,6 +96,8 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
             
             if (_cooldownTimer.Use(cooldown))
             {
+                //speeds up animation
+                // Netanimator.animator.speed = 1f;
                 Netanimator.SetTrigger("Swing");
                 //Swung = true;
             }

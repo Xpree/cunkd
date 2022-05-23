@@ -3897,8 +3897,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
-  m_fontSizeBase: 100
+  m_fontSize: 144
+  m_fontSizeBase: 144
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -7158,14 +7158,6 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0.19839679
       objectReference: {fileID: 0}
-    - target: {fileID: 7285812631972427656, guid: 76925fd621372034fa278398e4c989c2, type: 3}
-      propertyPath: m_UiScaleMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7285812631972427656, guid: 76925fd621372034fa278398e4c989c2, type: 3}
-      propertyPath: m_PresetInfoIsWorld
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7285812631972427658, guid: 76925fd621372034fa278398e4c989c2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -7274,10 +7266,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1487462448}
-    - target: {fileID: 7285812632549936366, guid: 76925fd621372034fa278398e4c989c2, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: SetActive
-      objectReference: {fileID: 0}
     - target: {fileID: 7285812632590201576, guid: 76925fd621372034fa278398e4c989c2, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0.08837675
