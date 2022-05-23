@@ -115,7 +115,7 @@ public class Pullable : NetworkBehaviour
         //body.position = Vector3.Lerp(body.position, TargetPosition, 0.5f);
         
         
-        body.position = Vector3.Lerp(body.position, target.transform.position, 0.5f);
+        transform.position = Vector3.Lerp(transform.position, TargetPosition, 0.5f);
     }
 
     public void StartPulling(GameObject destination, NetworkTimer timeToFixed)
