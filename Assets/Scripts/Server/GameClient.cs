@@ -20,20 +20,35 @@ public class GameClient : NetworkBehaviour
 
     public PlayerCameraController CameraController;
 
-    [SyncVar]
+    public GameObject CunkdEffect;
+
+    [SyncVar(hook = nameof(OnCunkd))]
     public bool IsCunkd;
 
     Coroutine lastCunkd;
-        
+
+    void OnCunkd(bool previous, bool current)
+    {
+        if(!CameraController.IsCameraActive)
+        {
+            CunkdEffect.SetActive(current);
+        }
+    }
+
     System.Collections.IEnumerator SetCunkdCoroutine(float duration)
     {
         IsCunkd = true;
+        if (!CameraController.IsCameraActive)
+        {
+            CunkdEffect.SetActive(true);
+        }
         var timer = NetworkTimer.FromNow(duration);
         while(timer.HasTicked == false)
         {
             yield return null;
         }
         IsCunkd = false;
+        CunkdEffect.SetActive(false);
         lastCunkd = null;
     }
     
@@ -97,11 +112,31 @@ public class GameClient : NetworkBehaviour
     {
         CameraController = GetComponentInChildren<PlayerCameraController>(true);
         _inputs = GetComponentInChildren<GameInputs>(true);
+        CameraController.OnCameraActivated.AddListener(OnCameraActivated);
+        CameraController.OnCameraDeactivated.AddListener(OnCameraDeactivated);
+    }
+
+    void OnCameraActivated()
+    {
+        CunkdEffect.SetActive(false);
+    }
+
+    void OnCameraDeactivated()
+    {
+        CunkdEffect.SetActive(IsCunkd);
     }
 
     private void Start()
     {
         UpdateLayer();
+        if (!CameraController.IsCameraActive)
+        {
+            CunkdEffect.SetActive(IsCunkd);
+        }
+        else
+        {
+            CunkdEffect.SetActive(false);
+        }
     }
 
     [Server]
