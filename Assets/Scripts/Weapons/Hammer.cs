@@ -86,6 +86,8 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
         {
             if (_cooldownTimer.Use(this.Cooldown))
             {
+                //speeds up animation
+                // Netanimator.animator.speed = 1f;
                 Netanimator.SetTrigger("Swing");
                 //Swung = true;
             }
