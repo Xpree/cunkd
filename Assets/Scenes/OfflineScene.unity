@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 49434311}
   - component: {fileID: 49434310}
   - component: {fileID: 49434313}
+  - component: {fileID: 49434314}
   m_Layer: 5
   m_Name: Find Server Button
   m_TagString: Untagged
@@ -302,6 +303,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &49434314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 49434308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e0c76514dd1d044db03e67641f240ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &76685785
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,6 +327,7 @@ GameObject:
   - component: {fileID: 76685789}
   - component: {fileID: 76685788}
   - component: {fileID: 76685787}
+  - component: {fileID: 76685790}
   m_Layer: 5
   m_Name: OkButton
   m_TagString: Untagged
@@ -448,6 +462,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 76685785}
   m_CullTransparentMesh: 1
+--- !u!114 &76685790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 76685785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e0c76514dd1d044db03e67641f240ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &106378853
 GameObject:
   m_ObjectHideFlags: 0
@@ -884,6 +910,7 @@ GameObject:
   - component: {fileID: 213878387}
   - component: {fileID: 213878386}
   - component: {fileID: 213878389}
+  - component: {fileID: 213878390}
   m_Layer: 5
   m_Name: Connect Button
   m_TagString: Untagged
@@ -1026,6 +1053,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &213878390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213878384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e0c76514dd1d044db03e67641f240ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &226272462
 GameObject:
   m_ObjectHideFlags: 0
@@ -1618,6 +1657,7 @@ GameObject:
   - component: {fileID: 423888498}
   - component: {fileID: 423888497}
   - component: {fileID: 423888496}
+  - component: {fileID: 423888499}
   m_Layer: 5
   m_Name: Confirm
   m_TagString: Untagged
@@ -1740,6 +1780,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 423888494}
   m_CullTransparentMesh: 1
+--- !u!114 &423888499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 423888494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e0c76514dd1d044db03e67641f240ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &484116558
 GameObject:
   m_ObjectHideFlags: 0
@@ -1753,6 +1805,7 @@ GameObject:
   - component: {fileID: 484116561}
   - component: {fileID: 484116560}
   - component: {fileID: 484116563}
+  - component: {fileID: 484116564}
   m_Layer: 5
   m_Name: Back Button
   m_TagString: Untagged
@@ -1919,6 +1972,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &484116564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484116558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e0c76514dd1d044db03e67641f240ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &566370821
 GameObject:
   m_ObjectHideFlags: 0
@@ -2896,7 +2961,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Ok
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -2960,7 +3025,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &958619154
@@ -3170,6 +3235,7 @@ GameObject:
   - component: {fileID: 1169247954}
   - component: {fileID: 1169247953}
   - component: {fileID: 1169247956}
+  - component: {fileID: 1169247957}
   m_Layer: 5
   m_Name: Back Button (1)
   m_TagString: Untagged
@@ -3324,6 +3390,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1169247957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169247951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e0c76514dd1d044db03e67641f240ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1231703457
 GameObject:
   m_ObjectHideFlags: 0
@@ -3960,6 +4038,7 @@ GameObject:
   - component: {fileID: 1368122615}
   - component: {fileID: 1368122614}
   - component: {fileID: 1368122617}
+  - component: {fileID: 1368122618}
   m_Layer: 5
   m_Name: Host Button
   m_TagString: Untagged
@@ -4102,6 +4181,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1368122618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1368122612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e0c76514dd1d044db03e67641f240ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1384039060
 GameObject:
   m_ObjectHideFlags: 0
@@ -4508,6 +4599,7 @@ GameObject:
   - component: {fileID: 1435931175}
   - component: {fileID: 1435931174}
   - component: {fileID: 1435931177}
+  - component: {fileID: 1435931178}
   m_Layer: 5
   m_Name: Join Host Button
   m_TagString: Untagged
@@ -4662,6 +4754,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1435931178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1435931172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e0c76514dd1d044db03e67641f240ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1485803316
 GameObject:
   m_ObjectHideFlags: 0
@@ -5082,7 +5186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.29690284, g: 0.4528302, b: 0.4528302, a: 1}
+  m_Color: {r: 0.5849056, g: 0, b: 0.12493593, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5438,7 +5542,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter text...
+  m_text: Enter name...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5707,7 +5811,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Unable to connect
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -5771,7 +5875,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1769748593
@@ -6525,7 +6629,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -20}
+  m_AnchoredPosition: {x: 0, y: -50}
   m_SizeDelta: {x: 0, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2022430966
@@ -6550,7 +6654,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Error Occured
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ff10474a60727ad4880cfde6fa1c9f36, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -6614,7 +6718,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &2022430967
@@ -6703,6 +6807,7 @@ GameObject:
   - component: {fileID: 2087016790}
   - component: {fileID: 2087016789}
   - component: {fileID: 2087016791}
+  - component: {fileID: 2087016792}
   m_Layer: 5
   m_Name: Quit Button
   m_TagString: Untagged
@@ -6863,6 +6968,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2087016792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087016784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e0c76514dd1d044db03e67641f240ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2092350133
 GameObject:
   m_ObjectHideFlags: 0
@@ -6876,6 +6993,7 @@ GameObject:
   - component: {fileID: 2092350136}
   - component: {fileID: 2092350135}
   - component: {fileID: 2092350138}
+  - component: {fileID: 2092350139}
   m_Layer: 5
   m_Name: Settings Button
   m_TagString: Untagged
@@ -7030,6 +7148,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2092350139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2092350133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e0c76514dd1d044db03e67641f240ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4967558308204985152
 PrefabInstance:
   m_ObjectHideFlags: 0
