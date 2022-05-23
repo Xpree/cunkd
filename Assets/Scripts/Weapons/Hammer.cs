@@ -19,6 +19,8 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
 
     NetworkCooldown _cooldownTimer;
 
+    [SerializeField] CameraShakeSource _cameraShake;
+
 
     bool Swung;
     bool HasTicked;
@@ -45,7 +47,11 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
             return;
 
         HasTicked = false;
-        Collider[] colliders = Physics.OverlapSphere(Head.transform.position, Radius);
+        Collider[] colliders = Physics.OverlapSphere(Head.transform.position, Radius, ~0, QueryTriggerInteraction.Ignore);
+        if(colliders.Length > 0)
+        {
+            _cameraShake.OneShotShake(NetworkTimer.Now);
+        }
         foreach (Collider nearby in colliders)
         {
             Rigidbody rb = nearby.GetComponent<Rigidbody>();
