@@ -48,6 +48,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   iceGadgetTrap: {fileID: 2446264302813279794, guid: c2c388c1241f93945949e7fcb97524de, type: 3}
+  selfDestructTime: 10
   _settings: {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}
   trap: {fileID: 0}
   positionSync: {x: 0, y: 0, z: 0}

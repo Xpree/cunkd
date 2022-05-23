@@ -6,6 +6,7 @@ using Mirror;
 public class IceTrapHub : NetworkBehaviour
 {
     [SerializeField] GameObject iceGadgetTrap;
+    [SerializeField] float selfDestructTime;
     [SerializeField] GameSettings _settings;
     [HideInInspector]public GameObject trap;
     float throwForce;
@@ -14,6 +15,21 @@ public class IceTrapHub : NetworkBehaviour
     void Awake()
     {
         throwForce = _settings.IceGadget.ThrowForce;
+    }
+
+    float endTime = float.MaxValue;
+    public void ActivateSelfDestruction()
+    {
+        endTime = GameStats.RoundTimer + selfDestructTime;
+    }
+
+    [Server]
+    private void Update()
+    {
+        if (endTime < GameStats.RoundTimer)
+        {
+            NetworkServer.Destroy(this.gameObject);
+        }
     }
 
     [Command]

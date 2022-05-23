@@ -6,6 +6,7 @@ using Mirror;
 public class IceGadget : NetworkBehaviour, IGadget, IEquipable
 {
     [SerializeField] bool isPassive;
+
     [SerializeField] LayerMask TargetMask = ~0;
     float throwForce;
 
@@ -40,6 +41,7 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
     [Command]
     void DestroyGadget()
     {
+        hub.ActivateSelfDestruction();
         NetworkServer.Destroy(this.gameObject);
     }
 
@@ -122,6 +124,7 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
 
     void IEquipable.OnDropped()
     {
+        DestroyGadget();
         this.transform.parent = null;
         if (holstered)
         {
