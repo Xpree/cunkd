@@ -27,15 +27,13 @@ public class GravityGunAttractSound : MonoBehaviour
         if (playing)
             return;
         playing = true;
-        PlayOneShotAttachedWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.gameObject, ("Grab Object", 1f), ("Object recived start loading", 1f), ("Shot away object", 0f));
-        Debug.Log("AttractSound");
+        PlayOneShotAttachedWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.gameObject, ("Grab Object", 1f), ("Object recived start loading", 1f), ("Shot away object", 0f));        
     }
 
     public void StopSound()
     {
         attractSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         attractSoundInstance.release();
-        playing = false;
-        Debug.Log("StopSound");
+        playing = false;        
     }
 }
