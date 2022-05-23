@@ -106,7 +106,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  KnockbackStrength: 0.2
+  KnockbackStrength: 0.3
+  onOff: 0
 --- !u!54 &-9078684999050906523
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -155,6 +156,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   clientAuthority: 0
+  syncWorldAsLocal: 0
   sendInterval: 0.01
   syncPosition: 1
   syncRotation: 1
@@ -239,8 +241,11 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   target: {fileID: 0}
+  offTime: 0
   pullingCollider: {fileID: 5514149124751363301}
   body: {fileID: -9078684999050906523}
+  pullOffset: 0
+  offsetPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &6339646922745046407
 GameObject:
   m_ObjectHideFlags: 0
