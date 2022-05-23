@@ -62,6 +62,8 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
                     //Debug.Log("PlayerHit");                    
                     FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Gadgets/Hammer/Hammer Hit", this.gameObject);
                     rb.AddExplosionForce(Force * 2, Head.transform.position, Radius);
+                    Vector3 noFriction = new Vector3(0, 0, 0);
+                    rb.GetComponent<PlayerMovement>().TargetAddforce(noFriction, ForceMode.Impulse);
                 }
                 if(rb != owner.GetComponent<Rigidbody>())
                 {
