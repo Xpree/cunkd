@@ -17,6 +17,7 @@ public class NetworkItem : NetworkBehaviour
     public GameObject Owner => owner;
 
     public bool IsOwnerLocalPlayer => owner == NetworkClient.localPlayer.gameObject;
+    public bool IsOwnerCunkd => owner != null && owner.GetComponent<GameClient>().IsCunkd;
 
     public Transform OwnerInteractAimTransform => Util.GetPlayerInteractAimTransform(this.Owner);
 

@@ -27,10 +27,16 @@ public class JetPack : NetworkBehaviour, IGadget, IEquipable
     private void Awake()
     {
         cooldownTimer = GetComponent<NetworkCooldown>();
-        cooldownTimer.SetCharges(Charges);
         cooldownTimer.CooldownDuration = Cooldown;
+        cooldownTimer.MaxCharges = Charges;
         
         item = GetComponent<NetworkItem>();
+    }
+
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+        cooldownTimer.SetCharges(Charges);       
     }
 
     float force = 0;

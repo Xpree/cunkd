@@ -10,9 +10,7 @@ public class CunkaCola : NetworkBehaviour, IGadget, IEquipable
     [SerializeField] bool isPassive;
     [SerializeField] int Charges;
     [SerializeField] float Cooldown = 1.0f;
-    [SerializeField] float SpeedBoost;
     [SerializeField] float Duration;
-    double endTime;
 
     NetworkCooldown cooldownTimer;
 
@@ -20,11 +18,15 @@ public class CunkaCola : NetworkBehaviour, IGadget, IEquipable
     int IGadget.Charges => Charges;
     int IGadget.ChargesLeft => cooldownTimer.Charges;
 
+    NetworkItem item;
+
     private void Awake()
     {
         cooldownTimer = GetComponent<NetworkCooldown>();
         cooldownTimer.CooldownDuration = Cooldown;
         cooldownTimer.MaxCharges = Charges;
+
+        item = GetComponent<NetworkItem>();
     }
 
     public override void OnStartServer()
@@ -33,54 +35,17 @@ public class CunkaCola : NetworkBehaviour, IGadget, IEquipable
         cooldownTimer.SetCharges(Charges);
     }
 
-    [Server]
-    private void Update()
-    {
-        if (player && endTime < NetworkTime.time)
-        {
-            GetComponentInParent<PlayerMovement>().bonusSpeed = 0;
-            hammerColdownOff();
-            //TargetTell("Aaaaah!");
-            if (cooldownTimer.Charges == 0)
-            {
-                TargetTell("Buuurp!");
-                NetworkServer.Destroy(this.gameObject);
-                hammerColdownOff();
-                return;
-            }
-        }
-    }
-
-    [TargetRpc]
-    public void hammerColdownOn()
-    {
-        GameServer.Instance.Settings.Hammer.Cooldown = 2f;
-    }
-
-    [TargetRpc]
-    public void hammerColdownOff()
-    {
-        GameServer.Instance.Settings.Hammer.Cooldown = 5f;
-    }
-
-    [TargetRpc]
-    void TargetTell(string message)
-    {
-        print(message);
-    }
-
-    PlayerMovement player;
 
     [Command]
     void CmdUse()
     {
         if (cooldownTimer.ServerUse(this.Cooldown))
         {
-            TargetTell("Drank some Cunka Cola");
-            player = GetComponentInParent<PlayerMovement>();
-            player.bonusSpeed = SpeedBoost;
-            endTime = NetworkTime.time + Duration;
-            hammerColdownOn();
+            item.Owner.GetComponent<GameClient>().SetCunkd(Duration);
+            if(cooldownTimer.Charges == 0)
+            {
+                NetworkServer.Destroy(this.gameObject);
+            }
         }
     }
 
@@ -133,12 +98,6 @@ public class CunkaCola : NetworkBehaviour, IGadget, IEquipable
     void IEquipable.OnDropped()
     {
         this.transform.parent = null;
-
-        if (player)
-        {
-            player.bonusSpeed = 0;
-            hammerColdownOff();
-        }
         if (holstered)
         {
             holstered = false;

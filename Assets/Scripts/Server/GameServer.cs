@@ -289,10 +289,11 @@ public class GameServer : MonoBehaviour
         //var spawn = CunkdNetManager.Instance.GetStartPosition();
         var player = client?.GetComponent<PlayerMovement>();
         if(player != null)
-        {
+        {            
             PurgeOwnedObjects(client);
             player.TargetRespawn(spawn.position, spawn.rotation);
             client.GetComponent<Inventory>().Invoke("SpawnPrimaryWeapon", 0.2f);
+            client.GetComponent<GameClient>().IsCunkd = false;
         }
         else
         {

@@ -22,11 +22,9 @@ public class PlayerMovement : NetworkBehaviour
     public double _lastGrounded = 0;
     public double _lastJump = 0;
 
-    [SyncVar] public float bonusSpeed;
-
     public float maxSpeedScaling = 1f;
     public float maxFrictionScaling = 1f;
-    public float currentMaxSpeed => (_settings.CharacterMovement.MaxSpeed + bonusSpeed) * maxSpeedScaling;
+    public float currentMaxSpeed => (_settings.CharacterMovement.MaxSpeed + (_client.IsCunkd ? _settings.CunkdSpeedBoost : 0)) * maxSpeedScaling;
     public float currentMaxFriction => _settings.CharacterMovement.FrictionAcceleration * maxFrictionScaling;
 
     public float gravityScaling => _settings.CharacterMovement.gravityScaling;
@@ -40,8 +38,12 @@ public class PlayerMovement : NetworkBehaviour
 
     NetworkTimer _preventGroundFriction;
 
+    GameClient _client;
+
     private void Awake()
     {
+        _client = GetComponent<GameClient>();
+        
         _networkTransform = GetComponent<NetworkTransform>();
         _rigidBody = GetComponent<Rigidbody>();
         _rigidBody.useGravity = false;
@@ -351,7 +353,6 @@ public class PlayerMovement : NetworkBehaviour
     [TargetRpc]
     public void TargetRespawn(Vector3 position, Quaternion rotation)
     {
-        bonusSpeed = 0;
         transform.position = position;
         transform.rotation = rotation;
         ResetState();

@@ -25,10 +25,14 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
     bool Swung;
     bool HasTicked;
 
+    NetworkItem item;
+
     void Awake()
     {
         _cooldownTimer = GetComponent<NetworkCooldown>();
         _cooldownTimer.CooldownDuration = Cooldown;
+
+        item = GetComponent<NetworkItem>();
     }
 
     private void Start()
@@ -83,7 +87,13 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
     {
         if (isPressed)
         {
-            if (_cooldownTimer.Use(this.Cooldown))
+            float cooldown = this.Cooldown;
+            if(item.IsOwnerCunkd)
+            {
+                cooldown *= 0.5f;
+            }
+            
+            if (_cooldownTimer.Use(cooldown))
             {
                 Netanimator.SetTrigger("Swing");
                 //Swung = true;
