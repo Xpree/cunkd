@@ -295,6 +295,12 @@ public class PlayerMovement : NetworkBehaviour
         _preventGroundFriction = NetworkTimer.FromNow(0.5f);
     }
 
+    public void NoFriction()
+    {
+        _isGrounded = false;
+        _preventGroundFriction = NetworkTimer.FromNow(0.5f);
+    }
+
     public void SetKinematicOff()
     {
         if(_rigidBody.isKinematic)
