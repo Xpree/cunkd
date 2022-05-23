@@ -148,7 +148,8 @@ public class LobbyServer : MonoBehaviour
             {
                 client.ReadyToBegin = false;
                 NetworkServer.ReplacePlayerForConnection(conn, client.gameObject);
-            }
+                client.TargetRpcCurrentMap(GameServer.SelectMapName());
+            }            
         }
         else
         {
@@ -173,7 +174,6 @@ public class LobbyServer : MonoBehaviour
             client.TargetRpcCurrentMap(name);
         }
     }
-
 
     /*
     static int selectedMap = 0;
