@@ -148,6 +148,12 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
 
     }
 
+    [ClientRpc]
+    void PlayTeleport(NetworkIdentity target)
+    {
+        FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Gadgets/Teleporter", target.gameObject);
+    }
+
     // Performs the swap and sets off particle- and sound effects.
     [Command]
     void CmdPerformSwap(NetworkIdentity target)
@@ -168,8 +174,8 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
         Util.Teleport(target.gameObject, Swapper);
         Util.Teleport(owner.gameObject, Swappee);
         animator.SetTrigger("Fire");
-        FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Gadgets/Teleporter", target.gameObject);
-        FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Gadgets/Teleporter", owner.gameObject);
+        PlayTeleport(target);
+        PlayTeleport(owner.GetComponent<NetworkIdentity>());
     }
 
     // An artificial delay that makes sure that the swapping does not occur immediately after hit-detection. (This gives time to see the beam-effect.)
