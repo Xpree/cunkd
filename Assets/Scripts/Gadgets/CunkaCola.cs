@@ -45,6 +45,7 @@ public class CunkaCola : NetworkBehaviour, IGadget, IEquipable
             {
                 TargetTell("Buuurp!");
                 NetworkServer.Destroy(this.gameObject);
+                hammerColdownOff();
                 return;
             }
         }
@@ -53,7 +54,7 @@ public class CunkaCola : NetworkBehaviour, IGadget, IEquipable
     [TargetRpc]
     public void hammerColdownOn()
     {
-        GameServer.Instance.Settings.Hammer.Cooldown = 0.5f;
+        GameServer.Instance.Settings.Hammer.Cooldown = 2f;
     }
 
     [TargetRpc]
@@ -136,6 +137,7 @@ public class CunkaCola : NetworkBehaviour, IGadget, IEquipable
         if (player)
         {
             player.bonusSpeed = 0;
+            hammerColdownOff();
         }
         if (holstered)
         {
