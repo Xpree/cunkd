@@ -4,14 +4,8 @@ using UnityEngine;
 
 public class Countdown : MonoBehaviour
 {
-    Animator _animator;
     [SerializeField] GameObject[] _objects;
     [SerializeField] AnimationCurve _countdownCurve;
-
-    private void Awake()
-    {
-        _animator = GetComponent<Animator>();
-    }
 
     public void StartCountdown(NetworkTimer networkTime)
     {
@@ -23,7 +17,6 @@ public class Countdown : MonoBehaviour
 
     System.Collections.IEnumerator Countdown_Coroutine(NetworkTimer timer)
     {
-        //_animator.Play("Countdown");
         bool playedSound = false;
 
         ResetCounters();
@@ -81,6 +74,5 @@ public class Countdown : MonoBehaviour
     {
         ResetCounters();
         StopAllCoroutines();
-        //_animator.Play("Idle");
     }
 }
