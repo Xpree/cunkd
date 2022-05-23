@@ -206,6 +206,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     {
         if (isPressed)
         {
+            FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Weapons/Swap rifle scoope sound", this.gameObject);
             ZoomToggle();
         }
     }
