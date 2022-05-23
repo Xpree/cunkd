@@ -16,6 +16,8 @@ public class NetworkItem : NetworkBehaviour
 
     public GameObject Owner => owner;
 
+    public bool IsOwnerLocalPlayer => owner == NetworkClient.localPlayer.gameObject;
+
     public Transform OwnerInteractAimTransform => Util.GetPlayerInteractAimTransform(this.Owner);
 
     public Ray AimRay => this.transform.ForwardRay();
