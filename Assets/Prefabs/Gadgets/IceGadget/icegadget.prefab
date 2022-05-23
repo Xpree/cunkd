@@ -222,6 +222,7 @@ MonoBehaviour:
   _settings: {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}
   positionSync: {x: 0, y: 0, z: 0}
   Cooldown: 10
+  IceTrapHub: {fileID: 5987605815602341497, guid: 2b0232283fa428b488d2f162a1b4776e, type: 3}
 --- !u!114 &2852530366991114646
 MonoBehaviour:
   m_ObjectHideFlags: 0
