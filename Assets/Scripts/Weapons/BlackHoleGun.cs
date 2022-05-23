@@ -39,11 +39,19 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
         }
     }
 
+
+    [ClientRpc(includeOwner = false)]
+    void RpcPlayAudio()
+    {
+        FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Weapons/Black Hole Gun/BlackHoleGunShoot", this.gameObject);
+    }
+
     [Command]
     void CmdSpawnBlackHole(Vector3 target)
     {
         if (_cooldownTimer.ServerUse(this.Cooldown))
         {
+            RpcPlayAudio();
             animator.SetTrigger("Fire");
             HasTicked = false;
             var go = Instantiate(blackHole, target, Quaternion.identity);
@@ -51,21 +59,25 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
         }
     }
 
+    
+
     void IWeapon.PrimaryAttack(bool isPressed)
     {
         if (isPressed)
         {
             if (_cooldownTimer.Use(this.Cooldown))
             {
-                //FMODUnity.RuntimeManager.PlayOneShot("event:/SoundStudents/SFX/Weapons/BlackHoleGun");
-                //FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Weapons/Black Hole", blackHole);
-                //var aimTransform = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
-                //var target = Util.RaycastPointOrMaxDistance(aimTransform, MaxRange, _settings.ProtectileTargetLayers);
-
+                FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Weapons/Black Hole Gun/BlackHoleGunShoot", this.gameObject);
                 var target = _item.OwnerProjectileHitscan(MaxRange);
                 CmdSpawnBlackHole(target);
             }
         }
+    }
+
+    [ClientRpc]
+    void RpcPlayCooldownReady()
+    {
+        FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Weapons/Black Hole Gun/CooldownFinished", this.gameObject);
     }
 
     [ServerCallback]
@@ -73,6 +85,7 @@ public class BlackHoleGun : NetworkBehaviour, IWeapon, IEquipable
     {
         if (_cooldownTimer.HasCooldown == false && HasTicked == false)
         {
+            RpcPlayCooldownReady();
             animator.SetTrigger("Ready");
             HasTicked = true;
         }
