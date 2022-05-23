@@ -5,6 +5,7 @@ using UnityEngine;
 public class GravityGunAttractSound : MonoBehaviour
 {
     FMOD.Studio.EventInstance attractSoundInstance;
+    bool playing;
 
     public void PlayOneShotAttachedWithParameters(string fmodEvent, GameObject gameObject, params (string name, float value)[] parameters)
     {
@@ -23,8 +24,9 @@ public class GravityGunAttractSound : MonoBehaviour
 
     public void AttractSound()
     {
-        StopSound();
-        //AudioHelper.PlayOneShotAttachedWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.AnchorPoint.gameObject, ("Grab Object", 1f), ("Object recived start loading", 1f), ("Shot away object", 0f));
+        if (playing)
+            return;
+        playing = true;
         PlayOneShotAttachedWithParameters("event:/SoundStudents/SFX/Weapons/Gravity Gun", this.gameObject, ("Grab Object", 1f), ("Object recived start loading", 1f), ("Shot away object", 0f));
         Debug.Log("AttractSound");
     }
@@ -33,18 +35,7 @@ public class GravityGunAttractSound : MonoBehaviour
     {
         attractSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         attractSoundInstance.release();
+        playing = false;
         Debug.Log("StopSound");
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

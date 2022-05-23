@@ -5,23 +5,21 @@ using Mirror;
 [RequireComponent(typeof(NetworkCooldown))]
 public class IceGadget : NetworkBehaviour, IGadget, IEquipable
 {
-    public GameObject IceGadgetTrap;
-
     [SerializeField] bool isPassive;
+
     [SerializeField] LayerMask TargetMask = ~0;
     float throwForce;
 
     [SerializeField] GameSettings _settings;
     NetworkCooldown _cooldownTimer;
 
-    [SyncVar(hook = nameof(OnPosition))] public Vector3 positionSync;
-
     bool IGadget.isPassive => isPassive;
     int IGadget.Charges => _settings.IceGadget.Charges;
     int IGadget.ChargesLeft => _cooldownTimer.Charges;
 
     [SerializeField] float Cooldown;
-    GameObject trap;
+    public GameObject IceTrapHub;
+    IceTrapHub hub;
 
     void Awake()
     {
@@ -41,43 +39,26 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
     }
 
     [Command]
-    public void sync(Vector3 pos)
-    {
-        positionSync = pos;
-    }
-
-    [Client]
-    void OnPosition(Vector3 previous, Vector3 current)
-    {
-        trap.transform.position = current;
-        trap.GetComponent<Rigidbody>().isKinematic = true;
-        trap.GetComponent<IceGadgetTrap>().iceMachine.Trigger();
-    }
-
-    [Command]
-    void CmdSpawnIceGadget()
-    {
-        RpcSpawnIceGadgetClient();
-    }
-
-    [ClientRpc(includeOwner = false)]
-    void RpcSpawnIceGadgetClient()
-    {
-        InstantiateIceTrap();
-    }
-
-    void InstantiateIceTrap(IceGadget ig = null)
-    {
-        trap = Instantiate(IceGadgetTrap, transform.position + transform.forward * 3, Quaternion.identity);
-        trap.GetComponent<Rigidbody>().AddForce(transform.forward * throwForce * 10);
-        trap.GetComponent<Rigidbody>().AddTorque(new Vector3(0, 100000, 0), ForceMode.Force);
-        trap.GetComponent<IceGadgetTrap>().owner = ig;
-    }
-
-    [Command]
     void DestroyGadget()
     {
+        hub.ActivateSelfDestruction();
         NetworkServer.Destroy(this.gameObject);
+    }
+
+
+
+    void spawnHub()
+    {
+        GameObject hubObject = Instantiate(IceTrapHub, transform.position, Quaternion.identity);
+        NetworkServer.Spawn(hubObject, this.connectionToClient);
+        hub = hubObject.GetComponent<IceTrapHub>();
+        setHub();
+    }
+
+   [ClientRpc]
+    void setHub()
+    {
+        hub = FindObjectOfType<IceTrapHub>();
     }
 
     void IGadget.PrimaryUse(bool isPressed)
@@ -88,11 +69,13 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
         if (_cooldownTimer.Use())
         {
             AudioHelper.PlayOneShotAttachedWithParameters("event:/SoundStudents/SFX/Gadgets/Icy Floor Trap", this.gameObject, ("Shot", 1f), ("StandbyHum", 1f));
-            InstantiateIceTrap(this);
-            CmdSpawnIceGadget();
+            
+            hub.InstantiateIceTrap(transform.position + transform.forward * 3, transform.forward * throwForce * 10, this);
+            hub.CmdSpawnIceGadget(transform.position + transform.forward * 3, transform.forward * throwForce * 10);
+
             if (_cooldownTimer.Charges <= 0)
             {
-                Invoke("DestroyGadget", _cooldownTimer.CooldownDuration);
+                DestroyGadget();
             }
         }
     }
@@ -126,6 +109,11 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
 
     void IEquipable.OnPickedUp(bool startHolstered)
     {
+        if (isServer)
+        {
+            spawnHub();
+        }
+
         holstered = startHolstered;
 
         if (holstered)
@@ -136,6 +124,7 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
 
     void IEquipable.OnDropped()
     {
+        DestroyGadget();
         this.transform.parent = null;
         if (holstered)
         {

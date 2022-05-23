@@ -12,7 +12,9 @@ public class IceGadgetTrap : NetworkBehaviour
     public float friction => _settings.IceGadget.Friction;
 
     [SerializeField] public SpreadMat iceMachine;
-    public IceGadget owner;
+    //public IceGadget owner;
+    public bool owner = false;
+    public IceTrapHub hub;
     public override void OnStartServer()
     {
         if (_settings == null)
@@ -41,7 +43,7 @@ public class IceGadgetTrap : NetworkBehaviour
         {
             if (owner && !triggered && collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
             {
-                owner.sync(transform.position);
+                hub.sync(transform.position);
                 GetComponent<Rigidbody>().isKinematic = true;
                 triggered = true;
             }
