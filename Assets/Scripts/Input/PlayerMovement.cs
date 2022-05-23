@@ -2,11 +2,11 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Mirror;
 using Unity.VisualScripting;
-
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(NetworkTransform))]
 public class PlayerMovement : NetworkBehaviour
 {
+    [SerializeField] Animator animator;
     [SerializeField] GameSettings _settings;
     Rigidbody _rigidBody;
 
@@ -183,7 +183,7 @@ public class PlayerMovement : NetworkBehaviour
     }
 
     void PerformJump()
-    {        
+    {
         if (!_performJump)
             return;
         _performJump = false;
@@ -203,6 +203,10 @@ public class PlayerMovement : NetworkBehaviour
         CmdPerformedJump(_airJumped);
         _lastJump = NetworkTime.time;
         ApplyJumpForce(_settings.CharacterMovement.JumpHeight);
+        if(isLocalPlayer)
+        {
+            animator.SetBool("jump", true);
+        }
     }
 
     void SetLanded(bool value)
@@ -212,6 +216,10 @@ public class PlayerMovement : NetworkBehaviour
         if(trigger)
         {
             EventBus.Trigger(nameof(EventPlayerLanded), this.gameObject);
+            if(isLocalPlayer)
+            {
+                animator.SetBool("jump", false);
+            }
         }
     }
 
@@ -264,7 +272,30 @@ public class PlayerMovement : NetworkBehaviour
         {
             SetKinematicOff();
             ApplyAcceleration(_movementInput);
-        }        
+            if(isLocalPlayer)
+            {
+                animator.SetBool("run", true);
+            }
+        }
+        if(isLocalPlayer)
+        {
+            if(!HasMovementInput)
+            {
+                animator.SetBool("run", false);
+            }
+        }
+        //dance
+        if(isLocalPlayer)
+        {
+            if(UnityEngine.InputSystem.Keyboard.current[Key.P].isPressed)
+            {   
+                animator.SetBool("dance", true);
+            }
+            else{
+                animator.SetBool("dance", false);
+            }
+        }
+        
         // Temp reset
         maxSpeedScaling = 1f;
         maxFrictionScaling = 1f;
