@@ -1961,9 +1961,9 @@ MonoBehaviour:
   syncInterval: 0.1
   isPassive: 0
   Charges: 2
-  Cooldown: 10
+  Cooldown: 8
   SpeedBoost: 7
-  Duration: 10
+  Duration: 8
 --- !u!23 &6929195253134160419
 MeshRenderer:
   m_ObjectHideFlags: 0

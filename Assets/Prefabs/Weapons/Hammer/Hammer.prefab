@@ -318,6 +318,7 @@ GameObject:
   - component: {fileID: -7542362330335650135}
   - component: {fileID: 5639649547052470171}
   - component: {fileID: 5283010919433488431}
+  - component: {fileID: 1659376873530821104}
   m_Layer: 0
   m_Name: Hammer
   m_TagString: Untagged
@@ -475,6 +476,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   left: {fileID: 7722026567244796140}
   right: {fileID: 1353624672054126198}
+--- !u!114 &1659376873530821104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4053286044562665193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ece2c1b4d6a9864691fa86c71248874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  hammerMaterials:
+  - {fileID: 2100000, guid: f3a0b3644dd331c4fb00be1bef0c2b02, type: 2}
+  - {fileID: 2100000, guid: d97b9afa5f6604f4f92640821a137d51, type: 2}
+  - {fileID: 2100000, guid: 4774fb15ab6182e42825695787db417e, type: 2}
+  hammerRenderer: {fileID: 3262708312759209104}
 --- !u!1 &5110217677533567606
 GameObject:
   m_ObjectHideFlags: 0
@@ -822,6 +842,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eca03ec3f7bdebb42b716be1afdd5884, type: 3}
+--- !u!23 &3262708312759209104 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7635826562936255635, guid: eca03ec3f7bdebb42b716be1afdd5884, type: 3}
+  m_PrefabInstance: {fileID: 4273757570772715517}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4379142210280890390 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: eca03ec3f7bdebb42b716be1afdd5884, type: 3}

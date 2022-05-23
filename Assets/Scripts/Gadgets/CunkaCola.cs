@@ -39,16 +39,29 @@ public class CunkaCola : NetworkBehaviour, IGadget, IEquipable
         if (player && endTime < NetworkTime.time)
         {
             GetComponentInParent<PlayerMovement>().bonusSpeed = 0;
+            hammerColdownOff();
             //TargetTell("Aaaaah!");
             if (cooldownTimer.Charges == 0)
             {
                 TargetTell("Buuurp!");
                 NetworkServer.Destroy(this.gameObject);
+                hammerColdownOff();
                 return;
             }
         }
     }
 
+    [TargetRpc]
+    public void hammerColdownOn()
+    {
+        GameServer.Instance.Settings.Hammer.Cooldown = 2f;
+    }
+
+    [TargetRpc]
+    public void hammerColdownOff()
+    {
+        GameServer.Instance.Settings.Hammer.Cooldown = 5f;
+    }
 
     [TargetRpc]
     void TargetTell(string message)
@@ -67,6 +80,7 @@ public class CunkaCola : NetworkBehaviour, IGadget, IEquipable
             player = GetComponentInParent<PlayerMovement>();
             player.bonusSpeed = SpeedBoost;
             endTime = NetworkTime.time + Duration;
+            hammerColdownOn();
         }
     }
 
@@ -123,6 +137,7 @@ public class CunkaCola : NetworkBehaviour, IGadget, IEquipable
         if (player)
         {
             player.bonusSpeed = 0;
+            hammerColdownOff();
         }
         if (holstered)
         {
