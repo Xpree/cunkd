@@ -47,7 +47,7 @@ public class GameClient : NetworkBehaviour
         lastCunkd = StartCoroutine(SetCunkdCoroutine(duration));
     }
 
-    [SyncVar(hook = nameof(OnChangeInvul)]
+    [SyncVar(hook = nameof(OnChangeInvul))]
     public bool IsInvulnerable;
 
     Coroutine lastInvulnerable;
