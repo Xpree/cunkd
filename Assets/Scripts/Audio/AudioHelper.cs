@@ -4,6 +4,16 @@ using UnityEngine;
 
 public static class AudioHelper
 {
+    public static void PlayOneShotVolume(string fmodEvent, float volume)
+    {
+        FMOD.Studio.EventInstance instance = FMODUnity.RuntimeManager.CreateInstance(fmodEvent);
+
+        instance.setVolume(volume);
+        instance.start();
+        instance.release();
+    }
+
+    
     public static void PlayOneShotWithParameters(string fmodEvent, Vector3 position, params (string name, float value)[] parameters)
     {
         FMOD.Studio.EventInstance instance = FMODUnity.RuntimeManager.CreateInstance(fmodEvent);
