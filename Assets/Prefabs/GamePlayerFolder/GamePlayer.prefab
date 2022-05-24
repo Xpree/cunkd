@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 6799120071495980942}
   - component: {fileID: -6233809968765690729}
   - component: {fileID: -5798167820113002688}
-  - component: {fileID: 6261579163786439309}
   - component: {fileID: 413665935531044684}
   - component: {fileID: 7461904422581517656}
   - component: {fileID: -9161402237070379157}
@@ -91,6 +90,7 @@ MonoBehaviour:
   CameraController: {fileID: 0}
   CunkdEffect: {fileID: 4194556608091247736}
   IsCunkd: 0
+  InvulnEffect: {fileID: 4203134506041246402}
   IsInvulnerable: 0
 --- !u!114 &114265392388239132
 MonoBehaviour:
@@ -179,23 +179,6 @@ MonoBehaviour:
   syncAngularVelocity: 1
   clearAngularVelocity: 0
   angularVelocitySensitivity: 0.1
---- !u!114 &6261579163786439309
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1480027675339556}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e6a8bf08f02e254aa9a52ef0aaa1553, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  color:
-    serializedVersion: 2
-    rgba: 4278190080
 --- !u!114 &413665935531044684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -829,7 +812,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.0245, y: 2.388}
+  m_AnchoredPosition: {x: 0.0245, y: 3}
   m_SizeDelta: {x: 66.6397, y: 15.5678}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &2982627247520786014
@@ -2507,6 +2490,7 @@ GameObject:
   - component: {fileID: 5531378771205388368}
   - component: {fileID: 5479829740622885800}
   - component: {fileID: 5213833520382781269}
+  - component: {fileID: 4203134506041246402}
   m_Layer: 8
   m_Name: NameText
   m_TagString: Untagged
@@ -2631,6 +2615,21 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &4203134506041246402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7829213950414056295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5babe531cbf567940bc22b1824dd50d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blinkSpeed: 5
+  text: {fileID: 5213833520382781269}
+  blinkColor: {r: 0.7735849, g: 0.10888328, b: 0, a: 1}
 --- !u!1001 &533569228418150876
 PrefabInstance:
   m_ObjectHideFlags: 0

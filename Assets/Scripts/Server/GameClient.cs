@@ -27,6 +27,8 @@ public class GameClient : NetworkBehaviour
 
     Coroutine lastCunkd;
 
+    public UIBlink InvulnEffect;
+
     void OnCunkd(bool previous, bool current)
     {
         if(!CameraController.IsCameraActive)
@@ -72,10 +74,12 @@ public class GameClient : NetworkBehaviour
         if (IsInvulnerable)
         {
             this.gameObject.layer = LayerMask.NameToLayer("InvulnerablePlayer");
+            InvulnEffect.enabled = true;
         }
         else
         {
             this.gameObject.layer = LayerMask.NameToLayer("Player");
+            InvulnEffect.enabled = false;
         }
     }
     
