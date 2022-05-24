@@ -138,8 +138,11 @@ public class GameClient : NetworkBehaviour
         CunkdEffect.SetActive(IsCunkd);
     }
 
+    SettingsUI _settings;
     private void Start()
     {
+        _settings = FindObjectOfType<SettingsUI>(true);
+        
         UpdateLayer();
         if (!CameraController.IsCameraActive)
         {
@@ -231,5 +234,23 @@ public class GameClient : NetworkBehaviour
     public void Respawn(Transform spawn)
     {
         StartCoroutine(RespawnCoroutine(spawn));
-    }    
+    }
+
+    private void Update()
+    {
+        if(isLocalPlayer)
+        {
+            if (_settings.gameObject.activeSelf)
+            {
+                _inputs.PreventInput();
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else
+            {
+                _inputs.EnableInput();
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+
+        }
+    }
 }

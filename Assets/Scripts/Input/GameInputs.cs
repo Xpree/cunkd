@@ -89,6 +89,7 @@ public class GameInputs : MonoBehaviour
 	}
 
 	SettingsUI settings;
+    
 	void Start()
     {
 		settings = FindObjectOfType<SettingsUI>(true);
@@ -168,19 +169,8 @@ public class GameInputs : MonoBehaviour
     {		
 		if(ToggleMenu.triggered)
         {
-            settings.gameObject.SetActive(!settings.gameObject.activeSelf);
+			settings.gameObject.SetActive(!settings.gameObject.activeSelf);
         }
-
-		if(settings.gameObject.activeSelf)
-        {
-			PreventInput();
-			Cursor.lockState = CursorLockMode.None;
-		}
-		else
-        {
-			EnableInput();
-			Cursor.lockState = CursorLockMode.Locked;
-        }
-    }
+	}
 
 }
