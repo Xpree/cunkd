@@ -26,6 +26,7 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
     bool HasTicked;
 
     NetworkItem item;
+    bool busy;
 
     void Awake()
     {
@@ -46,6 +47,9 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
     
     void Smash()
     {
+        if (busy || holstered)
+            return;
+        
         var owner = GetComponent<NetworkItem>()?.Owner;
         if (owner == null)
             return;
@@ -131,6 +135,7 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
 
     System.Collections.IEnumerator TestAnimation()
     {
+        busy = true;
         var start = NetworkTimer.Now;
 
         for (; ; )
@@ -146,6 +151,7 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
         }
         transform.localScale = Vector3.zero;
         holstered = true;
+        busy = false;
     }
 
 
