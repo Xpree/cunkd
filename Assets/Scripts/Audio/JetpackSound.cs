@@ -43,7 +43,6 @@ public class JetpackSound : MonoBehaviour
         {
             playing = false;
             jetpackSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            jetpackSoundInstance.release();
         }
     }
 }
