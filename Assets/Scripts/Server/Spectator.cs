@@ -13,6 +13,15 @@ public class Spectator : NetworkBehaviour
     public int ClientIndex => LobbyClient.Index;
     public string PlayerName => LobbyClient.PlayerName;
 
+    SettingsUI _settings;
+    GameInputs _inputs;
+    
+    private void Start()
+    {
+        _settings = FindObjectOfType<SettingsUI>(true);
+        _inputs = GetComponent<GameInputs>();
+    }
+
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
@@ -91,6 +100,29 @@ public class Spectator : NetworkBehaviour
                 ui.SetSpectating(currentCamera.playerTransform.gameObject);
             else
                 ui.SetSpectating(null);
+        }
+    }
+
+    private void Update()
+    {
+        if (isLocalPlayer)
+        {
+            if (_inputs.ToggleMenu.triggered)
+            {
+                _settings.gameObject.SetActive(!_settings.gameObject.activeSelf);
+            }
+
+            if (_settings.gameObject.activeSelf)
+            {
+                _inputs.PreventInput();
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else
+            {
+                _inputs.EnableInput();
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+
         }
     }
 }
