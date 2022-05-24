@@ -8,6 +8,8 @@ public class ScoreCard : NetworkBehaviour, IComparable<ScoreCard>
 {
     [SyncVar(hook = nameof(OnLivesChanged))] public int livesLeft;
 
+
+
     public bool Dead => (livesLeft <= 0);
 
     public string PlayerName => GetComponent<GameClient>()?.PlayerName ?? "<missing>";
@@ -25,6 +27,10 @@ public class ScoreCard : NetworkBehaviour, IComparable<ScoreCard>
     void Start()
     {
         playerGUI.SetLocalLives(livesLeft);
+        if (this.GetComponent<GameClient>().CameraController.IsCameraActive)
+        {
+            SceneMusic.singleton.UpdateLives(livesLeft);
+        }
     }
 
     public int CompareTo(ScoreCard other)
@@ -47,15 +53,20 @@ public class ScoreCard : NetworkBehaviour, IComparable<ScoreCard>
     void OnLivesChanged(int previous, int current)
     {
         playerGUI.SetLocalLives(current);
+        if (this.GetComponent<GameClient>().CameraController.IsCameraActive)
+        {
+            SceneMusic.singleton.UpdateLives(current);
+        }
     }
 
 
     [ClientRpc]
-    void RpcOnDied()
+    void RpcOnDied(int lives)
     {
         if (this.GetComponent<GameClient>().CameraController.IsCameraActive)
         {
             FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Respawn", this.gameObject);
+            SceneMusic.singleton.UpdateLives(lives);
         }
     }
 
@@ -63,6 +74,6 @@ public class ScoreCard : NetworkBehaviour, IComparable<ScoreCard>
     public void RemoveLife()
     {
         livesLeft--;
-        RpcOnDied();
+        RpcOnDied(livesLeft);
     }
 }
