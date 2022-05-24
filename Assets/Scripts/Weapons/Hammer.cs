@@ -47,7 +47,7 @@ public class Hammer : NetworkBehaviour, IWeapon, IEquipable
     
     void Smash()
     {
-        if (busy)
+        if (busy || holstered)
             return;
         
         var owner = GetComponent<NetworkItem>()?.Owner;
