@@ -240,6 +240,11 @@ public class GameClient : NetworkBehaviour
     {
         if(isLocalPlayer)
         {
+            if (_inputs.ToggleMenu.triggered)
+            {
+                _settings.gameObject.SetActive(!_settings.gameObject.activeSelf);
+            }
+
             if (_settings.gameObject.activeSelf)
             {
                 _inputs.PreventInput();

@@ -163,14 +163,4 @@ public class GameInputs : MonoBehaviour
     {
 		SetInputMode(this.Mode);
     }
-
-
-    private void Update()
-    {		
-		if(ToggleMenu.triggered)
-        {
-			settings.gameObject.SetActive(!settings.gameObject.activeSelf);
-        }
-	}
-
 }
