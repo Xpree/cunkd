@@ -393,20 +393,24 @@ public class PlayerMovement : NetworkBehaviour
     
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.GetComponent<Renderer>().material.name == "wood (Instance)")
+        Renderer rend = collision.gameObject.GetComponent<Renderer>();
+        if (rend)
         {
-            Debug.Log("walking on wood");
-            FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Step sounds on brigde", this.gameObject);
-        }
-        else if (collision.gameObject.GetComponent<Renderer>().material.name == "BrownGrey (Instance)")
-        {
-            Debug.Log("walking on sand");
-            FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Step sounds on dirt", this.gameObject);
-        }
-        else
-        {
-            Debug.Log("walking on concrete sound");
-            FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Step sounds on concrete", this.gameObject);
+            if (rend.material.name == "wood (Instance)")
+            {
+                Debug.Log("walking on wood");
+                FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Step sounds on brigde", this.gameObject);
+            }
+            else if (rend.material.name == "BrownGrey (Instance)")
+            {
+                Debug.Log("walking on sand");
+                FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Step sounds on dirt", this.gameObject);
+            }
+            else
+            {
+                Debug.Log("walking on concrete sound");
+                FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Step sounds on concrete", this.gameObject);
+            }
         }
     }
 }
