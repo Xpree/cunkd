@@ -32,9 +32,18 @@ public class LevelEventController : NetworkBehaviour
     Quaternion lastBoatRot;
     float yDiff;
 
+
+    FMOD.Studio.EventInstance waterRisingSound;
+
     private void Awake()
     {
         eventText.gameObject.SetActive(true);
+    }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        waterRisingSound = FMODUnity.RuntimeManager.CreateInstance("event:/SoundStudents/SFX/Environment/WaterRising");
     }
 
 
@@ -116,6 +125,7 @@ public class LevelEventController : NetworkBehaviour
 
             if (nextEventCountdown < 0 && !runningEvent)
             {
+                RpcPlayWaterRising();
                 triggerEvent(events.VolcanoLevelEvents[eventIndex]);
             }
 
@@ -160,6 +170,10 @@ public class LevelEventController : NetworkBehaviour
                 {
                     setUseGravity(eventIndex-1);
                 }
+                
+                if (runningEvent)
+                    RpcEndWaterRising();
+
                 lastWaterPos = currentEvent.waterPosition;
                 lastBoatPos = currentEvent.boatPosition;
                 lastBoatRot = currentEvent.boatRotation;
@@ -234,4 +248,30 @@ public class LevelEventController : NetworkBehaviour
     {
         timerText.color = current;
     }
+
+    [ClientRpc]
+    void RpcPlayWaterRising()
+    {
+        //Debug.Log("RpcPlayWaterRising");
+        waterRisingSound.setParameterByName("Water rising", 100.0f);
+        waterRisingSound.start();
+    }
+
+    System.Collections.IEnumerator EndWaterRisingCoroutine()
+    {
+        yield return new WaitForSeconds(1.0f);
+        waterRisingSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+    }
+
+    [ClientRpc]
+    void RpcEndWaterRising()
+    {
+        //Debug.Log("RpcEndWaterRising");
+        //attractSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        waterRisingSound.setParameterByName("Water rising", 0.0f);        
+        waterRisingSound.setParameterByName("end of rising", 1.0f);
+        StartCoroutine(EndWaterRisingCoroutine());
+    }
+
+
 }
