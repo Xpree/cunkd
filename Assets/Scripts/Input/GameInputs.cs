@@ -88,6 +88,12 @@ public class GameInputs : MonoBehaviour
 
 	}
 
+	SettingsUI settings;
+	void Start()
+    {
+		settings = FindObjectOfType<SettingsUI>(true);
+	}
+
     public void EnablePlayerMaps(bool enable)
     {
 		if(enable)
@@ -162,18 +168,18 @@ public class GameInputs : MonoBehaviour
     {		
 		if(ToggleMenu.triggered)
         {
-			if (Cursor.lockState == CursorLockMode.Locked)
-			{
-				Cursor.lockState = CursorLockMode.None;
-                FindObjectOfType<SettingsUI>(true).gameObject.SetActive(true);
-                PreventInput();
-			}
-			else
-			{
-				Cursor.lockState = CursorLockMode.Locked;
-				FindObjectOfType<SettingsUI>(true).gameObject.SetActive(false);
-				EnableInput();
-			}
+            settings.gameObject.SetActive(!settings.gameObject.activeSelf);
+        }
+
+		if(settings.gameObject.activeSelf)
+        {
+			PreventInput();
+			Cursor.lockState = CursorLockMode.None;
+		}
+		else
+        {
+			EnableInput();
+			Cursor.lockState = CursorLockMode.Locked;
         }
     }
 
