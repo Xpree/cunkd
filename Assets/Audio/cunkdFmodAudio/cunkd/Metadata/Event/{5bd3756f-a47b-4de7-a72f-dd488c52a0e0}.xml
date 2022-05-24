@@ -108,7 +108,7 @@
 	</object>
 	<object class="ParameterProxy" id="{757ff0e7-72fa-4199-b253-0491be3ad0b4}">
 		<relationship name="preset">
-			<destination>{1aba7914-9f23-41c0-88e7-c62f006d3228}</destination>
+			<destination>{0523aa53-e6c1-4bcb-843c-712f50f1b055}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{feada4f6-5d6a-4eb0-8b7c-4a0b6c8a91b0}">
@@ -176,6 +176,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{09ec14a4-5871-4bdc-b8d7-a91bf35fcda4}">
+		<property name="volume">
+			<value>8.5</value>
+		</property>
 		<property name="name">
 			<value>HighTempo</value>
 		</property>
@@ -324,7 +327,7 @@
 			<value>0</value>
 		</property>
 		<relationship name="parameter">
-			<destination>{1aba7914-9f23-41c0-88e7-c62f006d3228}</destination>
+			<destination>{0523aa53-e6c1-4bcb-843c-712f50f1b055}</destination>
 		</relationship>
 	</object>
 	<object class="ParameterCondition" id="{7d63da5b-38af-4ecf-b1ea-3c8c01c14545}">
@@ -335,7 +338,7 @@
 			<value>1</value>
 		</property>
 		<relationship name="parameter">
-			<destination>{1aba7914-9f23-41c0-88e7-c62f006d3228}</destination>
+			<destination>{0523aa53-e6c1-4bcb-843c-712f50f1b055}</destination>
 		</relationship>
 	</object>
 	<object class="ParameterCondition" id="{1673acb0-33f6-47f0-a6a9-8ebfd16e3d45}">
@@ -349,7 +352,7 @@
 			<value>true</value>
 		</property>
 		<relationship name="parameter">
-			<destination>{1aba7914-9f23-41c0-88e7-c62f006d3228}</destination>
+			<destination>{0523aa53-e6c1-4bcb-843c-712f50f1b055}</destination>
 		</relationship>
 	</object>
 	<object class="ParameterCondition" id="{8494f6e3-e805-42fb-800f-ce0e32555b40}">
@@ -360,7 +363,7 @@
 			<value>0</value>
 		</property>
 		<relationship name="parameter">
-			<destination>{1aba7914-9f23-41c0-88e7-c62f006d3228}</destination>
+			<destination>{0523aa53-e6c1-4bcb-843c-712f50f1b055}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{37bc84c3-7ebe-40fb-9575-9f527e01c9b0}" />
