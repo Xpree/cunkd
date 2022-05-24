@@ -405,17 +405,17 @@ public class PlayerMovement : NetworkBehaviour
         {
             if (rend.material.name == "wood (Instance)")
             {
-                Debug.Log("walking on wood");
+                //Debug.Log("walking on wood");
                 FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Step sounds on brigde", this.gameObject);
             }
             else if (rend.material.name == "BrownGrey (Instance)")
             {
-                Debug.Log("walking on sand");
+                //Debug.Log("walking on sand");
                 FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Step sounds on dirt", this.gameObject);
             }
             else
             {
-                Debug.Log("walking on concrete sound");
+                //Debug.Log("walking on concrete sound");
                 FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Step sounds on concrete", this.gameObject);
             }
         }
