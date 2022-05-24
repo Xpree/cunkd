@@ -65,5 +65,7 @@ public class IceTrapHub : NetworkBehaviour
         trap.GetComponent<Rigidbody>().AddTorque(new Vector3(0, 100000, 0), ForceMode.Force);
         trap.GetComponent<IceGadgetTrap>().owner = owner;
         trap.GetComponent<IceGadgetTrap>().hub = this;
+
+        AudioHelper.PlayOneShotAttachedWithParameters("event:/SoundStudents/SFX/Gadgets/Icy Floor Trap", trap, 30.0f, 40.0f, ("Shot", 1f), ("StandbyHum", 1f));
     }
 }

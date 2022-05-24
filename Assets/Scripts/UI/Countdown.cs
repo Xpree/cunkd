@@ -40,7 +40,7 @@ public class Countdown : MonoBehaviour
                     if (!playedSound)
                     {
                         playedSound = true;
-                        FMODUnity.RuntimeManager.PlayOneShot("event:/SoundStudents/SFX/Environment/Announcer60BPM");
+                        AudioHelper.PlayOneShotVolume("event:/SoundStudents/SFX/Environment/Announcer60BPM", 0.2f);
                     }
                 }
             }

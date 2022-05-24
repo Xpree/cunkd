@@ -4,6 +4,16 @@ using UnityEngine;
 
 public static class AudioHelper
 {
+    public static void PlayOneShotVolume(string fmodEvent, float volume)
+    {
+        FMOD.Studio.EventInstance instance = FMODUnity.RuntimeManager.CreateInstance(fmodEvent);
+
+        instance.setVolume(volume);
+        instance.start();
+        instance.release();
+    }
+
+    
     public static void PlayOneShotWithParameters(string fmodEvent, Vector3 position, params (string name, float value)[] parameters)
     {
         FMOD.Studio.EventInstance instance = FMODUnity.RuntimeManager.CreateInstance(fmodEvent);
@@ -32,6 +42,23 @@ public static class AudioHelper
         instance.release();
     }
 
+
+    public static void PlayOneShotAttachedWithParameters(string fmodEvent, GameObject gameObject, float minRange, float maxRange, params (string name, float value)[] parameters)
+    {
+        FMOD.Studio.EventInstance instance = FMODUnity.RuntimeManager.CreateInstance(fmodEvent);
+
+        instance.setProperty(FMOD.Studio.EVENT_PROPERTY.MINIMUM_DISTANCE, minRange);
+        instance.setProperty(FMOD.Studio.EVENT_PROPERTY.MAXIMUM_DISTANCE, maxRange);
+
+        foreach (var (name, value) in parameters)
+        {
+            instance.setParameterByName(name, value);
+        }
+
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(instance, gameObject.transform, gameObject.GetComponent<Rigidbody>());
+        instance.start();
+        instance.release();
+    }
     /*public static void JetPackFlyingSound(GameObject gameObject)
     {
         //[SerializeField]
