@@ -33,7 +33,6 @@ public class Countdown : MonoBehaviour
                 {
                     _objects[lastCounter].SetActive(false);
                 }
-                _objects[counter].SetActive(true);
                 lastCounter = counter;
 
                 if(counter == 3)
@@ -48,6 +47,8 @@ public class Countdown : MonoBehaviour
             
             if(counter < _objects.Length)
             {
+                _objects[counter].SetActive(true);
+                
                 float x = t - Mathf.Floor(t);
                 float scale = _countdownCurve.Evaluate(x);
                 _objects[counter].transform.localScale = new Vector3(scale, scale, scale);
