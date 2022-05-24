@@ -182,10 +182,20 @@ public class PlayerMovement : NetworkBehaviour
     {
         var trigger = airJump ? nameof(EventPlayerAirJumped) : nameof(EventPlayerJumped);
         NetworkEventBus.TriggerExcludeOwner(trigger, this.netIdentity);
+        if(isLocalPlayer)
+        {
+            animator.SetBool("jump", true);
+        }
     }
-
     void PerformJump()
     {
+        if(_rigidBody.velocity.y < 0.5)
+        {
+            if(isLocalPlayer)
+            {
+                animator.SetBool("jump", false);
+            }
+        }
         if (!_performJump)
             return;
         _performJump = false;
@@ -205,10 +215,6 @@ public class PlayerMovement : NetworkBehaviour
         CmdPerformedJump(_airJumped);
         _lastJump = NetworkTime.time;
         ApplyJumpForce(_settings.CharacterMovement.JumpHeight);
-        if(isLocalPlayer)
-        {
-            animator.SetBool("jump", true);
-        }
     }
 
     void SetLanded(bool value)
