@@ -274,14 +274,27 @@ public class Inventory : NetworkBehaviour, INetworkItemOwner
         var gripPoints = GetItemComponent<GripPoints>(equipped);
         if(gripPoints != null)
         {
-            rightHandIK.weight = 1;
-            leftHandIK.weight = 1;
+            if(gripPoints.right != null)
+            {
+                rightHandIK.weight = 1;
+                rightHandIK.data.target.position = gripPoints.right.position;
+                rightHandIK.data.target.rotation = gripPoints.right.rotation;
+            }
+            else
+            {
+                rightHandIK.weight = 0;
+            }
 
-
-            rightHandIK.data.target.position = gripPoints.right.position;
-            rightHandIK.data.target.rotation = gripPoints.right.rotation;
-            leftHandIK.data.target.position = gripPoints.left.position;
-            leftHandIK.data.target.rotation = gripPoints.left.rotation;
+            if(gripPoints.left != null)
+            {
+                leftHandIK.weight = 1;
+                leftHandIK.data.target.position = gripPoints.left.position;
+                leftHandIK.data.target.rotation = gripPoints.left.rotation;
+            }
+            else
+            {
+                leftHandIK.weight = 0;
+            }
         }
         else
         {

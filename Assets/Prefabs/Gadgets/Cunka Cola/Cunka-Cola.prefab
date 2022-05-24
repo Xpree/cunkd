@@ -1962,7 +1962,6 @@ MonoBehaviour:
   isPassive: 0
   Charges: 2
   Cooldown: 8
-  SpeedBoost: 7
   Duration: 8
 --- !u!23 &6929195253134160419
 MeshRenderer:
@@ -2092,7 +2091,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 16
+  m_VersionIndex: 19
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2109,5 +2108,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade154ebb8ffd88499781c24b9c32ec2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  left: {fileID: 3676515797617643149}
+  left: {fileID: 0}
   right: {fileID: 7378979061432677218}
