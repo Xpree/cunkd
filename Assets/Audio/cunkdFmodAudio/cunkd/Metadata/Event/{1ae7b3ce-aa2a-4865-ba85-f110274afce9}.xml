@@ -105,7 +105,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{50bf437d-f5ef-48f8-b301-fe5a8f45c739}">
 		<property name="volume">
-			<value>10</value>
+			<value>4</value>
 		</property>
 		<property name="name">
 			<value>Water splash sounds</value>
