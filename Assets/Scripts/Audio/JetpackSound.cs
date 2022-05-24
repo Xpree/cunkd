@@ -12,6 +12,12 @@ public class JetpackSound : MonoBehaviour
         PlayOneShotAttachedWithParameters("event:/SoundStudents/SFX/Gadgets/Jetpack", this.gameObject, ("Gasar", 1f), ("Bränsle", 0f), ("Ta på jetpack", 0f), ("Jetpack flyger tomgång", 0f), ("Jetpack stängs av", 0f), ("Sätt på jetpack", 0f));
     }
 
+    private void OnDestroy()
+    {
+        StopFlySound();
+        jetpackSoundInstance.release();
+    }
+    
     public void PlayOneShotAttachedWithParameters(string fmodEvent, GameObject gameObject, params (string name, float value)[] parameters)
     {
         FMOD.Studio.EventInstance instance = FMODUnity.RuntimeManager.CreateInstance(fmodEvent);
