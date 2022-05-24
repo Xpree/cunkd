@@ -29,6 +29,14 @@ public class GameClient : NetworkBehaviour
 
     public UIBlink InvulnEffect;
 
+    [SyncVar] public bool IsRespawning;
+
+    [Command]
+    public void CmdRespawnComplete()
+    {
+        IsRespawning = false;
+    }
+
     void OnCunkd(bool previous, bool current)
     {
         if(!CameraController.IsCameraActive)
@@ -205,4 +213,23 @@ public class GameClient : NetworkBehaviour
     {
         Debug.Log($"[Player: {this.PlayerName}] {text}");
     }
+
+
+    IEnumerator RespawnCoroutine(Transform spawn)
+    {
+        IsRespawning = true;
+        IsCunkd = false;
+
+        yield return new WaitForSeconds(2.0f);
+        
+        SetInvulnerable(5.0f);        
+        GetComponent<PlayerMovement>().TargetRespawn(spawn.position, spawn.rotation);
+        GetComponent<Inventory>().Invoke("SpawnPrimaryWeapon", 0.2f);
+    }
+
+    [Server]
+    public void Respawn(Transform spawn)
+    {
+        StartCoroutine(RespawnCoroutine(spawn));
+    }    
 }

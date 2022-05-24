@@ -357,6 +357,7 @@ public class PlayerMovement : NetworkBehaviour
         transform.rotation = rotation;
         ResetState();
         _networkTransform.CmdTeleport(position, rotation);
+        _client.CmdRespawnComplete();
 
         StopAllCoroutines();
         StartCoroutine(PreventMovement());

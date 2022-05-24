@@ -44,8 +44,11 @@ public class ScoreKeeper : NetworkBehaviour
     [Server]
     public void RespawnPlayer(PlayerMovement player)
     {
+        if (player.GetComponent<GameClient>().IsRespawning)
+            return;
+        
         ScoreCard sc = player.GetComponent<ScoreCard>();
-        sc.livesLeft--;
+        sc.RemoveLife();        
 
         if (sc.Dead == false)
         {

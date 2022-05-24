@@ -284,22 +284,19 @@ public class GameServer : MonoBehaviour
         PurgeOwnedObjects(conn);
     }
 
+    
+
     public static void Respawn(GameObject client, Transform spawn)
     {
-        //var spawn = CunkdNetManager.Instance.GetStartPosition();
-        var player = client?.GetComponent<PlayerMovement>();
+        var player = client?.GetComponent<GameClient>();
         if(player != null)
         {            
             PurgeOwnedObjects(client);
-            player.TargetRespawn(spawn.position, spawn.rotation);
-            client.GetComponent<Inventory>().Invoke("SpawnPrimaryWeapon", 0.2f);
-            var gameClient = client.GetComponent<GameClient>();
-            gameClient.IsCunkd = false;
-            gameClient.SetInvulnerable(5.0f);
+            player.Respawn(spawn);
         }
         else
         {
-            Debug.LogError("Attempted to respawn a client without PlayerMovement component.");
+            Debug.LogError("Attempted to respawn a client without GameClient component.");
         }        
     }
 }

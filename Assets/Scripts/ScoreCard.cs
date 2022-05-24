@@ -48,4 +48,21 @@ public class ScoreCard : NetworkBehaviour, IComparable<ScoreCard>
     {
         playerGUI.SetLocalLives(current);
     }
+
+
+    [ClientRpc]
+    void RpcOnDied()
+    {
+        if (this.GetComponent<GameClient>().CameraController.IsCameraActive)
+        {
+            FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Respawn", this.gameObject);
+        }
+    }
+
+    [Server]
+    public void RemoveLife()
+    {
+        livesLeft--;
+        RpcOnDied();
+    }
 }
