@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{de4b38de-681f-4c6b-9977-37846269ce12}">
+		<property name="name">
+			<value>LavaHighTempo</value>
+		</property>
+		<relationship name="folder">
+			<destination>{f3175451-52e8-4193-903b-a4fc7e20a798}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{1aba7914-9f23-41c0-88e7-c62f006d3228}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{1aba7914-9f23-41c0-88e7-c62f006d3228}">
+		<property name="parameterType">
+			<value>1</value>
+		</property>
+		<property name="maximum">
+			<value>2</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
