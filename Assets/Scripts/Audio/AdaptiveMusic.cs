@@ -4,37 +4,33 @@ using UnityEngine;
 using Mirror;
 
 public class AdaptiveMusic : NetworkBehaviour
-{    
-    NetworkManager networkManager;
+{   
+    public static AdaptiveMusic singleton;
+    private int lowLife;
 
-    [HideInInspector]
-    public ScoreKeeper scoreKeeper;
-    
-    private float playersLeft;
-        
-    public override void OnStartServer()
+    private void Awake()
     {
-        networkManager = FindObjectOfType<NetworkManager>();        
+        singleton = this;
     }
+    
+    
+    public void UpdateLives(int lives) 
+    {
+        if (lives >= 3)
+        {
+            lowLife = 0;
+        }
+        else
+        {
+            lowLife = 1;
+        }
+    }    
         
     void Update()
-    {           
-        if (scoreKeeper != null)
-        {            
-            if (scoreKeeper.alivePlayers.Count >= 8)
-            {
-                playersLeft = 8;
-            }
-            else if (scoreKeeper.alivePlayers.Count <= 2)
-            {
-                playersLeft = 2;
-            }
-            else
-            {
-                playersLeft = scoreKeeper.alivePlayers.Count;
-            }            
+    {
+        
 
-            GetComponent<FMODUnity.StudioEventEmitter>().SetParameter("Players Left", playersLeft);
-        }        
+        GetComponent<FMODUnity.StudioEventEmitter>().SetParameter("LowLife", lowLife);
+                        
     }    
 }
