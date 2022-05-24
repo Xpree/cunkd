@@ -119,7 +119,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{0f83a9f1-f168-4022-a1e7-4c415b01b34b}">
 		<property name="name">
-			<value>Audio 1</value>
+			<value>PlentyLife</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{91385249-5b76-4f22-8423-72303fe5390d}</destination>
@@ -155,7 +155,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{00a6805b-2401-4448-af5e-8db4317f2835}">
 		<property name="name">
-			<value>Audio 2</value>
+			<value>LowLife</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{c6263692-817e-4326-83dd-07a9e2b2d318}</destination>
