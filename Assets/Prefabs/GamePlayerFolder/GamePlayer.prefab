@@ -91,6 +91,7 @@ MonoBehaviour:
   CunkdEffect: {fileID: 4194556608091247736}
   IsCunkd: 0
   InvulnEffect: {fileID: 4203134506041246402}
+  IsRespawning: 0
   IsInvulnerable: 0
 --- !u!114 &114265392388239132
 MonoBehaviour:
@@ -399,7 +400,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95c5738430acfc14f8be6b878e249643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderDistance: 50
+  renderDistance: 65
 --- !u!114 &3757456631009906531
 MonoBehaviour:
   m_ObjectHideFlags: 0
