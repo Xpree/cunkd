@@ -44,6 +44,13 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     void OnDisable()
     {
         ZoomOff();
+
+        if (beam)
+        {
+            GameObject.Destroy(beam);
+            GameObject.Destroy(beam2);
+            GameObject.Destroy(beam3);
+        }
     }
 
     void SpawnEffect(Vector3 hitposition)
