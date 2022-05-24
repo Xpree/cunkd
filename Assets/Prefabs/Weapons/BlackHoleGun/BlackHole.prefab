@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5293028075215108505}
   - component: {fileID: 8053596227045557911}
   - component: {fileID: 2919715406544964681}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: BlackHole VFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6704807778010971958}
   - component: {fileID: 8566612693450289439}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: CameraShake Source
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -208,7 +208,7 @@ GameObject:
   - component: {fileID: 9059714811944963243}
   - component: {fileID: 4568777201997059838}
   - component: {fileID: -2831820996974864048}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: BlackHole
   m_TagString: Untagged
   m_Icon: {fileID: 0}
