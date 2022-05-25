@@ -65,17 +65,30 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         
     }
 
+    bool isHoldingPull;
     void IWeapon.SecondaryAttack(bool isPressed)
     {
         justStop();
-        if (isPressed)
+        isHoldingPull = isPressed;
+    }
+
+    void Update()
+    {
+        if (holstered)
+            return;
+        
+        if(item.IsOwnerLocalPlayer)
         {
-            var target = item.ProjectileHitscanOwner<Pullable>(MaxGrabRange);
-            if(target == null)
+            if(isHoldingPull)
             {
-                return;
-            }            
-            CmdPull(target);
+                var target = item.ProjectileHitscanOwner<Pullable>(MaxGrabRange);
+                if (target == null)
+                {
+                    return;
+                }
+                isHoldingPull = false;
+                CmdPull(target);
+            }
         }
     }
 
@@ -116,6 +129,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
 
     void StopPulling()
     {
+        isHoldingPull = false;
         GetComponent<GravityGunAttractSound>().StopSound();
         if (targetObject == null)
         {

@@ -235,7 +235,7 @@ public class NetworkItem : NetworkBehaviour
 
         var settings = GameServer.Instance.Settings;
 
-        if (Physics.SphereCast(aimRay, settings.SmallSphereCastRadius, out RaycastHit hit, maxDistance, settings.ProtectileTargetLayers, QueryTriggerInteraction.Ignore))
+        if (Physics.SphereCast(aimRay, settings.TinySphereCastRadius, out RaycastHit hit, maxDistance, settings.ProtectileTargetLayers, QueryTriggerInteraction.Ignore))
         {
             hitPointOrMaxDistance = hit.point;
             return hit.rigidbody?.GetComponent<T>();

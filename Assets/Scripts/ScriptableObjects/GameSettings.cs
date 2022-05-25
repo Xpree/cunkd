@@ -98,6 +98,7 @@ public class GameSettings : ScriptableObject
     public LayerMask Movable;
     public LayerMask ProtectileTargetLayers;
     public float SmallSphereCastRadius = 0.25f;
+    public float TinySphereCastRadius = 0.1f;
     public float AutodespawnTimer = 30.0f;
 
     public float GlobalKnockbackMultiplier = 2.0f;
