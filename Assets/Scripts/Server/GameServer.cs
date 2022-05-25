@@ -174,7 +174,7 @@ public class GameServer : MonoBehaviour
             Instance.SpawnSpectator(conn);
         }
         NetworkServer.Destroy(player);
-        self.Players.RemoveAll(p => p.gameObject == player);
+        self.Players.RemoveAll(p => p == null || p == player);
 
     }
 
