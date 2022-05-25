@@ -116,6 +116,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
 
     void StopPulling()
     {
+        GetComponent<GravityGunAttractSound>().StopSound();
         if (targetObject == null)
         {
             return;
