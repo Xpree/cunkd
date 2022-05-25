@@ -33,7 +33,7 @@ public class LevelEventController : NetworkBehaviour
     float yDiff;
 
 
-    FMOD.Studio.EventInstance waterRisingSound;
+    FMOD.Studio.EventInstance volcanoEruptionSound;
 
     private void Awake()
     {
@@ -43,7 +43,11 @@ public class LevelEventController : NetworkBehaviour
     public override void OnStartClient()
     {
         base.OnStartClient();
-        waterRisingSound = FMODUnity.RuntimeManager.CreateInstance("event:/SoundStudents/SFX/Environment/WaterRising");
+        volcanoEruptionSound = FMODUnity.RuntimeManager.CreateInstance("event:/SoundStudents/SFX/Environment/BoilingLava");
+        volcanoEruptionSound.setPitch(11.0f / 15.0f);
+        volcanoEruptionSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(Vector3.zero));
+        volcanoEruptionSound.setProperty(FMOD.Studio.EVENT_PROPERTY.MINIMUM_DISTANCE, 9999);
+        volcanoEruptionSound.setProperty(FMOD.Studio.EVENT_PROPERTY.MAXIMUM_DISTANCE, 9999);
     }
 
 
@@ -252,13 +256,13 @@ public class LevelEventController : NetworkBehaviour
     [ClientRpc]
     void RpcPlayWaterRising()
     {
-        waterRisingSound.start();
+        volcanoEruptionSound.start();
     }
 
     [ClientRpc]
     void RpcEndWaterRising()
     {
-        waterRisingSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        volcanoEruptionSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 
 
