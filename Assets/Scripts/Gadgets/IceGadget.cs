@@ -38,7 +38,7 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
         _cooldownTimer.SetCharges(_settings.IceGadget.Charges);
     }
 
-    //[Command]
+    [ClientRpc]
     void DestroyGadget()
     {
         hub.ActivateSelfDestruction();
@@ -73,9 +73,15 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
 
             if (_cooldownTimer.Charges <= 0)
             {
-                DestroyGadget();
+                CmdDestroyGadget();
             }
         }
+    }
+
+    [Command]
+    void CmdDestroyGadget()
+    {
+        DestroyGadget();
     }
 
 
