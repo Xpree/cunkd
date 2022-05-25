@@ -59,7 +59,7 @@ public class SettingsUI : MonoBehaviour
     {
         UpdateSettings();
 
-        bool inGame = !LobbyServer.Instance.IsLobbyActive;
+        bool inGame = LobbyServer.Instance != null && !LobbyServer.Instance.IsLobbyActive;
         connectedUI.SetActive(inGame && Mirror.NetworkClient.active);
         bool isHost = Mirror.NetworkServer.active;
         hostUI.SetActive(inGame && isHost);
