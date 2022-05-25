@@ -11,6 +11,8 @@ public class IceTrapHub : NetworkBehaviour
     [HideInInspector]public GameObject trap;
     float throwForce;
 
+    List<GameObject> traps = new();
+
     [SyncVar(hook = nameof(OnPosition))] public Vector3 positionSync;
     void Awake()
     {
@@ -23,12 +25,26 @@ public class IceTrapHub : NetworkBehaviour
         endTime = GameStats.RoundTimer + selfDestructTime;
     }
 
+    void destroyAll()
+    {
+        foreach (var trap in traps)
+        {
+            if (trap)
+            {
+                if (0 < trap.GetComponent<SpreadMat>().iceMat.Count )
+                    return;
+                Destroy(trap);
+            }
+        }
+        NetworkServer.Destroy(this.gameObject);
+    }
+
     [Server]
     private void Update()
     {
         if (endTime < GameStats.RoundTimer)
         {
-            NetworkServer.Destroy(this.gameObject);
+            destroyAll();
         }
     }
 
@@ -65,7 +81,7 @@ public class IceTrapHub : NetworkBehaviour
         trap.GetComponent<Rigidbody>().AddTorque(new Vector3(0, 100000, 0), ForceMode.Force);
         trap.GetComponent<IceGadgetTrap>().owner = owner;
         trap.GetComponent<IceGadgetTrap>().hub = this;
-
+        traps.Add(trap);
         AudioHelper.PlayOneShotAttachedWithParameters("event:/SoundStudents/SFX/Gadgets/Icy Floor Trap", trap, 30.0f, 40.0f, ("Shot", 1f), ("StandbyHum", 1f));
     }
 }

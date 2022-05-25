@@ -38,7 +38,7 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
         _cooldownTimer.SetCharges(_settings.IceGadget.Charges);
     }
 
-    [Command]
+    //[Command]
     void DestroyGadget()
     {
         hub.ActivateSelfDestruction();
