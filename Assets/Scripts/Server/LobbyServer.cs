@@ -65,7 +65,7 @@ public class LobbyServer : MonoBehaviour
     public bool IsLobbyActive => NetworkManager.IsSceneActive(this.NetworkScene);
     public List<LobbyClient> Players => _lobbyPlayers.clients;
 
-    public static LobbyServer Instance => CunkdNetManager.Instance.Lobby;
+    public static LobbyServer Instance => CunkdNetManager.Instance?.Lobby;
 
 
     void OnValidate()
