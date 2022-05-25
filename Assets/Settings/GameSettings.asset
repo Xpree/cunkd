@@ -46,7 +46,7 @@ MonoBehaviour:
   IceGadget:
     Duration: 10
     Friction: -0.5
-    ThrowForce: 100
+    ThrowForce: 125
     Cooldown: 1
     Charges: 5
   SwapSniper:
@@ -71,3 +71,4 @@ MonoBehaviour:
     Radius: 10
     Force: 1000
   EndGameDelay: 5
+  CunkdSpeedBoost: 7
