@@ -44,7 +44,7 @@ public class GameServer : MonoBehaviour
     /// The list of players in the game.
     /// </summary>
     [HideInInspector]
-    public List<GameClient> Players = new();
+    public List<GameObject> Players = new();
 
     [HideInInspector]
     public List<Spectator> Spectators = new();
@@ -129,7 +129,7 @@ public class GameServer : MonoBehaviour
         var gamePlayer = Instantiate(this.PlayerPrefab, position, rotation);
         gamePlayer.LobbyClient = LobbyClient.FromConnection(conn);
         NetworkServer.ReplacePlayerForConnection(conn, gamePlayer.gameObject, true);
-        Players.Add(gamePlayer);
+        Players.Add(gamePlayer.gameObject);
 
         gamePlayer.GetComponent<Inventory>().Invoke("SpawnPrimaryWeapon", 0.2f);
     }
@@ -167,8 +167,6 @@ public class GameServer : MonoBehaviour
         var netManager = CunkdNetManager.Instance;
         var self = netManager.Game;
 
-        self.Players.RemoveAll(p => p.gameObject == player);
-
         GameServer.PurgeOwnedObjects(player);
         var conn = player?.GetComponent<NetworkIdentity>()?.connectionToClient;
         if (conn != null)
@@ -176,6 +174,8 @@ public class GameServer : MonoBehaviour
             Instance.SpawnSpectator(conn);
         }
         NetworkServer.Destroy(player);
+        self.Players.RemoveAll(p => p == null || p == player);
+
     }
 
     public void OnDisconnect(NetworkConnectionToClient conn)
@@ -223,7 +223,7 @@ public class GameServer : MonoBehaviour
 
         foreach (var client in Players)
         {
-            if ((client?.Loaded ?? true) == false)
+            if ((client.GetComponent<GameClient>()?.Loaded ?? true) == false)
             {
                 return false;
             }
@@ -236,7 +236,7 @@ public class GameServer : MonoBehaviour
         Stats.RoundStart = NetworkTimer.FromNow(this.DelayStart); ;
         foreach (var client in Players)
         {
-            client?.TargetGameStart(RoundStart);
+            client.GetComponent<GameClient>().TargetGameStart(RoundStart);
         }
     }
 
