@@ -28,6 +28,7 @@ public class SceneMusic : MonoBehaviour
 
     public void UpdateLives(int lives)
     {
+        /* Needs fixed
         if (lives >= 3)
         {
             lowLife = 0f;
@@ -41,7 +42,7 @@ public class SceneMusic : MonoBehaviour
         {
             music.UpdateLowLife(lowLife);
         }
-        
+        */
     }
 
     private void SceneManager_sceneLoaded(Scene scene, LoadSceneMode arg1)

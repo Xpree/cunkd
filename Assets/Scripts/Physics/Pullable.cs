@@ -22,6 +22,22 @@ public class Pullable : NetworkBehaviour
 
     public bool IsBeingPulled => pulling && target != null && target.activeSelf;
 
+    public bool CanBePulled => IsBeingPulled == false && (pullCooldown.IsSet == false || pullCooldown.HasTicked);
+
+    NetworkTimer pullCooldown;
+
+    [ClientRpc]
+    void RpcSetCooldown(NetworkTimer timer)
+    {
+        pullCooldown = timer;
+    }
+
+    public void SetCooldown()
+    {
+        pullCooldown = NetworkTimer.FromNow(5.0);
+        RpcSetCooldown(pullCooldown);
+    }
+
 
     private void Start()
     {

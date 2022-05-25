@@ -82,7 +82,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
             if(isHoldingPull)
             {
                 var target = item.ProjectileHitscanOwner<Pullable>(MaxGrabRange);
-                if (target == null)
+                if (target == null || target.CanBePulled == false)
                 {
                     return;
                 }
@@ -106,8 +106,8 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
         justStop();
         if (target.gameObject.GetComponent<KnockbackScript>())
         {
+            target.GetComponent<Pullable>().SetCooldown();
             target.gameObject.GetComponent<KnockbackScript>().onOff = true;
-            target.GetComponent<Pullable>().offTime = 5f;
             Vector3 torque = new Vector3(Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque), Random.Range(-GrabTorque, GrabTorque));
             var body = target.GetComponent<Rigidbody>();
             float Force = Mathf.Lerp(MinPushForce, MaxPushForce, Mathf.Clamp01(progress));
@@ -118,7 +118,7 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
 
     void StartPulling(Pullable target, NetworkTimer time, Vector3 torque)
     {
-        if (target == null || target.IsBeingPulled)
+        if (target == null || target.CanBePulled == false)
         {
             return;
         }
