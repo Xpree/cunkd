@@ -11,6 +11,8 @@ public class IceGadgetTrap : NetworkBehaviour
 
     public float friction => _settings.IceGadget.Friction;
 
+    [SyncVar(hook = nameof(OnParent))] public Transform parentSync;
+
     [SerializeField] public SpreadMat iceMachine;
     //public IceGadget owner;
     public bool owner = false;
@@ -35,6 +37,19 @@ public class IceGadgetTrap : NetworkBehaviour
         }
     }
 
+    //[Command]
+    void setParent(Transform parent)
+    {
+        parentSync = parent;
+    }
+
+    [Client]
+    void OnParent(Transform previous, Transform current)
+    {
+        this.transform.SetParent(current);
+        hub.transform.SetParent(this.transform);
+    }
+
     bool triggered = false;
     //[Server]
     private void OnCollisionEnter(Collision collision)
@@ -43,6 +58,14 @@ public class IceGadgetTrap : NetworkBehaviour
         {
             if (owner && !triggered && collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
             {
+                NetworkIdentity parent = collision.gameObject.GetComponentInParent<NetworkIdentity>();
+                if (parent)
+                {
+                    setParent(parent.transform);
+                    this.transform.SetParent(parent.transform);
+                    hub.setParent(parent.transform);
+                    hub.transform.SetParent(parent.transform);
+                }
                 hub.sync(transform.position);
                 GetComponent<Rigidbody>().isKinematic = true;
                 triggered = true;

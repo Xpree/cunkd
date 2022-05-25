@@ -22,6 +22,8 @@ public class SpreadMat : NetworkBehaviour
     Vector3[] points;
     int[] newTriangles;
 
+    public Transform parent;
+
     List<GameObject> frozenObjects;
     List<GameObject> icedObjects;
     public List<GameObject> iceMat;
@@ -193,6 +195,7 @@ public class SpreadMat : NetworkBehaviour
         //MakeIceOnClient(mesh);
         //GameObject go = Instantiate(ice, transform.position, Quaternion.identity);
         GameObject go = Instantiate(ice, Vector3.zero, Quaternion.identity);
+        go.transform.SetParent(parent);
         go.name = meshName;
         go.GetComponent<MeshFilter>().mesh = mesh;
         go.transform.position += new Vector3(0, iceThickness, 0);
@@ -298,6 +301,7 @@ public class SpreadMat : NetworkBehaviour
     Vector3 snowPosition = new Vector3();
     public void setCollision(Collider other)
     {
+
         GameObject go = other.gameObject;
         //this is to make ice on trees
         if (onlyIceLayermask == (onlyIceLayermask | (1 << go.layer)) && !icedObjects.Contains(go))

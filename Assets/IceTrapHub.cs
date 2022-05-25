@@ -14,6 +14,7 @@ public class IceTrapHub : NetworkBehaviour
     List<GameObject> traps = new();
 
     [SyncVar(hook = nameof(OnPosition))] public Vector3 positionSync;
+    [SyncVar(hook = nameof(OnParent))] public Transform parentSync;
     void Awake()
     {
         throwForce = _settings.IceGadget.ThrowForce;
@@ -54,12 +55,26 @@ public class IceTrapHub : NetworkBehaviour
         positionSync = pos;
     }
 
+    [Command]
+    public void setParent(Transform parent)
+    {
+        parentSync = parent;
+    }
+
     [Client]
     void OnPosition(Vector3 previous, Vector3 current)
     {
         trap.transform.position = current;
         trap.GetComponent<Rigidbody>().isKinematic = true;
+        trap.GetComponent<IceGadgetTrap>().iceMachine.parent = this.transform;
         trap.GetComponent<IceGadgetTrap>().iceMachine.Trigger();
+    }
+
+    [Client]
+    void OnParent(Transform previous, Transform current)
+    {
+        this.transform.SetParent(current);
+        trap.transform.SetParent(current);
     }
 
     [Command]
