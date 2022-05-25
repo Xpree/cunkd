@@ -97,33 +97,16 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     {
         // Resets this value used for the Lerping-function.
 
-
-        // If a "swappable" target was hit:
-        var aimTransform = Util.GetOwnerAimTransform(GetComponent<NetworkItem>());
-        if (Physics.SphereCast(aimTransform.position, 0.1f, aimTransform.forward, out RaycastHit hitResult, range, TargetMask, QueryTriggerInteraction.Ignore))
+        var identity = _item.ProjectileHitscanRigidbody<NetworkIdentity>(range, out HitDetected);
+        if(identity != null && (identity.GetComponent<Pullable>() || identity.GetComponent<GameClient>()) == false)
         {
-            // Instantiates the beam-effect and sets its target position to where the speherecast hit something
-
-            HitDetected = hitResult.point;
-            SpawnEffect(HitDetected);
-            cmdFire(HitDetected);
-
-            // Returns the rigidbody that the spherecast hit in order to use it in the actual swapping-function.
-            return hitResult.rigidbody?.GetComponent<NetworkIdentity>();
+            identity = null;
         }
 
-        // If a "swappable" target was not hit:
-        else
-        {
-            // Instantiates the beam-object and sets its target position forward (from the cameras perspective) and as far away as the spherecast reaches ("range").
+        SpawnEffect(HitDetected);
+        cmdFire(HitDetected);
 
-
-            HitDetected = aimTransform.forward * range + aimTransform.position;
-            SpawnEffect(HitDetected);
-            cmdFire(HitDetected);
-            // Returns null as nothing "swappable" was hit.
-            return null;
-        }
+        return identity;
     }
 
     // Values used for Lerping.
@@ -163,7 +146,7 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
 
     // Performs the swap and sets off particle- and sound effects.
     [Command]
-    void CmdPerformSwap(NetworkIdentity target)
+    void CmdPerformSwap(NetworkIdentity target, Vector3 targetPosition, Vector3 origin)
     {
         if (target == null || _cooldownTimer.ServerUse(this.cooldown) == false)
         {
@@ -175,11 +158,8 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
         if (owner == null)
             return;
 
-        Vector3 Swapper = owner.transform.position;
-        Vector3 Swappee = target.transform.position;
-
-        Util.Teleport(target.gameObject, Swapper);
-        Util.Teleport(owner.gameObject, Swappee);
+        Util.Teleport(target.gameObject, origin);
+        Util.Teleport(owner.gameObject, targetPosition);
         animator.SetTrigger("Fire");
         PlayTeleport(target);
         PlayTeleport(owner.GetComponent<NetworkIdentity>());
@@ -188,12 +168,14 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     // An artificial delay that makes sure that the swapping does not occur immediately after hit-detection. (This gives time to see the beam-effect.)
     System.Collections.IEnumerator DelaySwap(NetworkIdentity target)
     {
+        Vector3 position = _item.Owner.transform.position;
+        
         if (target == null || target.gameObject.Invulnerabiliy())
             yield break;
 
         yield return new WaitForSeconds(0.15f);
         ZoomOff();
-        CmdPerformSwap(target);
+        CmdPerformSwap(target, HitDetected, position);
     }
 
     // Upon left-clicking, DidHitObject is called. (Unless the cooldown has not yet reached zero.)

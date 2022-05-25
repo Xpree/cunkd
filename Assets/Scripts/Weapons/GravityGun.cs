@@ -188,29 +188,11 @@ public class GravityGun : NetworkBehaviour, IWeapon, IEquipable
     bool holstered = false;
     bool IEquipable.IsHolstered => holstered;
 
-    System.Collections.IEnumerator TestAnimation()
-    {
-        var start = NetworkTimer.Now;
-
-        for (; ; )
-        {
-            var t = start.Elapsed * 5;
-            if (t > 0.99)
-            {
-                break;
-            }
-
-            transform.localScale = Vector3.one * (float)(1.0 - t);
-            yield return null;
-        }
-        transform.localScale = Vector3.zero;
-        holstered = true;
-    }
-
     void IEquipable.OnHolstered()
     {
         StopPulling();
-        StartCoroutine(TestAnimation());
+        holstered = true;
+        transform.localScale = Vector3.zero;
     }
 
     void IEquipable.OnUnholstered()

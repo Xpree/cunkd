@@ -228,6 +228,24 @@ public class NetworkItem : NetworkBehaviour
         }
     }
 
+
+    public T ProjectileHitscanRigidbody<T>(float maxDistance, out Vector3 hitPointOrMaxDistance) where T : class
+    {
+        var aimRay = this.OwnerInteractAimTransform.ForwardRay();
+
+        var settings = GameServer.Instance.Settings;
+
+        if (Physics.SphereCast(aimRay, settings.SmallSphereCastRadius, out RaycastHit hit, maxDistance, settings.ProtectileTargetLayers, QueryTriggerInteraction.Ignore))
+        {
+            hitPointOrMaxDistance = hit.point;
+            return hit.rigidbody?.GetComponent<T>();
+        }
+        else
+        {
+            hitPointOrMaxDistance = aimRay.GetPoint(maxDistance);
+            return null;
+        }
+    }
 }
 
 public interface INetworkItemOwner
