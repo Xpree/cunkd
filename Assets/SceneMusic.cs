@@ -86,8 +86,9 @@ public class LevelMusic
     {
         if(activeMusic)
         {
-            if(Mirror.NetworkServer.active == false)
-                _music.setParameterByName("LowLife", lowLife, false);
+            _music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            _music.setParameterByName("LowLife", lowLife, false);
+            _music.start();
         }
     }
 
