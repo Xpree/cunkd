@@ -92,6 +92,7 @@ public class IceTrapHub : NetworkBehaviour
     public void InstantiateIceTrap(Vector3 pos, Vector3 force, bool owner = false)
     {
         trap = Instantiate(iceGadgetTrap, pos, Quaternion.identity);
+        GameObject.Destroy(trap, GameServer.Instance.Settings.IceGadget.Duration * 2);        
         trap.GetComponent<Rigidbody>().AddForce(force);
         trap.GetComponent<Rigidbody>().AddTorque(new Vector3(0, 100000, 0), ForceMode.Force);
         trap.GetComponent<IceGadgetTrap>().owner = owner;
