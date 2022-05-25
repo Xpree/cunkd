@@ -68,8 +68,8 @@ public class IceGadget : NetworkBehaviour, IGadget, IEquipable
 
         if (_cooldownTimer.Use())
         {           
-            hub.InstantiateIceTrap(transform.position + transform.forward * 3, transform.forward * throwForce * 10, this);
-            hub.CmdSpawnIceGadget(transform.position + transform.forward * 3, transform.forward * throwForce * 10);
+            hub.InstantiateIceTrap(transform.position + transform.forward, transform.forward * throwForce * 10, this);
+            hub.CmdSpawnIceGadget(transform.position + transform.forward, transform.forward * throwForce * 10);
 
             if (_cooldownTimer.Charges <= 0)
             {
