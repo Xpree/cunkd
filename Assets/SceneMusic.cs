@@ -86,7 +86,8 @@ public class LevelMusic
     {
         if(activeMusic)
         {
-            _music.setParameterByName("LowLife", lowLife, false);
+            if(Mirror.NetworkServer.active == false)
+                _music.setParameterByName("LowLife", lowLife, false);
         }
     }
 
