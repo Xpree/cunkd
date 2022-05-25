@@ -39,7 +39,7 @@ public class IceTrapHub : NetworkBehaviour
         NetworkServer.Destroy(this.gameObject);
     }
 
-    [Server]
+    //[Server]
     private void Update()
     {
         if (endTime < GameStats.RoundTimer)
