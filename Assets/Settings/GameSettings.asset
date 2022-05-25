@@ -59,6 +59,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 449
   SmallSphereCastRadius: 0.5
+  TinySphereCastRadius: 0.1
   AutodespawnTimer: 30
   GlobalKnockbackMultiplier: 1
   GlobalKnockbackRamp: 1
@@ -72,3 +73,6 @@ MonoBehaviour:
     Force: 1000
   EndGameDelay: 5
   CunkdSpeedBoost: 7
+  DespawnPullableMask:
+    serializedVersion: 2
+    m_Bits: 193
