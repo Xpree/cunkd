@@ -234,6 +234,25 @@ public class NetworkItem : NetworkBehaviour
         var aimRay = this.OwnerInteractAimTransform.ForwardRay();
 
         var settings = GameServer.Instance.Settings;
+        var colliders = Physics.OverlapSphere(aimRay.origin, settings.SmallSphereCastRadius, settings.DespawnPullableMask, QueryTriggerInteraction.Ignore);
+
+        if(colliders.Length > 0)
+        {
+            hitPointOrMaxDistance = aimRay.origin;
+            float nearest = float.MaxValue;
+            foreach (var c in colliders)
+            {
+                var point = c.ClosestPoint(aimRay.origin);
+                var dist = (point - aimRay.origin).magnitude;
+                if (dist < nearest)
+                {
+                    nearest = dist;
+                    hitPointOrMaxDistance = point;
+                }
+            }
+            
+            return null;
+        }
 
         if (Physics.SphereCast(aimRay, settings.TinySphereCastRadius, out RaycastHit hit, maxDistance, settings.ProtectileTargetLayers, QueryTriggerInteraction.Ignore))
         {
