@@ -461,7 +461,7 @@ MonoBehaviour:
   _settings: {fileID: 11400000, guid: 1e23574a1bfd1b24a8ee355906eb528b, type: 2}
   TargetMask:
     serializedVersion: 2
-    m_Bits: 448
+    m_Bits: 449
   EffectSphere: {fileID: 7587102243636323291, guid: eca299bb61c4d3445aa76d1155724e3c, type: 3}
   PointOfFire: {fileID: 4451355165072156543}
   sniper: {fileID: 8137255816855233518}
