@@ -10,7 +10,7 @@ public class Pullable : NetworkBehaviour
     public float offTime;
 
     public Collider pullingCollider;
-    public Rigidbody body;       
+    public Rigidbody body;
     bool pulling = false;
 
     public float pullOffset;
@@ -37,7 +37,7 @@ public class Pullable : NetworkBehaviour
     private void OnValidate()
     {
         if (pullingCollider == null)
-            pullingCollider = GetComponent<Collider>();    
+            pullingCollider = GetComponent<Collider>();
         if (body == null)
             body = GetComponent<Rigidbody>();
     }
@@ -49,11 +49,28 @@ public class Pullable : NetworkBehaviour
             return;
         pulling = value;
 
-        
+
         if (!pulling)
         {
             SetTransparent(false);
             Util.SetPhysicsSynchronized(this.netIdentity, true);
+
+            if (this.isServer)
+            {
+                var collisions = Physics.OverlapSphere(this.transform.position, 0.05f, GameServer.Instance.Settings.DespawnPullableMask, QueryTriggerInteraction.Ignore);
+                bool violation = false;
+                foreach(var c in collisions)
+                {
+                    if (c.gameObject == this.gameObject)
+                        continue;
+                    violation = true;
+                    break;
+                }
+                if (violation)
+                {
+                    NetworkServer.Destroy(this.gameObject);
+                }
+            }
         }
         else
         {
@@ -74,8 +91,8 @@ public class Pullable : NetworkBehaviour
         {
             c.enabled = !enable;
         }
-        
-        if(enable)
+
+        if (enable)
         {
             body.isKinematic = true;
             body.transform.parent = target.transform;
@@ -92,7 +109,7 @@ public class Pullable : NetworkBehaviour
     void SetFixed()
     {
         if (pullingCollider.enabled)
-        {     
+        {
             /*
             if (Physics.Raycast(target.transform.position, target.transform.forward, out RaycastHit hit, pullOffset, GameServer.Instance.Settings.Movable))
             {
@@ -113,8 +130,8 @@ public class Pullable : NetworkBehaviour
         //    body.transform.localPosition = Vector3.zero;
         //}
         //body.position = Vector3.Lerp(body.position, TargetPosition, 0.5f);
-        
-        
+
+
         transform.position = Vector3.Lerp(transform.position, TargetPosition, 0.5f);
     }
 
@@ -140,12 +157,12 @@ public class Pullable : NetworkBehaviour
         {
             this.gameObject.GetComponent<KnockbackScript>().onOff = false;
         }
-        
-        if(offTime >= 0 && !pulling)
+
+        if (offTime >= 0 && !pulling)
             offTime = offTime - Time.fixedDeltaTime;
         if (!pulling)
             return;
-        
+
         if (target == null || target.activeSelf == false)
         {
             SetPulling(false);
@@ -153,12 +170,12 @@ public class Pullable : NetworkBehaviour
         }
 
         var timeToAnchor = (float)fixedTimer.Remaining;
-        if(timeToAnchor <= 0)
+        if (timeToAnchor <= 0)
         {
             SetFixed();
             return;
         }
-        
+
         body.velocity = (TargetPosition - body.position) / timeToAnchor;
     }
 

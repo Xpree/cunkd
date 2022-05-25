@@ -121,5 +121,8 @@ public class GameSettings : ScriptableObject
     public float EndGameDelay = 5.0f;
 
     public float CunkdSpeedBoost = 7.0f;
+
+
+    public LayerMask DespawnPullableMask;
 }
 
