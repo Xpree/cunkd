@@ -8,13 +8,13 @@ public class IceTrapHub : NetworkBehaviour
     [SerializeField] GameObject iceGadgetTrap;
     [SerializeField] float selfDestructTime;
     [SerializeField] GameSettings _settings;
-    [HideInInspector]public GameObject trap;
     float throwForce;
 
     List<GameObject> traps = new();
 
+    [SyncVar(hook = nameof(OnIndex))] public int indexSync;
     [SyncVar(hook = nameof(OnPosition))] public Vector3 positionSync;
-    [SyncVar(hook = nameof(OnParent))] public Transform parentSync;
+    [SyncVar] public Transform parentSync;
     void Awake()
     {
         throwForce = _settings.IceGadget.ThrowForce;
@@ -40,41 +40,56 @@ public class IceTrapHub : NetworkBehaviour
         NetworkServer.Destroy(this.gameObject);
     }
 
-    //[Server]
     private void Update()
     {
         if (endTime < GameStats.RoundTimer)
         {
             destroyAll();
         }
+        syncTrap();
+    }
+
+    bool indexSet = false;
+    bool positionSet = false;
+    bool parentSet = false;
+    void syncTrap()
+    {
+        if (indexSet && positionSet)
+        {
+
+            if (!traps[indexSync-1].GetComponent<IceGadgetTrap>().owner)
+            {
+                traps[indexSync-1].transform.position = positionSync;
+                traps[indexSync-1].GetComponent<Rigidbody>().isKinematic = true;
+                traps[indexSync-1].GetComponent<IceGadgetTrap>().iceMachine.Trigger();
+                if (parentSync)
+                {
+                    traps[indexSync-1].GetComponent<IceGadgetTrap>().transform.SetParent(parentSync, true);
+                }
+            }
+            indexSet = false;
+            positionSet = false;
+        }
     }
 
     [Command]
-    public void sync(Vector3 pos)
+    public void sync(int index, Vector3 pos, Transform parent)
     {
+        parentSync = parent;
+        indexSync = index;
         positionSync = pos;
     }
 
-    [Command]
-    public void setParent(Transform parent)
+    [Client]
+    void OnIndex(int previous, int current)
     {
-        parentSync = parent;
+        indexSet = true;
     }
 
     [Client]
     void OnPosition(Vector3 previous, Vector3 current)
     {
-        trap.transform.position = current;
-        trap.GetComponent<Rigidbody>().isKinematic = true;
-        trap.GetComponent<IceGadgetTrap>().iceMachine.parent = this.transform;
-        trap.GetComponent<IceGadgetTrap>().iceMachine.Trigger();
-    }
-
-    [Client]
-    void OnParent(Transform previous, Transform current)
-    {
-        this.transform.SetParent(current);
-        trap.transform.SetParent(current);
+        positionSet = true;
     }
 
     [Command]
@@ -89,14 +104,16 @@ public class IceTrapHub : NetworkBehaviour
         InstantiateIceTrap(pos,force);
     }
 
+    int currentTrapIndex = 1;
     public void InstantiateIceTrap(Vector3 pos, Vector3 force, bool owner = false)
     {
-        trap = Instantiate(iceGadgetTrap, pos, Quaternion.identity);
+        GameObject trap = Instantiate(iceGadgetTrap, pos, Quaternion.identity);
         GameObject.Destroy(trap, GameServer.Instance.Settings.IceGadget.Duration * 2);        
         trap.GetComponent<Rigidbody>().AddForce(force);
         trap.GetComponent<Rigidbody>().AddTorque(new Vector3(0, 100000, 0), ForceMode.Force);
         trap.GetComponent<IceGadgetTrap>().owner = owner;
         trap.GetComponent<IceGadgetTrap>().hub = this;
+        trap.GetComponent<IceGadgetTrap>().index = currentTrapIndex++;
         traps.Add(trap);
         AudioHelper.PlayOneShotAttachedWithParameters("event:/SoundStudents/SFX/Gadgets/Icy Floor Trap", trap, 30.0f, 40.0f, ("Shot", 1f), ("StandbyHum", 1f));
     }

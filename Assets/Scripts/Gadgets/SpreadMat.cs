@@ -30,7 +30,6 @@ public class SpreadMat : NetworkBehaviour
 
     [SerializeField] SphereCollider Icecollider;
     [SerializeField] SphereCollider slipcollider;
-    //[SerializeField] SphereCollider trapCollider;
     [SerializeField] MeshCollider trapCollider;
     int rays;
     string meshName = "";
@@ -62,7 +61,6 @@ public class SpreadMat : NetworkBehaviour
         _destroyTime = NetworkTimer.FromNow(_settings.IceGadget.Duration + 1);
         Icecollider.isTrigger = true;
         Icecollider.radius = radius - 0.5f;
-        //MakeIce(transform.position + new Vector3(0, affectedHeight- trapCollider.radius, 0), rayLength, radius, overhangVariance,IceAndFreezeLayermask);
         MakeIce(transform.position + new Vector3(0, affectedHeight - 0.05f, 0), rayLength, radius, overhangVariance, IceAndFreezeLayermask);
         Invoke("DisableCollider", 0.1f);
     }
@@ -192,14 +190,11 @@ public class SpreadMat : NetworkBehaviour
         mesh.triangles = newTriangles;
         mesh.RecalculateNormals();
 
-        //MakeIceOnClient(mesh);
-        //GameObject go = Instantiate(ice, transform.position, Quaternion.identity);
         GameObject go = Instantiate(ice, Vector3.zero, Quaternion.identity);
-        go.transform.SetParent(parent);
+        go.transform.SetParent(transform, true);
         go.name = meshName;
         go.GetComponent<MeshFilter>().mesh = mesh;
         go.transform.position += new Vector3(0, iceThickness, 0);
-        //go.transform.localScale = new Vector3(1, 1, 1);
         if (snow)
         {
             VisualEffect ve = go.GetComponentInChildren<VisualEffect>();
@@ -207,7 +202,6 @@ public class SpreadMat : NetworkBehaviour
             ve.transform.position = snowPosition;
             snow = false;
         }
-        //NetworkServer.Spawn(go);
 
         //if (addCollider)
         //{
@@ -270,7 +264,7 @@ public class SpreadMat : NetworkBehaviour
         }
         if (go.GetComponent<Pullable>())
         {
-            go.layer = LayerMask.NameToLayer("Default");
+            go.GetComponent<Pullable>().enabled = false;
         }
         frozenObjects.Add(go);
     }
@@ -291,7 +285,7 @@ public class SpreadMat : NetworkBehaviour
                 }
                 if (go.GetComponent<Pullable>())
                 {
-                    go.layer = LayerMask.NameToLayer("Movable");
+                    go.GetComponent<Pullable>().enabled = true;
                 }
             }
         }
@@ -317,20 +311,4 @@ public class SpreadMat : NetworkBehaviour
             FreezeObject(go);
         }
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    GameObject go = other.gameObject;
-    //    //this is to make ice on trees
-    //    if (onlyIceLayermask == (onlyIceLayermask | (1 << go.layer)) && !icedObjects.Contains(go))
-    //    {
-    //        MakeIce(go.transform.parent.position + new Vector3(0, 7, 0), 2, 3.4f, 0.9f, onlyIceLayermask);
-    //        icedObjects.Add(go);
-    //    }
-    //    else
-    //    if (IceAndFreezeLayermask == (IceAndFreezeLayermask | (1 << go.layer)) && !frozenObjects.Contains(go))
-    //    {
-    //        FreezeObject(go);
-    //    }
-    //}
 }

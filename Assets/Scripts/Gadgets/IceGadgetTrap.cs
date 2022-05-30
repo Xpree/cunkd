@@ -7,16 +7,15 @@ using Mirror;
 public class IceGadgetTrap : NetworkBehaviour
 {
     [SerializeField] GameSettings _settings;
+    [SerializeField] public SpreadMat iceMachine;
+    
     [SyncVar] NetworkTimer _endTime;
-
     public float friction => _settings.IceGadget.Friction;
 
-    [SyncVar(hook = nameof(OnParent))] public Transform parentSync;
-
-    [SerializeField] public SpreadMat iceMachine;
-    //public IceGadget owner;
+    public int index = 0;
     public bool owner = false;
     public IceTrapHub hub;
+
     public override void OnStartServer()
     {
         if (_settings == null)
@@ -37,38 +36,29 @@ public class IceGadgetTrap : NetworkBehaviour
         }
     }
 
-    //[Command]
-    void setParent(Transform parent)
-    {
-        parentSync = parent;
-    }
-
-    [Client]
-    void OnParent(Transform previous, Transform current)
-    {
-        this.transform.SetParent(current);
-        hub.transform.SetParent(this.transform);
-    }
-
     bool triggered = false;
-    //[Server]
     private void OnCollisionEnter(Collision collision)
     {
         if (owner)
         {
             if (owner && !triggered && collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
             {
-                NetworkIdentity parent = collision.gameObject.GetComponentInParent<NetworkIdentity>();
-                if (parent)
-                {
-                    setParent(parent.transform);
-                    this.transform.SetParent(parent.transform);
-                    hub.setParent(parent.transform);
-                    hub.transform.SetParent(parent.transform);
-                }
-                hub.sync(transform.position);
-                GetComponent<Rigidbody>().isKinematic = true;
                 triggered = true;
+                GetComponent<Rigidbody>().isKinematic = true;
+                iceMachine.Trigger();
+
+                Transform parent = null;
+                NetworkIdentity CollisionParent = collision.gameObject.GetComponentInParent<NetworkIdentity>();
+                if (CollisionParent)
+                {
+                    if (CollisionParent.transform.CompareTag("Platform"))
+                    {
+                        parent = CollisionParent.transform;
+                        transform.SetParent(parent, true);
+                    }
+                }
+                hub.sync(index, transform.position, parent);
+
             }
         }
     }
