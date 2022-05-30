@@ -75,7 +75,7 @@ public class ScoreKeeper : NetworkBehaviour
     [Server]
     private void checkForWinner()
     {
-        if (!enoughPlayers || GameServer.Instance.HasRoundStarted)
+        if (!enoughPlayers || !GameServer.Instance.HasRoundStarted)
             return;
 
         alivePlayers.RemoveAll(x => x == null);
