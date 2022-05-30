@@ -10,10 +10,12 @@ public class ScoreKeeper : NetworkBehaviour
 
     Transform[] spawnPositions;
 
-    public List<ScoreCard> alivePlayers = new();
+    public List<GameObject> alivePlayers = new();
 
     [HideInInspector] public bool gameOver = false;
-    [HideInInspector] public ScoreCard winner;       
+    [HideInInspector] public ScoreCard winner;
+
+    bool enoughPlayers;
 
     public override void OnStartServer()
     {
@@ -31,7 +33,11 @@ public class ScoreKeeper : NetworkBehaviour
     [Server]
     public void addPlayer(ScoreCard sc)
     {
-        alivePlayers.Add(sc);
+        alivePlayers.Add(sc.gameObject);
+        if(alivePlayers.Count > 1)
+        {
+            enoughPlayers = true;
+        }
     }
 
     [Server]
@@ -60,7 +66,7 @@ public class ScoreKeeper : NetworkBehaviour
         }
         else
         {
-            alivePlayers.Remove(sc);
+            alivePlayers.Remove(sc.gameObject);
             GameServer.TransitionToSpectator(player.gameObject);
             checkForWinner();
         }
@@ -69,13 +75,31 @@ public class ScoreKeeper : NetworkBehaviour
     [Server]
     private void checkForWinner()
     {
-        if (GameServer.Instance.HasRoundStarted && alivePlayers.Count == 1)
+        if (!enoughPlayers || GameServer.Instance.HasRoundStarted)
+            return;
+
+        alivePlayers.RemoveAll(x => x == null);
+        
+        if (alivePlayers.Count == 1)
         {
-            winner = alivePlayers[0];
+            winner = alivePlayers[0].GetComponent<ScoreCard>();
             gameOver = true;
             GameServer.Stats.ShowWinner(winner.PlayerName);
             GameServer.EndGame();
         }
+        else if(alivePlayers.Count == 0)
+        {
+            gameOver = true;
+            GameServer.Stats.ShowWinner("Only losers");
+            GameServer.EndGame();
+
+        }
+    }
+
+    [ServerCallback]
+    private void Update()
+    {
+        checkForWinner();
     }
 
     [ServerCallback]
