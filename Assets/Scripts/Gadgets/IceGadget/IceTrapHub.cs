@@ -51,7 +51,6 @@ public class IceTrapHub : NetworkBehaviour
 
     bool indexSet = false;
     bool positionSet = false;
-    bool parentSet = false;
     void syncTrap()
     {
         if (indexSet && positionSet)

@@ -58,7 +58,7 @@ public class SpreadMat : NetworkBehaviour
         Icecollider.enabled = true;
         slipcollider.enabled = true;
         _endTime = NetworkTimer.FromNow(_settings.IceGadget.Duration);
-        _destroyTime = NetworkTimer.FromNow(_settings.IceGadget.Duration + 1);
+        _destroyTime = NetworkTimer.FromNow(_settings.IceGadget.Duration);
         Icecollider.isTrigger = true;
         Icecollider.radius = radius - 0.5f;
         MakeIce(transform.position + new Vector3(0, affectedHeight - 0.05f, 0), rayLength, radius, overhangVariance, IceAndFreezeLayermask);
@@ -71,14 +71,19 @@ public class SpreadMat : NetworkBehaviour
         trapCollider.enabled = false;
     }
 
+    bool iceDestroyed = false;
     void destroyIce()
     {
-        unFreezeObjects();
-        foreach (var item in iceMat)
+        if (!iceDestroyed)
         {
-            Destroy(item);
+            unFreezeObjects();
+            foreach (var item in iceMat)
+            {
+                Destroy(item);
+            }
+            slipcollider.enabled = false;
+            iceDestroyed = true;
         }
-        slipcollider.enabled = false;
     }
 
     [Client]
@@ -254,6 +259,12 @@ public class SpreadMat : NetworkBehaviour
     void FreezeObject(GameObject go)
     {
         //print("Freezing " + go.name);
+        if (!go.GetComponent<FreezeCounter>())
+        {
+            go.AddComponent<FreezeCounter>();
+        }
+        go.GetComponent<FreezeCounter>().freezeCount++;
+
         if (go.GetComponent<Rigidbody>())
         {
             go.GetComponent<Rigidbody>().isKinematic = true;
@@ -275,17 +286,20 @@ public class SpreadMat : NetworkBehaviour
         {
             if (go)
             {
-                if (go.GetComponent<Rigidbody>())
+                if (--go.GetComponent<FreezeCounter>().freezeCount < 1)
                 {
-                    go.GetComponent<Rigidbody>().isKinematic = false;
-                }
-                if (go.GetComponentInParent<Rigidbody>())
-                {
-                    go.GetComponentInParent<Rigidbody>().isKinematic = false;
-                }
-                if (go.GetComponent<Pullable>())
-                {
-                    go.GetComponent<Pullable>().enabled = true;
+                    if (go.GetComponent<Rigidbody>())
+                    {
+                        go.GetComponent<Rigidbody>().isKinematic = false;
+                    }
+                    if (go.GetComponentInParent<Rigidbody>())
+                    {
+                        go.GetComponentInParent<Rigidbody>().isKinematic = false;
+                    }
+                    if (go.GetComponent<Pullable>())
+                    {
+                        go.GetComponent<Pullable>().enabled = true;
+                    }
                 }
             }
         }
