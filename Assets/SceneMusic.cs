@@ -28,7 +28,7 @@ public class SceneMusic : MonoBehaviour
 
     public void UpdateLives(int lives)
     {
-        /* Needs fixed
+        //Needs fixed
         if (lives >= 3)
         {
             lowLife = 0f;
@@ -42,7 +42,7 @@ public class SceneMusic : MonoBehaviour
         {
             music.UpdateLowLife(lowLife);
         }
-        */
+        
     }
 
     private void SceneManager_sceneLoaded(Scene scene, LoadSceneMode arg1)
@@ -77,6 +77,7 @@ public class LevelMusic
 
     public FMOD.Studio.EventInstance _music;
     public bool activeMusic;
+    public float lowLifeState;
 
     public void Initialize()
     {
@@ -87,9 +88,14 @@ public class LevelMusic
     {
         if(activeMusic)
         {
-            _music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            _music.setParameterByName("LowLife", lowLife, false);
-            _music.start();
+            if (lowLifeState != lowLife)
+            {
+                lowLifeState = lowLife;
+                _music.setParameterByName("LowLife", lowLife, false);
+            }
+            //_music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            
+            //_music.start();
         }
     }
 
@@ -107,6 +113,7 @@ public class LevelMusic
         if(activeMusic == false)
         {
             activeMusic = true;
+            lowLifeState = 0;
             _music.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             _music.setParameterByName("LowLife", 0, false);
             _music.start();
