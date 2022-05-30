@@ -397,7 +397,8 @@ public class PlayerMovement : NetworkBehaviour
             _platform = other.gameObject;
         }
     }
-    
+
+    string stepSound;
     private void OnCollisionEnter(Collision collision)
     {
         Renderer rend = collision.gameObject.GetComponent<Renderer>();
@@ -406,18 +407,29 @@ public class PlayerMovement : NetworkBehaviour
             if (rend.material.name == "wood (Instance)")
             {
                 //Debug.Log("walking on wood");
-                FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Step sounds on brigde", this.gameObject);
+                //FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Step sounds on brigde", this.gameObject);
+                stepSound = "event:/SoundStudents/SFX/Environment/Step sounds on brigde";
+                
             }
             else if (rend.material.name == "BrownGrey (Instance)")
             {
                 //Debug.Log("walking on sand");
-                FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Step sounds on dirt", this.gameObject);
+                //FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Step sounds on dirt", this.gameObject);
+                stepSound = "event:/SoundStudents/SFX/Environment/Step sounds on dirt";
+                
             }
             else
             {
                 //Debug.Log("walking on concrete sound");
-                FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Step sounds on concrete", this.gameObject);
+                //FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Environment/Step sounds on concrete", this.gameObject);
+                stepSound = "event:/SoundStudents/SFX/Environment/Step sounds on concrete";                
             }
-        }
+        }       
+    }      
+
+    public void PlayStepSound() 
+    {
+        if(_isGrounded)
+            FMODUnity.RuntimeManager.PlayOneShotAttached(stepSound, this.gameObject);
     }
 }
