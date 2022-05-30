@@ -29,6 +29,9 @@ public class GameClient : NetworkBehaviour
 
     public UIBlink InvulnEffect;
 
+    public GameObject[] LayerChangeOnInvuln;
+    LayerMask[] originalInvulLayers;
+
     [SyncVar] public bool IsRespawning;
 
     [Command]
@@ -79,6 +82,16 @@ public class GameClient : NetworkBehaviour
 
     void UpdateLayer()
     {
+        if (LayerChangeOnInvuln != null && originalInvulLayers == null)
+        {
+            originalInvulLayers = new LayerMask[LayerChangeOnInvuln.Length];
+            for (int i = 0; i < LayerChangeOnInvuln.Length; i++)
+            {
+                originalInvulLayers[i] = LayerChangeOnInvuln[i].layer;
+            }
+        }
+        
+        
         if (IsInvulnerable)
         {
             this.gameObject.layer = LayerMask.NameToLayer("InvulnerablePlayer");
@@ -89,8 +102,15 @@ public class GameClient : NetworkBehaviour
             this.gameObject.layer = LayerMask.NameToLayer("Player");
             InvulnEffect.enabled = false;
         }
+
+        LayerMask newLayer = this.gameObject.layer;
+
+        for (int i = 0; i < LayerChangeOnInvuln.Length; i++)
+        {
+            LayerChangeOnInvuln[i].layer = newLayer;
+        }
     }
-    
+
     void OnChangeInvul(bool previous, bool current)
     {
         UpdateLayer();

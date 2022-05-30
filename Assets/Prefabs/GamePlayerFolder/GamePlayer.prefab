@@ -91,6 +91,9 @@ MonoBehaviour:
   CunkdEffect: {fileID: 4194556608091247736}
   IsCunkd: 0
   InvulnEffect: {fileID: 4203134506041246402}
+  LayerChangeOnInvuln:
+  - {fileID: 4390074251459831417}
+  - {fileID: 846427917659543916}
   IsRespawning: 0
   IsInvulnerable: 0
 --- !u!114 &114265392388239132
@@ -1357,7 +1360,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 10240
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -2700,7 +2703,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4418472551497977685, guid: 37cd6bec8f5a0404abb76911dc5e2abb, type: 3}
       propertyPath: m_VersionIndex
-      value: 892
+      value: 895
       objectReference: {fileID: 0}
     - target: {fileID: 4418472551765978457, guid: 37cd6bec8f5a0404abb76911dc5e2abb, type: 3}
       propertyPath: m_Mesh
@@ -2708,7 +2711,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4418472551765978457, guid: 37cd6bec8f5a0404abb76911dc5e2abb, type: 3}
       propertyPath: m_VersionIndex
-      value: 24208
+      value: 24211
       objectReference: {fileID: 0}
     - target: {fileID: 4418472551765978459, guid: 37cd6bec8f5a0404abb76911dc5e2abb, type: 3}
       propertyPath: m_Mesh
@@ -2724,7 +2727,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4418472551914854886, guid: 37cd6bec8f5a0404abb76911dc5e2abb, type: 3}
       propertyPath: m_VersionIndex
-      value: 24205
+      value: 24208
       objectReference: {fileID: 0}
     - target: {fileID: 4418472551914854904, guid: 37cd6bec8f5a0404abb76911dc5e2abb, type: 3}
       propertyPath: m_Mesh
@@ -2744,7 +2747,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4418472552570228510, guid: 37cd6bec8f5a0404abb76911dc5e2abb, type: 3}
       propertyPath: m_VersionIndex
-      value: 2071
+      value: 2074
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37cd6bec8f5a0404abb76911dc5e2abb, type: 3}
