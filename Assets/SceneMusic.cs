@@ -17,6 +17,15 @@ public class SceneMusic : MonoBehaviour
         SceneManager.sceneLoaded += SceneManager_sceneLoaded;        
     }
 
+    private void OnDestroy()
+    {
+        foreach (var music in levelMusic)
+        {
+            music.Stop();
+        }
+        SceneManager.sceneLoaded -= SceneManager_sceneLoaded;
+    }
+
     private void Start()
     {
         foreach (var music in levelMusic)

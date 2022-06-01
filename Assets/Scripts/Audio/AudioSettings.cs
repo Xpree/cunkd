@@ -21,31 +21,33 @@ public class AudioSettings : MonoBehaviour
         Singleton = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
         Music.setVolume(MusicVolume);
         SFX.setVolume(SFXVolume);
-        Master.setVolume(MasterVolume);        
+        Master.setVolume(Settings.volume);
     }
 
     public void MasterVolumeLevel(float newMasterVolume)
     {
         MasterVolume = newMasterVolume;
+        Master.setVolume(MasterVolume);
     }
 
     public void MusicVolumeLevel(float newMusicVolume)
     {
         MusicVolume = newMusicVolume;
+        Music.setVolume(MusicVolume);
     }
 
     public void SFXVolumeLevel(float newSFXVolume)
     {
         SFXVolume = newSFXVolume;
+        SFX.setVolume(SFXVolume);
     }
 
     public void SetMuted(bool muted)
     {        
-            FMODUnity.RuntimeManager.MuteAllEvents(muted);
+        FMODUnity.RuntimeManager.MuteAllEvents(muted);
     }
 }
