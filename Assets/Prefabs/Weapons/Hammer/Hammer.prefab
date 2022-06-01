@@ -494,6 +494,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: f3a0b3644dd331c4fb00be1bef0c2b02, type: 2}
   - {fileID: 2100000, guid: d97b9afa5f6604f4f92640821a137d51, type: 2}
   - {fileID: 2100000, guid: 4774fb15ab6182e42825695787db417e, type: 2}
+  - {fileID: 2100000, guid: 3e05ba0a11cb4ac4f80526b606876616, type: 2}
+  - {fileID: 2100000, guid: caff3bcfe36d2a94a9532e005d63b57d, type: 2}
   hammerRenderer: {fileID: 3262708312759209104}
 --- !u!1 &5110217677533567606
 GameObject:
@@ -837,6 +839,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7635826562936255635, guid: eca03ec3f7bdebb42b716be1afdd5884, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f3a0b3644dd331c4fb00be1bef0c2b02, type: 2}
     - target: {fileID: 919132149155446097, guid: eca03ec3f7bdebb42b716be1afdd5884, type: 3}
       propertyPath: m_Name
       value: hammer

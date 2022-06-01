@@ -384,6 +384,7 @@ GameObject:
   - component: {fileID: 9193244382059747024}
   - component: {fileID: 8053813949442105519}
   - component: {fileID: 5777625652038700885}
+  - component: {fileID: -4328883493797211856}
   m_Layer: 0
   m_Name: SwapRifle
   m_TagString: Untagged
@@ -547,6 +548,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   left: {fileID: 8978125488005640470}
   right: {fileID: 5552477633457505712}
+--- !u!114 &-4328883493797211856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4053286044562665193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f39b6649d9195b14b8ce6f6639262c2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  swapMaterials:
+  - {fileID: 2100000, guid: 55829bfc880fe7641aa08cf9d8d7e731, type: 2}
+  - {fileID: 2100000, guid: caff3bcfe36d2a94a9532e005d63b57d, type: 2}
+  - {fileID: 2100000, guid: a3cc0f971a3810d43b47ee4ef488dd6e, type: 2}
+  - {fileID: 2100000, guid: c704964786254d642878d96fbaf61783, type: 2}
+  - {fileID: 2100000, guid: ca792ce4f90d70749bae9a7a8d3d70b1, type: 2}
+  - {fileID: 2100000, guid: 2316107e300adce4d87b4bad2d47d97f, type: 2}
+  - {fileID: 2100000, guid: ae58a83b1a1e2e247970615f71580426, type: 2}
+  - {fileID: 2100000, guid: e7774445a3dc45a40bfc0e455a3f98b3, type: 2}
+  - {fileID: 2100000, guid: 732249ec00e7dcf46b293dc52843e0fc, type: 2}
+  swapRenderer: {fileID: 2277190082339734551}
 --- !u!1 &5683034002247257297
 GameObject:
   m_ObjectHideFlags: 0
@@ -898,7 +924,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 55829bfc880fe7641aa08cf9d8d7e731, type: 2}
+  - {fileID: 2100000, guid: 732249ec00e7dcf46b293dc52843e0fc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
