@@ -8,8 +8,8 @@ public class ExitCredits : MonoBehaviour
     void Update()
     {
      
-        if(UnityEngine.InputSystem.Keyboard.current.anyKey.wasPressedThisFrame || UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame ||
-            UnityEngine.InputSystem.Mouse.current.rightButton.wasPressedThisFrame)
+        if(UnityEngine.InputSystem.Keyboard.current.anyKey.wasReleasedThisFrame || UnityEngine.InputSystem.Mouse.current.leftButton.wasReleasedThisFrame ||
+            UnityEngine.InputSystem.Mouse.current.rightButton.wasReleasedThisFrame)
         {
             if(CunkdNetManager.Instance != null)
                 SceneManager.MoveGameObjectToScene(CunkdNetManager.Instance.gameObject, SceneManager.GetActiveScene());
