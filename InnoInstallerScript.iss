@@ -3,7 +3,7 @@
 
 #define MyAppName "Cunkd"
 #define MyAppVersion "1.0"
-#define MyAppPublisher "Luleå Tekniska Universitet"
+#define MyAppPublisher "Cunkd Studios"
 #define MyAppURL "https://www.ltu.se/"
 #define MyAppExeName "cunkd.exe"
 
