@@ -141,7 +141,8 @@ public class SwapSniper : NetworkBehaviour, IWeapon, IEquipable
     [ClientRpc]
     void PlayTeleport(NetworkIdentity target)
     {
-        FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Gadgets/Teleporter", target.gameObject);
+        if(target != null)
+            FMODUnity.RuntimeManager.PlayOneShotAttached("event:/SoundStudents/SFX/Gadgets/Teleporter", target.gameObject);
     }
 
     // Performs the swap and sets off particle- and sound effects.
